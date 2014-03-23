@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Bijectiv">
+// <copyright file="SharedAssemblyInfo.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,17 +23,26 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   SharedAssemblyInfo.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Resources;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Bijectiv.Tests")]
-[assembly: AssemblyDescription("Test assembly for the Bijectiv assembly")]
+#if DEBUG
 
-[assembly: ComVisible(false)]
+[assembly: AssemblyConfiguration("DEBUG")]
+#elif RELEASE
+[assembly: AssemblyConfiguration("RELEASE")]
+#endif
+
+[assembly: AssemblyCompany("Bijectiv")]
+[assembly: AssemblyProduct("Bijectiv")]
+[assembly: AssemblyCopyright("Copyright © 2014 Brian Tyler")]
+[assembly: AssemblyTrademark("Bijectiv™")]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en")]
+
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("0.1.0.0")]
