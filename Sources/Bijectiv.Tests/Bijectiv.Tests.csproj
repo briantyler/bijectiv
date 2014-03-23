@@ -63,13 +63,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">
-      <Link>Bijectiv.snk</Link>
+      <Link>Properties\Bijectiv.snk</Link>
     </None>
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
-      <Link>CustomDictionary.xml</Link>
+      <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Choose>
