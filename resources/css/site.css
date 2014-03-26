@@ -1,0 +1,210 @@
+﻿body 
+{
+    background:#111111;
+    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    color:#fff;
+    margin-top:45px;
+}
+
+.clear {
+	clear: both;
+	height: 0; 
+	font-size:0;
+	line-height:0;
+}
+
+.right
+{
+    float:right;
+}
+
+.left
+{
+    float:left;
+}
+
+.post
+{
+    margin-bottom:20px;
+}
+
+.post:last-child
+{
+    margin-bottom:0;
+}
+
+.post-head
+{
+    height:22px;
+    background:#3f3f41;
+    font-size:90%;
+}
+
+.post-head a
+{
+    color:#fff;
+    text-decoration:none;
+}
+
+.post-head-date
+{
+    color:#fff;
+    margin:3px 5px 0;
+}
+
+.post-body
+{
+   background:#1e1e1e;
+   font-size:90%;
+   text-align:justify;
+   padding:5px;
+   position:relative;
+   z-index:-1;
+}
+
+.post-body p
+{
+    margin:0 0 8px 45px;
+}
+
+.post-body p:last-child
+{
+    margin:0 0 10px 45px;
+}
+
+.post-foot
+{
+   background:#68217a;
+   height:27px;
+}
+
+.post-tag
+{
+    float:left;
+    padding:2px 14px;
+    margin:4px 4px;
+    background:#c5c5c5;
+    color:#1f1f22;
+    font-size:80%;
+    font-weight:bold;
+}
+
+.post-tag:first-child
+{
+    margin-left:20px;
+}
+
+.vertical-line
+{
+    border-left: 1px dashed #ca5100;
+    position:absolute;
+    right: 50px;
+    bottom: 0;
+    top:0;
+}
+
+#mast
+{
+    position:fixed; 
+    top:0;
+    width:100%; 
+    background:#2d2d30;
+    color:#c5c5c5;
+}
+
+#head
+{
+    width:940px;
+}
+
+#head h1, img
+{
+     vertical-align:middle;
+}
+
+#f5
+{
+    margin:0 5px;
+}
+
+#qm
+{
+    margin-top:4px;
+}
+
+#qm:hover
+{
+	background:#007acc;
+	cursor:pointer;
+}
+
+#main
+{
+    width:940px;
+    overflow:auto;
+    margin-bottom:40px;
+}
+
+#foot
+{
+   font-size:80%;
+   position:fixed;
+   left:0;
+   bottom:0;
+   height:22px;
+   width:100%;
+   padding-left:10px;
+   background:#ca5100;
+}
+
+#foot p
+{
+   margin-top:0.3em;
+}
+
+#foot a
+{
+    color:#fff;
+}
+
+#foot a:visited
+{
+    color:#fff;
+}
+
+#foot a:hover
+{
+    color:#111111;
+}
+
+#overlay {
+    display:none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.5;
+    z-index: 10;
+}
+
+#about {
+    display:none;
+    position: fixed;
+    top: 200px;
+    left: 470px;
+    width: 600px;
+    height: 400px;
+    margin-left: -300px;
+    background:#1e1e1e;
+    opacity: 1;
+    z-index: 100;
+}
+
+#about-close
+{
+    position:absolute;
+    right:-15px;
+    top:-12px;
+}
