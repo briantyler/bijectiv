@@ -6,12 +6,13 @@
         <title>Why do object-to-object mapping?</title>
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="/bijectiv/resources/css/reset.css">
-        <link rel="stylesheet" href="/bijectiv/resources/css/site.css">
-	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css">
+        <link rel="stylesheet" href="/bijectiv/resources/css/reset.css" />
+        <link rel="stylesheet" href="/bijectiv/resources/css/site.css" />
+	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css" />
         <script type="text/javascript" src="/bijectiv/resources/scripts/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="/bijectiv/resources/scripts/bijectiv.js"></script>
     </head>
-    <body>
+    <body onLoad="bijectiv()">
         <div id="all">
             <div id="mast">
                 <div id="head">
@@ -28,14 +29,86 @@
         <h2><a href="/bijectiv/background/2014/03/26/why-do-object-to-object-mapping.html">Why do object-to-object mapping?</a></h2>
         <span class="right post-head-date">26 Mar 2014</span>
     </div>
-    <div class="post-body"><div class="vertical-line right"></div></div>
+    <div class="post-body"><div class="vertical-line right"></div><p>A system of any kind of scale will almost certainly have multiple parts (database, web-server, client) where each part performs its own distinct function (persists state, provide services, allows user interaction) and; it is generally desirable if the parts can develop independently of one another, whilst still maintaining a strong relationship between the core data that <em>defines</em> the system. In programmer parlance the aim is to achieve something close to message level <a href="http://en.wikipedia.org/wiki/Coupling_(computer_programming)">coupling</a> between the distinct parts. The term <em>parts</em> is deliberately woolly; feel free to interpret it as you wish.</p>
+
+<p>Good design suggests that corresponding to each individual part should be at least one model; again the term <em>model</em> is allowed to be woolly, but it could be thought of as the data structures that comprise the part. So in the above example there might be three distinct models in the system: the <strong>data model</strong>, the <strong>service model</strong> and the <strong>view model</strong>. </p>
+
+<p>To make this more concrete suppose that the system has the concept of a customer; then there might be three models describing that customer, one in the data model, one in the service model and one in the view model.</p>
+
+<blockquote>
+<p><code>CustomerDataModel</code> <br />
+<code>CustomerServiceModel</code> <br />
+<code>CustomerViewModel</code> <br /></p>
+</blockquote>
+
+<p>Maybe the <code>CustomerDataModel</code> exposes a complex object graph consisting of the customer&#39;s order history, all previous addresses, contact preferences and the like; in this case it is likely that a restricted view of the customer that only contains a subset of this data is useful. This suggests that corresponding to the <code>CustomerDataModel</code> might be multiple service and view models.</p>
+
+<blockquote>
+<p><code>CustomerDataModel</code> <br />
+<code>CustomerServiceModel</code> <br />
+<code>CustomerHeaderServiceModel</code> <br />
+<code>CustomerViewModel</code> <br />
+<code>CustomerHeaderViewModel</code> <br /></p>
+</blockquote>
+
+<p>Because there are distinct models in each part of the system it is easy (easier) to develop each part separately without needing to worry about changes in one part affecting functionality in some completely different part: all of the methods in the <em>data</em> part should operate on <em>data</em> objects and all of the methods in the <em>view</em> part should operate on <em>view</em> objects, so there is no obvious way that adding a new view only feature in the view part that requires the view model to change slightly (i.e. redesigning a user control) can affect, or be affected by any of the existing functionality in the data part. Sounds awesome right?</p>
+
+<p>But there is a snag...</p>
+
+<p>No coupling means, by definition, no communication and communication is vital for the system to have value. Somehow we need to recouple these parts so that they can talk to each other, but as loosely as possible: the <code>CustomerDataModel</code> needs to to become a <code>CustomerServiceModel</code> so that it can function in the service part, the <code>CustomerServiceModel</code> needs to become a <code>CustomerViewModel</code> so that it can function in the view part and so on and vice verse.</p>
+
+<p>One approach is to have a method that corresponds to each mapping operation:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno"> 1</span> <span class="k">void</span> <span class="nf">CustomerDataModelToCustomerServiceModel</span><span class="p">(</span>
+<span class="lineno"> 2</span>     <span class="n">CustomerDataModel</span> <span class="n">source</span><span class="p">,</span> <span class="n">CustomerServiceModel</span> <span class="n">target</span><span class="p">)</span>
+<span class="lineno"> 3</span> <span class="p">{</span>
+<span class="lineno"> 4</span>     <span class="c1">// ... explicit mapping code </span>
+<span class="lineno"> 5</span> <span class="p">}</span>
+<span class="lineno"> 6</span>  
+<span class="lineno"> 7</span> <span class="k">void</span> <span class="nf">CustomerDataModelToCustomerHeaderServiceModel</span><span class="p">(</span>
+<span class="lineno"> 8</span>     <span class="n">CustomerDataModel</span> <span class="n">source</span><span class="p">,</span> <span class="n">CustomerServiceHeaderModel</span> <span class="n">target</span><span class="p">);</span>
+<span class="lineno"> 9</span> <span class="p">{</span>
+<span class="lineno">10</span>     <span class="c1">// ... explicit mapping code </span>
+<span class="lineno">11</span> <span class="p">}</span>
+<span class="lineno">12</span> 
+<span class="lineno">13</span> <span class="k">void</span> <span class="nf">CustomerServiceModelToCustomerDataModel</span><span class="p">(</span>
+<span class="lineno">14</span>     <span class="n">CustomerServiceModel</span> <span class="n">source</span><span class="p">,</span> <span class="n">CustomerDataModel</span> <span class="n">target</span><span class="p">);</span>
+<span class="lineno">15</span> <span class="p">{</span>
+<span class="lineno">16</span>     <span class="c1">// ... explicit mapping code </span>
+<span class="lineno">17</span> <span class="p">}</span>
+<span class="lineno">18</span> 
+<span class="lineno">19</span>  <span class="c1">// ...</span>
+</code></pre></div>
+
+<p>But even with this simple example there are at least 8 mapping operations that make good sense, not even considering any nested maps required, and already we are staring directly at a maintenance nightmare. The cunning plan to decouple our system is now looking less than inviting.</p>
+
+<p>It is here that the object-to-object mapper comes to the rescue. A mapper can replace boilerplate mapping methods with simple configuration expressed in easy to read fluent syntax, similarly to the way the <a href="https://entityframework.codeplex.com/">Entity Framework</a> defines maps between CLR types and database tables, or <a href="https://github.com/autofac/Autofac">Autofac</a> describes the steps required to construct a type. </p>
+
+<p>The hope is that it can be configured in a module that looks something like the following (rather optimistic) snippit:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="n">builder</span><span class="p">.</span><span class="n">RegisterTransform</span><span class="p">&lt;</span><span class="n">CustomerDataModel</span><span class="p">,</span> <span class="n">CustomerServiceModel</span><span class="p">&gt;();</span>
+<span class="lineno">2</span> <span class="n">builder</span><span class="p">.</span><span class="n">RegisterTransform</span><span class="p">&lt;</span><span class="n">CustomerDataModel</span><span class="p">,</span> <span class="n">CustomerServiceHeaderModel</span><span class="p">&gt;();</span>
+<span class="lineno">3</span> <span class="n">builder</span><span class="p">.</span><span class="n">RegisterTransform</span><span class="p">&lt;</span><span class="n">CustomerServiceModel</span><span class="p">,</span> <span class="n">CustomerDataModel</span><span class="p">&gt;();</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="c1">// ...</span>
+</code></pre></div>
+
+<p>And then later, where it is necessary to transform between models, the mapper is called as:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="kt">var</span> <span class="n">customerService</span> <span class="p">=</span> <span class="n">transformer</span><span class="p">.</span><span class="n">Make</span><span class="p">&lt;</span><span class="n">CustomerServiceModel</span><span class="p">&gt;(</span><span class="n">customerData</span><span class="p">);</span>
+</code></pre></div>
+
+<p>The transformation rules live in their own well structured, testable module, that is itself decoupled from the other parts of the system and these define a <code>transformer</code> that can be used anywhere to perform the transformation operations. The mapping module is the coupling point: no part knows about any other, but the mapping module knows how to transform between the various models and so provides the glue that makes system-wide communication possible.</p>
+
+<p>Its a very powerful concept, but unlike <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> the lack of any library as good as <a href="https://github.com/autofac/Autofac">Autofac</a> for me makes it hard to adopt; specifically because it really gets embedded in the overall architecture like an IoC container.</p>
+</div>
     <div class="post-foot">
      
-	<div class="post-tag">code</div>
+	    <div class="post-tag"><a href="/bijectiv/tag/code">code</a></div>
     
-	<div class="post-tag">background</div>
+	    <div class="post-tag"><a href="/bijectiv/tag/background">background</a></div>
     
-	<div class="post-tag">planning</div>
+	    <div class="post-tag"><a href="/bijectiv/tag/planning">planning</a></div>
     
     </div>
 </div>
@@ -43,7 +116,7 @@
 
 	            </div>
             <div id="foot">
-	            <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a>
+	            <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a> | <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 licence</a>
 	            </p>
             </div>
             <div id="overlay"></div>
@@ -56,7 +129,10 @@
                     <p>This site documents how the <a href="https://github.com/TheMouthOfACow/bijectiv" />bijectiv</a> object-to-object .NET mapping library got/is getting built.<p>
                     <p>Bijectiv is (being) written by Brian Tyler in his (very limited, see small child to the right) spare time; by day I'm a technical architect developer at Aon's global headquarters in London, the rest of the time I do <a href="http://kozuetyler.wordpress.com/">family stuff</a>.</p>
                     <p>The purpose of the library is to provide an industrial strength, open source mapper for .NET and the reason for the blog is to describe why it is built the way it is and to act as a resource for other developers who are interested in how a library could be designed and coded.</p>
-                    <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably the .NET 4.0 runtime.</p>
+                    <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably in the .NET 4.0 runtime.</p>
+                    <h2>Copyleft</h2>
+                    <p>You do not need permission to share anything I have written on this site or to reuse my images even for commercial purposes. They are all published under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) licence</a>. A mention of the licence however is compulsory and a link back to the original is a nice courtesy.</a></p>
+                    <p>... this comes with an observation: cloning posts wholesale doesn't create value it just just increases universal entropy.
                 </div>
 	        </div>
 	        <script type="text/javascript" >

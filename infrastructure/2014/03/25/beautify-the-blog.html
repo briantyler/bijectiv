@@ -6,12 +6,13 @@
         <title>bijective.blog.Beautify</title>
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="/bijectiv/resources/css/reset.css">
-        <link rel="stylesheet" href="/bijectiv/resources/css/site.css">
-	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css">
+        <link rel="stylesheet" href="/bijectiv/resources/css/reset.css" />
+        <link rel="stylesheet" href="/bijectiv/resources/css/site.css" />
+	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css" />
         <script type="text/javascript" src="/bijectiv/resources/scripts/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="/bijectiv/resources/scripts/bijectiv.js"></script>
     </head>
-    <body>
+    <body onLoad="bijectiv()">
         <div id="all">
             <div id="mast">
                 <div id="head">
@@ -33,8 +34,6 @@
 <p>Anyway, the point of this is that the blog now has a style, which is both highly derivative, not at all uber and definitely not fit for purpose. But just check out the cool guideline at 120 characters - only the real pros have one of those in their IDE. (Actually it renders at something like 140 characters, but 120 is where you want to be).</p>
 
 <p>And for fun the code gets rendered like in visual studio on the black background where it is really difficult to read what&#39;s going on, but not as hard as it is in the solution explorer where you generally feel like an eskimo with a really bad case of snow blindness. </p>
-
-<p><br /></p>
 
 <p><em>Example</em></p>
 
@@ -115,15 +114,13 @@
 <span class="lineno">75</span> <span class="p">}</span>
 </code></pre></div>
 
-<p><br /></p>
-
 <p>See how on line 42 the code blunders well over the guide. Apologies to Linux users; there seems to be a huge discrepancy in size between Windows monospaced and Linux monospaced fonts and so the code looks piddly on Linux.</p>
 </div>
     <div class="post-foot">
      
-	<div class="post-tag">blog</div>
+	    <div class="post-tag"><a href="/bijectiv/tag/blog">blog</a></div>
     
-	<div class="post-tag">infrastructure</div>
+	    <div class="post-tag"><a href="/bijectiv/tag/infrastructure">infrastructure</a></div>
     
     </div>
 </div>
@@ -131,7 +128,7 @@
 
 	            </div>
             <div id="foot">
-	            <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a>
+	            <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a> | <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 licence</a>
 	            </p>
             </div>
             <div id="overlay"></div>
@@ -144,7 +141,10 @@
                     <p>This site documents how the <a href="https://github.com/TheMouthOfACow/bijectiv" />bijectiv</a> object-to-object .NET mapping library got/is getting built.<p>
                     <p>Bijectiv is (being) written by Brian Tyler in his (very limited, see small child to the right) spare time; by day I'm a technical architect developer at Aon's global headquarters in London, the rest of the time I do <a href="http://kozuetyler.wordpress.com/">family stuff</a>.</p>
                     <p>The purpose of the library is to provide an industrial strength, open source mapper for .NET and the reason for the blog is to describe why it is built the way it is and to act as a resource for other developers who are interested in how a library could be designed and coded.</p>
-                    <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably the .NET 4.0 runtime.</p>
+                    <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably in the .NET 4.0 runtime.</p>
+                    <h2>Copyleft</h2>
+                    <p>You do not need permission to share anything I have written on this site or to reuse my images even for commercial purposes. They are all published under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) licence</a>. A mention of the licence however is compulsory and a link back to the original is a nice courtesy.</a></p>
+                    <p>... this comes with an observation: cloning posts wholesale doesn't create value it just just increases universal entropy.
                 </div>
 	        </div>
 	        <script type="text/javascript" >

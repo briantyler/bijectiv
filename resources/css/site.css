@@ -66,17 +66,41 @@
    text-align:justify;
    padding:5px;
    position:relative;
-   z-index:-1;
 }
 
 .post-body p
 {
-    margin:0 0 8px 45px;
+    margin:0 10px 0.5em 30px;
+}
+
+.post-body p code
+{
+    font-size:0.9em;
+}
+
+.post-body blockquote
+{
+    margin:0em 0em 0em 0.5em;
 }
 
 .post-body p:last-child
 {
-    margin:0 0 10px 45px;
+    margin:0 0 0.5em 30px;
+}
+
+.post-body a
+{
+    color:#2f9c49;
+}
+
+.post-body a:visited
+{
+    color:#2f9c49;
+}
+
+.post-body a:hover
+{
+    color:#ca5100;
 }
 
 .post-foot
@@ -99,6 +123,21 @@
 .post-tag:first-child
 {
     margin-left:20px;
+}
+
+.post-tag a
+{
+    color:#1e1e1e;
+}
+
+.post-tag a:visited
+{
+    color:#1e1e1e;
+}
+
+.post-tag a:hover
+{
+    color:#007acc;;
 }
 
 .vertical-line
@@ -203,11 +242,12 @@
     top: 200px;
     left: 470px;
     width: 600px;
-    height: 320px;
+    height: 460px;
     margin-left: -300px;
     background:#1e1e1e;
     opacity: 1;
     z-index: 100;
+    text-align:justify;
 }
 
 #about-close
@@ -223,6 +263,7 @@
     background:#2d2d30;
     font-size:1.4em;
     padding-left:0.3em;
+    color:#ca5100;
 }
 
 #about div
@@ -234,6 +275,13 @@
     color:#fff;
 }
 
+#about h2
+{
+    padding:0.5em 0.5em 0 0.5em;
+    color:#ca5100;
+    font-size:1.2em;
+}
+
 #about p
 {
     padding:0.5em 0.5em 0 0.5em;
@@ -241,5 +289,5 @@
 
 #about img
 {
-    margin:0;
+    margin:0 0em 0 0.5em;
 }
