@@ -8,20 +8,21 @@
 
         <link rel="stylesheet" href="/bijectiv/resources/css/reset.css">
         <link rel="stylesheet" href="/bijectiv/resources/css/site.css">
-	<link rel="stylesheet" href="/bijectiv/resources/css/syntax.css">
-
+	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css">
+        <script type="text/javascript" src="/bijectiv/resources/scripts/jquery-2.0.3.min.js"></script>
     </head>
     <body>
-        <div id="mast">
-            <div id="head">
-                <a href="/bijectiv/"><img id="f5" src="/bijectiv/resources/images/f5.png" alt="Hack F5 Pray logo" /></a>
-                <h1>Hack.F5.Pray - the bijectiv blog - code from the trenches (the mouth of a cow)</h1>
-                <img id="qm" class="right" src="/bijectiv/resources/images/info.png" alt="About Hack F5 Pray" />
-            </div>
-	    </div>
-	    <div id="main">
+        <div id="all">
+            <div id="mast">
+                <div id="head">
+                    <a href="/bijectiv/"><img id="f5" src="/bijectiv/resources/images/f5.png" alt="Hack F5 Pray logo" /></a>
+                    <h1>Hack.F5.Pray - the bijectiv blog - code from the trenches (the mouth of a cow)</h1>
+                    <img id="qm" class="right" src="/bijectiv/resources/images/info.png" alt="About Hack F5 Pray" />
+                </div>
+	        </div>
+	        <div id="main">
 
-		      <div class="post">
+		          <div class="post">
     <div class="post-head">
         <img src="/bijectiv/resources//images/ring.png" />
         <h2><a href="/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html">bijective.blog.Beautify</a></h2>
@@ -116,7 +117,7 @@
 
 <p><br /></p>
 
-<p>See how on line 42 the code blunders well over the guide.</p>
+<p>See how on line 42 the code blunders well over the guide. Apologies to Linux users; there seems to be a huge discrepancy in size between Windows monospaced and Linux monospaced fonts and so the code looks piddly on Linux.</p>
 </div>
     <div class="post-foot">
      
@@ -128,10 +129,47 @@
 </div>
 
 
+	            </div>
+            <div id="foot">
+	            <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a>
+	            </p>
+            </div>
+            <div id="overlay"></div>
+	        <div id="about">
+		        <image id="about-close" src="/bijectiv/resources/images/ring.png" />
+
+                <h1>About</h1>
+                <div>
+                    <img class="right" src="https://download-codeplex.sec.s-msft.com/download/Avatar.ashx?DownloadId=815244" alt="Brian Tyler" />
+                    <p>This site documents how the <a href="https://github.com/TheMouthOfACow/bijectiv" />bijectiv</a> object-to-object .NET mapping library got/is getting built.<p>
+                    <p>Bijectiv is (being) written by Brian Tyler in his (very limited, see small child to the right) spare time; by day I'm a technical architect developer at Aon's global headquarters in London, the rest of the time I do <a href="http://kozuetyler.wordpress.com/">family stuff</a>.</p>
+                    <p>The purpose of the library is to provide an industrial strength, open source mapper for .NET and the reason for the blog is to describe why it is built the way it is and to act as a resource for other developers who are interested in how a library could be designed and coded.</p>
+                    <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably the .NET 4.0 runtime.</p>
+                </div>
 	        </div>
-        <div id="foot">
-	        <p>Rebuild All succeeded - 2014 - London - UK | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a>
-	        </p>
+	        <script type="text/javascript" >
+	            $( "#about-close" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+	            });
+	
+	            $( "#overlay" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+	            });
+	
+	            $(document).keyup(function(e) {
+	              if (e.keyCode == 27) {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+	            }   // esc
+	            });
+	
+	            $( "#qm" ).click(function() {
+		            $( "#overlay" ).show();
+		            $( "#about" ).show();
+	            });
+	        </script>
         </div>
     </body>
 </html>

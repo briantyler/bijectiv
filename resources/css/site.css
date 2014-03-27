@@ -1,9 +1,15 @@
 ﻿body 
 {
     background:#111111;
-    font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    font-family: Calibri, Arial;
     color:#fff;
     margin-top:45px;
+    font-size:63%;
+}
+
+#all
+{
+    font-size:1.4em;
 }
 
 .clear {
@@ -37,7 +43,8 @@
 {
     height:22px;
     background:#3f3f41;
-    font-size:90%;
+    font-size:1em;
+    font-weight:bold;
 }
 
 .post-head a
@@ -119,6 +126,7 @@
 
 #head h1, img
 {
+    font-size: 1.3em;
      vertical-align:middle;
 }
 
@@ -195,7 +203,7 @@
     top: 200px;
     left: 470px;
     width: 600px;
-    height: 400px;
+    height: 320px;
     margin-left: -300px;
     background:#1e1e1e;
     opacity: 1;
@@ -207,4 +215,31 @@
     position:absolute;
     right:-15px;
     top:-12px;
+}
+
+#about h1
+{
+    display:block;
+    background:#2d2d30;
+    font-size:1.4em;
+    padding-left:0.3em;
+}
+
+#about div
+{
+}
+
+#about a
+{
+    color:#fff;
+}
+
+#about p
+{
+    padding:0.5em 0.5em 0 0.5em;
+}
+
+#about img
+{
+    margin:0;
 }
