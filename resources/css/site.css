@@ -73,7 +73,7 @@
     margin:0 10px 0.5em 30px;
 }
 
-.post-body p code
+.post-body p code, li code
 {
     font-size:0.9em;
 }
@@ -109,6 +109,23 @@
     font-weight:bold;
     margin:0.5em 0 0.3em 1em;
     font-size:1.1em;
+}
+
+.post-body ul
+{
+    list-style:none;
+    margin:0em 0em 0.5em 45px;
+}
+
+.post-body ul li
+{
+}
+
+.post-body ul li:before
+{
+    padding-right:1em;
+    content:"■";
+    color:#358bcb;
 }
 
 .post-foot

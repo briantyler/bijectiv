@@ -31,41 +31,74 @@
     </div>
     <div class="post-body"><div class="vertical-line right"></div><h3>Preamble</h3>
 
-<p>Four days in and I&#39;m really excited by the <a href="http://pages.github.com/">github pages</a> / <a href="http://jekyllrb.com">jekyll</a> static site generator combination. I&#39;m not so sure about the all-in-one solution of uploading the unparsed jekyll site because, being a programmer, I have a natural aversion to committing something I&#39;m not happy with and it requires a commit to see how new content gets rendered. But working locally with jekyll running in the background is by far the fastest way to develop a site that I&#39;ve seen to date. Databases rule for transactional integrity, but it is starting to become clear that the price one pays to get it is really quite high: for tiny data volumes go flat files and a parser, for huge data volumes go hadoop, databases occupy the middle ground.</p>
+<p>Four days in and I&#39;m really excited by the <a href="http://pages.github.com/">github pages</a> / <a href="http://jekyllrb.com">jekyll</a> static site generator combination. I&#39;m not so sure about the all-in-one solution of uploading the unparsed jekyll site because, being a programmer, I have a natural aversion to committing something I&#39;m not happy with and it requires a commit to see how new content gets rendered. However, working locally with jekyll running in the background is by far the best way to develop a small site that I&#39;ve come across. Databases rule for transactional integrity, but it is starting to become clear that the price one pays for that integrity is really quite high: for tiny data volumes go flat files and a parser, for huge data volumes go hadoop, databases occupy the middle ground.</p>
 
-<p>I think that next time I work on a web project I may well use jekyll to prototype the layout and javascript because it gives such immediate feedback. The teplate syntax is fairly similar to ASP.NET, so once you&#39;ve got the basic shell working with jekyll then translating that back to ASP is going to be straightforward (this theme originally belonged to the beginnings of an MVC Razor blog).</p>
+<p>I think that next time I work on a web project I may well use jekyll to prototype the layout and javascript because it gives such immediate feedback. The template syntax is fairly similar to ASP.NET, so once you&#39;ve got the basic shell working with jekyll then translating that back to ASP is going to be straightforward (this theme originally belonged to the beginnings of an MVC Razor blog).</p>
 
 <h3>Developing with github pages and jekyll</h3>
 
-<p>Something I realised two days ago is that when hosting in <a href="http://pages.github.com/">github pages</a>, using <a href="http://jekyllrb.com">jekyll</a> locally to develop the site it is critical they the site kernel (i.e. the thing that jekyll actually builds into your site)</p>
+<p>Something I realised very quickly was that when hosting in <a href="http://pages.github.com/">github pages</a> and using <a href="http://jekyllrb.com">jekyll</a> locally to build the site it is critical that the <em>proto site</em> (i.e. the thing that jekyll actually builds into your site) gets version controlled. Why? well if you mess this up then you will have no way of going back from the built site to its definition. To this end I now have two branches in the github project that are dedicated to the blog:</p>
 
-<p>Something to be aware of is that you need to create a new branch to hold the definition as if you mess this up you have no way of going back from the built site to the definition.</p>
+<ul>
+<li><code>gh-pages</code> and;</li>
+<li><code>gh-pages-proto</code></li>
+</ul>
 
-<p>One of the most important things programmers do is automate repetitive tasks: we do this because repetition is boring and time is precious. So here is a script that commits the site definition and that built site back to github.</p>
+<p>The branch <code>gh-pages</code> is the special branch that github provides for hosting sites and <code>gh-pages-proto</code> is the branch that contains the code that jekyll builds into <code>gh-pages</code>. The suffix <em>proto</em> means first; giving <code>gh-pages-proto</code> the meaning of the entity that brought about <code>gh-pages</code>.</p>
+
+<p>To work with this setup, at the end of each session I need to:</p>
+
+<ul>
+<li>Build the site.</li>
+<li>Merge the newly built site over the old one.</li>
+<li>Stage, commit and push those changes to <code>gh-pages</code>.</li>
+<li>Remove junk I don&#39;t want version controlled from <code>gh-pages-proto</code>.</li>
+<li>Stage, commit and push the code changes to <code>gh-pages-proto</code>.</li>
+</ul>
+
+<p>This obviously sounds like a total pain to do by hand, so that is why it needs to be automated. The following bash script does this (<code>bash</code> is so much better than Windows <code>batch</code>). To run it you will need to <a href="http://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typing-when-using-https-github">cache your credentials with git</a>: Giri Alwar&#39;s answer works best for me, but my credentials are secure by virtue of their geography, on a public machine this might not work for you.</p>
+
+<h3>Push to <code>gh-pages</code> and <code>gh-pages-proto</code></h3>
 
 <div class="highlight"><pre><code class="bash"><span class="c">#!/bin/bash</span>
 
+<span class="c"># Remember where we are so we can return there at the end of the script</span>
 <span class="nb">pushd</span> ./
 
-<span class="nb">cd</span> <span class="o">[</span>path to site definition<span class="o">]</span>
+<span class="c"># 1. Define the directories that contain the two branches.</span>
+<span class="c"># The directory that contains the gh-pages branch.</span>
+<span class="nv">ghpages</span><span class="o">=</span><span class="s2">&quot;/home/themouthofacow/Documents/bijectiv/gh-pages/&quot;</span>
+<span class="c"># The directory that contains the branch containing the code that gets built by jekyll.</span>
+<span class="nv">ghpagesproto</span><span class="o">=</span><span class="s2">&quot;/home/themouthofacow/Documents/bijectiv/gh-pages-proto/&quot;</span>
+
+<span class="c"># 2. Build the site using jekyll.</span>
+<span class="nb">cd</span> <span class="nv">$ghpagesproto</span>
 jekyll build
 
-<span class="nb">cd</span> <span class="o">[</span>path to gh-pages branch root<span class="o">]</span>
+<span class="c"># 3. Delete everything from gh-pages directory except for the git repository and the ignore file.</span>
+<span class="nb">cd</span> <span class="nv">$ghpages</span>
 <span class="nb">shopt</span> -s extglob
 rm !<span class="o">(</span>.git<span class="p">|</span>.gitignore<span class="o">)</span> -r
-cp <span class="o">[</span>path to site definition<span class="o">]</span>/_site/* ./ -r
 
+<span class="c"># 4. Copy the freshly built site into the gh-pages directory.</span>
+cp <span class="nv">$ghpagesproto</span>/_site/* ./ -r
+rm <span class="nv">$ghpagesproto</span>/_site -r
+
+<span class="c"># 5. Add everything - this is the clever bit; because git stores hashes of all of the files in the</span>
+<span class="c">#    local repository adding everything in fact: removes files that no longer exist; adds the new </span>
+<span class="c">#    ones and; updates the ones that have changed. Anything that hasn&#39;t changed is untouched, so you</span>
+<span class="c">#    get a perfect incremental commit!</span>
 git add -A .
-git commit -a -m <span class="s1">&#39;site updated&#39;</span>
+git commit -a -m <span class="s1">&#39;blog updated --tmoac&#39;</span>
 git push
 
-<span class="nb">cd</span> <span class="o">[</span>path to site definition<span class="o">]</span>
-rm _site -r
-
+<span class="c"># 6. Commit the code that gets built by jekyll.</span>
+<span class="nb">cd</span> <span class="nv">$ghpagesproto</span>
 git add -A .
-git commit -a -m <span class="s1">&#39;site updated&#39;</span>
+git commit -a -m <span class="s1">&#39;site updated --tmoac&#39;</span>
 git push
 
+<span class="c"># Return to the original location.</span>
 <span class="nb">popd</span>
 </code></pre></div>
 </div>
