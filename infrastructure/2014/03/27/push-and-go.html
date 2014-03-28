@@ -29,7 +29,15 @@
         <h2><a href="/bijectiv/infrastructure/2014/03/27/push-and-go.html">Push and go; easy hosting in gh-pages</a></h2>
         <span class="right post-head-date">27 Mar 2014</span>
     </div>
-    <div class="post-body"><div class="vertical-line right"></div><p>Four days in and I&#39;m really excited by the github pages / jekyll static site generator combination. I&#39;m not so sure about the all-in-one solution of uploading the unparsed jekyll site because being a programmer I have a natural aversion to committing something I&#39;m not happy with and it requires a commit to see how new content gets rendered. But working locally with jekyll running in the background is by far the fastest way to develop a site I&#39;ve seen. I think that next time I work on a web project I may well use jekyll to prototype the layout and javascript because it gives such immediate feedback. The teplate syntax is fairly similar to ASP.NET, so once you&#39;ve got the basic shell working with jekyll then translating that back to ASP is going to be straightforward (this theme originally belonged to the beginnings of an MVC Razor blog).</p>
+    <div class="post-body"><div class="vertical-line right"></div><h3>Preamble</h3>
+
+<p>Four days in and I&#39;m really excited by the <a href="http://pages.github.com/">github pages</a> / <a href="http://jekyllrb.com">jekyll</a> static site generator combination. I&#39;m not so sure about the all-in-one solution of uploading the unparsed jekyll site because, being a programmer, I have a natural aversion to committing something I&#39;m not happy with and it requires a commit to see how new content gets rendered. But working locally with jekyll running in the background is by far the fastest way to develop a site that I&#39;ve seen to date. Databases rule for transactional integrity, but it is starting to become clear that the price one pays to get it is really quite high: for tiny data volumes go flat files and a parser, for huge data volumes go hadoop, databases occupy the middle ground.</p>
+
+<p>I think that next time I work on a web project I may well use jekyll to prototype the layout and javascript because it gives such immediate feedback. The teplate syntax is fairly similar to ASP.NET, so once you&#39;ve got the basic shell working with jekyll then translating that back to ASP is going to be straightforward (this theme originally belonged to the beginnings of an MVC Razor blog).</p>
+
+<h3>Developing with github pages and jekyll</h3>
+
+<p>Something I realised two days ago is that when hosting in <a href="http://pages.github.com/">github pages</a>, using <a href="http://jekyllrb.com">jekyll</a> locally to develop the site it is critical they the site kernel (i.e. the thing that jekyll actually builds into your site)</p>
 
 <p>Something to be aware of is that you need to create a new branch to hold the definition as if you mess this up you have no way of going back from the built site to the definition.</p>
 
