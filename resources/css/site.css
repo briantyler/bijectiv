@@ -156,6 +156,7 @@
     width:100%; 
     background:#2d2d30;
     color:#c5c5c5;
+    z-index:1;
 }
 
 #head
