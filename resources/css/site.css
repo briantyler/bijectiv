@@ -318,22 +318,22 @@
     margin:0 0em 0 0.5em;
 }
 
-#disqus-thread
+#disqus_thread
 {
     margin-left:30px;
 }
 
-#disqus-thread a
+#disqus_thread a
 {
     color:#ca5100;
 }
 
-#disqus-thread a:visited
+#disqus_thread a:visited
 {
     color:#ca5100;
 }
 
-#disqus-thread a:hover
+#disqus_thread a:hover
 {
     color:#fff;
 }
