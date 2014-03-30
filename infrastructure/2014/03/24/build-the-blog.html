@@ -18,14 +18,14 @@
                 <div id="head">
                     <a href="/bijectiv/"><img id="f5" src="/bijectiv/resources/images/f5.png" alt="Hack F5 Pray logo" /></a>
                     <h1>Hack.F5.Pray - the bijectiv blog - code from the trenches (the mouth of a cow)</h1>
-                    <img id="qm" class="right" src="/bijectiv/resources/images/info.png" alt="About Hack F5 Pray" />
+                    <img id="qm" class="right" src="/bijectiv/resources/images/info.png" alt="About the bijectiv blog" />
                 </div>
 	        </div>
 	        <div id="main">
 
 		          <div class="post">
     <div class="post-head">
-        <img src="/bijectiv/resources//images/ring.png" />
+        <img src="/bijectiv/resources/images/ring.png" />
         <h2><a href="/bijectiv/infrastructure/2014/03/24/build-the-blog.html">bijective.Initialize</a></h2>
         <span class="right post-head-date">24 Mar 2014</span>
     </div>
@@ -64,6 +64,9 @@
 	            </p>
             </div>
             <div id="overlay"></div>
+            <!--<div id="the-world-is-yours">
+                <iframe src="/bijectiv/moon.html" width="800" height="800"></iframe> 
+            </div>-->
 	        <div id="about">
 		        <img id="about-close" src="/bijectiv/resources/images/ring.png" />
 
@@ -76,30 +79,54 @@
                     <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs portably in the .NET 4.0 runtime.</p>
                     <h2>Copyleft</h2>
                     <p>You do not need permission to share anything I have written on this site or to reuse my images even for commercial purposes. They are all published under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) licence</a>. A mention of the licence however is compulsory and a link back to the original is a nice courtesy.</p>
-                    <p>... this comes with an observation: cloning posts wholesale doesn't create value it just just increases universal entropy.
+                    <p>... this comes with an observation: cloning posts wholesale doesn't create value it just just increases universal entropy.</p>
+                    <h2>More</h2>
+                    <br />
+                    <div class="right" style="margin-right:5px;"><a href="http://stackoverflow.com/users/323316/the-mouth-of-a-cow">
+<img src="http://stackoverflow.com/users/flair/323316.png?theme=clean" width="208" height="58" alt="profile for The Mouth of a Cow at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for The Mouth of a Cow at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+</a>
+</div>
+                    <p>I love <a href="http://stackoverflow.com">stackoverflow</a>, but I don't answer questions much there anymore because people vote for <a href="http://stackoverflow.com/questions/5598703/c-const-usage-explanation/5598730#5598730">regurgitating trivia</a> not <a href="http://stackoverflow.com/questions/10698915/invalid-type-owner-for-dynamicmethod-error-when-sorting-an-interface/13790392#13790392">hardcore software engineering</a>.</p>
+                <p>I've written an open source visual studio extension called <a href="https://xamlr.codeplex.com/">Xamlr</a> that formats XAML files. If you write XAML, you need this!</p>
                 </div>
 	        </div>
 	        <script type="text/javascript" >
 	            $( "#about-close" ).click(function() {
 		            $( "#overlay" ).hide();
 		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+
+                $( "#the-world-is-yours" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
 	            });
 	
 	            $( "#overlay" ).click(function() {
 		            $( "#overlay" ).hide();
 		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
 	            });
 	
 	            $(document).keyup(function(e) {
 	              if (e.keyCode == 27) {
 		            $( "#overlay" ).hide();
 		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
 	            }   // esc
 	            });
 	
 	            $( "#qm" ).click(function() {
 		            $( "#overlay" ).show();
 		            $( "#about" ).show();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+
+                $( "#easter" ).click(function() {
+		            $( "#overlay" ).show();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).show();
 	            });
 	        </script>
         </div>
