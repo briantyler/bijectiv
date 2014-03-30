@@ -3,8 +3,8 @@
 	<channel>
 		<title>Bijectiv</title>
 		<description>How the bijectiv object-to-object .NET mapping library gets built.</description>		
-		<link>http://themouthofacow.github.io/bijectiv/</link>
-		<atom:link href="http://themouthofacow.github.io/bijectiv//feed.xml" rel="self" type="application/rss+xml" />
+		<link>http://themouthofacow.github.io/bijectiv</link>
+		<atom:link href="http://themouthofacow.github.io/bijectiv/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
 				<title>Push and go; easy hosting in gh-pages</title>
@@ -82,8 +82,8 @@ git push
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
 				<pubDate>Thu, 27 Mar 2014 00:00:00 +0000</pubDate>
-				<link>http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/27/push-and-go.html</link>
-				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/27/push-and-go.html</guid>
+				<link>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/27/push-and-go.html</link>
+				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/27/push-and-go.html</guid>
 			</item>
 		
 			<item>
@@ -162,8 +162,8 @@ git push
 &lt;p&gt;Its a very powerful concept, but unlike &lt;a href=&quot;http://en.wikipedia.org/wiki/Dependency_injection&quot;&gt;dependency injection&lt;/a&gt; the lack of any library as good as &lt;a href=&quot;https://github.com/autofac/Autofac&quot;&gt;Autofac&lt;/a&gt; for me makes it hard to adopt; specifically because it really gets embedded in the overall architecture like an IoC container.&lt;/p&gt;
 </description>
 				<pubDate>Wed, 26 Mar 2014 00:00:00 +0000</pubDate>
-				<link>http://themouthofacow.github.io/bijectiv//background/2014/03/26/why-do-object-to-object-mapping.html</link>
-				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv//background/2014/03/26/why-do-object-to-object-mapping.html</guid>
+				<link>http://themouthofacow.github.io/bijectiv/background/2014/03/26/why-do-object-to-object-mapping.html</link>
+				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv/background/2014/03/26/why-do-object-to-object-mapping.html</guid>
 			</item>
 		
 			<item>
@@ -256,8 +256,8 @@ git push
 &lt;p&gt;See how on line 42 the code blunders well over the guide. Apologies to Linux users; there seems to be a huge discrepancy in size between Windows monospaced and Linux monospaced fonts and so the code looks piddly on Linux.&lt;/p&gt;
 </description>
 				<pubDate>Tue, 25 Mar 2014 00:00:00 +0000</pubDate>
-				<link>http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/25/beautify-the-blog.html</link>
-				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/25/beautify-the-blog.html</guid>
+				<link>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html</link>
+				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html</guid>
 			</item>
 		
 			<item>
@@ -265,8 +265,8 @@ git push
 				<description>&lt;p&gt;Step 1 has been getting the blog set up (maybe that it more like step 7). By day I build .NET enterprise stuff, it is quite funky for .NET enterprise stuff, but not cool. It seems like the internet is for cool kids and cool kids like static sites: that makes sense to me, the thing that has been putting me off blogging is the heavyweight bloat and lack of control you get with workpress (a typeo but I like it, sic.) or its peers. Cool kids also it seems like github - being deeply ingrained in the Microsoft stack I&amp;#39;m more of a CodePlex kind of guy, but hey back when I was cool (read didn&amp;#39;t have children) I used git and linux (gentoo from back in the day that there was a 23 page install guide and that took 4 days to complete and you installed everything from source and maybe it might boot into KDE at the end - emerge world of course never worked), so I&amp;#39;m going to publish this with jekyll from a mint VM. I know, I know, jekyll is way not cool and there is somthing much more uber out there that will rock my world, but the quick start guide was almost that (although it was nice to see that the person who packaged it in mint forgot the ruby dev dependencies - that gave me the good old time linux feel).&lt;/p&gt;
 </description>
 				<pubDate>Mon, 24 Mar 2014 00:00:00 +0000</pubDate>
-				<link>http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/24/build-the-blog.html</link>
-				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv//infrastructure/2014/03/24/build-the-blog.html</guid>
+				<link>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/24/build-the-blog.html</link>
+				<guid isPermaLink="true">http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/24/build-the-blog.html</guid>
 			</item>
 		
 	</channel>
