@@ -46,6 +46,8 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Builder\ITransformRuleRegistry.cs" />
+    <Compile Include="Builder\TransformRule.cs" />
     <Compile Include="ITransformer.cs" />
     <Compile Include="ITransformRegistry.cs" />
     <Compile Include="ITransformStore.cs" />

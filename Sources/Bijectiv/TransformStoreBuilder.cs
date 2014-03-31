@@ -29,10 +29,35 @@
 
 namespace Bijectiv
 {
+    using Bijectiv.Builder;
+
     /// <summary>
     /// Represents a fine grained factory that can be used to incrementally build a <see cref="ITransformStore"/>.
     /// </summary>
     public class TransformStoreBuilder
     {
+        /// <summary>
+        /// The registry.
+        /// </summary>
+        private readonly ITransformRuleRegistry registry;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
+        /// </summary>
+        /// <param name="registry">
+        /// The registry.
+        /// </param>
+        public TransformStoreBuilder(ITransformRuleRegistry registry)
+        {
+            this.registry = registry;
+        }
+
+        /// <summary>
+        /// Gets the registry.
+        /// </summary>
+        public ITransformRuleRegistry Registry
+        {
+            get { return this.registry; }
+        }
     }
 }
