@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Posts Tagged &ldquo;infrastructure&rdquo;</title>
+        <title>On Productivity</title>
         <meta name="viewport" content="width=device-width">
 
         <link href='/bijectiv/feed.xml' rel='alternate' type='application/atom+xml'>
@@ -26,108 +26,43 @@
 
 		          <div class="post">
     <div class="post-head">
-        <img src="/bijectiv/resources//images/ring.png" />
-        <h2><a href="/bijectiv/tag/infrastructure/index.html">Posts Tagged &ldquo;infrastructure&rdquo;</a></h2>
+        <img src="/bijectiv/resources/images/ring.png" />
+        <h2><a href="/bijectiv/meta/2014/04/01/on-productivity.html">On Productivity</a></h2>
+        <span class="right post-head-date">01 Apr 2014</span>
     </div>
+    <div class="post-body"><div class="vertical-line right"></div><p>I&#39;m constantly finding new and innovative ways to pass the time between birth and death. </p>
+
+<p>Three days ago I was trying to get this <a href="http://richard-moon.co.uk/ascii/moon.html">spinning 3D ascii world</a> I hacked out a couple of years ago to overlay onto the blog. It turns out something has happened in Chrome over the past two years that means it now crashes after about 30 seconds with an &#39;Aw Snap&#39;; the snap would be more impressive, but all I did was write the ascii filter and mess with the specular map - alas I don&#39;t remember where I got the original spining world code, but I do remember having a lot of fun and boring everyone at home to death with it.</p>
+
+<p>Two days ago I discovered <a href="https://en.wikipedia.org/wiki/Microdata_%28HTML%29">Microdata</a> and retrofitted some into the about box. Working in enterprise software, not uber cool web, you find out a lot about nuts and bolts software engineering, but less about the uber cool or the bleeding edge. Microdata seems like SEO on steroids and a concept / technology that the SEO consutants must be totally majorly excited about (maybe this is some kind of reprieve from Google after they killed all of their juicy link farms). Microdata has a nested structure (i.e. one <a href="http://schema.org/Thing">Thing</a> is contained in another) and must be overlayed as metadata onto regular text that is human visible: however, writing prose and writing structured data are not necessarily compatible, so there will be an impetus to structure oddly for the robots, rather than the humans.</p>
+
+<p>Yesterday I wrote some of bijectiv (少し), but of course I took the opportunity to get my hands dirty with <a href="http://msdn.microsoft.com/en-us/library/hh549175.aspx">Microsoft Fakes</a> instead of doing any real work and was kind-of-quite-impressed. I, like many .NET developers have been using <a href="https://github.com/Moq/moq4">Moq</a> for their mocking needs for quite some time; we know that we can&#39;t mock static classes or methods or private or protected methods etceteras... but we know how to work around these limitations and a lot of people feel that the abstractions that are encouraged by mocking frameworks are a good thing. </p>
+
+<p>Microsoft Fakes offers developers the holy grail of <strong>Mocking <code>Date.Now</code></strong>: seriously most of us would have sold our Mothers long ago for that (I&#39;m joking). But it does feel like black magic. The only downside is that it is far too clever for its own good and either R# or Visual Studio just refuses to believe that the <code>Shims</code> are what they say they are without a suspicious cast. Either way; that&#39;s now the mocking framework I&#39;m going to use for the project.</p>
 </div>
-    
+    <div class="post-foot">
         
-            
+	        <div class="post-tag"><a href="/bijectiv/tag/meta">meta</a></div>
         
-            
-                <div class="post">
-                <div class="post-head">
-                    <img src="/bijectiv/resources//images/ring.png" />
-                    <h2><a href="/bijectiv/infrastructure/2014/03/27/push-and-go.html">Push and go; easy hosting in gh-pages</a></h2>
-                    <span class="right post-head-date">27 Mar 2014</span>
-                </div>
-                <div class="post-body">
-                    <p>### Preamble
-Four days in and I'm really excited by the [github pages](http://pages.github.com/) / [jekyll](http://jekyllrb.com) static site generator combination. I'm not so sure about the all-in-one solution of uploading the unparsed jekyll site because, being a programmer, I have a natural aversion to committing something I'm not happy with and it requires a commit to see how new content gets rendered. However, working locally with jekyll running in the background is by far the best way to develop a small site that I've come across. Databases rule for transactional integrity, but it is starting to become clear that the price one pays for that integrity is really quite high: for tiny data volumes go flat files and a parser, for huge data volumes go hadoop, databases occupy the middle ground.
+    </div>
+        
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                var disqus_shortname = 'bijectiv';
+                var disqus_identifier = '9705c1b3-b0aa-43e7-bd92-7472f5b5a63c';
+                var disqus_title = 'On Productivity';
 
-<p>
-                    
-                    <p><a href="/bijectiv/infrastructure/2014/03/27/push-and-go.html">Read more...</a></p>
-                </div>
-                <div class="post-foot">
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/blog">blog</a></div>
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/infrastructure">infrastructure</a></div>
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/git">git</a></div>
-                
-                </div>
-                </div>
-            
-        
-            
-        
-    
-        
-            
-        
-            
-        
-            
-        
-    
-        
-            
-        
-            
-                <div class="post">
-                <div class="post-head">
-                    <img src="/bijectiv/resources//images/ring.png" />
-                    <h2><a href="/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html">bijective.blog.Beautify</a></h2>
-                    <span class="right post-head-date">25 Mar 2014</span>
-                </div>
-                <div class="post-body">
-                    <p>For dyed in the wool visual studio fanboys like myself the blog theme will be clear - it is an homage to the king of IDEs itself (the 2012 edition where form was emphasised so heavily over function in release 1 that it was no longer possible to develop WPF applications visually due to the black artboard: in fact later on in the development cycle when applications had grown into hundred view monsters that bootstrapped from autofac through caliburn the designer just stopped working anyway, at which point everyone switched it off and coded blind like zatoichi - feeling their way through nested markup extensions, in edaphic genuflection looking for some rhyme or reason).
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
 
-<p>
-                    
-                    <p><a href="/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html">Read more...</a></p>
-                </div>
-                <div class="post-foot">
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/blog">blog</a></div>
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/infrastructure">infrastructure</a></div>
-                
-                </div>
-                </div>
-            
-        
-    
-        
-            
-        
-            
-                <div class="post">
-                <div class="post-head">
-                    <img src="/bijectiv/resources//images/ring.png" />
-                    <h2><a href="/bijectiv/infrastructure/2014/03/24/build-the-blog.html">bijective.Initialize</a></h2>
-                    <span class="right post-head-date">24 Mar 2014</span>
-                </div>
-                <div class="post-body">
-                    <p>Step 1 has been getting the blog set up (maybe that it more like step 7). By day I build .NET enterprise stuff, it is quite funky for .NET enterprise stuff, but not cool. It seems like the internet is for cool kids and cool kids like static sites: that makes sense to me, the thing that has been putting me off blogging is the heavyweight bloat and lack of control you get with workpress (a typeo but I like it, sic.) or its peers. Cool kids also it seems like github - being deeply ingrained in the Microsoft stack I'm more of a CodePlex kind of guy, but hey back when I was cool (read didn't have children) I used git and linux (gentoo from back in the day that there was a 23 page install guide and that took 4 days to complete and you installed everything from source and maybe it might boot into KDE at the end - emerge world of course never worked), so I'm going to publish this with jekyll from a mint VM. I know, I know, jekyll is way not cool and there is somthing much more uber out there that will rock my world, but the quick start guide was almost that (although it was nice to see that the person who packaged it in mint forgot the ruby dev dependencies - that gave me the good old time linux feel).
-
-<p>
-                    
-                    <p><a href="/bijectiv/infrastructure/2014/03/24/build-the-blog.html">Read more...</a></p>
-                </div>
-                <div class="post-foot">
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/blog">blog</a></div>
-                
-                    <div class="post-tag"><a href="/bijectiv/tag/infrastructure">infrastructure</a></div>
-                
-                </div>
-                </div>
-            
-        
-    
+            </script>
+       
+</div>
 
 
 	            </div>

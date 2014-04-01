@@ -2,19 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/27/push-and-go.html</loc>
+        <loc>http://themouthofacow.github.io/bijectiv/meta/2014/04/01/on-productivity.html</loc>
     </url>
     
     <url>
-        <loc>http://themouthofacow.github.io/bijectiv/background/2014/03/26/why-do-object-to-object-mapping.html</loc>
+        <loc>http://themouthofacow.github.io/bijectiv/meta/2014/03/27/push-and-go.html</loc>
     </url>
     
     <url>
-        <loc>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/25/beautify-the-blog.html</loc>
+        <loc>http://themouthofacow.github.io/bijectiv/planning/2014/03/26/why-do-object-to-object-mapping.html</loc>
     </url>
     
     <url>
-        <loc>http://themouthofacow.github.io/bijectiv/infrastructure/2014/03/24/build-the-blog.html</loc>
+        <loc>http://themouthofacow.github.io/bijectiv/meta/2014/03/25/beautify-the-blog.html</loc>
+    </url>
+    
+    <url>
+        <loc>http://themouthofacow.github.io/bijectiv/meta/2014/03/24/build-the-blog.html</loc>
     </url>
     
 
@@ -54,39 +58,7 @@
         
             
             <url>
-                <loc>http://themouthofacow.github.io/bijectiv/tag/blog/</loc>
-            </url>
-            
-        
-    
-        
-            
-            <url>
-                <loc>http://themouthofacow.github.io/bijectiv/tag/infrastructure/</loc>
-            </url>
-            
-        
-    
-        
-            
-            <url>
-                <loc>http://themouthofacow.github.io/bijectiv/tag/git/</loc>
-            </url>
-            
-        
-    
-        
-            
-            <url>
-                <loc>http://themouthofacow.github.io/bijectiv/tag/code/</loc>
-            </url>
-            
-        
-    
-        
-            
-            <url>
-                <loc>http://themouthofacow.github.io/bijectiv/tag/background/</loc>
+                <loc>http://themouthofacow.github.io/bijectiv/tag/meta/</loc>
             </url>
             
         
