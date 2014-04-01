@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformRegistry.cs" company="Bijectiv">
+// <copyright file="ITransformFragmentRegistry.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,16 +23,18 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformRegistry type.
+//   Defines the ITransformFragmentRegistry type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
+    using System.Collections.Generic;
+
     /// <summary>
-    /// Represents a registry of transforms.
+    /// Represents a registry that contains <see cref="TransformFragment"/> instances.
     /// </summary>
-    public interface ITransformRegistry
+    public interface ITransformFragmentRegistry : IEnumerable<TransformFragment>
     {
     }
 }

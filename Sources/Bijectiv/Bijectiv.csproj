@@ -46,10 +46,9 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Builder\ITransformRuleRegistry.cs" />
-    <Compile Include="Builder\TransformRule.cs" />
+    <Compile Include="Builder\ITransformFragmentRegistry.cs" />
+    <Compile Include="Builder\TransformFragment.cs" />
     <Compile Include="ITransformer.cs" />
-    <Compile Include="ITransformRegistry.cs" />
     <Compile Include="ITransformStore.cs" />
     <Compile Include="TransformStoreBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,11 +58,17 @@
     <None Include="..\.build\Bijectiv.snk">
       <Link>Properties\Bijectiv.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\packages\JetBrains.Annotations.Portable.8.0.5185.29681\lib\portable-win+net40+sl40+wp+Xbox40\JetBrains.Annotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

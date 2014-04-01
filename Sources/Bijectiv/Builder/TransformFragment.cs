@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformStoreBuilder.cs" company="Bijectiv">
+// <copyright file="TransformFragment.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,72 +23,60 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformStoreBuilder type.
+//   Defines the TransformFragment type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
     using System;
 
-    using Bijectiv.Builder;
-
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// Represents a fine grained factory that can be used to incrementally build a <see cref="ITransformStore"/>.
+    /// The base class for transform fragments.
     /// </summary>
-    public class TransformStoreBuilder
+    public abstract class TransformFragment
     {
         /// <summary>
-        /// The registry.
+        /// Initialises a new instance of the <see cref="TransformFragment"/> class.
         /// </summary>
-        private readonly ITransformFragmentRegistry registry;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
-        /// </summary>
-        /// <param name="registry">
-        /// The registry.
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The target.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformStoreBuilder([NotNull] ITransformFragmentRegistry registry)
+        protected TransformFragment(Type source, Type target)
         {
-            if (registry == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("registry");
+                throw new ArgumentNullException("source");
             }
 
-            this.registry = registry;
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            this.Source = source;
+            this.Target = target;
         }
 
         /// <summary>
-        /// Gets the registry.
+        /// Gets the source type.
         /// </summary>
-        public ITransformFragmentRegistry Registry
-        {
-            get { return this.registry; }
-        }
+        public Type Source { get; private set; }
 
         /// <summary>
-        /// Registers a callback with the store builder: an extensibility point.
+        /// Gets the target type.
         /// </summary>
-        /// <param name="callback">
-        /// The configuration callback.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public void RegisterCallback([NotNull] Action<ITransformFragmentRegistry> callback)
-        {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
+        public Type Target { get; private set; }
 
-            callback(this.Registry);
-        }
+        /// <summary>
+        /// Gets the fragment category.
+        /// </summary>
+        public abstract Guid FragmentCategory { get; }
     }
 }
