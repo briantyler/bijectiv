@@ -48,8 +48,10 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Builder\ITransformFragmentRegistry.cs" />
+    <Compile Include="Builder\ITransformArtifactBuilder.cs" />
+    <Compile Include="Builder\ITransformArtifactRegistry.cs" />
     <Compile Include="Builder\TransformArtifact.cs" />
+    <Compile Include="Builder\TransformArtifactBuilder.cs" />
     <Compile Include="Builder\TransformFragment.cs" />
     <Compile Include="ITransformer.cs" />
     <Compile Include="ITransformStore.cs" />

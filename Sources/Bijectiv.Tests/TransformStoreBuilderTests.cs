@@ -52,7 +52,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new TransformStoreBuilder(new StubITransformFragmentRegistry()).Naught();
+            new TransformStoreBuilder(new StubITransformArtifactRegistry()).Naught();
 
             // Assert
         }
@@ -75,7 +75,7 @@ namespace Bijectiv.Tests
         public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
-            var registry = new StubITransformFragmentRegistry();
+            var registry = new StubITransformArtifactRegistry();
             
             // Act
             var target = new TransformStoreBuilder(registry);
@@ -90,7 +90,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange
-            var registry = new StubITransformFragmentRegistry();
+            var registry = new StubITransformArtifactRegistry();
             var target = new TransformStoreBuilder(registry);
 
             // Act
@@ -104,9 +104,9 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
         {
             // Arrange
-            var registry = new StubITransformFragmentRegistry();
+            var registry = new StubITransformArtifactRegistry();
             var target = new TransformStoreBuilder(registry);
-            ITransformFragmentRegistry calledRegistry = null;
+            ITransformArtifactRegistry calledRegistry = null;
 
             // Act
             target.RegisterCallback(_ => calledRegistry = _);

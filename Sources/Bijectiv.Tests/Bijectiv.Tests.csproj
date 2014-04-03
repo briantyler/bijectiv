@@ -72,6 +72,7 @@
     <Compile Include="Builder\TransformArtifactTests.cs" />
     <Compile Include="Builder\TransformFragmentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\It.cs" />
     <Compile Include="Tools\TestExtensions.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />

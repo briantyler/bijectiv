@@ -29,14 +29,45 @@
 
 namespace Bijectiv
 {
+    using System;
+
+    using Bijectiv.Builder;
+
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Extensions to the <see cref="TransformStoreBuilder"/> class.
     /// </summary>
     public static class TransformStoreBuilderExtensions
     {
-        public static void Register<TSource, TTarget>(this TransformStoreBuilder builder)
+        /// <summary>
+        /// Registers a new transform with the store builder.
+        /// </summary>
+        /// <param name="builder">
+        /// The transform store builder to register with.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source type.
+        /// </typeparam>
+        /// <typeparam name="TTarget">
+        /// The target type.
+        /// </typeparam>
+        /// <returns>
+        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of
+        /// the transform.
+        /// </returns>
+        public static ITransformArtifactBuilder<TSource, TTarget> Register<TSource, TTarget>(
+            [NotNull] this TransformStoreBuilder builder)
         {
-            
+            if (builder == null)
+            {
+                throw new ArgumentNullException("builder");
+            }
+
+            var artifact = new TransformArtifact(typeof(TSource), typeof(TTarget));
+            builder.RegisterCallback(registry => registry.Add(artifact));
+
+            return new TransformArtifactBuilder<TSource, TTarget>(artifact);
         }
     }
 }

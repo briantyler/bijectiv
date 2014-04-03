@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformFragmentRegistry.cs" company="Bijectiv">
+// <copyright file="ITransformArtifactRegistry.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformFragmentRegistry type.
+//   Defines the ITransformArtifactRegistry type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,9 +32,16 @@ namespace Bijectiv.Builder
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a registry that contains <see cref="TransformFragment"/> instances.
+    /// Represents a registry that contains <see cref="TransformArtifact"/> instances.
     /// </summary>
-    public interface ITransformFragmentRegistry : IEnumerable<TransformFragment>
+    public interface ITransformArtifactRegistry : IEnumerable<TransformArtifact>
     {
+        /// <summary>
+        /// Adds an artifact to the registry.
+        /// </summary>
+        /// <param name="artifact">
+        /// The artifact to add.
+        /// </param>
+        void Add(TransformArtifact artifact);
     }
 }

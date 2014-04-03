@@ -29,6 +29,15 @@
 
 namespace Bijectiv.Tests.Tools
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
+    using System.Security;
+
+    using Microsoft.QualityTools.Testing.Fakes.Stubs;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     /// This class contains extension methods that are useful when testing.
     /// </summary>
@@ -49,6 +58,27 @@ namespace Bijectiv.Tests.Tools
         public static TInstance Naught<TInstance>(this TInstance instance)
         {
             return instance;
+        }
+
+        public static void AssertMethodCalled<T>(this IStub<T> stub, Expression<Action<T>> expression)
+            where T : class
+        {
+            var observer = stub.InstanceObserver as StubObserver;
+            if (observer == null)
+            {
+                throw new ArgumentException("No InstanceObserver installed into the stub.", "stub");
+            }
+
+            var methodCall = expression.Body as MethodCallExpression;
+            if (methodCall == null)
+            {
+                throw new ArgumentException("expression does not represent a method call.", "expression");
+            }
+
+            Assert.IsTrue(
+                observer.GetCalls().Any(call => call.StubbedMethod == methodCall.Method), 
+                "Method {0} was not called",
+                methodCall.Method);
         }
     }
 }

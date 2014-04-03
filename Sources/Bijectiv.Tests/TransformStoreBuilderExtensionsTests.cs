@@ -29,6 +29,11 @@
 
 namespace Bijectiv.Tests
 {
+    using Bijectiv.Builder;
+    using Bijectiv.Builder.Fakes;
+    using Bijectiv.Tests.Tools;
+
+    using Microsoft.QualityTools.Testing.Fakes.Stubs;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -37,6 +42,19 @@ namespace Bijectiv.Tests
     [TestClass]
     public class TransformStoreBuilderExtensionsTests
     {
-         
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_ValidParameters_ExpectedResult()
+        {
+            // Arrange
+            var registry = new StubITransformArtifactRegistry { InstanceObserver = new StubObserver() };
+            var builder = new TransformStoreBuilder(registry);
+
+            // Act
+            builder.Register<object, object>();
+
+            // Assert
+            registry.AssertMethodCalled(_ => _.Add(It.IsAny<TransformArtifact>()));
+        }
     }
 }
