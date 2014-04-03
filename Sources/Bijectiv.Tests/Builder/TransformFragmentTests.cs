@@ -35,7 +35,6 @@ namespace Bijectiv.Tests.Builder
     using Bijectiv.Builder.Fakes;
     using Bijectiv.Tests.Tools;
 
-    using Microsoft.QualityTools.Testing.Fakes;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -48,31 +47,25 @@ namespace Bijectiv.Tests.Builder
         [TestCategory("Unit")]
         public void CreateInstance_ValidParameters_InstanceCreated()
         {
-            using (ShimsContext.Create())
-            {
-                // Arrange
+            // Arrange
 
-                // Act
-                new StubTransformFragment(typeof(object), typeof(object)).Naught();
+            // Act
+            new StubTransformFragment(typeof(object), typeof(object)).Naught();
 
-                // Assert
+            // Assert
             }
-        }
 
         [TestMethod]
         [TestCategory("Unit")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateInstance_SourceParameterIsNull_Throws()
         {
-            using (ShimsContext.Create())
-            {
-                // Arrange
+            // Arrange
 
-                // Act
-                new StubTransformFragment(null, typeof(object)).Naught();
+            // Act
+            new StubTransformFragment(null, typeof(object)).Naught();
 
-                // Assert
-            }
+            // Assert
         }
 
         [TestMethod]
@@ -80,47 +73,39 @@ namespace Bijectiv.Tests.Builder
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateInstance_TargetParameterIsNull_Throws()
         {
-            using (ShimsContext.Create())
-            {
-                // Arrange
+            // Arrange
 
-                // Act
-                new StubTransformFragment(typeof(object), null).Naught();
+            // Act
+            new StubTransformFragment(typeof(object), null).Naught();
 
-                // Assert
-            }
+            // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
         public void CreateInstance_SourceParameter_IsAssignedToSourceProperty()
         {
-            using (ShimsContext.Create())
-            {
-                // Arrange
+            // Arrange
 
-                // Act
-                var target = new StubTransformFragment(typeof(int), typeof(object));
+            // Act
+            var target = new StubTransformFragment(typeof(int), typeof(object));
 
-                // Assert
-                Assert.AreEqual(typeof(int), target.Source);
-            }
+            // Assert
+            Assert.AreEqual(typeof(int), target.Source);
+
         }
 
         [TestMethod]
         [TestCategory("Unit")]
         public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
         {
-            using (ShimsContext.Create())
-            {
-                // Arrange
+            // Arrange
 
-                // Act
-                var target = new StubTransformFragment(typeof(object), typeof(int));
+            // Act
+            var target = new StubTransformFragment(typeof(object), typeof(int));
 
-                // Assert
-                Assert.AreEqual(typeof(int), target.Target);
-            }
+            // Assert
+            Assert.AreEqual(typeof(int), target.Target);
         }
     }
 }

@@ -31,11 +31,23 @@ namespace Bijectiv.Builder
 {
     using System;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// The base class for transform fragments.
     /// </summary>
     public abstract class TransformFragment
     {
+        /// <summary>
+        /// The source type.
+        /// </summary>
+        private readonly Type source;
+
+        /// <summary>
+        /// The target type.
+        /// </summary>
+        private readonly Type target;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformFragment"/> class.
         /// </summary>
@@ -48,7 +60,7 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        protected TransformFragment(Type source, Type target)
+        protected TransformFragment([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -60,19 +72,25 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("target");
             }
 
-            this.Source = source;
-            this.Target = target;
+            this.source = source;
+            this.target = target;
         }
 
         /// <summary>
         /// Gets the source type.
         /// </summary>
-        public Type Source { get; private set; }
+        public Type Source
+        {
+            get { return this.source; }
+        }
 
         /// <summary>
         /// Gets the target type.
         /// </summary>
-        public Type Target { get; private set; }
+        public Type Target
+        {
+            get { return this.target; }
+        }
 
         /// <summary>
         /// Gets the fragment category.
