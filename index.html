@@ -28,6 +28,94 @@
  <div class="post">
     <div class="post-head">
         <img class="ring" src="/bijectiv/resources/images/ring.png" />
+        <h2><a href="/bijectiv/planning/2014/04/04/On-Microsoft-Fakes.html">On Microsoft Fakes</a></h2>
+        <span class="right post-head-date">04 Apr 2014</span><br />
+        <span class="right post-head-comments"><a href="/bijectiv/planning/2014/04/04/On-Microsoft-Fakes.html#disqus_thread" data-disqus-identifier="758d9d04-81ea-487f-97ca-44ce8de8fbde">? Comments</a></span>
+    </div>
+    <div class="post-body">
+        <div class="vertical-line right"></div><p><p>In the last post I said that I had decided to use Microsoft Fakes as the mocking framework for testing in bijectiv. However, on reflection it seems that this is not actually a good idea. The main reason for this is the barrier to entry that Microsoft Fakes imposes on other developers: to run it you need Visual Studio 2012 Premuim or upwards. Only a minority of professional developers have these licences; one of the amazing things about working as a software engineer at Aon is that you get your own personal MSDN Ultimate licence, which gives full access to every piece of software Microsoft has ever written including the latest versions of Windows and Office that can legally be installed on your home computer. I know from working in other companies that most developers are nowhere near as lucky. I want to write software that is accessbile and Microsoft Fakes is not accessible, so that rules it out (sadly, as it would be great to learn a new mocking framework).</p>
+
+<p>What I did discover is that there is not much on the web about it and my guess is that it is not that widely used. Basic functionality like asserting on a method call is not a first order feature; by this I mean that there is no out of the box equivalent of:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="n">instanceMock</span><span class="p">.</span><span class="n">Verify</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">_</span><span class="p">.</span><span class="n">DoSomething</span><span class="p">(</span><span class="n">It</span><span class="p">.</span><span class="n">IsAny</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;())</span>
+</code></pre></div>
+
+<p>What you are going to need to do is define your own equivalent of moq&#39;s <a href="https://github.com/Moq/moq4/blob/master/Source/It.cs"><code>It</code></a>:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">It</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="k">public</span> <span class="k">static</span> <span class="n">TInstance</span> <span class="n">IsAny</span><span class="p">&lt;</span><span class="n">TInstance</span><span class="p">&gt;()</span>
+<span class="lineno">4</span>     <span class="p">{</span>
+<span class="lineno">5</span>         <span class="k">return</span> <span class="nf">default</span><span class="p">(</span><span class="n">TInstance</span><span class="p">);</span>
+<span class="lineno">6</span>     <span class="p">}</span>
+<span class="lineno">7</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>Then define your own extension method equivalent of verify:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno"> 1</span> <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="n">Verify</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IStub</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">stub</span><span class="p">,</span> <span class="n">Expression</span><span class="p">&lt;</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;&gt;</span> <span class="n">expression</span><span class="p">)</span>
+<span class="lineno"> 2</span>     <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="k">class</span>
+<span class="lineno"> 3</span> <span class="err">{</span>
+<span class="lineno"> 4</span>     <span class="kt">var</span> <span class="n">observer</span> <span class="p">=</span> <span class="n">stub</span><span class="p">.</span><span class="n">InstanceObserver</span> <span class="k">as</span> <span class="n">StubObserver</span><span class="p">;</span>
+<span class="lineno"> 5</span>     <span class="k">if</span> <span class="p">(</span><span class="n">observer</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="lineno"> 6</span>     <span class="p">{</span>
+<span class="lineno"> 7</span>         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span><span class="p">(</span><span class="s">&quot;No InstanceObserver installed into the stub.&quot;</span><span class="p">,</span> <span class="s">&quot;stub&quot;</span><span class="p">);</span>
+<span class="lineno"> 8</span>     <span class="p">}</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span>     <span class="kt">var</span> <span class="n">methodCall</span> <span class="p">=</span> <span class="n">expression</span><span class="p">.</span><span class="n">Body</span> <span class="k">as</span> <span class="n">MethodCallExpression</span><span class="p">;</span>
+<span class="lineno">11</span>     <span class="k">if</span> <span class="p">(</span><span class="n">methodCall</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="lineno">12</span>     <span class="p">{</span>
+<span class="lineno">13</span>         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span><span class="p">(</span><span class="s">&quot;expression does not represent a method call.&quot;</span><span class="p">,</span> <span class="s">&quot;expression&quot;</span><span class="p">);</span>
+<span class="lineno">14</span>     <span class="p">}</span>
+<span class="lineno">15</span> 
+<span class="lineno">16</span>     <span class="n">Assert</span><span class="p">.</span><span class="n">IsTrue</span><span class="p">(</span>
+<span class="lineno">17</span>         <span class="n">observer</span><span class="p">.</span><span class="n">GetCalls</span><span class="p">().</span><span class="n">Any</span><span class="p">(</span><span class="n">call</span> <span class="p">=&gt;</span> <span class="n">call</span><span class="p">.</span><span class="n">StubbedMethod</span> <span class="p">==</span> <span class="n">methodCall</span><span class="p">.</span><span class="n">Method</span><span class="p">),</span> 
+<span class="lineno">18</span>         <span class="s">&quot;Method {0} was not called&quot;</span><span class="p">,</span>
+<span class="lineno">19</span>         <span class="n">methodCall</span><span class="p">.</span><span class="n">Method</span><span class="p">);</span>
+<span class="lineno">20</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>Waste some time writing the expression visitor that determines whether your arguments match the expectation: I&#39;ve not done this in the code above so it just determines whether the method was called, not how it was called. Then finally you need to verify the call in the following way:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="c1">// Arrange</span>
+<span class="lineno">2</span> <span class="kt">var</span> <span class="n">registry</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StubITransformArtifactRegistry</span> <span class="p">{</span> <span class="n">InstanceObserver</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StubObserver</span><span class="p">()</span> <span class="p">};</span>
+<span class="lineno">3</span> <span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TransformStoreBuilder</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="c1">// Act</span>
+<span class="lineno">6</span> <span class="n">builder</span><span class="p">.</span><span class="n">Register</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">,</span> <span class="kt">object</span><span class="p">&gt;();</span>
+<span class="lineno">7</span> 
+<span class="lineno">8</span> <span class="c1">// Assert</span>
+<span class="lineno">9</span> <span class="n">registry</span><span class="p">.</span><span class="n">Verify</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">_</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">It</span><span class="p">.</span><span class="n">IsAny</span><span class="p">&lt;</span><span class="n">TransformArtifact</span><span class="p">&gt;()));</span>
+</code></pre></div>
+
+<p>It is not going to be that much work to recreate the basic functionality, but since it is there in moq, you need a really good reason to do that. The really good reason is that you want to mock <code>DateTime.Now,</code> but in this particular library there will be no interaction with any system library, so here there is genuinely no advantage.</p>
+
+<p>The other big drawback to using fakes is that the tools (i.e. R#) do not understand the relationship between the fake and the original, so when you rename the original you are just left with a bunch of dead fakes that need to be renamed by hand. I&#39;m sure this will be fixed at some point, but it&#39;s a pain as things often get renamed early in their lifetime. I often feel that a large part of writing code is just defining the right vocabulary.</p>
+
+<p>The main reference I&#39;ve found is here <a href="http://www.peterprovost.org/blog/2012/11/29/visual-studio-2012-fakes-part-3/">http://www.peterprovost.org/blog/2012/11/29/visual-studio-2012-fakes-part-3/</a>. In his post, I guess for simplicity, Peter suggests asserting on the name of the method - but that completely removes the link between the test and the code - you don&#39;t want your test to break just because you rename a method. Expressions are the way to go here. </p>
+
+<p>A final thing and I&#39;m going to sound like a total pedant here, but a <a href="http://msdn.microsoft.com/en-us/library/system.security.verificationexception%28v=vs.110%29.aspx"><code>VerificationException</code></a></p>
+
+<blockquote>
+<blockquote>
+<p><em>&quot;is thrown when the security policy requires code to be type safe and the verification process is unable to verify that the code is type safe.&quot;</em></p>
+</blockquote>
+</blockquote>
+
+<p>It has nothing to do with a mock expectation failing. Before throwing an exception <em>always read the documentation</em>. Both the microsoft unit testing framework and moq define their own exception types that indicate failure; the same should be done here, or an existing exception from the testing library you are using could be repurposed.</p>
+<p>
+    </div>
+    <div class="post-foot">
+    
+	    <div class="post-tag"><a href="/bijectiv/tag/planning">planning</a></div>
+    
+    </div>
+
+</div>
+
+ <div class="post">
+    <div class="post-head">
+        <img class="ring" src="/bijectiv/resources/images/ring.png" />
         <h2><a href="/bijectiv/meta/2014/04/01/on-productivity.html">On Productivity</a></h2>
         <span class="right post-head-date">01 Apr 2014</span><br />
         <span class="right post-head-comments"><a href="/bijectiv/meta/2014/04/01/on-productivity.html#disqus_thread" data-disqus-identifier="9705c1b3-b0aa-43e7-bd92-7472f5b5a63c">? Comments</a></span>

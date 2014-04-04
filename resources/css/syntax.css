@@ -14,7 +14,7 @@ code
 
 .lineno { color: #358bcb; }
 .highlight .c { color: #2f9c49; } /* Comment */
-.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .err { color: #FFF; } /* Error */
 .highlight .k { color: #358bcb; font-weight: bold; } /* Keyword */
 .highlight .o { color: #358bcb; font-weight: bold; } /* Operator */
 .highlight .cm { color: #2f9c49; } /* Comment.Multiline */

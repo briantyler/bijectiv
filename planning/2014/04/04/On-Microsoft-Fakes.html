@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>On Microsoft Fakes</title>
+        <meta name="viewport" content="width=device-width">
+
+        <link href='/bijectiv/feed.xml' rel='alternate' type='application/atom+xml'>
+        <link rel="stylesheet" href="/bijectiv/resources/css/reset.css" />
+        <link rel="stylesheet" href="/bijectiv/resources/css/site.css" />
+	    <link rel="stylesheet" href="/bijectiv/resources/css/syntax.css" />
+        <script type="text/javascript" src="/bijectiv/resources/scripts/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="/bijectiv/resources/scripts/bijectiv.js"></script>
+    </head>
+    <body onLoad="bijectiv()">
+        <div id="all">
+            <div id="mast">
+                <div id="head">
+                    <a href="/bijectiv/"><img id="f5" src="/bijectiv/resources/images/f5.png" alt="Hack F5 Pray logo" /></a>
+                    <h1>Hack.F5.Pray - the bijectiv blog - code from the trenches (the mouth of a cow)</h1>
+                    <img id="qm" class="right" src="/bijectiv/resources/images/info.png" alt="About the bijectiv blog" />
+                </div>
+	        </div>
+	        <div id="main">
+
+		          <div class="post">
+    <div class="post-head">
+        <img src="/bijectiv/resources/images/ring.png" />
+        <h2><a href="/bijectiv/planning/2014/04/04/On-Microsoft-Fakes.html">On Microsoft Fakes</a></h2>
+        <span class="right post-head-date">04 Apr 2014</span>
+    </div>
+    <div class="post-body"><div class="vertical-line right"></div><p>In the last post I said that I had decided to use Microsoft Fakes as the mocking framework for testing in bijectiv. However, on reflection it seems that this is not actually a good idea. The main reason for this is the barrier to entry that Microsoft Fakes imposes on other developers: to run it you need Visual Studio 2012 Premuim or upwards. Only a minority of professional developers have these licences; one of the amazing things about working as a software engineer at Aon is that you get your own personal MSDN Ultimate licence, which gives full access to every piece of software Microsoft has ever written including the latest versions of Windows and Office that can legally be installed on your home computer. I know from working in other companies that most developers are nowhere near as lucky. I want to write software that is accessbile and Microsoft Fakes is not accessible, so that rules it out (sadly, as it would be great to learn a new mocking framework).</p>
+
+<p>What I did discover is that there is not much on the web about it and my guess is that it is not that widely used. Basic functionality like asserting on a method call is not a first order feature; by this I mean that there is no out of the box equivalent of:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="n">instanceMock</span><span class="p">.</span><span class="n">Verify</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">_</span><span class="p">.</span><span class="n">DoSomething</span><span class="p">(</span><span class="n">It</span><span class="p">.</span><span class="n">IsAny</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;())</span>
+</code></pre></div>
+
+<p>What you are going to need to do is define your own equivalent of moq&#39;s <a href="https://github.com/Moq/moq4/blob/master/Source/It.cs"><code>It</code></a>:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">It</span>
+<span class="lineno">2</span> <span class="p">{</span>
+<span class="lineno">3</span>     <span class="k">public</span> <span class="k">static</span> <span class="n">TInstance</span> <span class="n">IsAny</span><span class="p">&lt;</span><span class="n">TInstance</span><span class="p">&gt;()</span>
+<span class="lineno">4</span>     <span class="p">{</span>
+<span class="lineno">5</span>         <span class="k">return</span> <span class="nf">default</span><span class="p">(</span><span class="n">TInstance</span><span class="p">);</span>
+<span class="lineno">6</span>     <span class="p">}</span>
+<span class="lineno">7</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>Then define your own extension method equivalent of verify:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno"> 1</span> <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="n">Verify</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IStub</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">stub</span><span class="p">,</span> <span class="n">Expression</span><span class="p">&lt;</span><span class="n">Action</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;&gt;</span> <span class="n">expression</span><span class="p">)</span>
+<span class="lineno"> 2</span>     <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="k">class</span>
+<span class="lineno"> 3</span> <span class="err">{</span>
+<span class="lineno"> 4</span>     <span class="kt">var</span> <span class="n">observer</span> <span class="p">=</span> <span class="n">stub</span><span class="p">.</span><span class="n">InstanceObserver</span> <span class="k">as</span> <span class="n">StubObserver</span><span class="p">;</span>
+<span class="lineno"> 5</span>     <span class="k">if</span> <span class="p">(</span><span class="n">observer</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="lineno"> 6</span>     <span class="p">{</span>
+<span class="lineno"> 7</span>         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span><span class="p">(</span><span class="s">&quot;No InstanceObserver installed into the stub.&quot;</span><span class="p">,</span> <span class="s">&quot;stub&quot;</span><span class="p">);</span>
+<span class="lineno"> 8</span>     <span class="p">}</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span>     <span class="kt">var</span> <span class="n">methodCall</span> <span class="p">=</span> <span class="n">expression</span><span class="p">.</span><span class="n">Body</span> <span class="k">as</span> <span class="n">MethodCallExpression</span><span class="p">;</span>
+<span class="lineno">11</span>     <span class="k">if</span> <span class="p">(</span><span class="n">methodCall</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="lineno">12</span>     <span class="p">{</span>
+<span class="lineno">13</span>         <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentException</span><span class="p">(</span><span class="s">&quot;expression does not represent a method call.&quot;</span><span class="p">,</span> <span class="s">&quot;expression&quot;</span><span class="p">);</span>
+<span class="lineno">14</span>     <span class="p">}</span>
+<span class="lineno">15</span> 
+<span class="lineno">16</span>     <span class="n">Assert</span><span class="p">.</span><span class="n">IsTrue</span><span class="p">(</span>
+<span class="lineno">17</span>         <span class="n">observer</span><span class="p">.</span><span class="n">GetCalls</span><span class="p">().</span><span class="n">Any</span><span class="p">(</span><span class="n">call</span> <span class="p">=&gt;</span> <span class="n">call</span><span class="p">.</span><span class="n">StubbedMethod</span> <span class="p">==</span> <span class="n">methodCall</span><span class="p">.</span><span class="n">Method</span><span class="p">),</span> 
+<span class="lineno">18</span>         <span class="s">&quot;Method {0} was not called&quot;</span><span class="p">,</span>
+<span class="lineno">19</span>         <span class="n">methodCall</span><span class="p">.</span><span class="n">Method</span><span class="p">);</span>
+<span class="lineno">20</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>Waste some time writing the expression visitor that determines whether your arguments match the expectation: I&#39;ve not done this in the code above so it just determines whether the method was called, not how it was called. Then finally you need to verify the call in the following way:</p>
+
+<div class="highlight"><pre><code class="c#"><span class="lineno">1</span> <span class="c1">// Arrange</span>
+<span class="lineno">2</span> <span class="kt">var</span> <span class="n">registry</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StubITransformArtifactRegistry</span> <span class="p">{</span> <span class="n">InstanceObserver</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StubObserver</span><span class="p">()</span> <span class="p">};</span>
+<span class="lineno">3</span> <span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TransformStoreBuilder</span><span class="p">(</span><span class="n">registry</span><span class="p">);</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="c1">// Act</span>
+<span class="lineno">6</span> <span class="n">builder</span><span class="p">.</span><span class="n">Register</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">,</span> <span class="kt">object</span><span class="p">&gt;();</span>
+<span class="lineno">7</span> 
+<span class="lineno">8</span> <span class="c1">// Assert</span>
+<span class="lineno">9</span> <span class="n">registry</span><span class="p">.</span><span class="n">Verify</span><span class="p">(</span><span class="n">_</span> <span class="p">=&gt;</span> <span class="n">_</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">It</span><span class="p">.</span><span class="n">IsAny</span><span class="p">&lt;</span><span class="n">TransformArtifact</span><span class="p">&gt;()));</span>
+</code></pre></div>
+
+<p>It is not going to be that much work to recreate the basic functionality, but since it is there in moq, you need a really good reason to do that. The really good reason is that you want to mock <code>DateTime.Now,</code> but in this particular library there will be no interaction with any system library, so here there is genuinely no advantage.</p>
+
+<p>The other big drawback to using fakes is that the tools (i.e. R#) do not understand the relationship between the fake and the original, so when you rename the original you are just left with a bunch of dead fakes that need to be renamed by hand. I&#39;m sure this will be fixed at some point, but it&#39;s a pain as things often get renamed early in their lifetime. I often feel that a large part of writing code is just defining the right vocabulary.</p>
+
+<p>The main reference I&#39;ve found is here <a href="http://www.peterprovost.org/blog/2012/11/29/visual-studio-2012-fakes-part-3/">http://www.peterprovost.org/blog/2012/11/29/visual-studio-2012-fakes-part-3/</a>. In his post, I guess for simplicity, Peter suggests asserting on the name of the method - but that completely removes the link between the test and the code - you don&#39;t want your test to break just because you rename a method. Expressions are the way to go here. </p>
+
+<p>A final thing and I&#39;m going to sound like a total pedant here, but a <a href="http://msdn.microsoft.com/en-us/library/system.security.verificationexception%28v=vs.110%29.aspx"><code>VerificationException</code></a></p>
+
+<blockquote>
+<blockquote>
+<p><em>&quot;is thrown when the security policy requires code to be type safe and the verification process is unable to verify that the code is type safe.&quot;</em></p>
+</blockquote>
+</blockquote>
+
+<p>It has nothing to do with a mock expectation failing. Before throwing an exception <em>always read the documentation</em>. Both the microsoft unit testing framework and moq define their own exception types that indicate failure; the same should be done here, or an existing exception from the testing library you are using could be repurposed.</p>
+</div>
+    <div class="post-foot">
+        
+	        <div class="post-tag"><a href="/bijectiv/tag/planning">planning</a></div>
+        
+    </div>
+        
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                var disqus_shortname = 'bijectiv';
+                var disqus_identifier = '758d9d04-81ea-487f-97ca-44ce8de8fbde';
+                var disqus_title = 'On Microsoft Fakes';
+
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+
+            </script>
+       
+</div>
+
+
+	            </div>
+            <div id="foot">
+	            <p>Rebuild All succeeded - 2014 - London - UK | <a href='/bijectiv/feed.xml'>RSS</a> | <a href='/bijectiv/sitemap.xml'>地図</a> | <a href="http://github.com/TheMouthOfACow">http://github.com/TheMouthOfACow</a> | <a href="https://twitter.com/TheMouthOfACow">https://twitter.com/TheMouthOfACow</a> | <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 licence</a>
+	            </p>
+            </div>
+            <div id="overlay"></div>
+	        <div id="about">
+		        <img id="about-close" src="/bijectiv/resources/images/ring.png" />
+
+                <h1>About</h1>
+                <div>
+                    <div itemscope itemtype="http://schema.org/Person"> 
+                    <h2 itemprop="name"><span itemprop="givenName">Brian</span> <span itemprop="familyName">Tyler</span></h2>
+                    <img itemprop="image" class="right" src="http://themouthofacow.github.io/bijectiv/resources/images/brian-tyler.jpg" alt="Brian Tyler" />
+                    <p>I am a <span itemprop="jobTitle">technical architect</span> at <span itemprop="worksFor">Aon</span>'s global headquarters in <span itemprop="workLocation">London</span>. Bijectiv is being written in my very limited (<a href="http://kozuetyler.wordpress.com/">see kids right and below</a>) spare time because I feel that the .NET development community really nees an awesome object-to-object mapper.</p>
+                </div>
+                <div itemscope itemtype="http://schema.org/SoftwareApplication">
+                    <h2 itemprop="name">bijectiv</h2>
+                    <p>This site documents how <a href="https://github.com/TheMouthOfACow/bijectiv" itemprop="url"><span>bijectiv</span></a>, <span itemprop="description">an addictive object-to-object mapping library for .NET</span>, is getting built.<p>
+                    <p>The purpose of the <span itemprop="applicationCategory">library</span> is to provide an industrial strength, open source mapper for .NET and the reason for the blog is to describe why it is built the way it is and to act as a resource for other developers who are interested in how a library could be designed and coded.</p>
+                    </div>
+                    <h2>Misc</h2>
+                    <br />
+                    <div class="right" style="margin-right:5px;"><a href="http://stackoverflow.com/users/323316/the-mouth-of-a-cow">
+<img src="http://stackoverflow.com/users/flair/323316.png?theme=clean" width="208" height="58" alt="profile for The Mouth of a Cow at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for The Mouth of a Cow at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+</a>
+</div>
+                    <p>I love <a href="http://stackoverflow.com">stackoverflow</a>, but I don't answer questions much there anymore because people vote for <a href="http://stackoverflow.com/questions/5598703/c-const-usage-explanation/5598730#5598730">regurgitating trivia</a> not <a href="http://stackoverflow.com/questions/10698915/invalid-type-owner-for-dynamicmethod-error-when-sorting-an-interface/13790392#13790392">hardcore software engineering</a>.</p>
+                <p>I've written an open source visual studio extension called <a href="https://xamlr.codeplex.com/">Xamlr</a> that formats XAML files. If you write XAML, you need this!</p>
+                <p>The blog is written using <a href="http://jekyllrb.com/">Jekyll</a> on Mint Linux (apparently that's the way the cool kids do it these days). The library is written in Visual Studio 2013 Ultimate on Windows 8.1 and runs in the <span itemprop="requirements">.NET 4.0 portable runtime</span>.</p>
+                    <h2>Copyleft</h2>
+                    <p>You do not need permission to share anything I have written on this site or to reuse my images even for commercial purposes. They are all published under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0) licence</a>. A mention of the licence however is compulsory and a link back to the original is a nice courtesy.</p>
+                    <p>... this comes with an observation: cloning posts wholesale doesn't create value it just just increases universal entropy.</p>
+                    
+                </div>
+	        </div>
+	        <script type="text/javascript" >
+	            $( "#about-close" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+
+                $( "#the-world-is-yours" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+	
+	            $( "#overlay" ).click(function() {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+	
+	            $(document).keyup(function(e) {
+	              if (e.keyCode == 27) {
+		            $( "#overlay" ).hide();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).hide();
+	            }   // esc
+	            });
+	
+	            $( "#qm" ).click(function() {
+		            $( "#overlay" ).show();
+		            $( "#about" ).show();
+                    $( "#the-world-is-yours" ).hide();
+	            });
+
+                $( "#easter" ).click(function() {
+		            $( "#overlay" ).show();
+		            $( "#about" ).hide();
+                    $( "#the-world-is-yours" ).show();
+	            });
+	        </script>
+        </div>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-5245850-6', 'themouthofacow.github.io');
+          ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>
