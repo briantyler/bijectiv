@@ -39,8 +39,6 @@ namespace Bijectiv.Tests.Builder
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Moq;
-
     /// <summary>
     /// This class tests the <see cref="TransformArtifact"/> class.
     /// </summary>
@@ -144,7 +142,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Object;
+            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
 
             // Act
             target.Add(fragment);
@@ -160,7 +158,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new Mock<TransformFragment>(typeof(int), typeof(object)) { CallBase = true }.Object;
+            var fragment = Abstract.Instance<TransformFragment>(typeof(int), typeof(object));
 
             // Act
             target.Add(fragment);
@@ -175,7 +173,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new Mock<TransformFragment>(typeof(object), typeof(int)) { CallBase = true }.Object;
+            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(int));
 
             // Act
             target.Add(fragment);
@@ -189,14 +187,15 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Object;
-
-            // Act
+            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
             target.Add(fragment);
-
-            // Assert
-            // ReSharper disable once RedundantCast
-            Assert.AreEqual(fragment, ((IEnumerable)target).Cast<TransformFragment>().Single());
+            
+            // Act
+            foreach (var item in (IEnumerable)target)
+            {
+                // Assert
+                Assert.AreEqual(fragment, item);
+            }
         }
 
         private static TransformArtifact CreateTarget()

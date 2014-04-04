@@ -27,8 +27,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests
 {
+    using System;
+
     using Bijectiv.Builder;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -40,6 +43,19 @@ namespace Bijectiv.Tests
     [TestClass]
     public class TransformStoreBuilderExtensionsTests
     {
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Register_BuilderParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            default(TransformStoreBuilder).Register<object, object>();
+
+            // Assert
+        }
+
         [TestMethod]
         [TestCategory("Unit")]
         public void Register_ValidParameters_ExpectedResult()

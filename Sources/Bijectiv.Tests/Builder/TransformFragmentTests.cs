@@ -37,8 +37,6 @@ namespace Bijectiv.Tests.Builder
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Moq;
-
     /// <summary>
     /// This class tests the <see cref="TransformFragment"/> class.
     /// </summary>
@@ -52,10 +50,10 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Naught();
+            Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
 
             // Assert
-            }
+        }
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -67,7 +65,7 @@ namespace Bijectiv.Tests.Builder
             // Act
             try
             {
-                new Mock<TransformFragment>(null, typeof(object)) { CallBase = true }.Object.Naught();
+                Abstract.Instance<TransformFragment>(null, typeof(object));
             }   
             catch (TargetInvocationException ex)
             {
@@ -87,7 +85,7 @@ namespace Bijectiv.Tests.Builder
             // Act
             try
             {
-                new Mock<TransformFragment>(typeof(object), null) { CallBase = true }.Object.Naught();
+                Abstract.Instance<TransformFragment>(typeof(object), null);
             }
             catch (TargetInvocationException ex)
             {
@@ -104,7 +102,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new Mock<TransformFragment>(typeof(int), typeof(object)) { CallBase = true }.Object;
+            var target = Abstract.Instance<TransformFragment>(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
@@ -117,7 +115,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new Mock<TransformFragment>(typeof(object), typeof(int)) { CallBase = true }.Object;
+            var target = Abstract.Instance<TransformFragment>(typeof(object), typeof(int));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Target);
