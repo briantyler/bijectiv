@@ -30,12 +30,14 @@
 namespace Bijectiv.Tests.Builder
 {
     using System;
+    using System.Reflection;
 
     using Bijectiv.Builder;
-    using Bijectiv.Builder.Fakes;
     using Bijectiv.Tests.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformFragment"/> class.
@@ -50,7 +52,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new StubTransformFragment(typeof(object), typeof(object)).Naught();
+            new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Naught();
 
             // Assert
             }
@@ -63,7 +65,14 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new StubTransformFragment(null, typeof(object)).Naught();
+            try
+            {
+                new Mock<TransformFragment>(null, typeof(object)) { CallBase = true }.Object.Naught();
+            }   
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
 
             // Assert
         }
@@ -76,8 +85,15 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new StubTransformFragment(typeof(object), null).Naught();
-
+            try
+            {
+                new Mock<TransformFragment>(typeof(object), null) { CallBase = true }.Object.Naught();
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+            
             // Assert
         }
 
@@ -88,11 +104,10 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new StubTransformFragment(typeof(int), typeof(object));
+            var target = new Mock<TransformFragment>(typeof(int), typeof(object)) { CallBase = true }.Object;
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
-
         }
 
         [TestMethod]
@@ -102,7 +117,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new StubTransformFragment(typeof(object), typeof(int));
+            var target = new Mock<TransformFragment>(typeof(object), typeof(int)) { CallBase = true }.Object;
 
             // Assert
             Assert.AreEqual(typeof(int), target.Target);

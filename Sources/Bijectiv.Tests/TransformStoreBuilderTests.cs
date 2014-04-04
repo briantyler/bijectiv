@@ -34,10 +34,11 @@ namespace Bijectiv.Tests
     using System;
 
     using Bijectiv.Builder;
-    using Bijectiv.Builder.Fakes;
     using Bijectiv.Tests.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformStoreBuilder"/> class.
@@ -52,7 +53,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new TransformStoreBuilder(new StubITransformArtifactRegistry()).Naught();
+            new TransformStoreBuilder(new Mock<ITransformArtifactRegistry>().Object).Naught();
 
             // Assert
         }
@@ -75,7 +76,7 @@ namespace Bijectiv.Tests
         public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
-            var registry = new StubITransformArtifactRegistry();
+            var registry = new Mock<ITransformArtifactRegistry>().Object;
             
             // Act
             var target = new TransformStoreBuilder(registry);
@@ -90,7 +91,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange
-            var registry = new StubITransformArtifactRegistry();
+            var registry = new Mock<ITransformArtifactRegistry>().Object;
             var target = new TransformStoreBuilder(registry);
 
             // Act
@@ -104,7 +105,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
         {
             // Arrange
-            var registry = new StubITransformArtifactRegistry();
+            var registry = new Mock<ITransformArtifactRegistry>().Object;
             var target = new TransformStoreBuilder(registry);
             ITransformArtifactRegistry calledRegistry = null;
 

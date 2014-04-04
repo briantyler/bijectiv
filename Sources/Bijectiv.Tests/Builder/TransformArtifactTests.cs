@@ -35,10 +35,11 @@ namespace Bijectiv.Tests.Builder
     using System.Linq;
 
     using Bijectiv.Builder;
-    using Bijectiv.Builder.Fakes;
     using Bijectiv.Tests.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformArtifact"/> class.
@@ -143,7 +144,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new StubTransformFragment(typeof(object), typeof(object));
+            var fragment = new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Object;
 
             // Act
             target.Add(fragment);
@@ -159,7 +160,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new StubTransformFragment(typeof(int), typeof(object));
+            var fragment = new Mock<TransformFragment>(typeof(int), typeof(object)) { CallBase = true }.Object;
 
             // Act
             target.Add(fragment);
@@ -174,7 +175,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new StubTransformFragment(typeof(object), typeof(int));
+            var fragment = new Mock<TransformFragment>(typeof(object), typeof(int)) { CallBase = true }.Object;
 
             // Act
             target.Add(fragment);
@@ -188,7 +189,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = new StubTransformFragment(typeof(object), typeof(object));
+            var fragment = new Mock<TransformFragment>(typeof(object), typeof(object)) { CallBase = true }.Object;
 
             // Act
             target.Add(fragment);

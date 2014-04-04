@@ -30,11 +30,9 @@
 namespace Bijectiv.Tests
 {
     using Bijectiv.Builder;
-    using Bijectiv.Builder.Fakes;
-    using Bijectiv.Tests.Tools;
-
-    using Microsoft.QualityTools.Testing.Fakes.Stubs;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformStoreBuilderExtensions"/> class.
@@ -47,14 +45,14 @@ namespace Bijectiv.Tests
         public void Register_ValidParameters_ExpectedResult()
         {
             // Arrange
-            var registry = new StubITransformArtifactRegistry { InstanceObserver = new StubObserver() };
-            var builder = new TransformStoreBuilder(registry);
+            var registryMock = new Mock<ITransformArtifactRegistry>();
+            var builder = new TransformStoreBuilder(registryMock.Object);
 
             // Act
             builder.Register<object, object>();
 
             // Assert
-            registry.AssertMethodCalled(_ => _.Add(It.IsAny<TransformArtifact>()));
+            registryMock.Verify(_ => _.Add(It.IsAny<TransformArtifact>()));
         }
     }
 }
