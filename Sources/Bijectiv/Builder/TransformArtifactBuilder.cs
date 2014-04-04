@@ -58,11 +58,28 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="artifact"/> is incompatible with the builder.
+        /// </exception>
         public TransformArtifactBuilder([NotNull] TransformArtifact artifact)
         {
             if (artifact == null)
             {
                 throw new ArgumentNullException("artifact");
+            }
+
+            if (artifact.Source != typeof(TSource))
+            {
+                throw new ArgumentException(
+                    string.Format("Source '{0}' must match TSource '{1}'", artifact.Source, typeof(TSource)),
+                    "artifact");
+            }
+
+            if (artifact.Target != typeof(TTarget))
+            {
+                throw new ArgumentException(
+                    string.Format("Target '{0}' must match TTarget '{1}'", artifact.Target, typeof(TTarget)),
+                    "artifact");
             }
 
             this.artifact = artifact;
