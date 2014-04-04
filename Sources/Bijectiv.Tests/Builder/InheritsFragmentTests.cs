@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformArtifactBuilderTests.cs" company="Bijectiv">
+// <copyright file="InheritsFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformArtifactBuilderTests type.
+//   Defines the InheritsFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,6 @@
 namespace Bijectiv.Tests.Builder
 {
     using System;
-    using System.Linq;
 
     using Bijectiv.Builder;
     using Bijectiv.Tests.Tools;
@@ -39,48 +38,33 @@ namespace Bijectiv.Tests.Builder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="TransformArtifactBuilder{TSource,TTarget}"/> class.
+    /// This class tests the <see cref="InheritsFragment"/> class.
     /// </summary>
     [TestClass]
-    public class TransformArtifactBuilderTests
+    public class InheritsFragmentTests
     {
         [TestMethod]
         [TestCategory("Unit")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateInstance_ArtifactParameterIsNull_Throws()
+        public void CreateInstance_SourceBaseParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new TransformArtifactBuilder<object, object>(null).Naught();
+            new InheritsFragment(typeof(object), typeof(object), null, typeof(object)).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ArtifactParameter_IsAssignedToArtifactProperty()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateInstance_TargetBaseParameterIsNull_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(object), typeof(object));
 
             // Act
-            var target = new TransformArtifactBuilder<object, object>(artifact);
-
-            // Assert
-            Assert.AreEqual(artifact, target.Artifact);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CreateInstance_SourceTypeMismatch_Throws()
-        {
-            // Arrange
-            var artifact = new TransformArtifact(typeof(int), typeof(object));
-
-            // Act
-            new TransformArtifactBuilder<object, object>(artifact).Naught();
+            new InheritsFragment(typeof(object), typeof(object), typeof(object), null).Naught();
 
             // Assert
         }
@@ -88,77 +72,78 @@ namespace Bijectiv.Tests.Builder
         [TestMethod]
         [TestCategory("Unit")]
         [ExpectedException(typeof(ArgumentException))]
-        public void CreateInstance_TargetTypeMismatch_Throws()
+        public void CreateInstance_SourceBaseParameterIsNotAssignableFromSourceParameter_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(object), typeof(int));
 
             // Act
-            new TransformArtifactBuilder<object, object>(artifact).Naught();
+            new InheritsFragment(typeof(object), typeof(object), typeof(int), typeof(object)).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Inherits_InheritsFragment_IsAddedToArtifact()
+        [ExpectedException(typeof(ArgumentException))]
+        public void CreateInstance_TargetBaseParameterIsNotAssignableFromTargetParameter_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(int), typeof(string));
-            var target = new TransformArtifactBuilder<int, string>(artifact);
 
             // Act
-            target.Inherits<object, object>();
-            
+            new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(int)).Naught();
+
             // Assert
-            Assert.AreEqual(LegendryFragments.Inherits, target.Artifact.Single().FragmentCategory);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Inherits_SourceBase_IsAssignedToInheritsFragment()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(int), typeof(string));
-            var target = new TransformArtifactBuilder<int, string>(artifact);
 
             // Act
-            target.Inherits<object, string>();
+            new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(object)).Naught();
 
             // Assert
-            var fragment = (InheritsFragment)target.Artifact.Single();
-            Assert.AreEqual(typeof(object), fragment.SourceBase);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Inherits_TargetBase_IsAssignedToInheritsFragment()
+        public void CreateInstance_SourceBaseParameter_IsAssignedToSourceBaseProperty()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(int), typeof(string));
-            var target = new TransformArtifactBuilder<int, string>(artifact);
 
             // Act
-            target.Inherits<int, object>();
+            var target = new InheritsFragment(typeof(int), typeof(int), typeof(object), typeof(int));
 
             // Assert
-            var fragment = (InheritsFragment)target.Artifact.Single();
-            Assert.AreEqual(typeof(object), fragment.TargetBase);
+            Assert.AreEqual(typeof(object), target.SourceBase);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Inherits_ReturnValue_IsBuilder()
+        public void CreateInstance_TargetBaseParameter_IsAssignedToTargetBaseProperty()
         {
             // Arrange
-            var artifact = new TransformArtifact(typeof(int), typeof(string));
-            var target = new TransformArtifactBuilder<int, string>(artifact);
 
             // Act
-            var result = target.Inherits<object, object>();
+            var target = new InheritsFragment(typeof(int), typeof(int), typeof(int), typeof(object));
 
             // Assert
-            Assert.AreEqual(target, result);
+            Assert.AreEqual(typeof(object), target.TargetBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentCategory_IsInherits()
+        {
+            // Arrange
+
+            // Act
+            var target = new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(object));
+
+            // Assert
+            Assert.AreEqual(LegendryFragments.Inherits, target.FragmentCategory);
         }
     }
 }

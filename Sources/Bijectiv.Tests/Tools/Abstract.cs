@@ -39,9 +39,15 @@ namespace Bijectiv.Tests.Tools
         /// <summary>
         /// Creates an instance of an abstract type.
         /// </summary>
-        /// <typeparam name="TInstance"></typeparam>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <typeparam name="TInstance">
+        /// The abstract type.
+        /// </typeparam>
+        /// <param name="args">
+        /// The constructor parameters.
+        /// </param>
+        /// <returns>
+        /// An instance of the abstract type.
+        /// </returns>
         public static TInstance Instance<TInstance>(params object[] args)
             where TInstance : class
         {

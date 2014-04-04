@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformArtifactBuilder.cs" company="Bijectiv">
+// <copyright file="LegendryFragments.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformArtifactBuilder type.
+//   Defines the LegendryFragments type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,37 +32,16 @@ namespace Bijectiv.Builder
     using System;
 
     /// <summary>
-    /// Represents a builder of <see cref="TransformArtifact"/> instances.
+    /// Fragments that are known throught the library.
     /// </summary>
-    /// <typeparam name="TSource">
-    /// The source type.
-    /// </typeparam>
-    /// <typeparam name="TTarget">
-    /// The target type.
-    /// </typeparam>
-    public interface ITransformArtifactBuilder<TSource, TTarget>
+    /// <remarks>
+    /// Back when 8-bit was cool b113c714 == bijectiv.
+    /// </remarks>
+    public static class LegendryFragments
     {
         /// <summary>
-        /// Creates an inheritance relationship for the transform: this transform will inherit all of the fragments
-        /// from the base transform if it exists.
+        /// Represents a fragment that describes inheritance.
         /// </summary>
-        /// <typeparam name="TSourceBase">
-        /// The base type that source inherits from.
-        /// </typeparam>
-        /// <typeparam name="TTargetBase">
-        /// The base type that target inherits from.
-        /// </typeparam>
-        /// <returns>
-        /// The an object that allows further configuration of the <see cref="TransformArtifact"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when <typeparamref name="TSourceBase"/> is not assignable from <typeparamref name="TSource"/>.
-        /// Thrown when <typeparamref name="TTargetBase"/> is not assignable from <typeparamref name="TTarget"/>.
-        /// </exception>
-        /// <remarks>
-        /// There is no way to enforce this relationship at compile time without reversing the relationship; i.e.
-        /// calling this method "Derived", but that is not how it should be defined.
-        /// </remarks>
-        ITransformArtifactBuilder<TSource, TTarget> Inherits<TSourceBase, TTargetBase>();
+        public static readonly Guid Inherits = new Guid("b113c714-FE8C-498B-B371-52E468949A04");
     }
 }

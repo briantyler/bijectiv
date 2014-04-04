@@ -28,6 +28,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable AssignNullToNotNullAttribute
+#pragma warning disable 1720
 namespace Bijectiv.Tests
 {
     using System;
