@@ -73,6 +73,7 @@
     <Compile Include="Tools\TestExtensions.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />
+    <Compile Include="Transforms\PassthroughTransformTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">
@@ -91,6 +92,9 @@
       <Project>{C49092A4-1985-4A13-9324-CC23EC29884A}</Project>
       <Name>Bijectiv</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Stores\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

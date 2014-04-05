@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformStoreBuilder.cs" company="Bijectiv">
+// <copyright file="ConvertibleTransform.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,83 +23,76 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformStoreBuilder type.
+//   Defines the ConvertibleTransform type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Transforms
 {
     using System;
-
-    using Bijectiv.Builder;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a fine grained factory that can be used to incrementally build a <see cref="ITransformStore"/>.
+    /// Represents a transform from an instance of type <see cref="IConvertible"/> to one of the primitive types.
     /// </summary>
-    public class TransformStoreBuilder
+    public class ConvertibleTransform : ITransform
     {
         /// <summary>
-        /// The registry.
+        /// Initialises a new instance of the <see cref="ConvertibleTransform"/> class.
         /// </summary>
-        private readonly ITransformArtifactRegistry registry;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
-        /// </summary>
-        /// <param name="registry">
-        /// The registry.
+        /// <param name="target">
+        /// The target.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformStoreBuilder([NotNull] ITransformArtifactRegistry registry)
+        public ConvertibleTransform([NotNull] Type target)
         {
-            if (registry == null)
+            if (target == null)
             {
-                throw new ArgumentNullException("registry");
+                throw new ArgumentNullException("target");
             }
 
-            this.registry = registry;
+            if (Type.GetTypeCode(target) == TypeCode.Object)
+            {
+                throw new ArgumentException(
+                    string.Format("Target type '{0}' must not have Type Code 'Object'", target),
+                    "target");
+            }
+
+            this.Target = target;
         }
 
         /// <summary>
-        /// Gets the registry.
+        /// Gets the source type supported by the transform.
         /// </summary>
-        protected internal ITransformArtifactRegistry Registry
-        {
-            get { return this.registry; }
+        public Type Source 
+        { 
+            get { return typeof(IConvertible); }
         }
 
         /// <summary>
-        /// Registers a callback with the store builder: an extensibility point.
+        /// Gets the target type created by the transform.
         /// </summary>
-        /// <param name="callback">
-        /// The configuration callback.
+        public Type Target { get; private set; }
+
+        /// <summary>
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="ITransform.Target"/> via
+        /// <see cref="Convert.ChangeType"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public void RegisterCallback([NotNull] Action<ITransformArtifactRegistry> callback)
-        {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-
-            callback(this.Registry);
-        }
-
-        /// <summary>
-        /// Builds a store according to the current specification.
-        /// </summary>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
         /// <returns>
-        /// A <see cref="ITransformStore"/> that matches the current specification.
+        /// The newly minted target instance.
         /// </returns>
-        public ITransformStore Build()
+        public object Transform(object source, TransformContext context)
         {
-            throw new NotImplementedException();
+            return Convert.ChangeType(source, this.Target, context.Culture);
         }
     }
 }

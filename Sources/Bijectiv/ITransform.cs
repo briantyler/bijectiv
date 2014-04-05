@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformStore.cs" company="Bijectiv">
+// <copyright file="ITransform.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformStore type.
+//   Defines the ITransform type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,24 +32,33 @@ namespace Bijectiv
     using System;
 
     /// <summary>
-    /// Represents a store that holds transforms.
+    /// Represents a transform from a source to target.
     /// </summary>
-    public interface ITransformStore
+    public interface ITransform
     {
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
+        /// Gets the source type supported by the transform.
+        /// </summary>
+        Type Source { get; }
+
+        /// <summary>
+        /// Gets the target type created by the transform.
+        /// </summary>
+        Type Target { get; }
+
+        /// <summary>
+        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
+        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
         /// </summary>
         /// <param name="source">
-        /// The source type.
+        /// The source object.
         /// </param>
-        /// <param name="target">
-        /// The target type.
+        /// <param name="context">
+        /// The context in which the transformation will take place.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
+        /// The newly minted target instance.
         /// </returns>
-        ITransform Resolve(Type source, Type target);
+        object Transform(object source, TransformContext context); 
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformStoreBuilder.cs" company="Bijectiv">
+// <copyright file="PassthroughTransform.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,83 +23,84 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformStoreBuilder type.
+//   Defines the PassthroughTransform type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Transforms
 {
     using System;
-
-    using Bijectiv.Builder;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a fine grained factory that can be used to incrementally build a <see cref="ITransformStore"/>.
+    /// Represents a transform that returns its original source as target.
     /// </summary>
-    public class TransformStoreBuilder
+    public class PassthroughTransform : ITransform
     {
         /// <summary>
-        /// The registry.
+        /// Initialises a new instance of the <see cref="PassthroughTransform"/> class.
         /// </summary>
-        private readonly ITransformArtifactRegistry registry;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
-        /// </summary>
-        /// <param name="registry">
-        /// The registry.
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The target.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformStoreBuilder([NotNull] ITransformArtifactRegistry registry)
-        {
-            if (registry == null)
-            {
-                throw new ArgumentNullException("registry");
-            }
-
-            this.registry = registry;
-        }
-
-        /// <summary>
-        /// Gets the registry.
-        /// </summary>
-        protected internal ITransformArtifactRegistry Registry
-        {
-            get { return this.registry; }
-        }
-
-        /// <summary>
-        /// Registers a callback with the store builder: an extensibility point.
-        /// </summary>
-        /// <param name="callback">
-        /// The configuration callback.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
+        /// <exception cref="ArgumentException">
+        /// Thrown when the <paramref name="source"/> type is not assignable to the <paramref name="target"/> type.
         /// </exception>
-        public void RegisterCallback([NotNull] Action<ITransformArtifactRegistry> callback)
+        public PassthroughTransform([NotNull] Type source, [NotNull] Type target)
         {
-            if (callback == null)
+            if (source == null)
             {
-                throw new ArgumentNullException("callback");
+                throw new ArgumentNullException("source");
             }
 
-            callback(this.Registry);
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (!target.IsAssignableFrom(source))
+            {
+                throw new ArgumentException(
+                    string.Format("Source type '{0}' cannot be assigned to target type '{1}'", source, target),
+                    "target");
+            }
+
+            this.Source = source;
+            this.Target = target;
         }
 
         /// <summary>
-        /// Builds a store according to the current specification.
+        /// Gets the source type supported by the transform.
         /// </summary>
+        public Type Source { get; private set; }
+
+        /// <summary>
+        /// Gets the target type created by the transform.
+        /// </summary>
+        public Type Target { get; private set; }
+
+        /// <summary>
+        /// Returns the original source instance.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
         /// <returns>
-        /// A <see cref="ITransformStore"/> that matches the current specification.
+        /// The original source instance.
         /// </returns>
-        public ITransformStore Build()
+        public object Transform(object source, TransformContext context)
         {
-            throw new NotImplementedException();
+            return source;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformStore.cs" company="Bijectiv">
+// <copyright file="TransformContext.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,33 +23,19 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformStore type.
+//   Defines the TransformContext type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
-    using System;
+    using System.Globalization;
 
     /// <summary>
-    /// Represents a store that holds transforms.
+    /// Represents the context in which a transform is happening.
     /// </summary>
-    public interface ITransformStore
+    public class TransformContext
     {
-        /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
-        /// </summary>
-        /// <param name="source">
-        /// The source type.
-        /// </param>
-        /// <param name="target">
-        /// The target type.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
-        /// </returns>
-        ITransform Resolve(Type source, Type target);
+        public CultureInfo Culture { get; set; }
     }
 }

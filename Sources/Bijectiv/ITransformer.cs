@@ -37,28 +37,7 @@ namespace Bijectiv
     public interface ITransformer
     {
         /// <summary>
-        /// Superimposes <paramref name="source"/> onto <paramref name="target"/>; using the transformation rules 
-        /// defined by <paramref name="sourceType"/> --&lt; <paramref name="targetType"/>.
-        /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="target">
-        /// The target object.
-        /// </param>
-        /// <param name="sourceType">
-        /// The source type.
-        /// </param>
-        /// <param name="targetType">
-        /// The target type.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the transformation will take place.
-        /// </param>
-        void Superimpose(object source, object target, Type sourceType, Type targetType, TransformerContext context);
-
-        /// <summary>
-        /// Makes an instance of type <paramref name="targetType"/> from <paramref name="source"/>; using the 
+        /// Transforms <paramref name="source"/> into a new instance of type <paramref name="targetType"/>; using the 
         /// transformation rules defined by <paramref name="sourceType"/> --&lt; <paramref name="targetType"/>.
         /// </summary>
         /// <param name="source">
@@ -76,6 +55,27 @@ namespace Bijectiv
         /// <returns>
         /// The newly minted target instance.
         /// </returns>
-        object Make(object source, Type sourceType, Type targetType, TransformerContext context);
+        object Transform(object source, Type sourceType, Type targetType, TransformContext context);
+
+        /// <summary>
+        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
+        /// defined by <paramref name="sourceType"/> --&lt; <paramref name="targetType"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="target">
+        /// The target object.
+        /// </param>
+        /// <param name="sourceType">
+        /// The source type.
+        /// </param>
+        /// <param name="targetType">
+        /// The target type.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
+        void Merge(object source, object target, Type sourceType, Type targetType, TransformContext context);
     }
 }

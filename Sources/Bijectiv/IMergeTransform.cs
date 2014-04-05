@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformerContext.cs" company="Bijectiv">
+// <copyright file="IMergeTransform.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,16 +23,30 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformerContext type.
+//   Defines the IMergeTransform type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
     /// <summary>
-    /// Represents the context in which a transform is happening.
+    /// Represents a merge transform from a source into an existing target.
     /// </summary>
-    public class TransformerContext
+    public interface IMergeTransform : ITransform
     {
+        /// <summary>
+        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
+        /// defined by <see cref="ITransform.Source"/> --&lt;  <see cref="ITransform.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="target">
+        /// The target object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
+        void Merge(object source, object target, TransformContext context);
     }
 }

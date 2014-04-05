@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformStore.cs" company="Bijectiv">
+// <copyright file="IdenticalPrimitiveTransformStore.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,18 +23,18 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformStore type.
+//   Defines the IdenticalPrimitiveTransformStore type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Stores
 {
     using System;
 
     /// <summary>
-    /// Represents a store that holds transforms.
+    /// A store that contains <see cref="ITransform"/> instances that transforms between primitives of the same type.
     /// </summary>
-    public interface ITransformStore
+    public class IdenticalPrimitiveTransformStore : ITransformStore
     {
         /// <summary>
         /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
@@ -50,6 +50,9 @@ namespace Bijectiv
         /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
         /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
         /// </returns>
-        ITransform Resolve(Type source, Type target);
+        public ITransform Resolve(Type source, Type target)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
