@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformStoreBuilderExtensionsTests.cs" company="Bijectiv">
+// <copyright file="TypeClasses.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,53 +23,46 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformStoreBuilderExtensionsTests type.
+//   Defines the TypeClasses type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
-#pragma warning disable 1720
-namespace Bijectiv.Tests
+namespace Bijectiv.Tests.Transforms
 {
     using System;
 
-    using Bijectiv.Builder;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Moq;
+    using Bijectiv.Tests.TestTypes;
 
     /// <summary>
-    /// This class tests the <see cref="TransformStoreBuilderExtensions"/> class.
+    /// Contains collections that represent classes of types.
     /// </summary>
-    [TestClass]
-    public class TransformStoreBuilderExtensionsTests
+    public class TypeClasses
     {
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Register_BuilderParameterIsNull_Throws()
+        public static readonly Type[] ConvertibleTargetTypes =
         {
-            // Arrange
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string)
+        };
 
-            // Act
-            default(TransformStoreBuilder).Register<object, object>();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Register_ValidParameters_ArtifactIsAddedToRegistry()
+        public static readonly Type[] ConvertibleSourceTypes =
         {
-            // Arrange
-            var registryMock = new Mock<ITransformArtifactRegistry>();
-            var builder = new TransformStoreBuilder(registryMock.Object);
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string), typeof(IConvertible)
+        };
 
-            // Act
-            builder.Register<object, object>();
-
-            // Assert
-            registryMock.Verify(_ => _.Add(It.IsAny<TransformArtifact>()));
-        }
+        public static readonly Type[] PrimitiveTypes =
+        {
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string), typeof(TestEnum1)
+        };
     }
 }

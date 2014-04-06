@@ -31,6 +31,10 @@ namespace Bijectiv.Stores
 {
     using System;
 
+    using Bijectiv.Transforms;
+
+    using JetBrains.Annotations;
+
     /// <summary>
     /// A store that contains <see cref="ITransform"/> instances that transforms between primitives of the same type.
     /// </summary>
@@ -50,9 +54,32 @@ namespace Bijectiv.Stores
         /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
         /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
         /// </returns>
-        public ITransform Resolve(Type source, Type target)
+        /// <exception cref="ArgumentException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
         {
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (source != target)
+            {
+                return null;
+            }
+
+            if (Type.GetTypeCode(source) != TypeCode.Object || source.IsEnum)
+            {
+                return new PassthroughTransform(source, target);
+            }
+
+            return null;
         }
     }
 }

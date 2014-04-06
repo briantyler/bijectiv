@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformStoreBuilderExtensionsTests.cs" company="Bijectiv">
+// <copyright file="TestEnum1.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,53 +23,13 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformStoreBuilderExtensionsTests type.
+//   Defines the TestEnum1 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
-#pragma warning disable 1720
-namespace Bijectiv.Tests
+namespace Bijectiv.Tests.TestTypes
 {
-    using System;
-
-    using Bijectiv.Builder;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Moq;
-
-    /// <summary>
-    /// This class tests the <see cref="TransformStoreBuilderExtensions"/> class.
-    /// </summary>
-    [TestClass]
-    public class TransformStoreBuilderExtensionsTests
+    public enum TestEnum1
     {
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Register_BuilderParameterIsNull_Throws()
-        {
-            // Arrange
-
-            // Act
-            default(TransformStoreBuilder).Register<object, object>();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Register_ValidParameters_ArtifactIsAddedToRegistry()
-        {
-            // Arrange
-            var registryMock = new Mock<ITransformArtifactRegistry>();
-            var builder = new TransformStoreBuilder(registryMock.Object);
-
-            // Act
-            builder.Register<object, object>();
-
-            // Assert
-            registryMock.Verify(_ => _.Add(It.IsAny<TransformArtifact>()));
-        }
     }
 }
