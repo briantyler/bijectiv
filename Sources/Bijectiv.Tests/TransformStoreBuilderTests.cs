@@ -32,13 +32,13 @@
 namespace Bijectiv.Tests
 {
     using System;
+    using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Stores;
     using Bijectiv.Tests.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformStoreBuilder"/> class.
@@ -53,7 +53,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new TransformStoreBuilder(new Mock<ITransformArtifactRegistry>().Object).Naught();
+            new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>()).Naught();
 
             // Assert
         }
@@ -76,7 +76,7 @@ namespace Bijectiv.Tests
         public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
-            var registry = new Mock<ITransformArtifactRegistry>().Object;
+            var registry = Stub.Create<ITransformArtifactRegistry>();
             
             // Act
             var target = new TransformStoreBuilder(registry);
@@ -91,7 +91,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange
-            var registry = new Mock<ITransformArtifactRegistry>().Object;
+            var registry = Stub.Create<ITransformArtifactRegistry>();
             var target = new TransformStoreBuilder(registry);
 
             // Act
@@ -105,7 +105,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
         {
             // Arrange
-            var registry = new Mock<ITransformArtifactRegistry>().Object;
+            var registry = Stub.Create<ITransformArtifactRegistry>();
             var target = new TransformStoreBuilder(registry);
             ITransformArtifactRegistry calledRegistry = null;
 
@@ -114,6 +114,48 @@ namespace Bijectiv.Tests
 
             // Assert
             Assert.AreEqual(registry, calledRegistry);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_EmptyBuilder_ReturnsCompositeTransformStore()
+        {
+            // Arrange
+            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+
+            // Act
+            var result = target.Build();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(CompositeTransformStore));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_EmptyBuilder_ResultContainsIdenticalPrimitiveTransformStore()
+        {
+            // Arrange
+            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+
+            // Act
+            var result = (CompositeTransformStore)target.Build();
+
+            // Assert
+            Assert.IsInstanceOfType(result.ElementAt(0), typeof(IdenticalPrimitiveTransformStore));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_EmptyBuilder_ResultContainsConvertibleTransformStore()
+        {
+            // Arrange
+            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+
+            // Act
+            var result = (CompositeTransformStore)target.Build();
+
+            // Assert
+            Assert.IsInstanceOfType(result.ElementAt(1), typeof(ConvertibleTransformStore));
         }
     }
 }

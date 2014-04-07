@@ -32,6 +32,7 @@ namespace Bijectiv
     using System;
 
     using Bijectiv.Builder;
+    using Bijectiv.Stores;
 
     using JetBrains.Annotations;
 
@@ -99,7 +100,11 @@ namespace Bijectiv
         /// </returns>
         public ITransformStore Build()
         {
-            throw new NotImplementedException();
+            return new CompositeTransformStore
+            {
+                new IdenticalPrimitiveTransformStore(),
+                new ConvertibleTransformStore(),
+            };
         }
     }
 }
