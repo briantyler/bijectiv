@@ -142,7 +142,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(object));
 
             // Act
             target.Add(fragment);
@@ -158,7 +158,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Abstract.Instance<TransformFragment>(typeof(int), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(typeof(int), typeof(object));
 
             // Act
             target.Add(fragment);
@@ -173,7 +173,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(int));
+            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(int));
 
             // Act
             target.Add(fragment);
@@ -187,7 +187,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(object));
             target.Add(fragment);
             
             // Act

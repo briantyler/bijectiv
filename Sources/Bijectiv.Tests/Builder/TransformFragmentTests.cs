@@ -50,7 +50,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            Abstract.Instance<TransformFragment>(typeof(object), typeof(object));
+            Stub.Create<TransformFragment>(typeof(object), typeof(object));
 
             // Assert
         }
@@ -65,7 +65,7 @@ namespace Bijectiv.Tests.Builder
             // Act
             try
             {
-                Abstract.Instance<TransformFragment>(null, typeof(object));
+                Stub.Create<TransformFragment>(null, typeof(object));
             }   
             catch (TargetInvocationException ex)
             {
@@ -85,7 +85,7 @@ namespace Bijectiv.Tests.Builder
             // Act
             try
             {
-                Abstract.Instance<TransformFragment>(typeof(object), null);
+                Stub.Create<TransformFragment>(typeof(object), null);
             }
             catch (TargetInvocationException ex)
             {
@@ -102,7 +102,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = Abstract.Instance<TransformFragment>(typeof(int), typeof(object));
+            var target = Stub.Create<TransformFragment>(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
@@ -115,7 +115,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = Abstract.Instance<TransformFragment>(typeof(object), typeof(int));
+            var target = Stub.Create<TransformFragment>(typeof(object), typeof(int));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Target);

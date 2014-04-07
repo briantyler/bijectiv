@@ -69,11 +69,11 @@
     <Compile Include="Builder\TransformArtifactTests.cs" />
     <Compile Include="Builder\TransformFragmentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stores\CompositeTransformStoreTests.cs" />
     <Compile Include="Stores\ConvertibleTransformStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStoreTests.cs" />
     <Compile Include="TestTypes\TestEnum1.cs" />
-    <Compile Include="Tools\Abstract.cs" />
-    <Compile Include="Tools\CustomDataSource.cs" />
+    <Compile Include="Tools\Stub.cs" />
     <Compile Include="Tools\TestExtensions.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Abstract.cs" company="Bijectiv">
+// <copyright file="Stub.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the Abstract type.
+//   Defines the Stub type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,26 +32,26 @@ namespace Bijectiv.Tests.Tools
     using Moq;
 
     /// <summary>
-    /// Abstract class helpers.
+    /// Stub class helper.
     /// </summary>
-    public class Abstract
+    public class Stub
     {
         /// <summary>
-        /// Creates an instance of an abstract type.
+        /// Creates an instance of an abstract type, interface.
         /// </summary>
-        /// <typeparam name="TInstance">
-        /// The abstract type.
+        /// <typeparam name="T">
+        /// The abstract type or interface.
         /// </typeparam>
         /// <param name="args">
         /// The constructor parameters.
         /// </param>
         /// <returns>
-        /// An instance of the abstract type.
+        /// An instance of the abstract type or interface.
         /// </returns>
-        public static TInstance Instance<TInstance>(params object[] args)
-            where TInstance : class
+        public static T Create<T>(params object[] args)
+            where T : class
         {
-            return new Mock<TInstance>(args) { CallBase = true }.Object;
+            return new Mock<T>(args) { CallBase = true }.Object;
         } 
     }
 }

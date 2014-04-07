@@ -55,6 +55,7 @@
     <Compile Include="Builder\TransformArtifact.cs" />
     <Compile Include="Builder\TransformArtifactBuilder.cs" />
     <Compile Include="Builder\TransformFragment.cs" />
+    <Compile Include="Stores\CompositeTransformStore.cs" />
     <Compile Include="Stores\ConvertibleTransformStore.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStore.cs" />
     <Compile Include="IMergeTransform.cs" />
