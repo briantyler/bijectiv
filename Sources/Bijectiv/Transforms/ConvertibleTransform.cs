@@ -30,6 +30,7 @@
 namespace Bijectiv.Transforms
 {
     using System;
+    using System.Globalization;
 
     using JetBrains.Annotations;
 
@@ -56,9 +57,8 @@ namespace Bijectiv.Transforms
 
             if (Type.GetTypeCode(target) == TypeCode.Object)
             {
-                throw new ArgumentException(
-                    string.Format("Target type '{0}' must not have Type Code 'Object'", target),
-                    "target");
+                var message = string.Format("Target type '{0}' must not have Type Code 'Object'", target);
+                throw new ArgumentException(message, "target");
             }
 
             this.Target = target;

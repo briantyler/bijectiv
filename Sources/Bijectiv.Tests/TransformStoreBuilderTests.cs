@@ -27,7 +27,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable SuspiciousTypeConversion.Global
 // ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests
 {

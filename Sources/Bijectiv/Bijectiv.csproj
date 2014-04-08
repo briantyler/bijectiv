@@ -26,7 +26,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Binaries\Debug\Bijectiv.XML</DocumentationFile>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\.build\bijectiv.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Binaries\Release\Bijectiv.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -48,6 +50,7 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Builder\ActivatorFragment.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />
     <Compile Include="Builder\ITransformArtifactBuilder.cs" />
     <Compile Include="Builder\ITransformArtifactRegistry.cs" />
@@ -55,6 +58,7 @@
     <Compile Include="Builder\TransformArtifact.cs" />
     <Compile Include="Builder\TransformArtifactBuilder.cs" />
     <Compile Include="Builder\TransformFragment.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Stores\CompositeTransformStore.cs" />
     <Compile Include="Stores\ConvertibleTransformStore.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStore.cs" />

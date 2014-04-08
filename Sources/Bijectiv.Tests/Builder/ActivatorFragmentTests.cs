@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LegendryFragments.cs" company="Bijectiv">
+// <copyright file="ActivatorFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,30 +23,46 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LegendryFragments type.
+//   Defines the ActivatorFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv.Tests.Builder
 {
-    using System;
+    using Bijectiv.Builder;
+    using Bijectiv.Tests.Tools;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Fragments that are known throught the library.
+    /// This class tests the <see cref="ActivatorFragment"/> class.
     /// </summary>
-    /// <remarks>
-    /// Back when 8-bit was cool b113c714 == bijectiv.
-    /// </remarks>
-    public static class LegendryFragments
+    [TestClass]
+    public class ActivatorFragmentTests
     {
-        /// <summary>
-        /// Represents a fragment that describes inheritance.
-        /// </summary>
-        public static readonly Guid Inherits = new Guid("b113c714-FE8C-498B-B371-52E468949A04");
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
 
-        /// <summary>
-        /// Represents a fragment that describes construction.
-        /// </summary>
-        public static readonly Guid Factory = new Guid("b113c714-6576-4D9B-BE31-98E886FC2082");
+            // Act
+            new ActivatorFragment(typeof(object), typeof(object)).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentCategoryParameter_IsFactory()
+        {
+            // Arrange
+           
+            // Act
+            var target = new ActivatorFragment(typeof(object), typeof(object));
+
+            // Assert
+            Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
+        }
     }
 }

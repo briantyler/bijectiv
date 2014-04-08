@@ -18,6 +18,7 @@
       (for example 'FileName' -> 'Filename').
     -->
     <Recognized>
+      <Word>bijectiv</Word>
       <Word>xamlr</Word>
       <Word>markup</Word>
       <Word>unescaped</Word>

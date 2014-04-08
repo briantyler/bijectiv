@@ -53,8 +53,8 @@ namespace Bijectiv
         /// The target type.
         /// </typeparam>
         /// <returns>
-        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of
-        /// the transform.
+        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of the 
+        /// transform.
         /// </returns>
         public static ITransformArtifactBuilder<TSource, TTarget> Register<TSource, TTarget>(
             [NotNull] this TransformStoreBuilder builder)
@@ -65,6 +65,49 @@ namespace Bijectiv
             }
 
             var artifact = new TransformArtifact(typeof(TSource), typeof(TTarget));
+            builder.RegisterCallback(registry => registry.Add(artifact));
+
+            return new TransformArtifactBuilder<TSource, TTarget>(artifact);
+        }
+
+        /// <summary>
+        /// Registers a new transform with the store builder and inherits all of the appropriate fragments from the 
+        /// base transform if it exists.
+        /// </summary>
+        /// <param name="builder">
+        /// The transform store builder to register with.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source type.
+        /// </typeparam>
+        /// <typeparam name="TTarget">
+        /// The target type.
+        /// </typeparam>
+        /// <typeparam name="TSourceBase">
+        /// The base type that source inherits from.
+        /// </typeparam>
+        /// <typeparam name="TTargetBase">
+        /// The base type that target inherits from.
+        /// </typeparam>
+        /// <returns>
+        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of the 
+        /// transform.
+        /// </returns>
+        public static ITransformArtifactBuilder<TSource, TTarget> RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(
+            [NotNull] this TransformStoreBuilder builder)
+            where TSource : TSourceBase
+            where TTarget : TTargetBase
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException("builder");
+            }
+
+            var artifact = new TransformArtifact(typeof(TSource), typeof(TTarget))
+            {
+                new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase))
+            };
+
             builder.RegisterCallback(registry => registry.Add(artifact));
 
             return new TransformArtifactBuilder<TSource, TTarget>(artifact);

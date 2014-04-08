@@ -32,8 +32,12 @@
 namespace Bijectiv.Tests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Tests.TestTypes;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;
@@ -52,7 +56,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            default(TransformStoreBuilder).Register<object, object>();
+            default(TransformStoreBuilder).Register<TestClass1, TestClass2>();
 
             // Assert
         }
@@ -62,14 +66,214 @@ namespace Bijectiv.Tests
         public void Register_ValidParameters_ArtifactIsAddedToRegistry()
         {
             // Arrange
-            var registryMock = new Mock<ITransformArtifactRegistry>();
-            var builder = new TransformStoreBuilder(registryMock.Object);
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock.Setup(_ => _.Add(It.IsAny<TransformArtifact>()));
 
             // Act
-            builder.Register<object, object>();
+            target.Register<TestClass1, TestClass2>();
 
             // Assert
-            registryMock.Verify(_ => _.Add(It.IsAny<TransformArtifact>()));
+            registryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_ValidParameters_AddedArtifactIsEmpty()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.Register<TestClass1, TestClass2>();
+
+            // Assert
+            var artifact = artifacts.Single();
+            Assert.IsFalse(artifact.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_ValidParameters_AddedArtifactHasCorrectSource()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.Register<TestClass1, TestClass2>();
+
+            // Assert
+            var artifact = artifacts.Single();
+            Assert.AreEqual(TestClass1.T, artifact.Source);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_ValidParameters_AddedArtifactHasCorrectTarget()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.Register<TestClass1, TestClass2>();
+
+            // Assert
+            var artifact = artifacts.Single();
+            Assert.AreEqual(TestClass2.T, artifact.Target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RegisterInherited_BuilderParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            default(TransformStoreBuilder)
+                .RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_ArtifactIsAddedToRegistry()
+        {
+            // Arrange
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+            registryMock.Setup(_ => _.Add(It.IsAny<TransformArtifact>()));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            registryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_AddedArtifactHasCorrectSource()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var artifact = artifacts.Single();
+            Assert.AreEqual(DerivedTestClass1.T, artifact.Source);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_AddedArtifactHasCorrectTarget()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var artifact = artifacts.Single();
+            Assert.AreEqual(DerivedTestClass2.T, artifact.Target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_AddedArtifactHasContainsInheritsFragment()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var fragment = artifacts.Single().Single();
+            Assert.IsInstanceOfType(fragment, typeof(InheritsFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_InheritsFragmentHasCorrectSourceBase()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var fragment = (InheritsFragment)artifacts.Single().Single();
+            Assert.AreEqual(BaseTestClass1.T, fragment.SourceBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_InheritsFragmentHasCorrectTargetBase()
+        {
+            // Arrange
+            var artifacts = new List<TransformArtifact>();
+            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var target = new TransformStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
+                .Callback((TransformArtifact a) => artifacts.Add(a));
+
+            // Act
+            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var fragment = (InheritsFragment)artifacts.Single().Single();
+            Assert.AreEqual(BaseTestClass2.T, fragment.TargetBase);
         }
     }
 }

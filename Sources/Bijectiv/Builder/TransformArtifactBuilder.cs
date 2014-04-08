@@ -92,34 +92,5 @@ namespace Bijectiv.Builder
         {
             get { return this.artifact; }
         }
-
-        /// <summary>
-        /// Creates an inheritance relationship for the transform: this transform will inherit all of the fragments
-        /// from the base transform if it exists.
-        /// </summary>
-        /// <typeparam name="TSourceBase">
-        /// The base type that source inherits from.
-        /// </typeparam>
-        /// <typeparam name="TTargetBase">
-        /// The base type that target inherits from.
-        /// </typeparam>
-        /// <returns>
-        /// The an object that allows further configuration of the <see cref="TransformArtifact"/>.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when <typeparamref name="TSourceBase"/> is not assignable from <typeparamref name="TSource"/>.
-        /// Thrown when <typeparamref name="TTargetBase"/> is not assignable from <typeparamref name="TTarget"/>.
-        /// </exception>
-        /// <remarks>
-        /// There is no way to enforce this relationship at compile time without reversing the relationship; i.e.
-        /// calling this method "Derived", but that is not how it should be defined.
-        /// </remarks>
-        public ITransformArtifactBuilder<TSource, TTarget> Inherits<TSourceBase, TTargetBase>()
-        {
-            this.Artifact.Add(
-                new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase)));
-
-            return this;
-        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PassthroughTransform.cs" company="Bijectiv">
+// <copyright file="PassThroughTransform.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the PassthroughTransform type.
+//   Defines the PassThroughTransform type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,10 +36,10 @@ namespace Bijectiv.Transforms
     /// <summary>
     /// Represents a transform that returns its original source as target.
     /// </summary>
-    public class PassthroughTransform : ITransform
+    public class PassThroughTransform : ITransform
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="PassthroughTransform"/> class.
+        /// Initialises a new instance of the <see cref="PassThroughTransform"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -53,7 +53,7 @@ namespace Bijectiv.Transforms
         /// <exception cref="ArgumentException">
         /// Thrown when the <paramref name="source"/> type is not assignable to the <paramref name="target"/> type.
         /// </exception>
-        public PassthroughTransform([NotNull] Type source, [NotNull] Type target)
+        public PassThroughTransform([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -68,7 +68,7 @@ namespace Bijectiv.Transforms
             if (!target.IsAssignableFrom(source))
             {
                 throw new ArgumentException(
-                    string.Format("Source type '{0}' cannot be assigned to target type '{1}'", source, target),
+                    string.Format(@"Source type '{0}' cannot be assigned to target type '{1}'", source, target),
                     "target");
             }
 

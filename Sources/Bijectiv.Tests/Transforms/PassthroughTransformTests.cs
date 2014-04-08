@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PassthroughTransformTests.cs" company="Bijectiv">
+// <copyright file="PassThroughTransformTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the PassthroughTransformTests type.
+//   Defines the PassThroughTransformTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,10 +38,10 @@ namespace Bijectiv.Tests.Transforms
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="PassthroughTransform"/> class.
+    /// This class tests the <see cref="PassThroughTransform"/> class.
     /// </summary>
     [TestClass]
-    public class PassthroughTransformTests
+    public class PassThroughTransformTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -50,7 +50,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(typeof(object), typeof(object)).Naught();
+            new PassThroughTransform(typeof(object), typeof(object)).Naught();
 
             // Assert
         }
@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(null, typeof(object)).Naught();
+            new PassThroughTransform(null, typeof(object)).Naught();
 
             // Assert
         }
@@ -76,7 +76,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(typeof(object), null).Naught();
+            new PassThroughTransform(typeof(object), null).Naught();
 
             // Assert
         }
@@ -89,7 +89,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(typeof(int), typeof(string)).Naught();
+            new PassThroughTransform(typeof(int), typeof(string)).Naught();
 
             // Assert
         }
@@ -101,7 +101,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(typeof(DateTime), typeof(DateTime)).Naught();
+            new PassThroughTransform(typeof(DateTime), typeof(DateTime)).Naught();
 
             // Assert
         }
@@ -113,7 +113,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new PassthroughTransform(typeof(int), typeof(object)).Naught();
+            new PassThroughTransform(typeof(int), typeof(object)).Naught();
 
             // Assert
         }
@@ -125,7 +125,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            var target = new PassthroughTransform(typeof(int), typeof(object));
+            var target = new PassThroughTransform(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
@@ -138,7 +138,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            var target = new PassthroughTransform(typeof(int), typeof(object));
+            var target = new PassThroughTransform(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(object), target.Target);
@@ -149,7 +149,7 @@ namespace Bijectiv.Tests.Transforms
         public void Transform_SourceParameterIsNull_ReturnsNull()
         {
             // Arrange
-            var target = new PassthroughTransform(typeof(object), typeof(object));
+            var target = new PassThroughTransform(typeof(object), typeof(object));
 
             // Act
             var result = target.Transform(null, null);
@@ -163,7 +163,7 @@ namespace Bijectiv.Tests.Transforms
         public void Transform_SourceParameterIsNotNull_ReturnsSourceParameter()
         {
             // Arrange
-            var target = new PassthroughTransform(typeof(int), typeof(int));
+            var target = new PassThroughTransform(typeof(int), typeof(int));
 
             // Act
             var result = target.Transform(7, null);

@@ -126,7 +126,7 @@ namespace Bijectiv.Tests.Stores
                 var result = target.Resolve(type, type);
 
                 // Assert
-                Assert.IsInstanceOfType(result, typeof(PassthroughTransform));
+                Assert.IsInstanceOfType(result, typeof(PassThroughTransform));
             }
         }
 
@@ -140,7 +140,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassthroughTransform)target.Resolve(type, type);
+                var result = (PassThroughTransform)target.Resolve(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Source);
@@ -157,7 +157,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassthroughTransform)target.Resolve(type, type);
+                var result = (PassThroughTransform)target.Resolve(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Target);

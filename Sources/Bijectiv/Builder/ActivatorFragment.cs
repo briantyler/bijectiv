@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IdenticalPrimitiveTransformStore.cs" company="Bijectiv">
+// <copyright file="ActivatorFragment.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,63 +23,41 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IdenticalPrimitiveTransformStore type.
+//   Defines the ActivatorFragment type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Stores
+namespace Bijectiv.Builder
 {
     using System;
-
-    using Bijectiv.Transforms;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that contains <see cref="ITransform"/> instances that transforms between primitives of the same type.
+    /// Specifies that the <see cref="TransformFragment.Target"/> should be created via some activation strategy.
     /// </summary>
-    public class IdenticalPrimitiveTransformStore : ITransformStore
+    public class ActivatorFragment : TransformFragment
     {
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
+        /// Initialises a new instance of the <see cref="ActivatorFragment"/> class.
         /// </summary>
         /// <param name="source">
-        /// The source type.
+        /// The source.
         /// </param>
         /// <param name="target">
-        /// The target type.
+        /// The target.
         /// </param>
-        /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
+        public ActivatorFragment([NotNull] Type source, [NotNull] Type target)
+            : base(source, target)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
+        }
 
-            if (target == null)
-            {
-                throw new ArgumentNullException("target");
-            }
-
-            if (source != target)
-            {
-                return null;
-            }
-
-            if (Type.GetTypeCode(source) != TypeCode.Object || source.IsEnum)
-            {
-                return new PassThroughTransform(source, target);
-            }
-
-            return null;
+        /// <summary>
+        /// Gets the fragment category.
+        /// </summary>
+        public override Guid FragmentCategory
+        {
+            get { return LegendryFragments.Factory; }
         }
     }
 }

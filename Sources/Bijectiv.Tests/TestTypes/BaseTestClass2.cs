@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LegendryFragments.cs" company="Bijectiv">
+// <copyright file="BaseTestClass2.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,30 +23,16 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LegendryFragments type.
+//   Defines the BaseTestClass2 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv.Tests.TestTypes
 {
     using System;
 
-    /// <summary>
-    /// Fragments that are known throught the library.
-    /// </summary>
-    /// <remarks>
-    /// Back when 8-bit was cool b113c714 == bijectiv.
-    /// </remarks>
-    public static class LegendryFragments
+    public class BaseTestClass2
     {
-        /// <summary>
-        /// Represents a fragment that describes inheritance.
-        /// </summary>
-        public static readonly Guid Inherits = new Guid("b113c714-FE8C-498B-B371-52E468949A04");
-
-        /// <summary>
-        /// Represents a fragment that describes construction.
-        /// </summary>
-        public static readonly Guid Factory = new Guid("b113c714-6576-4D9B-BE31-98E886FC2082");
+        public static readonly Type T = typeof(BaseTestClass2);
     }
 }

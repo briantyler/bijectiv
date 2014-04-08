@@ -64,6 +64,7 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Builder\ActivatorFragmentTests.cs" />
     <Compile Include="Builder\InheritsFragmentTests.cs" />
     <Compile Include="Builder\TransformArtifactBuilderTests.cs" />
     <Compile Include="Builder\TransformArtifactTests.cs" />
@@ -72,6 +73,12 @@
     <Compile Include="Stores\CompositeTransformStoreTests.cs" />
     <Compile Include="Stores\ConvertibleTransformStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStoreTests.cs" />
+    <Compile Include="TestTypes\BaseTestClass1.cs" />
+    <Compile Include="TestTypes\BaseTestClass2.cs" />
+    <Compile Include="TestTypes\DerivedTestClass1.cs" />
+    <Compile Include="TestTypes\DerivedTestClass2.cs" />
+    <Compile Include="TestTypes\TestClass1.cs" />
+    <Compile Include="TestTypes\TestClass2.cs" />
     <Compile Include="TestTypes\TestEnum1.cs" />
     <Compile Include="Tools\Stub.cs" />
     <Compile Include="Tools\TestExtensions.cs" />
