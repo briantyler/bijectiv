@@ -30,7 +30,6 @@
 namespace Bijectiv.Transforms
 {
     using System;
-    using System.Globalization;
 
     using JetBrains.Annotations;
 

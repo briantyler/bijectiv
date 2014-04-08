@@ -65,6 +65,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Builder\ActivatorFragmentTests.cs" />
+    <Compile Include="Builder\CustomFactoryFragmentTests.cs" />
     <Compile Include="Builder\DefaultFactoryFragmentTests.cs" />
     <Compile Include="Builder\InheritsFragmentTests.cs" />
     <Compile Include="Builder\TransformArtifactBuilderTests.cs" />

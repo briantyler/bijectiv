@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformContext.cs" company="Bijectiv">
+// <copyright file="CustomFactoryParameters.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,16 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformContext type.
+//   Defines the CustomFactoryParameters type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
-    using System.Globalization;
-
     /// <summary>
-    /// Represents the context in which a transform is happening.
+    /// Represents the parameters to a custom factory method.
     /// </summary>
-    public class TransformContext
-    {
-        /// <summary>
-        /// Gets or sets the context's culture.
-        /// </summary>
-        public CultureInfo Culture { get; set; }
+    public class CustomFactoryParameters
+    {    
     }
 }
