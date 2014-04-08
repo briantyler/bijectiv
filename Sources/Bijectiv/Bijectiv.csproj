@@ -51,6 +51,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Builder\ActivatorFragment.cs" />
+    <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />
     <Compile Include="Builder\ITransformArtifactBuilder.cs" />
     <Compile Include="Builder\ITransformArtifactRegistry.cs" />
