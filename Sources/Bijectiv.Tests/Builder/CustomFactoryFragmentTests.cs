@@ -44,7 +44,7 @@ namespace Bijectiv.Tests.Builder
     [TestClass]
     public class CustomFactoryFragmentTests
     {
-        private static readonly Func<CustomFactoryParameters, TestClass2> Factory = p => default(TestClass2);
+        private static readonly Func<CustomFactoryParameters<TestClass1>, TestClass2> Factory = p => default(TestClass2);
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -124,6 +124,19 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_ParameterPropertyIsCalculatedFromSoureParameter()
+        {
+            // Arrange
+
+            // Act
+            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+
+            // Assert
+            Assert.AreEqual(typeof(CustomFactoryParameters<TestClass1>), target.ParametersType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ExactFactory_FactoryTypePropertyIsCalculatedFromTargetParameter()
         {
             // Arrange
@@ -132,7 +145,7 @@ namespace Bijectiv.Tests.Builder
             var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<CustomFactoryParameters, TestClass2>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<CustomFactoryParameters<TestClass1>, TestClass2>), target.FactoryType);
         }
 
         [TestMethod]
@@ -145,7 +158,7 @@ namespace Bijectiv.Tests.Builder
             var target = new CustomFactoryFragment(TestClass1.T, typeof(object), Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<CustomFactoryParameters, object>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<CustomFactoryParameters<TestClass1>, object>), target.FactoryType);
         }
     }
 }

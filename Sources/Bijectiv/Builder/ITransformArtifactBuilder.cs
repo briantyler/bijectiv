@@ -31,6 +31,8 @@ namespace Bijectiv.Builder
 {
     using System;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Represents a builder of <see cref="TransformArtifact"/> instances.
     /// </summary>
@@ -40,7 +42,36 @@ namespace Bijectiv.Builder
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public interface ITransformArtifactBuilder<TSource, TTarget>
+    public interface ITransformArtifactBuilder<TSource, TTarget> 
+        : ITransformArtifactBuilderF<TSource, TTarget>
     {
+        /// <summary>
+        /// Instructs the transform to construct the target via activation (this is the default option if no other
+        /// construction method is specified).
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformArtifactBuilderF<TSource, TTarget> Activate();
+
+        /// <summary>
+        /// Instructs the transform to construct the target via the default factory.
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformArtifactBuilderF<TSource, TTarget> DefaultFactory();
+
+        /// <summary>
+        /// Instructs the transform to construct the target via a custom factory delegate.
+        /// </summary>
+        /// <param name="factory">
+        /// The factory delegate that constructs the target.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformArtifactBuilderF<TSource, TTarget> CustomFactory(
+            [NotNull] Func<CustomFactoryParameters<TSource>, TTarget> factory);
     }
 }

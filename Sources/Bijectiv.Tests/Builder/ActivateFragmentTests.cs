@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransform.cs" company="Bijectiv">
+// <copyright file="ActivateFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,42 +23,46 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransform type.
+//   Defines the ActivateFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.Builder
 {
-    using System;
+    using Bijectiv.Builder;
+    using Bijectiv.Tests.Tools;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Represents a transform from a source to target.
+    /// This class tests the <see cref="ActivateFragment"/> class.
     /// </summary>
-    public interface ITransform
+    [TestClass]
+    public class ActivateFragmentTests
     {
-        /// <summary>
-        /// Gets the source type supported by the transform.
-        /// </summary>
-        Type Source { get; }
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
 
-        /// <summary>
-        /// Gets the target type created by the transform.
-        /// </summary>
-        Type Target { get; }
+            // Act
+            new ActivateFragment(typeof(object), typeof(object)).Naught();
 
-        /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
-        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
-        /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the transformation will take place.
-        /// </param>
-        /// <returns>
-        /// The newly minted target instance.
-        /// </returns>
-        object Transform(object source, ITransformContext context); 
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentCategoryParameter_IsFactory()
+        {
+            // Arrange
+           
+            // Act
+            var target = new ActivateFragment(typeof(object), typeof(object));
+
+            // Assert
+            Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
+        }
     }
 }

@@ -44,6 +44,11 @@ namespace Bijectiv.Builder
         private static readonly Type FactoryTypeTemplate = typeof(Func<,>);
 
         /// <summary>
+        /// The parameters type template.
+        /// </summary>
+        private static readonly Type ParametersTypeTemplate = typeof(CustomFactoryParameters<>);
+
+        /// <summary>
         /// The custom factory delegate.
         /// </summary>
         private readonly object factory;
@@ -52,6 +57,11 @@ namespace Bijectiv.Builder
         /// The type of the custom factory delegate.
         /// </summary>
         private readonly Type factoryType;
+
+        /// <summary>
+        /// The parameters type.
+        /// </summary>
+        private readonly Type parametersType;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CustomFactoryFragment"/> class.
@@ -79,7 +89,8 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("factory");
             }
 
-            this.factoryType = FactoryTypeTemplate.MakeGenericType(typeof(CustomFactoryParameters), target);
+            this.parametersType = ParametersTypeTemplate.MakeGenericType(source);
+            this.factoryType = FactoryTypeTemplate.MakeGenericType(this.parametersType, target);
             if (!this.factoryType.IsInstanceOfType(factory))
             {
                 var message = string.Format(
@@ -112,6 +123,14 @@ namespace Bijectiv.Builder
         public Type FactoryType
         {
             get { return this.factoryType; }
+        }
+
+        /// <summary>
+        /// Gets the parameters type.
+        /// </summary>
+        public Type ParametersType
+        {
+            get { return this.parametersType; }
         }
     }
 }

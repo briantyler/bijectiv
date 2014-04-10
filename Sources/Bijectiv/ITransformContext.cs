@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ActivatorFragmentTests.cs" company="Bijectiv">
+// <copyright file="ITransformContext.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,46 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ActivatorFragmentTests type.
+//   Defines the ITransformContext type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Builder
+namespace Bijectiv
 {
-    using Bijectiv.Builder;
-    using Bijectiv.Tests.Tools;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Globalization;
 
     /// <summary>
-    /// This class tests the <see cref="ActivatorFragment"/> class.
+    /// Represents a transform context.
     /// </summary>
-    [TestClass]
-    public class ActivatorFragmentTests
+    public interface ITransformContext
     {
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_InstanceCreated()
-        {
-            // Arrange
-
-            // Act
-            new ActivatorFragment(typeof(object), typeof(object)).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategoryParameter_IsFactory()
-        {
-            // Arrange
-           
-            // Act
-            var target = new ActivatorFragment(typeof(object), typeof(object));
-
-            // Assert
-            Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
-        }
+        /// <summary>
+        /// Gets the context's culture.
+        /// </summary>
+        CultureInfo Culture { get; }
     }
 }

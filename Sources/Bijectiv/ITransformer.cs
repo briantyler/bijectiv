@@ -55,7 +55,7 @@ namespace Bijectiv
         /// <returns>
         /// The newly minted target instance.
         /// </returns>
-        object Transform(object source, Type sourceType, Type targetType, TransformContext context);
+        object Transform(object source, Type sourceType, Type targetType, ITransformContext context);
 
         /// <summary>
         /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
@@ -76,6 +76,6 @@ namespace Bijectiv
         /// <param name="context">
         /// The context in which the transformation will take place.
         /// </param>
-        void Merge(object source, object target, Type sourceType, Type targetType, TransformContext context);
+        void Merge(object source, object target, Type sourceType, Type targetType, ITransformContext context);
     }
 }

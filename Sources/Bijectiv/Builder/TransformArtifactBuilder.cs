@@ -92,5 +92,51 @@ namespace Bijectiv.Builder
         {
             get { return this.artifact; }
         }
+
+        /// <summary>
+        /// Instructs the transform to construct the target via activation (this is the default option if no other
+        /// construction method is specified).
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformArtifactBuilderF<TSource, TTarget> Activate()
+        {
+            this.Artifact.Add(new ActivateFragment(typeof(TSource), typeof(TTarget)));
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to construct the target via the default factory.
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformArtifactBuilderF<TSource, TTarget> DefaultFactory()
+        {
+            this.Artifact.Add(new DefaultFactoryFragment(typeof(TSource), typeof(TTarget)));
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to construct the target via a custom factory delegate.
+        /// </summary>
+        /// <param name="factory">
+        /// The factory delegate that constructs the target.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformArtifactBuilderF<TSource, TTarget> CustomFactory(
+            Func<CustomFactoryParameters<TSource>, TTarget> factory)
+        {
+            if (factory == null)
+            {
+                throw new ArgumentNullException("factory");
+            }
+
+            this.Artifact.Add(new CustomFactoryFragment(typeof(TSource), typeof(TTarget), factory));
+            return this;
+        }
     }
 }

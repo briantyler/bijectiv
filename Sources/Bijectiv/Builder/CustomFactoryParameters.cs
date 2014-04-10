@@ -29,10 +29,54 @@
 
 namespace Bijectiv.Builder
 {
+    using System;
+
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Represents the parameters to a custom factory method.
     /// </summary>
-    public class CustomFactoryParameters
-    {    
+    /// <typeparam name="TSource">
+    /// The source for which the target is being created.
+    /// </typeparam>
+    public class CustomFactoryParameters<TSource>
+    {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CustomFactoryParameters{TSource}"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public CustomFactoryParameters([NotNull] TSource source, [NotNull] ITransformContext context)
+        {
+            if (ReferenceEquals(source, null))
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            this.Source = source;
+            this.Context = context;
+        }
+
+        /// <summary>
+        /// Gets the source for which the target is being created.
+        /// </summary>
+        public TSource Source { get; private set; }
+
+        /// <summary>
+        /// Gets the transformation context.
+        /// </summary>
+        public ITransformContext Context { get; private set; }
     }
 }

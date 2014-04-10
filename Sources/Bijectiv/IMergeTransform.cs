@@ -47,6 +47,6 @@ namespace Bijectiv
         /// <param name="context">
         /// The context in which the transformation will take place.
         /// </param>
-        void Merge(object source, object target, TransformContext context);
+        void Merge(object source, object target, ITransformContext context);
     }
 }

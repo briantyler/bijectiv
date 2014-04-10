@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ActivatorFragment.cs" company="Bijectiv">
+// <copyright file="ActivateFragment.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ActivatorFragment type.
+//   Defines the ActivateFragment type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,10 +36,10 @@ namespace Bijectiv.Builder
     /// <summary>
     /// Specifies that the <see cref="TransformFragment.Target"/> should be created via some activation strategy.
     /// </summary>
-    public class ActivatorFragment : TransformFragment
+    public class ActivateFragment : TransformFragment
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="ActivatorFragment"/> class.
+        /// Initialises a new instance of the <see cref="ActivateFragment"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -47,7 +47,7 @@ namespace Bijectiv.Builder
         /// <param name="target">
         /// The target.
         /// </param>
-        public ActivatorFragment([NotNull] Type source, [NotNull] Type target)
+        public ActivateFragment([NotNull] Type source, [NotNull] Type target)
             : base(source, target)
         {
         }

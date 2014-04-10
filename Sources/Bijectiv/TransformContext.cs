@@ -34,7 +34,7 @@ namespace Bijectiv
     /// <summary>
     /// Represents the context in which a transform is happening.
     /// </summary>
-    public class TransformContext
+    public class TransformContext : ITransformContext
     {
         /// <summary>
         /// Gets or sets the context's culture.

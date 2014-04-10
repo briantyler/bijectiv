@@ -33,6 +33,6 @@ namespace Bijectiv.Tests.TestTypes
 
     public class DerivedTestClass2 : BaseTestClass2
     {
-        public static readonly Type T = typeof(DerivedTestClass2);
+        public static new readonly Type T = typeof(DerivedTestClass2);
     }
 }
