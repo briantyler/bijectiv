@@ -33,8 +33,8 @@ namespace Bijectiv.Tests.Builder
     using System;
 
     using Bijectiv.Builder;
+    using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.TestTypes;
-    using Bijectiv.Tests.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

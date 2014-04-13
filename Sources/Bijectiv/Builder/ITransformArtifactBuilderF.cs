@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestExtensions.cs" company="Bijectiv">
+// <copyright file="ITransformArtifactBuilderF.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,32 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   This class contains extension methods that are useful when testing.
+//   Defines the ITransformArtifactBuilderF type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Tools
+namespace Bijectiv.Builder
 {
     /// <summary>
-    /// This class contains extension methods that are useful when testing.
+    /// Represents a builder of <see cref="TransformArtifact"/> instances.
     /// </summary>
-    public static class TestExtensions
+    /// <typeparam name="TSource">
+    /// The source type.
+    /// </typeparam>
+    /// <typeparam name="TTarget">
+    /// The target type.
+    /// </typeparam>
+    public interface ITransformArtifactBuilderF<TSource, TTarget>
     {
-        /// <summary>
-        /// A method that does exactly nothing.
-        /// </summary>
-        /// <typeparam name="TInstance">
-        /// The type of <paramref name="instance"/>.
-        /// </typeparam>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
-        /// <returns>
-        /// The original instance.
-        /// </returns>
-        public static TInstance Naught<TInstance>(this TInstance instance)
-        {
-            return instance;
-        }
     }
 }

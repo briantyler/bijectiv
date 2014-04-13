@@ -34,8 +34,8 @@ namespace Bijectiv.Tests.Builder
     using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.TestTypes;
-    using Bijectiv.Tests.Tools;
 
     using JetBrains.Annotations;
 

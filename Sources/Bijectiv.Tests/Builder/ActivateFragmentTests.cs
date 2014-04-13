@@ -30,7 +30,7 @@
 namespace Bijectiv.Tests.Builder
 {
     using Bijectiv.Builder;
-    using Bijectiv.Tests.Tools;
+    using Bijectiv.Tests.TestTools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

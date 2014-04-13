@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformContext.cs" company="Bijectiv">
+// <copyright file="Spikes.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,25 +23,40 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformContext type.
+//   Defines the Spikes type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests
 {
-    using System.Collections.Generic;
-    using System.Globalization;
+    using System.Linq;
 
-    /// <summary>
-    /// Represents a transform context.
-    /// </summary>
-    public interface ITransformContext
+    using Bijectiv.Builder;
+    using Bijectiv.Builder.Forge;
+    using Bijectiv.Tests.TestTypes;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
+    public class Spikes
     {
-        /// <summary>
-        /// Gets the context's culture.
-        /// </summary>
-        CultureInfo Culture { get; }
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_Forge_BuildsTransform()
+        {
+            // Arrange
+            var registry = new TransformArtifactRegistry();
+            var builder = new TransformStoreBuilder(registry);
 
-        Stack<TransformItem> Items { get; }
+            builder.Register<TestClass1, TestClass2>().Activate();
+
+            var forge = new TransformForge(registry.Single(), registry);
+
+            // Act
+            var transform = forge.Manufacture();
+
+            // Assert
+            Assert.IsInstanceOfType(transform.Transform(new TestClass1(), new TransformContext()), typeof(TestClass2));
+        }
     }
 }

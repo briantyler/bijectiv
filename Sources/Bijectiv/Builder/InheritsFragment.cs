@@ -80,17 +80,22 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("targetBase");
             }
 
+            if (source == sourceBase && target == targetBase)
+            {
+                throw new ArgumentException("A transform cannot inherit from itself.");
+            }
+
             if (!sourceBase.IsAssignableFrom(source))
             {
                 throw new ArgumentException(
-                    string.Format("Source base type '{0}' is not assignable source type '{1}' ", sourceBase, source),
+                    string.Format("Source base type '{0}' is not assignable source type '{1}'.", sourceBase, source),
                     "sourceBase");
             }
 
             if (!targetBase.IsAssignableFrom(target))
             {
                 throw new ArgumentException(
-                    string.Format("Target base type '{0}' is not assignable target type '{1}' ", targetBase, target),
+                    string.Format("Target base type '{0}' is not assignable target type '{1}'.", targetBase, target),
                     "targetBase");
             }
 

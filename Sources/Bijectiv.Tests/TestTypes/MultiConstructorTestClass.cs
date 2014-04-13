@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformContext.cs" company="Bijectiv">
+// <copyright file="MultiConstructorTestClass.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,25 +23,34 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformContext type.
+//   Defines the MultiConstructorTestClass type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.TestTypes
 {
-    using System.Collections.Generic;
-    using System.Globalization;
+    using JetBrains.Annotations;
 
-    /// <summary>
-    /// Represents a transform context.
-    /// </summary>
-    public interface ITransformContext
+    public class MultiConstructorTestClass
     {
-        /// <summary>
-        /// Gets the context's culture.
-        /// </summary>
-        CultureInfo Culture { get; }
+        [UsedImplicitly]
+        public MultiConstructorTestClass()
+        {
+        }
 
-        Stack<TransformItem> Items { get; }
+        [UsedImplicitly]
+        public MultiConstructorTestClass(TestClass1 x)
+        {
+        }
+
+        [UsedImplicitly]
+        public MultiConstructorTestClass(TestClass2 x)
+        {
+        }
+
+        [UsedImplicitly]
+        public MultiConstructorTestClass(TestClass1 x, TestClass2 y)
+        {
+        }
     }
 }

@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Tools
+namespace Bijectiv.Tests.TestTools
 {
     using Moq;
 

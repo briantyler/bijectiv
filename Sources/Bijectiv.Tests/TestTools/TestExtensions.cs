@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformContext.cs" company="Bijectiv">
+// <copyright file="TestExtensions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,25 +23,32 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformContext type.
+//   This class contains extension methods that are useful when testing.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.TestTools
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-
     /// <summary>
-    /// Represents a transform context.
+    /// This class contains extension methods that are useful when testing.
     /// </summary>
-    public interface ITransformContext
+    public static class TestExtensions
     {
         /// <summary>
-        /// Gets the context's culture.
+        /// A method that does exactly nothing.
         /// </summary>
-        CultureInfo Culture { get; }
-
-        Stack<TransformItem> Items { get; }
+        /// <typeparam name="TInstance">
+        /// The type of <paramref name="instance"/>.
+        /// </typeparam>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <returns>
+        /// The original instance.
+        /// </returns>
+        public static TInstance Naught<TInstance>(this TInstance instance)
+        {
+            return instance;
+        }
     }
 }

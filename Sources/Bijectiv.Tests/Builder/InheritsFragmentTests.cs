@@ -33,7 +33,8 @@ namespace Bijectiv.Tests.Builder
     using System;
 
     using Bijectiv.Builder;
-    using Bijectiv.Tests.Tools;
+    using Bijectiv.Tests.TestTools;
+    using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,7 +52,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InheritsFragment(typeof(object), typeof(object), null, typeof(object)).Naught();
+            new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                null,
+                typeof(BaseTestClass2)).Naught();
 
             // Assert
         }
@@ -64,7 +69,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InheritsFragment(typeof(object), typeof(object), typeof(object), null).Naught();
+            new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                null).Naught();
 
             // Assert
         }
@@ -77,7 +86,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InheritsFragment(typeof(object), typeof(object), typeof(int), typeof(object)).Naught();
+            new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(TestClass1),
+                typeof(BaseTestClass2)).Naught();
 
             // Assert
         }
@@ -90,7 +103,28 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(int)).Naught();
+            new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                typeof(TestClass2)).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ExpectedException(typeof(ArgumentException))]
+        public void CreateInstance_SourceBaseParameterEqualsTargetBaseParameter_Throws()
+        {
+            // Arrange
+
+            // Act
+            new InheritsFragment(
+                typeof(TestClass1),
+                typeof(TestClass2),
+                typeof(TestClass1),
+                typeof(TestClass2)).Naught();
 
             // Assert
         }
@@ -102,7 +136,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(object)).Naught();
+            new InheritsFragment(
+                typeof(DerivedTestClass1), 
+                typeof(DerivedTestClass2), 
+                typeof(BaseTestClass1), 
+                typeof(BaseTestClass2)).Naught();
 
             // Assert
         }
@@ -114,10 +152,14 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new InheritsFragment(typeof(int), typeof(int), typeof(object), typeof(int));
+            var target = new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(typeof(object), target.SourceBase);
+            Assert.AreEqual(typeof(BaseTestClass1), target.SourceBase);
         }
 
         [TestMethod]
@@ -127,10 +169,14 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new InheritsFragment(typeof(int), typeof(int), typeof(int), typeof(object));
+            var target = new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(typeof(object), target.TargetBase);
+            Assert.AreEqual(typeof(BaseTestClass2), target.TargetBase);
         }
 
         [TestMethod]
@@ -140,7 +186,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new InheritsFragment(typeof(object), typeof(object), typeof(object), typeof(object));
+            var target = new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                typeof(BaseTestClass2));
 
             // Assert
             Assert.AreEqual(LegendryFragments.Inherits, target.FragmentCategory);
