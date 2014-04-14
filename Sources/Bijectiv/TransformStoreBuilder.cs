@@ -44,7 +44,7 @@ namespace Bijectiv
         /// <summary>
         /// The registry.
         /// </summary>
-        private readonly ITransformArtifactRegistry registry;
+        private readonly ITransformDefinitionRegistry registry;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
@@ -55,7 +55,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformStoreBuilder([NotNull] ITransformArtifactRegistry registry)
+        public TransformStoreBuilder([NotNull] ITransformDefinitionRegistry registry)
         {
             if (registry == null)
             {
@@ -68,7 +68,7 @@ namespace Bijectiv
         /// <summary>
         /// Gets the registry.
         /// </summary>
-        protected internal ITransformArtifactRegistry Registry
+        protected internal ITransformDefinitionRegistry Registry
         {
             get { return this.registry; }
         }
@@ -82,7 +82,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void RegisterCallback([NotNull] Action<ITransformArtifactRegistry> callback)
+        public void RegisterCallback([NotNull] Action<ITransformDefinitionRegistry> callback)
         {
             if (callback == null)
             {

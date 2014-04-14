@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformContext.cs" company="Bijectiv">
+// <copyright file="ITransformDefintionBuilderF.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformContext type.
+//   Defines the ITransformDefintionBuilderF type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
-    using System.Globalization;
-
     /// <summary>
-    /// Represents the context in which a transform is happening.
+    /// Represents a builder of <see cref="TransformDefinition"/> instances.
     /// </summary>
-    public class TransformContext : ITransformContext
+    /// <typeparam name="TSource">
+    /// The source type.
+    /// </typeparam>
+    /// <typeparam name="TTarget">
+    /// The target type.
+    /// </typeparam>
+    public interface ITransformDefintionBuilderF<TSource, TTarget>
     {
-        /// <summary>
-        /// Gets or sets the context's culture.
-        /// </summary>
-        public CultureInfo Culture { get; set; }
     }
 }

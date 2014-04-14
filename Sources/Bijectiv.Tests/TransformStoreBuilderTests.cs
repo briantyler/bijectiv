@@ -52,7 +52,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>()).Naught();
+            new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>()).Naught();
 
             // Assert
         }
@@ -75,7 +75,7 @@ namespace Bijectiv.Tests
         public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
-            var registry = Stub.Create<ITransformArtifactRegistry>();
+            var registry = Stub.Create<ITransformDefinitionRegistry>();
             
             // Act
             var target = new TransformStoreBuilder(registry);
@@ -90,7 +90,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange
-            var registry = Stub.Create<ITransformArtifactRegistry>();
+            var registry = Stub.Create<ITransformDefinitionRegistry>();
             var target = new TransformStoreBuilder(registry);
 
             // Act
@@ -104,9 +104,9 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
         {
             // Arrange
-            var registry = Stub.Create<ITransformArtifactRegistry>();
+            var registry = Stub.Create<ITransformDefinitionRegistry>();
             var target = new TransformStoreBuilder(registry);
-            ITransformArtifactRegistry calledRegistry = null;
+            ITransformDefinitionRegistry calledRegistry = null;
 
             // Act
             target.RegisterCallback(_ => calledRegistry = _);
@@ -120,7 +120,7 @@ namespace Bijectiv.Tests
         public void Build_EmptyBuilder_ReturnsCompositeTransformStore()
         {
             // Arrange
-            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+            var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
 
             // Act
             var result = target.Build();
@@ -134,7 +134,7 @@ namespace Bijectiv.Tests
         public void Build_EmptyBuilder_ResultContainsIdenticalPrimitiveTransformStore()
         {
             // Arrange
-            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+            var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
 
             // Act
             var result = (CompositeTransformStore)target.Build();
@@ -148,7 +148,7 @@ namespace Bijectiv.Tests
         public void Build_EmptyBuilder_ResultContainsConvertibleTransformStore()
         {
             // Arrange
-            var target = new TransformStoreBuilder(Stub.Create<ITransformArtifactRegistry>());
+            var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
 
             // Act
             var result = (CompositeTransformStore)target.Build();

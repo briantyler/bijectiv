@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformArtifact.cs" company="Bijectiv">
+// <copyright file="TransformDefinition.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformArtifact type.
+//   Defines the TransformDefinition type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,12 +36,12 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// An artifact that completely describes a transform.
+    /// An definition that completely describes a transform.
     /// </summary>
-    public class TransformArtifact : IEnumerable<TransformFragment>
+    public class TransformDefinition : IEnumerable<TransformFragment>
     {
         /// <summary>
-        /// The fragments that comprise the artifact.
+        /// The fragments that comprise the definition.
         /// </summary>
         private readonly List<TransformFragment> fragments = new List<TransformFragment>();
 
@@ -56,7 +56,7 @@ namespace Bijectiv.Builder
         private readonly Type target;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TransformArtifact"/> class.
+        /// Initialises a new instance of the <see cref="TransformDefinition"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -67,7 +67,7 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformArtifact([NotNull] Type source, [NotNull] Type target)
+        public TransformDefinition([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -100,7 +100,7 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Adds the fragment to the artifact.
+        /// Adds the fragment to the definition.
         /// </summary>
         /// <param name="fragment">
         /// The fragment.
@@ -118,7 +118,7 @@ namespace Bijectiv.Builder
             if (fragment.Source != this.Source)
             {
                 throw new ArgumentException(string.Format(
-                    "The fragment source '{0}' does not match the artifact source '{1}'", 
+                    "The fragment source '{0}' does not match the definition source '{1}'", 
                     fragment.Source,
                     this.Source));
             }
@@ -126,7 +126,7 @@ namespace Bijectiv.Builder
             if (fragment.Target != this.Target)
             {
                 throw new ArgumentException(string.Format(
-                    "The fragment target '{0}' does not match the artifact target '{1}'",
+                    "The fragment target '{0}' does not match the definition target '{1}'",
                     fragment.Target,
                     this.Target));
             }
@@ -135,7 +135,7 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the fragments in the artifact.
+        /// Returns an enumerator that iterates through the fragments in the definition.
         /// </summary>
         /// <returns>
         /// An enumerator that can be used to iterate through the fragments in the collection.
@@ -146,7 +146,7 @@ namespace Bijectiv.Builder
         }
         
         /// <summary>
-        /// Returns an enumerator that iterates through the fragments in the artifact.
+        /// Returns an enumerator that iterates through the fragments in the definition.
         /// </summary>
         /// <returns>
         /// An enumerator that can be used to iterate through the fragments in the collection.

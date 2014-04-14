@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformContext.cs" company="Bijectiv">
+// <copyright file="ITransformDefinitionRegistry.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,25 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformContext type.
+//   Defines the ITransformDefinitionRegistry type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
-    using System.Globalization;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Represents the context in which a transform is happening.
+    /// Represents a registry that contains <see cref="TransformDefinition"/> instances.
     /// </summary>
-    public class TransformContext : ITransformContext
+    public interface ITransformDefinitionRegistry : IEnumerable<TransformDefinition>
     {
         /// <summary>
-        /// Gets or sets the context's culture.
+        /// Adds an definition to the registry.
         /// </summary>
-        public CultureInfo Culture { get; set; }
+        /// <param name="definition">
+        /// The definition to add.
+        /// </param>
+        void Add(TransformDefinition definition);
     }
 }

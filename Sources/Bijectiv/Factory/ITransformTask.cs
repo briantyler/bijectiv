@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformArtifactRegistry.cs" company="Bijectiv">
+// <copyright file="ITransformTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,25 +23,25 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformArtifactRegistry type.
+//   Defines the ITransformTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv.Factory
 {
-    using System.Collections.Generic;
+    using Bijectiv.Builder;
 
     /// <summary>
-    /// Represents a registry that contains <see cref="TransformArtifact"/> instances.
+    /// Represents work that produces a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
     /// </summary>
-    public interface ITransformArtifactRegistry : IEnumerable<TransformArtifact>
+    public interface ITransformTask
     {
         /// <summary>
-        /// Adds an artifact to the registry.
+        /// Executes the task.
         /// </summary>
-        /// <param name="artifact">
-        /// The artifact to add.
+        /// <param name="scaffold">
+        /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        void Add(TransformArtifact artifact);
+        void Execute(TransformScaffold scaffold);
     }
 }

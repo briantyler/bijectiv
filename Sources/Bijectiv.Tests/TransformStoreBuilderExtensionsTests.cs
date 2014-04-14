@@ -63,13 +63,13 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Register_ValidParameters_ArtifactIsAddedToRegistry()
+        public void Register_ValidParameters_DefintionIsAddedToRegistry()
         {
             // Arrange
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
-            registryMock.Setup(_ => _.Add(It.IsAny<TransformArtifact>()));
+            registryMock.Setup(_ => _.Add(It.IsAny<TransformDefinition>()));
 
             // Act
             target.Register<TestClass1, TestClass2>();
@@ -80,65 +80,65 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Register_ValidParameters_AddedArtifactIsEmpty()
+        public void Register_ValidParameters_AddedDefintionIsEmpty()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.Register<TestClass1, TestClass2>();
 
             // Assert
-            var artifact = artifacts.Single();
-            Assert.IsFalse(artifact.Any());
+            var defintion = defintions.Single();
+            Assert.IsFalse(defintion.Any());
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Register_ValidParameters_AddedArtifactHasCorrectSource()
+        public void Register_ValidParameters_AddedDefintionHasCorrectSource()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.Register<TestClass1, TestClass2>();
 
             // Assert
-            var artifact = artifacts.Single();
-            Assert.AreEqual(TestClass1.T, artifact.Source);
+            var defintion = defintions.Single();
+            Assert.AreEqual(TestClass1.T, defintion.Source);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Register_ValidParameters_AddedArtifactHasCorrectTarget()
+        public void Register_ValidParameters_AddedDefintionHasCorrectTarget()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.Register<TestClass1, TestClass2>();
 
             // Assert
-            var artifact = artifacts.Single();
-            Assert.AreEqual(TestClass2.T, artifact.Target);
+            var defintion = defintions.Single();
+            Assert.AreEqual(TestClass2.T, defintion.Target);
         }
 
         [TestMethod]
@@ -157,12 +157,12 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RegisterInherited_ValidParameters_ArtifactIsAddedToRegistry()
+        public void RegisterInherited_ValidParameters_DefintionIsAddedToRegistry()
         {
             // Arrange
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
-            registryMock.Setup(_ => _.Add(It.IsAny<TransformArtifact>()));
+            registryMock.Setup(_ => _.Add(It.IsAny<TransformDefinition>()));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -173,64 +173,64 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RegisterInherited_ValidParameters_AddedArtifactHasCorrectSource()
+        public void RegisterInherited_ValidParameters_AddedDefintionHasCorrectSource()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
-            var artifact = artifacts.Single();
-            Assert.AreEqual(DerivedTestClass1.T, artifact.Source);
+            var defintion = defintions.Single();
+            Assert.AreEqual(DerivedTestClass1.T, defintion.Source);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RegisterInherited_ValidParameters_AddedArtifactHasCorrectTarget()
+        public void RegisterInherited_ValidParameters_AddedDefintionHasCorrectTarget()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
-            var artifact = artifacts.Single();
-            Assert.AreEqual(DerivedTestClass2.T, artifact.Target);
+            var defintion = defintions.Single();
+            Assert.AreEqual(DerivedTestClass2.T, defintion.Target);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RegisterInherited_ValidParameters_AddedArtifactHasContainsInheritsFragment()
+        public void RegisterInherited_ValidParameters_AddedDefintionHasContainsInheritsFragment()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
-            var fragment = artifacts.Single().Single();
+            var fragment = defintions.Single().Single();
             Assert.IsInstanceOfType(fragment, typeof(InheritsFragment));
         }
 
@@ -239,19 +239,19 @@ namespace Bijectiv.Tests
         public void RegisterInherited_ValidParameters_InheritsFragmentHasCorrectSourceBase()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
-            var fragment = (InheritsFragment)artifacts.Single().Single();
+            var fragment = (InheritsFragment)defintions.Single().Single();
             Assert.AreEqual(BaseTestClass1.T, fragment.SourceBase);
         }
 
@@ -260,19 +260,19 @@ namespace Bijectiv.Tests
         public void RegisterInherited_ValidParameters_InheritsFragmentHasCorrectTargetBase()
         {
             // Arrange
-            var artifacts = new List<TransformArtifact>();
-            var registryMock = new Mock<ITransformArtifactRegistry>(MockBehavior.Strict);
+            var defintions = new List<TransformDefinition>();
+            var registryMock = new Mock<ITransformDefinitionRegistry>(MockBehavior.Strict);
             var target = new TransformStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<TransformArtifact>()))
-                .Callback((TransformArtifact a) => artifacts.Add(a));
+                .Setup(_ => _.Add(It.IsAny<TransformDefinition>()))
+                .Callback((TransformDefinition a) => defintions.Add(a));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
-            var fragment = (InheritsFragment)artifacts.Single().Single();
+            var fragment = (InheritsFragment)defintions.Single().Single();
             Assert.AreEqual(BaseTestClass2.T, fragment.TargetBase);
         }
     }

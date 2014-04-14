@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformArtifactTests.cs" company="Bijectiv">
+// <copyright file="TransformDefinitionTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformArtifactTests type.
+//   Defines the TransformDefinitionTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,10 +40,10 @@ namespace Bijectiv.Tests.Builder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="TransformArtifact"/> class.
+    /// This class tests the <see cref="TransformDefinition"/> class.
     /// </summary>
     [TestClass]
-    public class TransformArtifactTests
+    public class TransformDefinitionTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -52,19 +52,19 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformArtifact(typeof(object), typeof(object)).Naught();
+            new TransformDefinition(typeof(object), typeof(object)).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_ArtifactIsEmpty()
+        public void CreateInstance_ValidParameters_DefintionIsEmpty()
         {
             // Arrange
 
             // Act
-            var target = new TransformArtifact(typeof(object), typeof(object));
+            var target = new TransformDefinition(typeof(object), typeof(object));
 
             // Assert
             Assert.IsFalse(target.Any());
@@ -78,7 +78,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformArtifact(null, typeof(object)).Naught();
+            new TransformDefinition(null, typeof(object)).Naught();
 
             // Assert
         }
@@ -91,7 +91,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformArtifact(typeof(object), null).Naught();
+            new TransformDefinition(typeof(object), null).Naught();
 
             // Assert
         }
@@ -103,7 +103,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new TransformArtifact(typeof(int), typeof(object));
+            var target = new TransformDefinition(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
@@ -116,7 +116,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new TransformArtifact(typeof(object), typeof(int));
+            var target = new TransformDefinition(typeof(object), typeof(int));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Target);
@@ -198,9 +198,9 @@ namespace Bijectiv.Tests.Builder
             }
         }
 
-        private static TransformArtifact CreateTarget()
+        private static TransformDefinition CreateTarget()
         {
-            return new TransformArtifact(typeof(object), typeof(object));
+            return new TransformDefinition(typeof(object), typeof(object));
         }
     }
 }

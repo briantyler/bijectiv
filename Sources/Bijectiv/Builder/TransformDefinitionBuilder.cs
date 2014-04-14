@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformArtifactBuilder.cs" company="Bijectiv">
+// <copyright file="TransformDefinitionBuilder.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformArtifactBuilder type.
+//   Defines the TransformDefinitionBuilder type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A builder of <see cref="TransformArtifact"/> instances.
+    /// A builder of <see cref="TransformDefinition"/> instances.
     /// </summary>
     /// <typeparam name="TSource">
     /// The source type.
@@ -42,55 +42,55 @@ namespace Bijectiv.Builder
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public class TransformArtifactBuilder<TSource, TTarget> : ITransformArtifactBuilder<TSource, TTarget>
+    public class TransformDefinitionBuilder<TSource, TTarget> : ITransformDefinitionBuilder<TSource, TTarget>
     {
         /// <summary>
-        /// The artifact being built.
+        /// The definition being built.
         /// </summary>
-        private readonly TransformArtifact artifact;
+        private readonly TransformDefinition definition;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TransformArtifactBuilder{TSource,TTarget}"/> class.
+        /// Initialises a new instance of the <see cref="TransformDefinitionBuilder{TSource,TTarget}"/> class.
         /// </summary>
-        /// <param name="artifact">
-        /// The artifact.
+        /// <param name="definition">
+        /// The definition.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="artifact"/> is incompatible with the builder.
+        /// Thrown when <paramref name="definition"/> is incompatible with the builder.
         /// </exception>
-        public TransformArtifactBuilder([NotNull] TransformArtifact artifact)
+        public TransformDefinitionBuilder([NotNull] TransformDefinition definition)
         {
-            if (artifact == null)
+            if (definition == null)
             {
-                throw new ArgumentNullException("artifact");
+                throw new ArgumentNullException("definition");
             }
 
-            if (artifact.Source != typeof(TSource))
-            {
-                throw new ArgumentException(
-                    string.Format("Source '{0}' must match TSource '{1}'", artifact.Source, typeof(TSource)),
-                    "artifact");
-            }
-
-            if (artifact.Target != typeof(TTarget))
+            if (definition.Source != typeof(TSource))
             {
                 throw new ArgumentException(
-                    string.Format("Target '{0}' must match TTarget '{1}'", artifact.Target, typeof(TTarget)),
-                    "artifact");
+                    string.Format("Source '{0}' must match TSource '{1}'", definition.Source, typeof(TSource)),
+                    "definition");
             }
 
-            this.artifact = artifact;
+            if (definition.Target != typeof(TTarget))
+            {
+                throw new ArgumentException(
+                    string.Format("Target '{0}' must match TTarget '{1}'", definition.Target, typeof(TTarget)),
+                    "definition");
+            }
+
+            this.definition = definition;
         }
 
         /// <summary>
-        /// Gets the artifact being built.
+        /// Gets the definition being built.
         /// </summary>
-        protected internal TransformArtifact Artifact
+        protected internal TransformDefinition Definition
         {
-            get { return this.artifact; }
+            get { return this.definition; }
         }
 
         /// <summary>
@@ -100,9 +100,9 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformArtifactBuilderF<TSource, TTarget> Activate()
+        public ITransformDefintionBuilderF<TSource, TTarget> Activate()
         {
-            this.Artifact.Add(new ActivateFragment(typeof(TSource), typeof(TTarget)));
+            this.Definition.Add(new ActivateFragment(typeof(TSource), typeof(TTarget)));
             return this;
         }
 
@@ -112,9 +112,9 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformArtifactBuilderF<TSource, TTarget> DefaultFactory()
+        public ITransformDefintionBuilderF<TSource, TTarget> DefaultFactory()
         {
-            this.Artifact.Add(new DefaultFactoryFragment(typeof(TSource), typeof(TTarget)));
+            this.Definition.Add(new DefaultFactoryFragment(typeof(TSource), typeof(TTarget)));
             return this;
         }
 
@@ -127,7 +127,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformArtifactBuilderF<TSource, TTarget> CustomFactory(
+        public ITransformDefintionBuilderF<TSource, TTarget> CustomFactory(
             Func<CustomFactoryParameters<TSource>, TTarget> factory)
         {
             if (factory == null)
@@ -135,7 +135,7 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("factory");
             }
 
-            this.Artifact.Add(new CustomFactoryFragment(typeof(TSource), typeof(TTarget), factory));
+            this.Definition.Add(new CustomFactoryFragment(typeof(TSource), typeof(TTarget), factory));
             return this;
         }
     }

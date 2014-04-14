@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformArtifactBuilder.cs" company="Bijectiv">
+// <copyright file="ITransformDefinitionBuilder.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformArtifactBuilder type.
+//   Defines the ITransformDefinitionBuilder type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a builder of <see cref="TransformArtifact"/> instances.
+    /// Represents a builder of <see cref="TransformDefinition"/> instances.
     /// </summary>
     /// <typeparam name="TSource">
     /// The source type.
@@ -42,8 +42,8 @@ namespace Bijectiv.Builder
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public interface ITransformArtifactBuilder<TSource, TTarget> 
-        : ITransformArtifactBuilderF<TSource, TTarget>
+    public interface ITransformDefinitionBuilder<TSource, TTarget> 
+        : ITransformDefintionBuilderF<TSource, TTarget>
     {
         /// <summary>
         /// Instructs the transform to construct the target via activation (this is the default option if no other
@@ -52,7 +52,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformArtifactBuilderF<TSource, TTarget> Activate();
+        ITransformDefintionBuilderF<TSource, TTarget> Activate();
 
         /// <summary>
         /// Instructs the transform to construct the target via the default factory.
@@ -60,7 +60,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformArtifactBuilderF<TSource, TTarget> DefaultFactory();
+        ITransformDefintionBuilderF<TSource, TTarget> DefaultFactory();
 
         /// <summary>
         /// Instructs the transform to construct the target via a custom factory delegate.
@@ -71,7 +71,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformArtifactBuilderF<TSource, TTarget> CustomFactory(
+        ITransformDefintionBuilderF<TSource, TTarget> CustomFactory(
             [NotNull] Func<CustomFactoryParameters<TSource>, TTarget> factory);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformArtifactBuilderF.cs" company="Bijectiv">
+// <copyright file="ReturnTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,26 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformArtifactBuilderF type.
+//   Defines the ReturnTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv.Factory
 {
-    /// <summary>
-    /// Represents a builder of <see cref="TransformArtifact"/> instances.
-    /// </summary>
-    /// <typeparam name="TSource">
-    /// The source type.
-    /// </typeparam>
-    /// <typeparam name="TTarget">
-    /// The target type.
-    /// </typeparam>
-    public interface ITransformArtifactBuilderF<TSource, TTarget>
+    using System;
+
+    using JetBrains.Annotations;
+
+    public class ReturnTask : ITransformTask
     {
+        public void Execute([NotNull] TransformScaffold scaffold)
+        {
+            if (scaffold == null)
+            {
+                throw new ArgumentNullException("scaffold");
+            }
+
+            scaffold.Expressions.Add(scaffold.TargetAsObject);
+        }
     }
 }

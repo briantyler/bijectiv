@@ -32,7 +32,7 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Builder;
-    using Bijectiv.Builder.Forge;
+    using Bijectiv.Factory;
     using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,15 +45,15 @@ namespace Bijectiv.Tests
         public void Spike_Forge_BuildsTransform()
         {
             // Arrange
-            var registry = new TransformArtifactRegistry();
+            var registry = new TransformDefinitionRegistry();
             var builder = new TransformStoreBuilder(registry);
 
             builder.Register<TestClass1, TestClass2>().Activate();
 
-            var forge = new TransformForge(registry.Single(), registry);
+            var forge = new TransformFactory(registry);
 
             // Act
-            var transform = forge.Manufacture();
+            var transform = forge.Create(registry.Single());
 
             // Assert
             Assert.IsInstanceOfType(transform.Transform(new TestClass1(), new TransformContext()), typeof(TestClass2));

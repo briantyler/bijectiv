@@ -53,10 +53,10 @@ namespace Bijectiv
         /// The target type.
         /// </typeparam>
         /// <returns>
-        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of the 
+        /// A <see cref="ITransformDefinitionBuilder{TSource,TTarget}"/> that allows further configuration of the 
         /// transform.
         /// </returns>
-        public static ITransformArtifactBuilder<TSource, TTarget> Register<TSource, TTarget>(
+        public static ITransformDefinitionBuilder<TSource, TTarget> Register<TSource, TTarget>(
             [NotNull] this TransformStoreBuilder builder)
         {
             if (builder == null)
@@ -64,10 +64,10 @@ namespace Bijectiv
                 throw new ArgumentNullException("builder");
             }
 
-            var artifact = new TransformArtifact(typeof(TSource), typeof(TTarget));
-            builder.RegisterCallback(registry => registry.Add(artifact));
+            var defintion = new TransformDefinition(typeof(TSource), typeof(TTarget));
+            builder.RegisterCallback(registry => registry.Add(defintion));
 
-            return new TransformArtifactBuilder<TSource, TTarget>(artifact);
+            return new TransformDefinitionBuilder<TSource, TTarget>(defintion);
         }
 
         /// <summary>
@@ -90,10 +90,10 @@ namespace Bijectiv
         /// The base type that target inherits from.
         /// </typeparam>
         /// <returns>
-        /// A <see cref="ITransformArtifactBuilder{TSource,TTarget}"/> that allows further configuration of the 
+        /// A <see cref="ITransformDefinitionBuilder{TSource,TTarget}"/> that allows further configuration of the 
         /// transform.
         /// </returns>
-        public static ITransformArtifactBuilder<TSource, TTarget> RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(
+        public static ITransformDefinitionBuilder<TSource, TTarget> RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(
             [NotNull] this TransformStoreBuilder builder)
             where TSource : TSourceBase
             where TTarget : TTargetBase
@@ -103,14 +103,14 @@ namespace Bijectiv
                 throw new ArgumentNullException("builder");
             }
 
-            var artifact = new TransformArtifact(typeof(TSource), typeof(TTarget))
+            var defintion = new TransformDefinition(typeof(TSource), typeof(TTarget))
             {
                 new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase))
             };
 
-            builder.RegisterCallback(registry => registry.Add(artifact));
+            builder.RegisterCallback(registry => registry.Add(defintion));
 
-            return new TransformArtifactBuilder<TSource, TTarget>(artifact);
+            return new TransformDefinitionBuilder<TSource, TTarget>(defintion);
         }
     }
 }

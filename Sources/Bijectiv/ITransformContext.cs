@@ -29,7 +29,6 @@
 
 namespace Bijectiv
 {
-    using System.Collections.Generic;
     using System.Globalization;
 
     /// <summary>
@@ -41,7 +40,5 @@ namespace Bijectiv
         /// Gets the context's culture.
         /// </summary>
         CultureInfo Culture { get; }
-
-        Stack<TransformItem> Items { get; }
     }
 }

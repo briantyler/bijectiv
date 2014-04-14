@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformArtifactBuilderTests.cs" company="Bijectiv">
+// <copyright file="TransformDefintionBuilderTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformArtifactBuilderTests type.
+//   Defines the TransformDefintionBuilderTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -42,36 +42,36 @@ namespace Bijectiv.Tests.Builder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="TransformArtifactBuilder{TSource,TTarget}"/> class.
+    /// This class tests the <see cref="TransformDefinitionBuilder{TSource,TTarget}"/> class.
     /// </summary>
     [TestClass]
-    public class TransformArtifactBuilderTests
+    public class TransformDefintionBuilderTests
     {
         [TestMethod]
         [TestCategory("Unit")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void CreateInstance_ArtifactParameterIsNull_Throws()
+        public void CreateInstance_DefintionParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new TransformArtifactBuilder<TestClass1, TestClass2>(null).Naught();
+            new TransformDefinitionBuilder<TestClass1, TestClass2>(null).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ArtifactParameter_IsAssignedToArtifactProperty()
+        public void CreateInstance_DefintionParameter_IsAssignedToDefintionProperty()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            var target = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Assert
-            Assert.AreEqual(artifact, target.Artifact);
+            Assert.AreEqual(defintion, target.Definition);
         }
 
         [TestMethod]
@@ -80,10 +80,10 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_SourceTypeMismatch_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            new TransformArtifactBuilder<BaseTestClass1, TestClass2>(artifact).Naught();
+            new TransformDefinitionBuilder<BaseTestClass1, TestClass2>(defintion).Naught();
 
             // Assert
         }
@@ -94,27 +94,27 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_TargetTypeMismatch_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            new TransformArtifactBuilder<TestClass1, BaseTestClass2>(artifact).Naught();
+            new TransformDefinitionBuilder<TestClass1, BaseTestClass2>(defintion).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Activate_DefaultParameters_AddsActivatorFragmentToArtifact()
+        public void Activate_DefaultParameters_AddsActivatorFragmentToDefintion()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             builder.Activate();
 
             // Assert
-            Assert.IsInstanceOfType(artifact.Single(), typeof(ActivateFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(ActivateFragment));
         }
 
         [TestMethod]
@@ -122,29 +122,29 @@ namespace Bijectiv.Tests.Builder
         public void Activate_DefaultParameters_ReturnsF()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             var result = builder.Activate();
 
             // Assert
-            AssertBuilder(result, typeof(ITransformArtifactBuilderF<TestClass1, TestClass2>));
+            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DefaultFactory_DefaultParameters_AddsDefaultFactoryFragmentToArtifact()
+        public void DefaultFactory_DefaultParameters_AddsDefaultFactoryFragmentToDefintion()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             builder.DefaultFactory();
 
             // Assert
-            Assert.IsInstanceOfType(artifact.Single(), typeof(DefaultFactoryFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(DefaultFactoryFragment));
         }
 
         [TestMethod]
@@ -152,14 +152,14 @@ namespace Bijectiv.Tests.Builder
         public void DefaultFactory_DefaultParameters_ReturnsF()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             var result = builder.DefaultFactory();
 
             // Assert
-            AssertBuilder(result, typeof(ITransformArtifactBuilderF<TestClass1, TestClass2>));
+            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
         }
 
         [TestMethod]
@@ -168,8 +168,8 @@ namespace Bijectiv.Tests.Builder
         public void CustomFactory_FactoryParameterNull_Throws()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             builder.CustomFactory(null);
@@ -179,17 +179,17 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CustomFactory_ValidParameters_AddsCustomFactoryFragmentToArtifact()
+        public void CustomFactory_ValidParameters_AddsCustomFactoryFragmentToDefintion()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             builder.CustomFactory(p => default(TestClass2));
 
             // Assert
-            Assert.IsInstanceOfType(artifact.Single(), typeof(CustomFactoryFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(CustomFactoryFragment));
         }
 
         [TestMethod]
@@ -198,14 +198,14 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             Func<CustomFactoryParameters<TestClass1>, TestClass2> factory = p => default(TestClass2);
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             builder.CustomFactory(factory);
 
             // Assert
-            Assert.AreEqual(factory, ((CustomFactoryFragment)artifact.Single()).Factory);
+            Assert.AreEqual(factory, ((CustomFactoryFragment)defintion.Single()).Factory);
         }
 
         [TestMethod]
@@ -213,30 +213,30 @@ namespace Bijectiv.Tests.Builder
         public void CustomFactory_ValidParameters_ReturnsF()
         {
             // Arrange
-            var artifact = new TransformArtifact(TestClass1.T, TestClass2.T);
-            var builder = new TransformArtifactBuilder<TestClass1, TestClass2>(artifact);
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
             var result = builder.CustomFactory(p => default(TestClass2));
 
             // Assert
-            AssertBuilder(result, typeof(ITransformArtifactBuilderF<TestClass1, TestClass2>));
+            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
         }
 
         [UsedImplicitly]
         private static void AssertBuilder<TSource, TTarget>(
-            ITransformArtifactBuilder<TSource, TTarget> builder,
+            ITransformDefinitionBuilder<TSource, TTarget> builder,
             Type type)
         {
-            Assert.AreEqual(type, typeof(ITransformArtifactBuilder<TSource, TTarget>));
+            Assert.AreEqual(type, typeof(ITransformDefinitionBuilder<TSource, TTarget>));
         }
 
         [UsedImplicitly]
         private static void AssertBuilder<TSource, TTarget>(
-            ITransformArtifactBuilderF<TSource, TTarget> builder,
+            ITransformDefintionBuilderF<TSource, TTarget> builder,
             Type type)
         {
-            Assert.AreEqual(type, typeof(ITransformArtifactBuilderF<TSource, TTarget>));
+            Assert.AreEqual(type, typeof(ITransformDefintionBuilderF<TSource, TTarget>));
         }
     }
 }
