@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TypeClasses.cs" company="Bijectiv">
+// <copyright file="FieldTestClass.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,46 +23,14 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TypeClasses type.
+//   Defines the FieldTestClass type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Transforms
+namespace Bijectiv.Tests.TestTypes
 {
-    using System;
-
-    using Bijectiv.Tests.TestTypes;
-
-    /// <summary>
-    /// Contains collections that represent classes of types.
-    /// </summary>
-    public class TypeClasses
+    public class FieldTestClass
     {
-        public static readonly Type[] ConvertibleTargetTypes =
-        {
-            typeof(bool), typeof(char), typeof(sbyte),
-            typeof(byte), typeof(short), typeof(ushort),
-            typeof(int), typeof(uint), typeof(long), typeof(ulong),
-            typeof(float), typeof(double), typeof(decimal),
-            typeof(DateTime), typeof(string)
-        };
-
-        public static readonly Type[] ConvertibleSourceTypes =
-        {
-            typeof(bool), typeof(char), typeof(sbyte),
-            typeof(byte), typeof(short), typeof(ushort),
-            typeof(int), typeof(uint), typeof(long), typeof(ulong),
-            typeof(float), typeof(double), typeof(decimal),
-            typeof(DateTime), typeof(string), typeof(IConvertible)
-        };
-
-        public static readonly Type[] PrimitiveTypes =
-        {
-            typeof(bool), typeof(char), typeof(sbyte),
-            typeof(byte), typeof(short), typeof(ushort),
-            typeof(int), typeof(uint), typeof(long), typeof(ulong),
-            typeof(float), typeof(double), typeof(decimal),
-            typeof(DateTime), typeof(string), typeof(TestEnum1)
-        };
+        public int Field;
     }
 }

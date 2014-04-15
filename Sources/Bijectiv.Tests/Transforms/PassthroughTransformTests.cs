@@ -57,7 +57,7 @@ namespace Bijectiv.Tests.Transforms
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_SourceParameterIsNull_Throws()
         {
             // Arrange
@@ -70,7 +70,7 @@ namespace Bijectiv.Tests.Transforms
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_TargetParameterIsNull_Throws()
         {
             // Arrange
@@ -83,7 +83,7 @@ namespace Bijectiv.Tests.Transforms
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_TargetParameterIsNotAssignableFromSourceParameter_Throws()
         {
             // Arrange

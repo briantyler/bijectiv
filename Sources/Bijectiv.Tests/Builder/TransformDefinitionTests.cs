@@ -72,7 +72,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_SourceParameterIsNull_Throws()
         {
             // Arrange
@@ -85,7 +85,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_TargetParameterIsNull_Throws()
         {
             // Arrange
@@ -124,7 +124,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void Add_FragmentParameterIsNull_Throws()
         {
             // Arrange
@@ -153,7 +153,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void Add_FragmentSourceMismatch_Throws()
         {
             // Arrange
@@ -168,7 +168,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void Add_FragmentTargetMismatch_Throws()
         {
             // Arrange

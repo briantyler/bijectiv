@@ -48,7 +48,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_FactoryParameterNull_Throws()
         {
             // Arrange
@@ -61,7 +61,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_FactoryParameterHasWrongType_Throws()
         {
             // Arrange

@@ -36,6 +36,7 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,7 +51,7 @@ namespace Bijectiv.Tests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void Register_BuilderParameterIsNull_Throws()
         {
             // Arrange
@@ -143,7 +144,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void RegisterInherited_BuilderParameterIsNull_Throws()
         {
             // Arrange

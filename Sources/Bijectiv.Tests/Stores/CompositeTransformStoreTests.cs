@@ -106,7 +106,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void Add_StoreParameterIsNull_Throws()
         {
             // Arrange

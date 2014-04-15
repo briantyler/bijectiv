@@ -57,7 +57,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_SourceParameterIsNull_Throws()
         {
             // Arrange
@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_TargetParameterIsNull_Throws()
         {
             // Arrange

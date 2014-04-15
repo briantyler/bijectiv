@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransform.cs" company="Bijectiv">
+// <copyright file="TypeClasses.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,42 +23,46 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransform type.
+//   Defines the TypeClasses type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.TestTools
 {
     using System;
 
+    using Bijectiv.Tests.TestTypes;
+
     /// <summary>
-    /// Represents a transform from a source to target.
+    /// Contains collections that represent classes of types.
     /// </summary>
-    public interface ITransform
+    public class TypeClasses
     {
-        /// <summary>
-        /// Gets the source type supported by the transform.
-        /// </summary>
-        Type Source { get; }
+        public static readonly Type[] ConvertibleTargetTypes =
+        {
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string)
+        };
 
-        /// <summary>
-        /// Gets the target type created by the transform.
-        /// </summary>
-        Type Target { get; }
+        public static readonly Type[] ConvertibleSourceTypes =
+        {
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string), typeof(IConvertible)
+        };
 
-        /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
-        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
-        /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the transformation will take place.
-        /// </param>
-        /// <returns>
-        /// The newly created target instance.
-        /// </returns>
-        object Transform(object source, ITransformContext context); 
+        public static readonly Type[] PrimitiveTypes =
+        {
+            typeof(bool), typeof(char), typeof(sbyte),
+            typeof(byte), typeof(short), typeof(ushort),
+            typeof(int), typeof(uint), typeof(long), typeof(ulong),
+            typeof(float), typeof(double), typeof(decimal),
+            typeof(DateTime), typeof(string), typeof(TestEnum1)
+        };
     }
 }

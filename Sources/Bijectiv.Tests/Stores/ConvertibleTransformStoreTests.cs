@@ -59,7 +59,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
@@ -73,7 +73,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange

@@ -34,7 +34,7 @@ namespace Bijectiv.Transforms
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A delegate transform.
+    /// Represents a transform that performs its transformation via a delegate.
     /// </summary>
     public class DelegateTransform : ITransform
     {
@@ -93,6 +93,19 @@ namespace Bijectiv.Transforms
         /// </summary>
         public Func<object, ITransformContext, object> Delegate { get; private set; }
 
+        /// <summary>
+        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
+        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
+        /// <returns>
+        /// The newly created target instance.
+        /// </returns>
         public object Transform(object source, ITransformContext context)
         {
             return this.Delegate(source, context);

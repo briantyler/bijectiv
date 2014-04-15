@@ -27,13 +27,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+// ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Utilities
 {
-    using System.Collections;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
+    using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.TestTypes;
     using Bijectiv.Utilities;
 
@@ -45,6 +48,32 @@ namespace Bijectiv.Tests.Utilities
     [TestClass]
     public class ReflectTests
     {
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Constructor_ExpressionParameterNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<MultiConstructorTestClass>.Constructor(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void Constructor_ExpressionParameterIsNotConstructor_Throws()
+        {
+            // Arrange
+            
+            // Act
+            Reflect<MultiConstructorTestClass>.Constructor(() => new MultiConstructorTestClass().Naught());
+
+            // Assert
+        }
+
         [TestMethod]
         [TestCategory("Unit")]
         public void Constructor_NoParameters_ReturnsConstructor()
@@ -68,7 +97,7 @@ namespace Bijectiv.Tests.Utilities
 
             // Act
             var ctor = Reflect<MultiConstructorTestClass>
-                .Constructor(() => new MultiConstructorTestClass(Placeholder.Is<TestClass2>()));
+                .Constructor(() => new MultiConstructorTestClass(Placeholder.Of<TestClass2>()));
 
             // Assert
             Assert.IsInstanceOfType(ctor, typeof(ConstructorInfo));
@@ -84,7 +113,7 @@ namespace Bijectiv.Tests.Utilities
 
             // Act
             var ctor = Reflect<MultiConstructorTestClass>
-                .Constructor(() => new MultiConstructorTestClass(Placeholder.Is<TestClass1>(), Placeholder.Is<TestClass2>()));
+                .Constructor(() => new MultiConstructorTestClass(Placeholder.Of<TestClass1>(), Placeholder.Of<TestClass2>()));
 
             // Assert
             Assert.IsInstanceOfType(ctor, typeof(ConstructorInfo));
@@ -96,17 +125,138 @@ namespace Bijectiv.Tests.Utilities
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Method_ActionVariant_ReturnsMethod()
+        [ArgumentNullExceptionExpected]
+        public void MethodActionVariant_ExpressionParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            var method = Reflect<Stack<TestClass1>>.Method(_ => _.Push(Placeholder.Is<TestClass1>()));
+            Reflect<MultiConstructorTestClass>.Method(default(Expression<Action<MultiConstructorTestClass>>));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void MethodActionVariant_ExpressionParameterIsNotMethod_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<MultiConstructorTestClass>.Method((Expression<Action<MultiConstructorTestClass>>)(_ => new MultiConstructorTestClass()));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MethodActionVariant_ExpressionParameterIsMethod_ReturnsMethod()
+        {
+            // Arrange
+
+            // Act
+            var method = Reflect<Stack<TestClass1>>.Method(_ => _.Push(Placeholder.Of<TestClass1>()));
 
             // Assert
             Assert.IsInstanceOfType(method, typeof(MethodInfo));
             Assert.AreEqual("Push", method.Name);
             Assert.AreEqual(typeof(TestClass1), method.GetParameters().Single().ParameterType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void MethodFuncVariant_ExpressionParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<MultiConstructorTestClass>.Method(default(Expression<Func<MultiConstructorTestClass, int>>));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void MethodFuncVariant_ExpressionParameterIsNotMethod_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<MultiConstructorTestClass>.Method(_ => 1);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MethodFuncVariant_ExpressionParameterIsMethod_ReturnsMethod()
+        {
+            // Arrange
+
+            // Act
+            var method = Reflect<Stack<TestClass1>>.Method(_ => _.Pop());
+
+            // Assert
+            Assert.IsInstanceOfType(method, typeof(MethodInfo));
+            Assert.AreEqual("Pop", method.Name);
+            Assert.AreEqual(typeof(TestClass1), method.ReturnType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Property_ExpressionParameterNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<PropertyTestClass>.Property(default(Expression<Func<PropertyTestClass, int>>));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void Property_ExpressionParameterIsNotProperty_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<PropertyTestClass>.Property(_ => 1);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void Property_ExpressionParameterIsField_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<FieldTestClass>.Property(_ => _.Field);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Property_ExpressionParameterIsProperty_ReturnsProperty()
+        {
+            // Arrange
+
+            // Act
+            var property = Reflect<PropertyTestClass>.Property(_ => _.Property);
+
+            // Assert
+            Assert.IsInstanceOfType(property, typeof(PropertyInfo));
+            Assert.AreEqual("Property", property.Name);
+            Assert.AreEqual(typeof(int), property.PropertyType);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransform.cs" company="Bijectiv">
+// <copyright file="CollectionExtensionsTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,42 +23,63 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransform type.
+//   Defines the CollectionExtensionsTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+// ReSharper disable AssignNullToNotNullAttribute
+namespace Bijectiv.Tests.Utilities
 {
-    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
 
-    /// <summary>
-    /// Represents a transform from a source to target.
-    /// </summary>
-    public interface ITransform
+    using Bijectiv.Tests.TestTools;
+    using Bijectiv.Utilities;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
+    public class CollectionExtensionsTests
     {
-        /// <summary>
-        /// Gets the source type supported by the transform.
-        /// </summary>
-        Type Source { get; }
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AddRange_ThisParameterIsNull_Throws()
+        {
+            // Arrange
 
-        /// <summary>
-        /// Gets the target type created by the transform.
-        /// </summary>
-        Type Target { get; }
+            // Act
+            default(ICollection<int>).AddRange(new[] { 1 });
 
-        /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
-        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
-        /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the transformation will take place.
-        /// </param>
-        /// <returns>
-        /// The newly created target instance.
-        /// </returns>
-        object Transform(object source, ITransformContext context); 
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AddRange_CollectionParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new Collection<int>().AddRange(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddRange_ValidParameters_RangeIsAddedToCollection()
+        {
+            // Arrange
+            var target = new Collection<int> { 1, 2, 3 };
+
+            // Act
+            target.AddRange(new[] { 4, 5, 6 });
+
+            // Assert
+            Assert.IsTrue(new[] { 1, 2, 3, 4, 5, 6 }.SequenceEqual(target));
+        }
     }
 }

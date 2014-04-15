@@ -59,7 +59,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_RegistryParameterIsNull_Throws()
         {
             // Arrange
@@ -86,7 +86,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange

@@ -46,7 +46,7 @@ namespace Bijectiv.Tests.Builder
     {
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_SourceBaseParameterIsNull_Throws()
         {
             // Arrange
@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_TargetBaseParameterIsNull_Throws()
         {
             // Arrange
@@ -80,7 +80,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_SourceBaseParameterIsNotAssignableFromSourceParameter_Throws()
         {
             // Arrange
@@ -97,7 +97,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_TargetBaseParameterIsNotAssignableFromTargetParameter_Throws()
         {
             // Arrange
@@ -114,7 +114,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_SourceBaseParameterEqualsTargetBaseParameter_Throws()
         {
             // Arrange

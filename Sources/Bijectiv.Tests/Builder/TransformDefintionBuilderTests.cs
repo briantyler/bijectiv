@@ -49,7 +49,7 @@ namespace Bijectiv.Tests.Builder
     {
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_DefintionParameterIsNull_Throws()
         {
             // Arrange
@@ -76,7 +76,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_SourceTypeMismatch_Throws()
         {
             // Arrange
@@ -90,7 +90,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentException))]
+        [ArgumentExceptionExpected]
         public void CreateInstance_TargetTypeMismatch_Throws()
         {
             // Arrange
@@ -164,7 +164,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ArgumentNullExceptionExpected]
         public void CustomFactory_FactoryParameterNull_Throws()
         {
             // Arrange
