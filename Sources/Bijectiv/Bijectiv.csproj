@@ -63,8 +63,8 @@
     <Compile Include="Factory\ITransformTask.cs" />
     <Compile Include="Factory\TransformFactory.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />
-    <Compile Include="Builder\ITransformDefinitionBuilder.cs" />
-    <Compile Include="Builder\ITransformDefintionBuilderF.cs" />
+    <Compile Include="ITransformDefinitionBuilder.cs" />
+    <Compile Include="ITransformDefintionBuilderF.cs" />
     <Compile Include="Builder\ITransformDefinitionRegistry.cs" />
     <Compile Include="Builder\LegendryFragments.cs" />
     <Compile Include="Builder\TransformDefinition.cs" />

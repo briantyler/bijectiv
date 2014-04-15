@@ -27,9 +27,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv
 {
     using System;
+
+    using Bijectiv.Builder;
 
     using JetBrains.Annotations;
 

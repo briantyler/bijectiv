@@ -27,8 +27,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv
 {
+    using Bijectiv.Builder;
+
     /// <summary>
     /// Represents a builder of <see cref="TransformDefinition"/> instances.
     /// </summary>
