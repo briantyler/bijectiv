@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bijectiv.Tests", "Bijectiv.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{83772A1C-CC12-4B68-AF65-C4ADB772B43F}"
 	ProjectSection(SolutionItems) = preProject
+		.build\bijectiv.ruleset = .build\bijectiv.ruleset
 		.build\bijectiv.runsettings = .build\bijectiv.runsettings
 		.build\Bijectiv.snk = .build\Bijectiv.snk
 		CustomDictionary.xml = CustomDictionary.xml

@@ -30,6 +30,7 @@
 namespace Bijectiv.Utilities
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -58,6 +59,8 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentException">
         /// Thrown when the expression does not describe a constructor.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
+            Justification = "LambdaExpression base type is not helpful here")]
         public static ConstructorInfo Constructor([NotNull] Expression<Func<T>> expression)
         {
             if (expression == null)
@@ -92,6 +95,8 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentException">
         /// Thrown when the expression does not describe a method.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
+            Justification = "LambdaExpression base type is not helpful here")]
         public static MethodInfo Method([NotNull] Expression<Action<T>> expression)
         {
             if (expression == null)
@@ -129,6 +134,8 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentException">
         /// Thrown when the expression does not describe a method.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
+            Justification = "LambdaExpression base type is not helpful here")]
         public static MethodInfo Method<TReturn>([NotNull] Expression<Func<T, TReturn>> expression)
         {
             if (expression == null)
@@ -166,6 +173,8 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentException">
         /// Thrown when the expression does not describe a property.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
+            Justification = "LambdaExpression base type is not helpful here")]
         public static PropertyInfo Property<TProperty>([NotNull] Expression<Func<T, TProperty>> expression)
         {
             if (expression == null)

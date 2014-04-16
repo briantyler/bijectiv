@@ -180,7 +180,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the temporary variables that are required by the <see cref="ITransform"/>.
         /// </summary>
-        public List<ParameterExpression> Variables
+        public IList<ParameterExpression> Variables
         {
             get { return this.variables; }
         }
