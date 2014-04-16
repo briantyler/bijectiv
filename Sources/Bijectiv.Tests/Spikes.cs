@@ -37,6 +37,7 @@ namespace Bijectiv.Tests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    [Ignore]
     [TestClass]
     public class Spikes
     {

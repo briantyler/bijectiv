@@ -31,7 +31,6 @@
 #pragma warning disable 1720
 namespace Bijectiv.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

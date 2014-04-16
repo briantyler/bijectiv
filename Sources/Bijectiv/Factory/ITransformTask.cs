@@ -32,7 +32,7 @@ namespace Bijectiv.Factory
     using Bijectiv.Builder;
 
     /// <summary>
-    /// Represents work that produces a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
+    /// Represents a task that produces a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
     /// </summary>
     public interface ITransformTask
     {
