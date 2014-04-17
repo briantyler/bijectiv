@@ -104,6 +104,14 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
+        /// Gets a value indicating whether the fragment is inherited.
+        /// </summary>
+        public override bool Inherited
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Gets the fragment category.
         /// </summary>
         public override Guid FragmentCategory

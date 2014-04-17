@@ -84,6 +84,35 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="TransformDefinition"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The target.
+        /// </param>
+        /// <param name="fragments">
+        /// A collection of fragments with which to initialize the definition.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public TransformDefinition(
+            [NotNull] Type source, 
+            [NotNull] Type target,
+            [NotNull] IEnumerable<TransformFragment> fragments)
+            : this(source, target)
+        {
+            if (fragments == null)
+            {
+                throw new ArgumentNullException("fragments");
+            }
+
+            this.fragments.AddRange(fragments);
+        }
+
+        /// <summary>
         /// Gets the source type.
         /// </summary>
         public Type Source

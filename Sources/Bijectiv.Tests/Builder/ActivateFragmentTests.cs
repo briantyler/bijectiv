@@ -54,7 +54,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategoryParameter_IsFactory()
+        public void CreateInstance_FragmentCategoryProperty_IsFactory()
         {
             // Arrange
            
@@ -63,6 +63,19 @@ namespace Bijectiv.Tests.Builder
 
             // Assert
             Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_InheritedProperty_IsFalse()
+        {
+            // Arrange
+
+            // Act
+            var target = new ActivateFragment(typeof(object), typeof(object));
+
+            // Assert
+            Assert.IsFalse(target.Inherited);
         }
     }
 }

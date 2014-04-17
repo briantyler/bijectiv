@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformFragment.cs" company="Bijectiv">
+// <copyright file="InitializeVariablesTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,83 +23,52 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformFragment type.
+//   Defines the InitializeVariablesTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv.Factory
 {
     using System;
+    using System.Linq;
+    using System.Linq.Expressions;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The base class for transform fragments.
+    /// The transform task that initializes the scaffold variables.
     /// </summary>
-    public abstract class TransformFragment
+    public class InitializeVariablesTask : ITransformTask
     {
         /// <summary>
-        /// The source type.
+        /// Executes the task.
         /// </summary>
-        private readonly Type source;
-
-        /// <summary>
-        /// The target type.
-        /// </summary>
-        private readonly Type target;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="TransformFragment"/> class.
-        /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
-        /// <param name="target">
-        /// The target.
+        /// <param name="scaffold">
+        /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        protected TransformFragment([NotNull] Type source, [NotNull] Type target)
+        public void Execute([NotNull] TransformScaffold scaffold)
         {
-            if (source == null)
+            if (scaffold == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException("scaffold");
             }
 
-            if (target == null)
-            {
-                throw new ArgumentNullException("target");
-            }
+            scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Source, "source"));
+            scaffold.Source = scaffold.Variables.Last();
 
-            this.source = source;
-            this.target = target;
+            scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Target, "target"));
+            scaffold.Target = scaffold.Variables.Last();
+
+            scaffold.Variables.Add(Expression.Variable(typeof(object), "targetAsObject"));
+            scaffold.TargetAsObject = scaffold.Variables.Last();
+
+            var sourceToType = Expression.Convert(scaffold.SourceAsObject, scaffold.Definition.Source);
+            var assignSource = Expression.Assign(scaffold.Source, sourceToType);
+
+            scaffold.Expressions.Add(assignSource);
         }
-
-        /// <summary>
-        /// Gets the source type.
-        /// </summary>
-        public Type Source
-        {
-            get { return this.source; }
-        }
-
-        /// <summary>
-        /// Gets the target type.
-        /// </summary>
-        public Type Target
-        {
-            get { return this.target; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the fragment is inherited.
-        /// </summary>
-        public abstract bool Inherited { get;  }
-
-        /// <summary>
-        /// Gets the fragment category.
-        /// </summary>
-        public abstract Guid FragmentCategory { get; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTask.cs" company="Bijectiv">
+// <copyright file="InitializeFragmentsTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,18 +23,31 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTask type.
+//   Defines the InitializeFragmentsTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Factory
 {
     using System;
+    using System.Linq;
+
+    using Bijectiv.Builder;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
-    public class ReturnTask : ITransformTask
+    /// <summary>
+    /// The transform task that initializes the scaffold fragments.
+    /// </summary>
+    public class InitializeFragmentsTask : ITransformTask
     {
+        /// <summary>
+        /// Executes the task.
+        /// </summary>
+        /// <param name="scaffold">
+        /// The scaffold on which the <see cref="ITransform"/> is being built.
+        /// </param>
         public void Execute([NotNull] TransformScaffold scaffold)
         {
             if (scaffold == null)
@@ -42,7 +55,30 @@ namespace Bijectiv.Factory
                 throw new ArgumentNullException("scaffold");
             }
 
-            scaffold.Expressions.Add(scaffold.TargetAsObject);
+            scaffold.CandidateFragments.Clear();
+            scaffold.ProcessedFragments.Clear();
+
+            scaffold.CandidateFragments.AddRange(scaffold.Definition.Reverse());
+
+            var inheritsFragments = scaffold.CandidateFragments.OfType<InheritsFragment>().ToArray();
+            while (inheritsFragments.Any())
+            {
+                scaffold.ProcessedFragments.AddRange(inheritsFragments);
+
+                var baseDefintion = scaffold.DefinitionRegistry
+                    .Reverse()
+                    .FirstOrDefault(candidate =>
+                        candidate.Source == inheritsFragments[0].SourceBase
+                        && candidate.Target == inheritsFragments[0].TargetBase);
+
+                if (baseDefintion == null)
+                {
+                    break;
+                }
+
+                scaffold.CandidateFragments.AddRange(baseDefintion.Where(candidate => candidate.Inherited).Reverse());
+                inheritsFragments = baseDefintion.OfType<InheritsFragment>().ToArray();
+            }
         }
     }
 }

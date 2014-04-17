@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultFactoryFragmentTests.cs" company="Bijectiv">
+// <copyright file="ReturnTargetAsObjectTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,59 +23,82 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the DefaultFactoryFragmentTests type.
+//   Defines the ReturnTargetAsObjectTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Builder
+namespace Bijectiv.Tests.Factory
 {
+    using System.Linq;
+    using System.Linq.Expressions;
+
     using Bijectiv.Builder;
+    using Bijectiv.Factory;
     using Bijectiv.Tests.TestTools;
+    using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// This class tests the <see cref="DefaultFactoryFragment"/> class.
-    /// </summary>
     [TestClass]
-    public class DefaultFactoryFragmentTests
+    public class ReturnTargetAsObjectTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_InstanceCreated()
+        public void CreateInstance_DefaultParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            new DefaultFactoryFragment(typeof(object), typeof(object)).Naught();
+            new ReturnTargetAsObjectTask().Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategoryProperty_IsFactory()
+        [ArgumentNullExceptionExpected]
+        public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
+            var target = CreateTarget();
 
             // Act
-            var target = new DefaultFactoryFragment(typeof(object), typeof(object));
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Execute(null);
 
             // Assert
-            Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InheritedProperty_IsFalse()
+        public void Execute_ScaffoldTargetAsObjectProperty_IsAddedToScaffoldExpressions()
         {
             // Arrange
+            var scaffold = CreateScaffold();
+            scaffold.TargetAsObject = Expression.Constant(new object());
+
+            var target = CreateTarget();
 
             // Act
-            var target = new DefaultFactoryFragment(typeof(object), typeof(object));
+            target.Execute(scaffold);
 
             // Assert
-            Assert.IsFalse(target.Inherited);
+            Assert.AreEqual(1, scaffold.Expressions.Count());
+            Assert.AreEqual(scaffold.TargetAsObject, scaffold.Expressions.Single());
+        }
+
+        private static ReturnTargetAsObjectTask CreateTarget()
+        {
+            return new ReturnTargetAsObjectTask();
+        }
+
+        private static TransformScaffold CreateScaffold()
+        {
+            return new TransformScaffold(
+                Stub.Create<ITransformDefinitionRegistry>(),
+                new TransformDefinition(TestClass1.T, TestClass2.T),
+                Expression.Parameter(typeof(object)),
+                Expression.Parameter(typeof(ITransformContext)));
         }
     }
 }

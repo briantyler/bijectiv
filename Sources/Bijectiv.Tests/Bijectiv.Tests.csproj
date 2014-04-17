@@ -77,7 +77,9 @@
     <Compile Include="Builder\TransformDefintionBuilderTests.cs" />
     <Compile Include="Builder\TransformDefinitionTests.cs" />
     <Compile Include="Builder\TransformFragmentTests.cs" />
-    <Compile Include="Factory\InitializeTaskTests.cs" />
+    <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
+    <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
+    <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
     <Compile Include="Factory\TransformScaffoldTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />

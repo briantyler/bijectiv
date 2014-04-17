@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeTaskTests.cs" company="Bijectiv">
+// <copyright file="InitializeVariablesTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeTaskTests type.
+//   Defines the InitializeVariablesTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -41,10 +41,10 @@ namespace Bijectiv.Tests.Factory
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="InitializeTask"/> class.
+    /// This class tests the <see cref="InitializeVariablesTask"/> class.
     /// </summary>
     [TestClass]
-    public class InitializeTaskTests
+    public class InitializeVariablesTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -53,7 +53,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new InitializeTask().Naught();
+            new InitializeVariablesTask().Naught();
 
             // Assert
         }
@@ -226,9 +226,9 @@ namespace Bijectiv.Tests.Factory
             Assert.AreEqual(source, result);
         }
 
-        private static InitializeTask CreateTarget()
+        private static InitializeVariablesTask CreateTarget()
         {
-            return new InitializeTask();
+            return new InitializeVariablesTask();
         }
 
         private static TransformScaffold CreateScaffold()

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeTask.cs" company="Bijectiv">
+// <copyright file="ReturnTargetAsObjectTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,20 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeTask type.
+//   Defines the ReturnTargetAsObjectTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Factory
 {
     using System;
-    using System.Linq;
-    using System.Linq.Expressions;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The transform task that initializes the scaffold.
+    /// A transform task that returns the target as an object.
     /// </summary>
-    public class InitializeTask : ITransformTask
+    public class ReturnTargetAsObjectTask : ITransformTask
     {
         /// <summary>
         /// Executes the task.
@@ -46,9 +44,6 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
         public void Execute([NotNull] TransformScaffold scaffold)
         {
             if (scaffold == null)
@@ -56,19 +51,7 @@ namespace Bijectiv.Factory
                 throw new ArgumentNullException("scaffold");
             }
 
-            scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Source, "source"));
-            scaffold.Source = scaffold.Variables.Last();
-
-            scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Target, "target"));
-            scaffold.Target = scaffold.Variables.Last();
-
-            scaffold.Variables.Add(Expression.Variable(typeof(object), "targetAsObject"));
-            scaffold.TargetAsObject = scaffold.Variables.Last();
-
-            var sourceToType = Expression.Convert(scaffold.SourceAsObject, scaffold.Definition.Source);
-            var assignSource = Expression.Assign(scaffold.Source, sourceToType);
-
-            scaffold.Expressions.Add(assignSource);
+            scaffold.Expressions.Add(scaffold.TargetAsObject);
         }
     }
 }

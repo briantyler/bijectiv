@@ -35,6 +35,7 @@ namespace Bijectiv.Tests.Builder
 
     using Bijectiv.Builder;
     using Bijectiv.Tests.TestTools;
+    using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,7 +52,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformDefinition(typeof(object), typeof(object)).Naught();
+            new TransformDefinition(TestClass1.T, TestClass1.T).Naught();
 
             // Assert
         }
@@ -63,7 +64,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new TransformDefinition(typeof(object), typeof(object));
+            var target = new TransformDefinition(TestClass1.T, TestClass1.T);
 
             // Assert
             Assert.IsFalse(target.Any());
@@ -77,7 +78,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformDefinition(null, typeof(object)).Naught();
+            new TransformDefinition(null, TestClass1.T).Naught();
 
             // Assert
         }
@@ -90,7 +91,20 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new TransformDefinition(typeof(object), null).Naught();
+            new TransformDefinition(TestClass1.T, null).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_FragmentsParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new TransformDefinition(TestClass1.T, TestClass1.T, null).Naught();
 
             // Assert
         }
@@ -102,10 +116,10 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new TransformDefinition(typeof(int), typeof(object));
+            var target = new TransformDefinition(TestClass2.T, TestClass1.T);
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Source);
+            Assert.AreEqual(TestClass2.T, target.Source);
         }
 
         [TestMethod]
@@ -115,10 +129,51 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new TransformDefinition(typeof(object), typeof(int));
+            var target = new TransformDefinition(TestClass1.T, TestClass2.T);
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Target);
+            Assert.AreEqual(TestClass2.T, target.Target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentsParameter_IsCopiedToFragmentsProperty()
+        {
+            // Arrange
+            var fragments = new[]
+            {
+                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>(),
+            };
+
+            // Act
+            var target = new TransformDefinition(TestClass1.T, TestClass1.T, fragments);
+
+            // Assert
+            Assert.IsTrue(fragments.SequenceEqual(target));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_CollectionInitializer_IsCopiedToToFragmentsProperty()
+        {
+            // Arrange
+            var fragments = new[]
+            {
+                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>(),
+            };
+
+            // Act
+            var target = new TransformDefinition(TestClass1.T, TestClass2.T)
+            {
+                fragments[0], fragments[1], fragments[2]
+            };
+
+            // Assert
+            Assert.IsTrue(fragments.SequenceEqual(target));
         }
 
         [TestMethod]
@@ -141,7 +196,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(TestClass1.T, TestClass1.T);
 
             // Act
             target.Add(fragment);
@@ -157,7 +212,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Stub.Create<TransformFragment>(typeof(int), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(TestClass2.T, TestClass1.T);
 
             // Act
             target.Add(fragment);
@@ -172,7 +227,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(int));
+            var fragment = Stub.Create<TransformFragment>(TestClass1.T, TestClass2.T);
 
             // Act
             target.Add(fragment);
@@ -186,7 +241,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = CreateTarget();
-            var fragment = Stub.Create<TransformFragment>(typeof(object), typeof(object));
+            var fragment = Stub.Create<TransformFragment>(TestClass1.T, TestClass1.T);
             target.Add(fragment);
             
             // Act
@@ -199,7 +254,7 @@ namespace Bijectiv.Tests.Builder
 
         private static TransformDefinition CreateTarget()
         {
-            return new TransformDefinition(typeof(object), typeof(object));
+            return new TransformDefinition(TestClass1.T, TestClass1.T);
         }
     }
 }

@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Binaries\Debug\Bijectiv.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Debug\Bijectiv.xml</DocumentationFile>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\.build\bijectiv.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -36,7 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\Binaries\Release\Bijectiv.XML</DocumentationFile>
+    <DocumentationFile>..\..\Binaries\Release\Bijectiv.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -56,10 +56,9 @@
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="Builder\TransformDefinitionRegistry.cs" />
     <Compile Include="Factory\ActivateTask.cs" />
-    <Compile Include="Factory\CandidateTask.cs" />
-    <Compile Include="Factory\InitializeTask.cs" />
-    <Compile Include="Factory\ReturnTask.cs" />
-    <Compile Include="Factory\UninheritableFragmentFilterTask.cs" />
+    <Compile Include="Factory\InitializeFragmentsTask.cs" />
+    <Compile Include="Factory\InitializeVariablesTask.cs" />
+    <Compile Include="Factory\ReturnTargetAsObjectTask.cs" />
     <Compile Include="Factory\ITransformTask.cs" />
     <Compile Include="Factory\TransformFactory.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />

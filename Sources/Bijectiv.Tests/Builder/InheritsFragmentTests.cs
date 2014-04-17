@@ -30,8 +30,6 @@
 // ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Builder
 {
-    using System;
-
     using Bijectiv.Builder;
     using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.TestTypes;
@@ -181,7 +179,24 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategory_IsInherits()
+        public void CreateInstance_InheritedProperty_IsFalse()
+        {
+            // Arrange
+
+            // Act
+            var target = new InheritsFragment(
+                typeof(DerivedTestClass1),
+                typeof(DerivedTestClass2),
+                typeof(BaseTestClass1),
+                typeof(BaseTestClass2));
+
+            // Assert
+            Assert.IsTrue(target.Inherited);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentCategoryProperty_IsInherits()
         {
             // Arrange
 

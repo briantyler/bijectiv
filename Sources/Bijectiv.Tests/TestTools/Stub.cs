@@ -29,6 +29,10 @@
 
 namespace Bijectiv.Tests.TestTools
 {
+    using System;
+
+    using Bijectiv.Builder;
+
     using Moq;
 
     /// <summary>
@@ -52,6 +56,15 @@ namespace Bijectiv.Tests.TestTools
             where T : class
         {
             return new Mock<T>(args) { CallBase = true }.Object;
-        } 
+        }
+
+        public static TransformFragment Fragment<TSource, TTarget>(bool inherited = true, Guid category = default(Guid))
+        {
+            var fragmentStub = new Mock<TransformFragment>(MockBehavior.Loose, typeof(TSource), typeof(TTarget));
+            fragmentStub.Setup(_ => _.Inherited).Returns(inherited);
+            fragmentStub.Setup(_ => _.FragmentCategory).Returns(category);
+
+            return fragmentStub.Object;
+        }
     }
 }

@@ -86,6 +86,19 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_InheritedProperty_IsFalse()
+        {
+            // Arrange
+
+            // Act
+            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+
+            // Assert
+            Assert.IsFalse(target.Inherited);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_FactoryReturnTypeIsMoreDerived_InstanceCreated()
         {
             // Arrange
@@ -98,7 +111,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategoryParameter_IsFactory()
+        public void CreateInstance_FragmentCategoryProperty_IsFactory()
         {
             // Arrange
 

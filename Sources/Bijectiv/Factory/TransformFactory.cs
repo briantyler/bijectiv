@@ -88,16 +88,15 @@ namespace Bijectiv.Factory
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
             var transformContext = Expression.Parameter(typeof(ITransformContext), "transformContext");
 
-            var ore = new TransformScaffold(this.definitionRegistry, definition, sourceAsObject, transformContext);
+            var scaffold = new TransformScaffold(this.definitionRegistry, definition, sourceAsObject, transformContext);
 
-            new InitializeTask().Execute(ore);
-            new UninheritableFragmentFilterTask().Execute(ore);
-            new CandidateTask().Execute(ore);
-            new ActivateTask().Execute(ore);
-            new ReturnTask().Execute(ore);
+            new InitializeVariablesTask().Execute(scaffold);
+            new InitializeFragmentsTask().Execute(scaffold);
+            new ActivateTask().Execute(scaffold);
+            new ReturnTargetAsObjectTask().Execute(scaffold);
 
             var lambda = Expression.Lambda<Func<object, ITransformContext, object>>(
-                Expression.Block(typeof(object), ore.Variables, ore.Expressions),
+                Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
                 transformContext);
 
