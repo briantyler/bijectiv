@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionExtensionsTests.cs" company="Bijectiv">
+// <copyright file="EnumerableExtensions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,64 +23,38 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the CollectionExtensionsTests type.
+//   Defines the EnumerableExtensions type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
-#pragma warning disable 1720
-namespace Bijectiv.Tests.Utilities
+namespace Bijectiv.Utilities
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 
-    using Bijectiv.Tests.TestTools;
-    using Bijectiv.Utilities;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
-    public class CollectionExtensionsTests
+    /// <summary>
+    /// Represents extensions to types that implement <see cref="IEnumerable{T}"/>.
+    /// </summary>
+    public static class EnumerableExtensions
     {
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void AddRange_ThisParameterIsNull_Throws()
+        /// <summary>
+        /// Concatenates two sequences, where the second sequence is constructed from a collection of arguments.
+        /// </summary>
+        /// <param name="this">
+        /// The first sequence.
+        /// </param>
+        /// <param name="args">
+        /// The collection of arguments to concatenate with the first.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of items in the collection.
+        /// </typeparam>
+        /// <returns>
+        /// The concatenated sequence.
+        /// </returns>
+        public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params T[] args)
         {
-            // Arrange
-
-            // Act
-            default(ICollection<int>).AddRange(new[] { 1 });
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void AddRange_CollectionParameterIsNull_Throws()
-        {
-            // Arrange
-
-            // Act
-            new Collection<int>().AddRange(null);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void AddRange_ValidParameters_RangeIsAddedToCollection()
-        {
-            // Arrange
-            var target = new Collection<int> { 1, 2, 3 };
-
-            // Act
-            target.AddRange(new[] { 4, 5, 6 });
-
-            // Assert
-            Assert.IsTrue(new[] { 1, 2, 3, 4, 5, 6 }.SequenceEqual(target));
+            return Enumerable.Concat(@this, args);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionExtensionsTests.cs" company="Bijectiv">
+// <copyright file="EnumerableExtensionsTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,16 +23,14 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the CollectionExtensionsTests type.
+//   Defines the EnumerableExtensionsTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
 #pragma warning disable 1720
 namespace Bijectiv.Tests.Utilities
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
 
     using Bijectiv.Tests.TestTools;
@@ -40,47 +38,49 @@ namespace Bijectiv.Tests.Utilities
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="EnumerableExtensions"/> class.
+    /// </summary>
     [TestClass]
-    public class CollectionExtensionsTests
+    public class EnumerableExtensionsTests
     {
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void AddRange_ThisParameterIsNull_Throws()
+        public void Concat_ThisParameterIsEmpty_Throws()
         {
             // Arrange
 
             // Act
-            default(ICollection<int>).AddRange(new[] { 1 });
+            default(IEnumerable<int>).Concat();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void AddRange_CollectionParameterIsNull_Throws()
+        public void Concat_SingleArgumentParameter_ArgumentAppendedToResult()
         {
             // Arrange
 
             // Act
-            new Collection<int>().AddRange(null);
+            var result = Enumerable.Range(0, 3).Concat(3);
 
             // Assert
+            Assert.IsTrue(Enumerable.Range(0, 4).SequenceEqual(result));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddRange_ValidParameters_RangeIsAddedToCollection()
+        public void Concat_MultipleArgumentParameter_ArgumentsAppendedToResult()
         {
             // Arrange
-            var target = new Collection<int> { 1, 2, 3 };
 
             // Act
-            target.AddRange(new[] { 4, 5, 6 });
+            var result = Enumerable.Range(0, 3).Concat(3, 4, 5);
 
             // Assert
-            Assert.IsTrue(new[] { 1, 2, 3, 4, 5, 6 }.SequenceEqual(target));
+            Assert.IsTrue(Enumerable.Range(0, 6).SequenceEqual(result));
         }
     }
 }

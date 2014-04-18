@@ -92,7 +92,7 @@ namespace Bijectiv.Factory
 
             new InitializeVariablesTask().Execute(scaffold);
             new InitializeFragmentsTask().Execute(scaffold);
-            new ActivateTask().Execute(scaffold);
+            new CreateTargetTask(new ActivateTargetExpressionFactory()).Execute(scaffold);
             new ReturnTargetAsObjectTask().Execute(scaffold);
 
             var lambda = Expression.Lambda<Func<object, ITransformContext, object>>(

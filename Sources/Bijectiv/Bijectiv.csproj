@@ -55,7 +55,9 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="Builder\TransformDefinitionRegistry.cs" />
-    <Compile Include="Factory\ActivateTask.cs" />
+    <Compile Include="Factory\ActivateTargetExpressionFactory.cs" />
+    <Compile Include="Factory\CreateTargetTask.cs" />
+    <Compile Include="Factory\ISelectiveExpressionFactory.cs" />
     <Compile Include="Factory\InitializeFragmentsTask.cs" />
     <Compile Include="Factory\InitializeVariablesTask.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTask.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Transforms\DelegateTransform.cs" />
     <Compile Include="Transforms\PassthroughTransform.cs" />
     <Compile Include="Utilities\CollectionExtensions.cs" />
+    <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\Placeholder.cs" />
     <Compile Include="Utilities\Reflect.cs" />
   </ItemGroup>
