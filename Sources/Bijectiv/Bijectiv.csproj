@@ -57,6 +57,8 @@
     <Compile Include="Builder\TransformDefinitionRegistry.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactory.cs" />
     <Compile Include="Factory\CreateTargetTask.cs" />
+    <Compile Include="Factory\CustomFactoryExpressionFactory.cs" />
+    <Compile Include="Factory\DefaultFactoryExpressionFactory.cs" />
     <Compile Include="Factory\ISelectiveExpressionFactory.cs" />
     <Compile Include="Factory\InitializeFragmentsTask.cs" />
     <Compile Include="Factory\InitializeVariablesTask.cs" />

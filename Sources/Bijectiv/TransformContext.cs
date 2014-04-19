@@ -29,7 +29,10 @@
 
 namespace Bijectiv
 {
+    using System;
     using System.Globalization;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents the context in which a transform is happening.
@@ -37,8 +40,89 @@ namespace Bijectiv
     public class TransformContext : ITransformContext
     {
         /// <summary>
-        /// Gets or sets the context's culture.
+        /// The culture in which the transform is taking place.
         /// </summary>
-        public CultureInfo Culture { get; set; }
+        private readonly CultureInfo culture;
+
+        /// <summary>
+        /// The resolve delegate.
+        /// </summary>
+        private readonly Func<Type, object> resolveDelegate;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="TransformContext"/> class.
+        /// </summary>
+        public TransformContext()
+            : this(
+                CultureInfo.InvariantCulture,
+                t =>
+                    {
+                        throw new InvalidOperationException("No Default Factory registered.");
+                    })
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="TransformContext"/> class.
+        /// </summary>
+        /// <param name="culture">
+        /// The culture in which the transform is taking place.
+        /// </param>
+        /// <param name="resolveDelegate">
+        /// The resolve delegate.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public TransformContext([NotNull] CultureInfo culture, [NotNull] Func<Type, object> resolveDelegate)
+        {
+            if (culture == null)
+            {
+                throw new ArgumentNullException("culture");
+            }
+
+            if (resolveDelegate == null)
+            {
+                throw new ArgumentNullException("resolveDelegate");
+            }
+
+            this.culture = culture;
+            this.resolveDelegate = resolveDelegate;
+        }
+
+        /// <summary>
+        /// Gets the culture in which the transform is taking place.
+        /// </summary>
+        public CultureInfo Culture
+        {
+            get { return this.culture; }
+        }
+
+        /// <summary>
+        /// Gets the resolve delegate.
+        /// </summary>
+        public Func<Type, object> ResolveDelegate
+        {
+            get { return this.resolveDelegate; }
+        }
+
+        /// <summary>
+        /// Retrieve a service from the default facotry.
+        /// </summary>
+        /// <param name="service">
+        /// The service to retrieve.
+        /// </param>
+        /// <returns>
+        /// The component instance that provides the service.
+        /// </returns>
+        public object Resolve([NotNull] Type service)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException("service");
+            }
+
+            return this.ResolveDelegate(service);
+        }
     }
 }

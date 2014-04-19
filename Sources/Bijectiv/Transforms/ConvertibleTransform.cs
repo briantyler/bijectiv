@@ -81,16 +81,29 @@ namespace Bijectiv.Transforms
         /// <see cref="Convert.ChangeType"/>.
         /// </summary>
         /// <param name="source">
-        ///     The source object.
+        /// The source object.
         /// </param>
         /// <param name="context">
-        ///     The context in which the transformation will take place.
+        /// The context in which the transformation will take place.
         /// </param>
         /// <returns>
         /// The newly minted target instance.
         /// </returns>
-        public object Transform(object source, ITransformContext context)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if any parameter is null.
+        /// </exception>
+        public object Transform([NotNull] object source, [NotNull] ITransformContext context)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             return Convert.ChangeType(source, this.Target, context.Culture);
         }
     }

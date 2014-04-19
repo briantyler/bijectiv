@@ -34,5 +34,7 @@ namespace Bijectiv.Tests.TestTypes
     public class TestClass1
     {
         public static readonly Type T = typeof(TestClass1);
+
+        public string Id { get; set; }
     }
 }

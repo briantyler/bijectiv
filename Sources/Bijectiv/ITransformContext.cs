@@ -29,6 +29,7 @@
 
 namespace Bijectiv
 {
+    using System;
     using System.Globalization;
 
     /// <summary>
@@ -37,8 +38,20 @@ namespace Bijectiv
     public interface ITransformContext
     {
         /// <summary>
-        /// Gets the context's culture.
+        /// Gets the culture in which the transform is taking place. Defaults to 
+        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
         /// </summary>
         CultureInfo Culture { get; }
+
+        /// <summary>
+        /// Retrieve a service from the default facotry.
+        /// </summary>
+        /// <param name="service">
+        /// The service to retrieve.
+        /// </param>
+        /// <returns>
+        /// The component instance that provides the service.
+        /// </returns>
+        object Resolve(Type service);
     }
 }

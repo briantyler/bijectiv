@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConvertibleTransformTests.cs" company="Bijectiv">
+// <copyright file="TransformContextTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,106 +23,74 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ConvertibleTransformTests type.
+//   Defines the TransformContextTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
-namespace Bijectiv.Tests.Transforms
+namespace Bijectiv.Tests
 {
-    using System;
     using System.Globalization;
 
     using Bijectiv.Tests.TestTools;
-    using Bijectiv.Transforms;
+    using Bijectiv.Tests.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Moq;
-
     /// <summary>
-    /// This class tests the <see cref="ConvertibleTransform"/> class.
+    /// This class tests the <see cref="TransformContext"/> class.
     /// </summary>
     [TestClass]
-    public class ConvertibleTransformTests
+    public class TransformContextTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_TargetParameterIsNull_Throws()
+        public void CreateInstance_DefaultParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            new ConvertibleTransform(null).Naught();
+            new TransformContext().Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TargetParameterIsConvertibleTarget_InstanceCreated()
+        public void CreateInstance_DefaultParameters_CulturePropertyIsInvariant()
         {
             // Arrange
 
             // Act
-            foreach (var type in TypeClasses.ConvertibleTargetTypes)
-            {
-                new ConvertibleTransform(type).Naught();
-            }
+            var target = new TransformContext();
 
             // Assert
+            Assert.AreEqual(CultureInfo.InvariantCulture, target.Culture);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
-        public void CreateInstance_TargetParameterIsNotConvertibleType_Throws()
+        [InvalidOperationExceptionExpected]
+        public void CreateInstance_DefaultParameters_ResolveDelegateThrows()
         {
             // Arrange
 
             // Act
-            new ConvertibleTransform(typeof(object)).Naught();
+            var target = new TransformContext();
 
             // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_SourcePropertyIsIconvertible()
-        {
-            // Arrange
-
-            // Act
-            var target = new ConvertibleTransform(typeof(int));
-
-            // Assert
-            Assert.AreEqual(typeof(IConvertible), target.Source);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
-        {
-            // Arrange
-
-            // Act
-            var target = new ConvertibleTransform(typeof(int));
-
-            // Assert
-            Assert.AreEqual(typeof(int), target.Target);
+            target.ResolveDelegate(typeof(object));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Transform_SourceParameterIsNull_Throws()
+        public void CreateInstance_CultureParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
 
             // Act
-            target.Transform(null, Stub.Create<ITransformContext>());
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new TransformContext(null, t => new object()).Naught();
 
             // Assert
         }
@@ -130,47 +98,72 @@ namespace Bijectiv.Tests.Transforms
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Transform_ContextParameterIsNull_Throws()
+        public void CreateInstance_ResolveDelegateParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
 
             // Act
-            target.Transform(true, null);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new TransformContext(CultureInfo.InvariantCulture, null).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_ValidSourceParameter_ReturnsConvertedTarget()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
-            var contextMock = new Mock<ITransformContext>(MockBehavior.Strict);
-            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Transform("TRUE", contextMock.Object);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new TransformContext(CultureInfo.InvariantCulture, t => new object()).Naught();
 
             // Assert
-            Assert.AreEqual(true, result);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_ValidSourceParameter_ConvertsUsingTransformContextCulture()
+        public void CreateInstance_CultureParameter_IsAssignedToCultureProperty()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(DateTime));
-            var contextMock = new Mock<ITransformContext>(MockBehavior.Strict);
-            contextMock.SetupGet(_ => _.Culture).Returns(new CultureInfo("en-US"));
+            var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var result = target.Transform("04/06/2014", contextMock.Object);
+            var target = new TransformContext(culture, t => new object());
 
             // Assert
-            Assert.AreEqual(new DateTime(2014, 04, 06), result);
+            Assert.AreEqual(culture, target.Culture);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Resolve_TypeParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new TransformContext(CultureInfo.InvariantCulture, t => new object());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Resolve(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_ValidParameters_InvokesResolveDelegate()
+        {
+            // Arrange
+            var expected = new object();
+            var target = new TransformContext(CultureInfo.InvariantCulture, t => t == TestClass1.T ? expected : null);
+
+            // Act
+            var result = target.Resolve(TestClass1.T);
+
+            // Assert
+            Assert.AreEqual(expected, result);
         }
     }
 }

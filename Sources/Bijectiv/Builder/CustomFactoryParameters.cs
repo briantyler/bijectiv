@@ -42,6 +42,16 @@ namespace Bijectiv.Builder
     public class CustomFactoryParameters<TSource>
     {
         /// <summary>
+        /// The source for which the target is being created.
+        /// </summary>
+        private readonly TSource source;
+
+        /// <summary>
+        /// The transform context.
+        /// </summary>
+        private readonly ITransformContext context;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="CustomFactoryParameters{TSource}"/> class.
         /// </summary>
         /// <param name="source">
@@ -65,18 +75,24 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("context");
             }
 
-            this.Source = source;
-            this.Context = context;
+            this.source = source;
+            this.context = context;
         }
 
         /// <summary>
         /// Gets the source for which the target is being created.
         /// </summary>
-        public TSource Source { get; private set; }
+        public TSource Source
+        {
+            get { return this.source; }
+        }
 
         /// <summary>
-        /// Gets the transformation context.
+        /// Gets the transform context.
         /// </summary>
-        public ITransformContext Context { get; private set; }
+        public ITransformContext Context
+        {
+            get { return this.context; }
+        }
     }
 }

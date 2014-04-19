@@ -79,6 +79,8 @@
     <Compile Include="Builder\TransformFragmentTests.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="Factory\CreateTargetTaskTests.cs" />
+    <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />
+    <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="TestTypes\TestEnum1.cs" />
     <Compile Include="TestTools\Stub.cs" />
     <Compile Include="TestTools\TestExtensions.cs" />
+    <Compile Include="TransformContextTests.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />
     <Compile Include="Transforms\ConvertibleTransformTests.cs" />

@@ -93,11 +93,6 @@ namespace Bijectiv.Factory
                 return;
             }
 
-            var factoryFragments = scaffold
-                .CandidateFragments
-                .Where(candidate => candidate.FragmentCategory == LegendryFragments.Factory);
-            scaffold.ProcessedFragments.AddRange(factoryFragments);
-
             var createTarget = this.ExpressionFactory.CreateExpression(scaffold);
             var assignTarget = Expression.Assign(scaffold.Target, createTarget);
 
@@ -106,6 +101,10 @@ namespace Bijectiv.Factory
 
             scaffold.Expressions.Add(assignTarget);
             scaffold.Expressions.Add(assignTargetAsObject);
+
+            var factoryFragments = scaffold.CandidateFragments
+                .Where(candidate => candidate.FragmentCategory == LegendryFragments.Factory);
+            scaffold.ProcessedFragments.AddRange(factoryFragments);
         }
     }
 }
