@@ -44,8 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\JetBrains.Annotations.7.0\lib\net45\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.UnitTestFramework">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Extensions\Microsoft.VisualStudio.TestPlatform.UnitTestFramework.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.2.1402.2112, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,7 +64,24 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ArgumentExceptionExpectedAttribute.cs" />
+    <Compile Include="ArgumentNullExceptionExpectedAttribute.cs" />
+    <Compile Include="InvalidOperationExceptionExpectedAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stub.cs" />
+    <Compile Include="TestExtensions.cs" />
+    <Compile Include="TestTypes\BaseTestClass1.cs" />
+    <Compile Include="TestTypes\BaseTestClass2.cs" />
+    <Compile Include="TestTypes\DerivedTestClass1.cs" />
+    <Compile Include="TestTypes\DerivedTestClass2.cs" />
+    <Compile Include="TestTypes\FieldTestClass.cs" />
+    <Compile Include="TestTypes\ITestInterface1.cs" />
+    <Compile Include="TestTypes\MultiConstructorTestClass.cs" />
+    <Compile Include="TestTypes\PropertyTestClass.cs" />
+    <Compile Include="TestTypes\TestClass1.cs" />
+    <Compile Include="TestTypes\TestClass2.cs" />
+    <Compile Include="TestTypes\TestEnum1.cs" />
+    <Compile Include="TypeClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">
@@ -75,6 +93,12 @@
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bijectiv\Bijectiv.csproj">
+      <Project>{c49092a4-1985-4a13-9324-cc23ec29884a}</Project>
+      <Name>Bijectiv</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

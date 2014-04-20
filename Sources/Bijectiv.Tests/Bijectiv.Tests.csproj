@@ -91,29 +91,12 @@
     <Compile Include="Stores\CompositeTransformStoreTests.cs" />
     <Compile Include="Stores\ConvertibleTransformStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStoreTests.cs" />
-    <Compile Include="TestTools\ArgumentExceptionExpectedAttribute.cs" />
-    <Compile Include="TestTools\ArgumentNullExceptionExpectedAttribute.cs" />
-    <Compile Include="TestTools\InvalidOperationExceptionExpectedAttribute.cs" />
-    <Compile Include="TestTypes\BaseTestClass1.cs" />
-    <Compile Include="TestTypes\BaseTestClass2.cs" />
-    <Compile Include="TestTypes\DerivedTestClass1.cs" />
-    <Compile Include="TestTypes\DerivedTestClass2.cs" />
-    <Compile Include="TestTypes\FieldTestClass.cs" />
-    <Compile Include="TestTypes\ITestInterface1.cs" />
-    <Compile Include="TestTypes\MultiConstructorTestClass.cs" />
-    <Compile Include="TestTypes\PropertyTestClass.cs" />
-    <Compile Include="TestTypes\TestClass1.cs" />
-    <Compile Include="TestTypes\TestClass2.cs" />
-    <Compile Include="TestTypes\TestEnum1.cs" />
-    <Compile Include="TestTools\Stub.cs" />
-    <Compile Include="TestTools\TestExtensions.cs" />
     <Compile Include="TransformContextTests.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />
     <Compile Include="Transforms\ConvertibleTransformTests.cs" />
     <Compile Include="Transforms\DelegateTransformTests.cs" />
     <Compile Include="Transforms\PassthroughTransformTests.cs" />
-    <Compile Include="TestTools\TypeClasses.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
     <Compile Include="Utilities\PlaceholderTests.cs" />
@@ -141,7 +124,9 @@
       <Name>Bijectiv</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestTools\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
