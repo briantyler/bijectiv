@@ -111,6 +111,19 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_SourceParameterIInterface_Throws()
+        {
+            // Arrange
+
+            // Act
+            new TransformDefinition(typeof(ITestInterface1), TestClass1.T).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_SourceParameter_IsAssignedToSourceProperty()
         {
             // Arrange

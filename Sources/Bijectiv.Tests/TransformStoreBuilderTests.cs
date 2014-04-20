@@ -34,10 +34,13 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Factory;
     using Bijectiv.Stores;
     using Bijectiv.Tests.TestTools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="TransformStoreBuilder"/> class.
@@ -117,13 +120,27 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Build_EmptyBuilder_ReturnsCompositeTransformStore()
+        [ArgumentNullExceptionExpected]
+        public void Build_FactoriesParameterIsNull_Throws()
         {
             // Arrange
             var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
 
             // Act
-            var result = target.Build();
+            target.Build(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_ValidParameters_ReturnsCompositeTransformStore()
+        {
+            // Arrange
+            var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
+
+            // Act
+            var result = target.Build(Enumerable.Empty<ITransformStoreFactory>());
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(CompositeTransformStore));
@@ -131,30 +148,26 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Build_EmptyBuilder_ResultContainsIdenticalPrimitiveTransformStore()
+        public void Build_ValidParameters_ConstructsStoreUsingFactories()
         {
             // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+
+            var factory1 = repository.Create<ITransformStoreFactory>();
+            var store1 = Stub.Create<ITransformStore>();
+            factory1.Setup(_ => _.Create(It.IsAny<ITransformDefinitionRegistry>())).Returns(store1);
+
+            var factory2 = repository.Create<ITransformStoreFactory>();
+            var store2 = Stub.Create<ITransformStore>();
+            factory2.Setup(_ => _.Create(It.IsAny<ITransformDefinitionRegistry>())).Returns(store2);
+
             var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
 
             // Act
-            var result = (CompositeTransformStore)target.Build();
+            var result = (CompositeTransformStore)target.Build(new[] { factory1.Object, factory2.Object });
 
             // Assert
-            Assert.IsInstanceOfType(result.ElementAt(0), typeof(IdenticalPrimitiveTransformStore));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Build_EmptyBuilder_ResultContainsConvertibleTransformStore()
-        {
-            // Arrange
-            var target = new TransformStoreBuilder(Stub.Create<ITransformDefinitionRegistry>());
-
-            // Act
-            var result = (CompositeTransformStore)target.Build();
-
-            // Assert
-            Assert.IsInstanceOfType(result.ElementAt(1), typeof(ConvertibleTransformStore));
+            new[] { store1, store2 }.AssertSequenceEqual(result);
         }
     }
 }

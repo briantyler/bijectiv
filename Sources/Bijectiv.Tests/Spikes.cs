@@ -29,10 +29,28 @@
 
 namespace Bijectiv.Tests
 {
+    using Bijectiv.Tests.TestTypes;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class Spikes
     {
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Spike_Activate_Activated()
+        {
+            // Arrange
+            var builder = new TransformStoreBuilder();
+            builder.Register<TestClass1, TestClass2>().Activate();
+            var store = builder.Build();
+            var transform = store.Resolve(TestClass1.T, TestClass2.T);
+
+            // Act
+            var result = transform.Transform(new TestClass1(), new TransformContext());
+
+            // Assert
+            Assert.IsInstanceOfType(result, TestClass2.T);
+        }
     }
 }

@@ -42,13 +42,8 @@ namespace Bijectiv.Factory
     /// <summary>
     /// A factory that creates <see cref="DelegateTransform"/> instances.
     /// </summary>
-    public class TransformFactory
+    public class TransformFactory : ITransformFactory
     {
-        /// <summary>
-        /// The registry containing all known <see cref="TransformDefinition"/> instances.
-        /// </summary>
-        private readonly ITransformDefinitionRegistry definitionRegistry;
-
         /// <summary>
         /// The ordered collection of tasks that build the transform delegate.
         /// </summary>
@@ -57,39 +52,20 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformFactory"/> class.
         /// </summary>
-        /// <param name="definitionRegistry">
-        /// The registry containing all known <see cref="TransformDefinition"/> instances.
-        /// </param>
         /// <param name="taskCollection">
         /// The ordered collection of tasks that build the transform delegate.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformFactory(
-            [NotNull] ITransformDefinitionRegistry definitionRegistry,
-            [NotNull] IEnumerable<ITransformTask> taskCollection)
+        public TransformFactory([NotNull] IEnumerable<ITransformTask> taskCollection)
         {
-            if (definitionRegistry == null)
-            {
-                throw new ArgumentNullException("definitionRegistry");
-            }
-
             if (taskCollection == null)
             {
                 throw new ArgumentNullException("taskCollection");
             }
 
-            this.definitionRegistry = definitionRegistry;
             this.taskCollection = taskCollection;
-        }
-
-        /// <summary>
-        /// Gets the registry containing all known <see cref="TransformDefinition"/> instances.
-        /// </summary>
-        public ITransformDefinitionRegistry DefinitionRegistry
-        {
-            get { return this.definitionRegistry; }
         }
 
         /// <summary>
@@ -103,17 +79,25 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Creates a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
         /// </summary>
+        /// <param name="definitionRegistry">
+        /// The registry containing all known <see cref="TransformDefinition"/> instances.
+        /// </param>
         /// <param name="definition">
         /// The definition from which to create a <see cref="ITransform"/>.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that is represented by <paramref name="definition"/>.
+        /// The <see cref="ITransform"/> that is defined by <paramref name="definition"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public ITransform Create([NotNull] TransformDefinition definition)
+        public ITransform Create(ITransformDefinitionRegistry definitionRegistry, TransformDefinition definition)
         {
+            if (definitionRegistry == null)
+            {
+                throw new ArgumentNullException("definitionRegistry");
+            }
+
             if (definition == null)
             {
                 throw new ArgumentNullException("definition");
@@ -123,7 +107,7 @@ namespace Bijectiv.Factory
             var transformContext = Expression.Parameter(typeof(ITransformContext), "transformContext");
 
             var scaffold = new TransformScaffold(
-                this.DefinitionRegistry, definition, sourceAsObject, transformContext);
+                definitionRegistry, definition, sourceAsObject, transformContext);
 
             this.TaskCollection.ForEach(item => item.Execute(scaffold));
 

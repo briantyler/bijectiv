@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Bijectiv">
+// <copyright file="ITransformStoreFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,30 +23,28 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   Defines the ITransformStoreFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
+namespace Bijectiv.Stores
+{
+    using Bijectiv.Builder;
 
-[assembly: AssemblyTitle("Bijectiv")]
-[assembly: AssemblyDescription("An addictive object-to-object mapper for .NET")]
-
-[assembly: InternalsVisibleTo(
-   "Bijectiv.Tests, " + 
-   "PublicKey=" + 
-   "0024000004800000940000000602000000240000525341310004000001000100ebd0fee48c799f" +
-   "58b70e32208dd1d46c03b1df239de05b6daf6f37d577246fa99fb79c30150a29f56c659fdd717c" +
-   "014ef18a16d3e5a5f6e582c7b68ea71f6a82a05dd8e25382668ff130e93e4c5c0879c47122155f" +
-   "8f7ee37e603380317ef0927de569365f75316266ec02a2a9b2d2b0068365a79dff50f29f81c211" +
-   "047799be")]
-
-[assembly: InternalsVisibleTo(
-   "Bijectiv.TestUtilities, " +
-   "PublicKey=" +
-   "0024000004800000940000000602000000240000525341310004000001000100ebd0fee48c799f" +
-   "58b70e32208dd1d46c03b1df239de05b6daf6f37d577246fa99fb79c30150a29f56c659fdd717c" +
-   "014ef18a16d3e5a5f6e582c7b68ea71f6a82a05dd8e25382668ff130e93e4c5c0879c47122155f" +
-   "8f7ee37e603380317ef0927de569365f75316266ec02a2a9b2d2b0068365a79dff50f29f81c211" +
-   "047799be")]
+    /// <summary>
+    /// Represents a factory that creates <see cref="ITransformStore"/> instances.
+    /// </summary>
+    public interface ITransformStoreFactory
+    {
+        /// <summary>
+        /// Creates a <see cref="ITransformStore"/> from a <see cref="ITransformDefinitionRegistry"/>.
+        /// </summary>
+        /// <param name="registry">
+        /// The registry from which to create the store.
+        /// </param>
+        /// <returns>
+        /// The created <see cref="ITransformStore"/>.
+        /// </returns>
+        ITransformStore Create(ITransformDefinitionRegistry registry);
+    }
+}

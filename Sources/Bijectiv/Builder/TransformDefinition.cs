@@ -79,6 +79,16 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("target");
             }
 
+            if (source.IsInterface)
+            {
+                throw new ArgumentException(string.Format(
+                    "The source type '{0}' cannot be an interface. The reason for this is that at runtime, for"
+                    + " all objects `o`, `o.GetType().IsInterface` is false; in other words the type of an object "
+                    + "is always some concrete type. So allowing interface registrations is likely to cause more "
+                    + "harm than good.", 
+                    source));
+            }
+
             this.source = source;
             this.target = target;
         }

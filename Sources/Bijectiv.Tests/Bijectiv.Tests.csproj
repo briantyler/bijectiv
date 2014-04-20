@@ -99,6 +99,7 @@
     <Compile Include="TestTypes\DerivedTestClass1.cs" />
     <Compile Include="TestTypes\DerivedTestClass2.cs" />
     <Compile Include="TestTypes\FieldTestClass.cs" />
+    <Compile Include="TestTypes\ITestInterface1.cs" />
     <Compile Include="TestTypes\MultiConstructorTestClass.cs" />
     <Compile Include="TestTypes\PropertyTestClass.cs" />
     <Compile Include="TestTypes\TestClass1.cs" />
@@ -131,6 +132,10 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bijectiv.TestUtilities\Bijectiv.TestUtilities.csproj">
+      <Project>{efd46f90-cad9-4cc9-8c11-e535c510df46}</Project>
+      <Name>Bijectiv.TestUtilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bijectiv\Bijectiv.csproj">
       <Project>{C49092A4-1985-4A13-9324-CC23EC29884A}</Project>
       <Name>Bijectiv</Name>

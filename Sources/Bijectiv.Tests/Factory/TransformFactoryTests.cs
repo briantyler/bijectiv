@@ -57,23 +57,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new TransformFactory(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                Stub.Create<IEnumerable<ITransformTask>>()).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_DefinitionRegistryParameterIsNull_Throws()
-        {
-            // Arrange
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformFactory(null, Stub.Create<IEnumerable<ITransformTask>>()).Naught();
+            new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>()).Naught();
 
             // Assert
         }
@@ -87,23 +71,9 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformFactory(Stub.Create<ITransformDefinitionRegistry>(), null).Naught();
+            new TransformFactory(null).Naught();
 
             // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_DefinitionRegistryParameter_IsAssignedToDefinitionRegistryProperty()
-        {
-            // Arrange
-            var definitionRegistry = Stub.Create<ITransformDefinitionRegistry>();
-
-            // Act
-            var target = new TransformFactory(definitionRegistry, Stub.Create<IEnumerable<ITransformTask>>());
-            
-            // Assert
-            Assert.AreEqual(definitionRegistry, target.DefinitionRegistry);
         }
 
         [TestMethod]
@@ -115,7 +85,7 @@ namespace Bijectiv.Tests.Factory
             var taskCollection = Stub.Create<IEnumerable<ITransformTask>>();
 
             // Act
-            var target = new TransformFactory(Stub.Create<ITransformDefinitionRegistry>(), taskCollection);
+            var target = new TransformFactory(taskCollection);
 
             // Assert
             Assert.AreEqual(taskCollection, target.TaskCollection);
@@ -128,13 +98,26 @@ namespace Bijectiv.Tests.Factory
         public void Create_DefinitionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                Stub.Create<IEnumerable<ITransformTask>>());
+            var target = new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null);
+            target.Create(Stub.Create<ITransformDefinitionRegistry>(), null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Create_DefinitionRegistryParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Create(null, new TransformDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
         }
@@ -150,12 +133,12 @@ namespace Bijectiv.Tests.Factory
                 .Callback((TransformScaffold s) => s.Expressions.Add(Expression.Constant(new object())));
 
             var taskCollection = new List<ITransformTask> { taskMock.Object };
-            var target = new TransformFactory(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                taskCollection);
+            var target = new TransformFactory(taskCollection);
 
             // Act
-            var result = target.Create(new TransformDefinition(TestClass1.T, TestClass2.T));
+            var result = target.Create(
+                Stub.Create<ITransformDefinitionRegistry>(),
+                new TransformDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(DelegateTransform));
@@ -218,12 +201,13 @@ namespace Bijectiv.Tests.Factory
                     });
 
             var taskCollection = new List<ITransformTask> { assignSourceTaskMock.Object, returnTaskMock.Object };
-            var target = new TransformFactory(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                taskCollection);
+            var target = new TransformFactory(taskCollection);
 
             // Act
-            var result = target.Create(new TransformDefinition(TestClass1.T, TestClass2.T));
+            var result = target.Create(
+                Stub.Create<ITransformDefinitionRegistry>(), 
+                new TransformDefinition(TestClass1.T, TestClass2.T));
+
             var actualTarget = result.Transform(source, transformContextMock.Object);
 
             // Assert

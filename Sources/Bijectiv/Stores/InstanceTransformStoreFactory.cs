@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConvertibleTransformStore.cs" company="Bijectiv">
+// <copyright file="InstanceTransformStoreFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ConvertibleTransformStore type.
+//   Defines the InstanceTransformStoreFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,51 +31,52 @@ namespace Bijectiv.Stores
 {
     using System;
 
-    using Bijectiv.Transforms;
+    using Bijectiv.Builder;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that contains <see cref="ITransform"/> instances that transform between types that implement 
-    /// <see cref="IConvertible"/>.
+    /// A <see cref="ITransformStoreFactory"/> that creates a <see cref="ITransformStore"/> by returning a
+    /// registered instance.
     /// </summary>
-    public class ConvertibleTransformStore : ITransformStore
+    public class InstanceTransformStoreFactory : ITransformStoreFactory
     {
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
+        /// The <see cref="ITransformStore"/> instance.
         /// </summary>
-        /// <param name="source">
-        /// The source type.
+        private readonly ITransformStore instance;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="InstanceTransformStoreFactory"/> class.
+        /// </summary>
+        /// <param name="instance">
+        /// The instance.
         /// </param>
-        /// <param name="target">
-        /// The target type.
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public InstanceTransformStoreFactory([NotNull] ITransformStore instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            this.instance = instance;
+        }
+
+        /// <summary>
+        /// Returns the registered <see cref="ITransformStore"/>.
+        /// </summary>
+        /// <param name="registry">
+        /// Not used.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
+        /// The registered <see cref="ITransformStore"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if any parameter is null.
-        /// </exception>
-        public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
+        public ITransformStore Create(ITransformDefinitionRegistry registry)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            if (target == null)
-            {
-                throw new ArgumentNullException("target");
-            }
-
-            if (typeof(IConvertible).IsAssignableFrom(source) && Type.GetTypeCode(target) != TypeCode.Object)
-            {
-                return new ConvertibleTransform(target);
-            }
-
-            return null;
+            return this.instance;
         }
     }
 }

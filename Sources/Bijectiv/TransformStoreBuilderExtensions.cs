@@ -30,6 +30,7 @@
 namespace Bijectiv
 {
     using System;
+    using System.Linq;
 
     using Bijectiv.Builder;
 
@@ -43,8 +44,8 @@ namespace Bijectiv
         /// <summary>
         /// Registers a new transform with the store builder.
         /// </summary>
-        /// <param name="builder">
-        /// The transform store builder to register with.
+        /// <param name="this">
+        /// The <see cref="TransformStoreBuilder"/> to register with.
         /// </param>
         /// <typeparam name="TSource">
         /// The source type.
@@ -57,15 +58,15 @@ namespace Bijectiv
         /// transform.
         /// </returns>
         public static ITransformDefinitionBuilder<TSource, TTarget> Register<TSource, TTarget>(
-            [NotNull] this TransformStoreBuilder builder)
+            [NotNull] this TransformStoreBuilder @this)
         {
-            if (builder == null)
+            if (@this == null)
             {
-                throw new ArgumentNullException("builder");
+                throw new ArgumentNullException("this");
             }
 
             var defintion = new TransformDefinition(typeof(TSource), typeof(TTarget));
-            builder.RegisterCallback(registry => registry.Add(defintion));
+            @this.RegisterCallback(registry => registry.Add(defintion));
 
             return new TransformDefinitionBuilder<TSource, TTarget>(defintion);
         }
@@ -74,8 +75,8 @@ namespace Bijectiv
         /// Registers a new transform with the store builder and inherits all of the appropriate fragments from the 
         /// base transform if it exists.
         /// </summary>
-        /// <param name="builder">
-        /// The transform store builder to register with.
+        /// <param name="this">
+        /// The <see cref="TransformStoreBuilder"/> to register with.
         /// </param>
         /// <typeparam name="TSource">
         /// The source type.
@@ -94,13 +95,13 @@ namespace Bijectiv
         /// transform.
         /// </returns>
         public static ITransformDefinitionBuilder<TSource, TTarget> RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(
-            [NotNull] this TransformStoreBuilder builder)
+            [NotNull] this TransformStoreBuilder @this)
             where TSource : TSourceBase
             where TTarget : TTargetBase
         {
-            if (builder == null)
+            if (@this == null)
             {
-                throw new ArgumentNullException("builder");
+                throw new ArgumentNullException("this");
             }
 
             var defintion = new TransformDefinition(typeof(TSource), typeof(TTarget))
@@ -108,9 +109,28 @@ namespace Bijectiv
                 new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase))
             };
 
-            builder.RegisterCallback(registry => registry.Add(defintion));
+            @this.RegisterCallback(registry => registry.Add(defintion));
 
             return new TransformDefinitionBuilder<TSource, TTarget>(defintion);
+        }
+
+        /// <summary>
+        /// Builds a <see cref="ITransformStore"/> that matches the specification in <paramref name="this"/>, built 
+        /// with the default configuration options.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="TransformStoreBuilder"/> from which to build.
+        /// </param>
+        /// <returns>
+        /// A <see cref="ITransformStore"/> that matches the specification in <paramref name="this"/>, built with the 
+        /// default configuration options.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public static ITransformStore Build([NotNull] this TransformStoreBuilder @this)
+        {
+            return @this.Build(BuildConfigurator.TransformStoreFactories.Select(item => item()));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConvertibleTransformStore.cs" company="Bijectiv">
+// <copyright file="CollectionTransformStore.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,24 +23,49 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ConvertibleTransformStore type.
+//   Defines the CollectionTransformStore type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Stores
 {
     using System;
-
-    using Bijectiv.Transforms;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that contains <see cref="ITransform"/> instances that transform between types that implement 
-    /// <see cref="IConvertible"/>.
+    /// A store that contains a collection of <see cref="ITransform"/> instances that are keyed by thier source and
+    /// target types..
     /// </summary>
-    public class ConvertibleTransformStore : ITransformStore
+    public class CollectionTransformStore : ITransformStore, IEnumerable<ITransform>
     {
+        /// <summary> TODO this needs to be a more appropriate data type.
+        /// The transforms.
+        /// </summary>
+        private readonly List<ITransform> transforms = new List<ITransform>();
+
+        /// <summary>
+        /// Adds a new <see cref="ITransform"/> to the store.
+        /// </summary>
+        /// <param name="transform">
+        /// The transform.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public void Add([NotNull] ITransform transform)
+        {
+            if (transform == null)
+            {
+                throw new ArgumentNullException("transform");
+            }
+
+            this.transforms.Add(transform);
+        }
+
         /// <summary>
         /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
         /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
@@ -56,7 +81,7 @@ namespace Bijectiv.Stores
         /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if any parameter is null.
+        /// Thrown when any parameter is null.
         /// </exception>
         public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
         {
@@ -70,12 +95,30 @@ namespace Bijectiv.Stores
                 throw new ArgumentNullException("target");
             }
 
-            if (typeof(IConvertible).IsAssignableFrom(source) && Type.GetTypeCode(target) != TypeCode.Object)
-            {
-                return new ConvertibleTransform(target);
-            }
+            return this.transforms.FirstOrDefault(
+                candidate => candidate.Source == source && candidate.Target == target);
+        }
 
-            return null;
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IEnumerator{ITransform}"/> that can be used to iterate through the collection..
+        /// </returns>
+        public IEnumerator<ITransform> GetEnumerator()
+        {
+            return this.transforms.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="IEnumerator"/> that can be used to iterate through the collection..
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)this.transforms).GetEnumerator();
         }
     }
 }

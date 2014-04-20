@@ -27,7 +27,8 @@
                     <ModulePath>^.*\.dll$</ModulePath>  
                 </Include>
                 <Exclude>
-                    <ModulePath>^.*\.Tests\.dll$</ModulePath>  
+                    <ModulePath>^.*\.Tests\.dll$</ModulePath>
+                  <ModulePath>^.*\.TestUtilities\.dll$</ModulePath>
                 </Exclude>
             </ModulePaths>
             <PublicKeyTokens>

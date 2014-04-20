@@ -30,9 +30,11 @@
 namespace Bijectiv
 {
     using System;
+    using System.Collections.Generic;
 
     using Bijectiv.Builder;
     using Bijectiv.Stores;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -45,6 +47,14 @@ namespace Bijectiv
         /// The registry.
         /// </summary>
         private readonly ITransformDefinitionRegistry registry;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
+        /// </summary>
+        public TransformStoreBuilder()
+            : this(new TransformDefinitionRegistry())
+        {
+        }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformStoreBuilder"/> class.
@@ -95,16 +105,27 @@ namespace Bijectiv
         /// <summary>
         /// Builds a store according to the current specification.
         /// </summary>
+        /// <param name="factories">
+        /// The factories that create the transform stores.
+        /// </param>
         /// <returns>
         /// A <see cref="ITransformStore"/> that matches the current specification.
         /// </returns>
-        public ITransformStore Build()
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public ITransformStore Build([NotNull] IEnumerable<ITransformStoreFactory> factories)
         {
-            return new CompositeTransformStore
+            if (factories == null)
             {
-                new IdenticalPrimitiveTransformStore(),
-                new ConvertibleTransformStore(),
-            };
+                throw new ArgumentNullException("factories");
+            }
+
+            var store = new CompositeTransformStore();
+
+            factories.ForEach(factory => store.Add(factory.Create(this.Registry)));
+
+            return store;
         }
     }
 }
