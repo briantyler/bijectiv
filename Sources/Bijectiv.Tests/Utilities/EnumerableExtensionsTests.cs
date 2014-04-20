@@ -34,7 +34,7 @@ namespace Bijectiv.Tests.Utilities
     using System.Collections.ObjectModel;
     using System.Linq;
 
-    using Bijectiv.Tests.TestTools;
+    using Bijectiv.TestUtilities;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

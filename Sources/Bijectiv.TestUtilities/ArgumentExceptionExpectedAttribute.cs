@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.TestTools
+namespace Bijectiv.TestUtilities
 {
     using System;
 

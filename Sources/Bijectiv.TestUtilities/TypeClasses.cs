@@ -27,11 +27,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.TestTools
+namespace Bijectiv.TestUtilities
 {
     using System;
 
-    using Bijectiv.Tests.TestTypes;
+    using Bijectiv.TestUtilities.TestTypes;
 
     /// <summary>
     /// Contains collections that represent classes of types.

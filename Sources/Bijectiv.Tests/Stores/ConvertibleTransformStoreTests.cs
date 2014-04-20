@@ -33,8 +33,8 @@ namespace Bijectiv.Tests.Stores
     using System;
 
     using Bijectiv.Stores;
-    using Bijectiv.Tests.TestTools;
     using Bijectiv.Tests.Transforms;
+    using Bijectiv.TestUtilities;
     using Bijectiv.Transforms;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

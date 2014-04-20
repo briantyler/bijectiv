@@ -36,8 +36,8 @@ namespace Bijectiv.Tests.Utilities
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Bijectiv.Tests.TestTools;
-    using Bijectiv.Tests.TestTypes;
+    using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

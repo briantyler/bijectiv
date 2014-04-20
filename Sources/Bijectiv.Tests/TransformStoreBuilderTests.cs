@@ -36,7 +36,7 @@ namespace Bijectiv.Tests
     using Bijectiv.Builder;
     using Bijectiv.Factory;
     using Bijectiv.Stores;
-    using Bijectiv.Tests.TestTools;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

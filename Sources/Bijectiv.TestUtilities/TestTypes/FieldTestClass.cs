@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.TestTypes
+namespace Bijectiv.TestUtilities.TestTypes
 {
     public class FieldTestClass
     {

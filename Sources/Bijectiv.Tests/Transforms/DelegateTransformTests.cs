@@ -32,8 +32,8 @@ namespace Bijectiv.Tests.Transforms
 {
     using System;
 
-    using Bijectiv.Tests.TestTools;
-    using Bijectiv.Tests.TestTypes;
+    using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Transforms;
     using Bijectiv.Utilities;
 

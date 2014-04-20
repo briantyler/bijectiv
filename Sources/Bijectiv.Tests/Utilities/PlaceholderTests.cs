@@ -29,7 +29,7 @@
 
 namespace Bijectiv.Tests.Utilities
 {
-    using Bijectiv.Tests.TestTypes;
+    using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

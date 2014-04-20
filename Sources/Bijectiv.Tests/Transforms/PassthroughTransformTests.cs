@@ -32,7 +32,7 @@ namespace Bijectiv.Tests.Transforms
 {
     using System;
 
-    using Bijectiv.Tests.TestTools;
+    using Bijectiv.TestUtilities;
     using Bijectiv.Transforms;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

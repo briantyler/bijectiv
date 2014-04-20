@@ -31,8 +31,8 @@ namespace Bijectiv.Tests
 {
     using System.Globalization;
 
-    using Bijectiv.Tests.TestTools;
-    using Bijectiv.Tests.TestTypes;
+    using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
