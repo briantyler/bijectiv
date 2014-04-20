@@ -29,35 +29,10 @@
 
 namespace Bijectiv.Tests
 {
-    using System.Linq;
-
-    using Bijectiv.Builder;
-    using Bijectiv.Factory;
-    using Bijectiv.Tests.TestTypes;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [Ignore]
     [TestClass]
     public class Spikes
     {
-        [TestMethod]
-        [TestCategory("Spike")]
-        public void Spike_Forge_BuildsTransform()
-        {
-            // Arrange
-            var registry = new TransformDefinitionRegistry();
-            var builder = new TransformStoreBuilder(registry);
-
-            builder.Register<TestClass1, TestClass2>().Activate();
-
-            var forge = new TransformFactory(registry);
-
-            // Act
-            var transform = forge.Create(registry.Single());
-
-            // Assert
-            Assert.IsInstanceOfType(transform.Transform(new TestClass1(), new TransformContext()), typeof(TestClass2));
-        }
     }
 }

@@ -29,8 +29,11 @@
 
 namespace Bijectiv.Utilities
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents extensions to types that implement <see cref="IEnumerable{T}"/>.
@@ -52,9 +55,50 @@ namespace Bijectiv.Utilities
         /// <returns>
         /// The concatenated sequence.
         /// </returns>
-        public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params T[] args)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="this"/> is null.
+        /// </exception>
+        public static IEnumerable<T> Concat<T>([NotNull] this IEnumerable<T> @this, params T[] args)
         {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
             return Enumerable.Concat(@this, args);
+        }
+
+        /// <summary>
+        /// Performs the specified action on each element of the collection.
+        /// </summary>
+        /// <param name="this">
+        /// The collection.
+        /// </param>
+        /// <param name="action">
+        /// The action to perform.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of items in the collection.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if any parameter is null.
+        /// </exception>
+        public static void ForEach<T>([NotNull] this IEnumerable<T> @this, [NotNull] Action<T> action)
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+           
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            foreach (var item in @this)
+            {
+                action(item);
+            }
         }
     }
 }

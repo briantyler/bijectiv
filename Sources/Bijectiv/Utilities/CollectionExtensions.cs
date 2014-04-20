@@ -66,10 +66,7 @@ namespace Bijectiv.Utilities
                 throw new ArgumentNullException("collection");
             }
 
-            foreach (var item in collection)
-            {
-                @this.Add(item);
-            }
+            collection.ForEach(@this.Add);
         }
     }
 }

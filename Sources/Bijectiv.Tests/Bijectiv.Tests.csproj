@@ -84,6 +84,7 @@
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
+    <Compile Include="Factory\TransformFactoryTests.cs" />
     <Compile Include="Factory\TransformScaffoldTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />

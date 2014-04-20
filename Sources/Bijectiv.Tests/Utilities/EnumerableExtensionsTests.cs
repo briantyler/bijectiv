@@ -31,6 +31,7 @@
 namespace Bijectiv.Tests.Utilities
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     using Bijectiv.Tests.TestTools;
@@ -52,6 +53,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             default(IEnumerable<int>).Concat();
 
             // Assert
@@ -81,6 +83,48 @@ namespace Bijectiv.Tests.Utilities
 
             // Assert
             Assert.IsTrue(Enumerable.Range(0, 6).SequenceEqual(result));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void ForEach_ThisParameterIsEmpty_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(IEnumerable<int>).ForEach(item => item.Naught());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void ForEach_ActionParameterIsEmpty_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new Collection<int>().ForEach(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ForEach_ValidParameters_InvokesActionOnEachItem()
+        {
+            // Arrange
+            var output = new List<int>();
+
+            // Act
+            Enumerable.Range(0, 3).ForEach(output.Add);
+
+            // Assert
+            Enumerable.Range(0, 3).AssertSequenceEqual(output);
         }
     }
 }

@@ -29,6 +29,11 @@
 
 namespace Bijectiv.Tests.TestTools
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     /// This class contains extension methods that are useful when testing.
     /// </summary>
@@ -49,6 +54,41 @@ namespace Bijectiv.Tests.TestTools
         public static TInstance Naught<TInstance>(this TInstance instance)
         {
             return instance;
+        }
+
+        public static void AssertSequenceEqual<T>(this IEnumerable<T> expected, IEnumerable<T> actual)
+        {
+            if (ReferenceEquals(expected, actual))
+            {
+                return;
+            }
+
+            Assert.IsNotNull(expected);
+            Assert.IsNotNull(actual);
+
+            var expectedArray = expected as T[] ?? expected.ToArray();
+            var actualArray = actual as T[] ?? actual.ToArray();
+
+            Assert.AreEqual(
+                expectedArray.Count(), 
+                actualArray.Count(),
+                "Sequence count mismatch: expected {0}, actual {1}", 
+                expectedArray.Count(), 
+                actualArray.Count());
+
+            for (var index = 0; index < expectedArray.Count(); index++)
+            {
+                var expectedItem = expectedArray[index];
+                var actualItem = actualArray[index];
+
+                Assert.AreEqual(
+                    expectedItem, 
+                    actualItem, 
+                    "Items at position {0} are not equal: expected {1}, actual {2}",
+                    index,
+                    expectedItem,
+                    actualItem);
+            }
         }
     }
 }

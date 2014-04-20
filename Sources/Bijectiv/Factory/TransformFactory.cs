@@ -30,10 +30,12 @@
 namespace Bijectiv.Factory
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
 
     using Bijectiv.Builder;
     using Bijectiv.Transforms;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -43,27 +45,59 @@ namespace Bijectiv.Factory
     public class TransformFactory
     {
         /// <summary>
-        /// The registry containing all the live <see cref="TransformDefinition"/>s.
+        /// The registry containing all known <see cref="TransformDefinition"/> instances.
         /// </summary>
         private readonly ITransformDefinitionRegistry definitionRegistry;
+
+        /// <summary>
+        /// The ordered collection of tasks that build the transform delegate.
+        /// </summary>
+        private readonly IEnumerable<ITransformTask> taskCollection;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformFactory"/> class.
         /// </summary>
         /// <param name="definitionRegistry">
-        /// The registry containing all the live <see cref="TransformDefinition"/>s.
+        /// The registry containing all known <see cref="TransformDefinition"/> instances.
+        /// </param>
+        /// <param name="taskCollection">
+        /// The ordered collection of tasks that build the transform delegate.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformFactory([NotNull] ITransformDefinitionRegistry definitionRegistry)
+        public TransformFactory(
+            [NotNull] ITransformDefinitionRegistry definitionRegistry,
+            [NotNull] IEnumerable<ITransformTask> taskCollection)
         {
             if (definitionRegistry == null)
             {
                 throw new ArgumentNullException("definitionRegistry");
             }
 
+            if (taskCollection == null)
+            {
+                throw new ArgumentNullException("taskCollection");
+            }
+
             this.definitionRegistry = definitionRegistry;
+            this.taskCollection = taskCollection;
+        }
+
+        /// <summary>
+        /// Gets the registry containing all known <see cref="TransformDefinition"/> instances.
+        /// </summary>
+        public ITransformDefinitionRegistry DefinitionRegistry
+        {
+            get { return this.definitionRegistry; }
+        }
+
+        /// <summary>
+        /// Gets the ordered collection of tasks that build the transform delegate.
+        /// </summary>
+        public IEnumerable<ITransformTask> TaskCollection
+        {
+            get { return this.taskCollection; }
         }
 
         /// <summary>
@@ -88,12 +122,10 @@ namespace Bijectiv.Factory
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
             var transformContext = Expression.Parameter(typeof(ITransformContext), "transformContext");
 
-            var scaffold = new TransformScaffold(this.definitionRegistry, definition, sourceAsObject, transformContext);
+            var scaffold = new TransformScaffold(
+                this.DefinitionRegistry, definition, sourceAsObject, transformContext);
 
-            new InitializeVariablesTask().Execute(scaffold);
-            new InitializeFragmentsTask().Execute(scaffold);
-            new CreateTargetTask(new ActivateTargetExpressionFactory()).Execute(scaffold);
-            new ReturnTargetAsObjectTask().Execute(scaffold);
+            this.TaskCollection.ForEach(item => item.Execute(scaffold));
 
             var lambda = Expression.Lambda<Func<object, ITransformContext, object>>(
                 Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
