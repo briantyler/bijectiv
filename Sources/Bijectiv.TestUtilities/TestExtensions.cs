@@ -56,6 +56,19 @@ namespace Bijectiv.TestUtilities
             return instance;
         }
 
+        /// <summary>
+        /// Asserts that sequence <paramref name="expected"/> is equal to <paramref name="actual"/>, failing usefuly
+        /// when the assert fails.
+        /// </summary>
+        /// <param name="expected">
+        /// The expected sequence.
+        /// </param>
+        /// <param name="actual">
+        /// The actual sequence.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of items in a sequence.
+        /// </typeparam>
         public static void AssertSequenceEqual<T>(this IEnumerable<T> expected, IEnumerable<T> actual)
         {
             if (ReferenceEquals(expected, actual))

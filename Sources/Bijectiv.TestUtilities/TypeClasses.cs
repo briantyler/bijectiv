@@ -38,6 +38,9 @@ namespace Bijectiv.TestUtilities
     /// </summary>
     public class TypeClasses
     {
+        /// <summary>
+        /// All types that can be converted to from a <see cref="IConvertible"/>.
+        /// </summary>
         public static readonly Type[] ConvertibleTargetTypes =
         {
             typeof(bool), typeof(char), typeof(sbyte),
@@ -47,6 +50,9 @@ namespace Bijectiv.TestUtilities
             typeof(DateTime), typeof(string)
         };
 
+        /// <summary>
+        /// All in-built types that implement <see cref="IConvertible"/>.
+        /// </summary>
         public static readonly Type[] ConvertibleSourceTypes =
         {
             typeof(bool), typeof(char), typeof(sbyte),
@@ -56,6 +62,9 @@ namespace Bijectiv.TestUtilities
             typeof(DateTime), typeof(string), typeof(IConvertible)
         };
 
+        /// <summary>
+        /// Types that identify themselves as primitive by having a non-object <see cref="TypeCode"/>.
+        /// </summary>
         public static readonly Type[] PrimitiveTypes =
         {
             typeof(bool), typeof(char), typeof(sbyte),

@@ -31,10 +31,19 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using System;
 
+    /// <summary>
+    /// Test class 1.
+    /// </summary>
     public class TestClass1
     {
+        /// <summary>
+        /// The type of the class.
+        /// </summary>
         public static readonly Type T = typeof(TestClass1);
 
+        /// <summary>
+        /// Gets or sets an id that can be used to identify the instance.
+        /// </summary>
         public string Id { get; set; }
     }
 }

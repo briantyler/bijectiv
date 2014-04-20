@@ -29,6 +29,9 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    /// <summary>
+    /// Test Interface 1.
+    /// </summary>
     public interface ITestInterface1
     { 
     }

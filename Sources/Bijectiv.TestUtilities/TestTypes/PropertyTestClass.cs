@@ -29,8 +29,14 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    /// <summary>
+    /// A test class with a property.
+    /// </summary>
     public class PropertyTestClass
     {
+        /// <summary>
+        /// Gets or sets the property.
+        /// </summary>
         public int Property { get; set; }
     }
 }

@@ -58,7 +58,26 @@ namespace Bijectiv.TestUtilities
             return new Mock<T>(args) { CallBase = true }.Object;
         }
 
-        public static TransformFragment Fragment<TSource, TTarget>(bool inherited = true, Guid category = default(Guid))
+        /// <summary>
+        /// Creates a <see cref="TransformFragment"/>.
+        /// </summary>
+        /// <param name="inherited">
+        /// A value indicating whether the fragment is inherited.
+        /// </param>
+        /// <param name="category">
+        /// The fragment category.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The fragment source type.
+        /// </typeparam>
+        /// <typeparam name="TTarget">
+        /// The fragment target type.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="TransformFragment"/>.
+        /// </returns>
+        public static TransformFragment Fragment<TSource, TTarget>(
+            bool inherited = true, Guid category = default(Guid))
         {
             var fragmentStub = new Mock<TransformFragment>(MockBehavior.Loose, typeof(TSource), typeof(TTarget));
             fragmentStub.Setup(_ => _.Inherited).Returns(inherited);

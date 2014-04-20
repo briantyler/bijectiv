@@ -31,23 +31,50 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// A test class with more than one constructor.
+    /// </summary>
     public class MultiConstructorTestClass
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MultiConstructorTestClass"/> class.
+        /// </summary>
         [UsedImplicitly]
         public MultiConstructorTestClass()
         {
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MultiConstructorTestClass"/> class.
+        /// </summary>
+        /// <param name="x">
+        /// A placeholder.
+        /// </param>
         [UsedImplicitly]
         public MultiConstructorTestClass(TestClass1 x)
         {
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MultiConstructorTestClass"/> class.
+        /// </summary>
+        /// <param name="x">
+        /// A placeholder.
+        /// </param>
         [UsedImplicitly]
         public MultiConstructorTestClass(TestClass2 x)
         {
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MultiConstructorTestClass"/> class.
+        /// </summary>
+        /// <param name="x">
+        /// A placeholder.
+        /// </param>
+        /// <param name="y">
+        /// Another placeholder.
+        /// </param>
         [UsedImplicitly]
         public MultiConstructorTestClass(TestClass1 x, TestClass2 y)
         {

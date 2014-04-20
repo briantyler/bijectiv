@@ -33,8 +33,17 @@ namespace Bijectiv.TestUtilities
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Represents the expectation of an <see cref="ArgumentNullException"/>.
+    /// </summary>
     public class ArgumentNullExceptionExpectedAttribute : ExpectedExceptionBaseAttribute
     {
+        /// <summary>
+        /// Verifies the thrown exception.
+        /// </summary>
+        /// <param name="exception">
+        /// The exception.
+        /// </param>
         protected override void Verify(Exception exception)
         {
             Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));

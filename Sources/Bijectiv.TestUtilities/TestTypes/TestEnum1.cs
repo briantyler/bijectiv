@@ -29,6 +29,9 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    /// <summary>
+    /// Test enum 1.
+    /// </summary>
     public enum TestEnum1
     {
     }

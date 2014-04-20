@@ -31,8 +31,14 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using System;
 
+    /// <summary>
+    /// A test class that has derived classes 2.
+    /// </summary>
     public class BaseTestClass2
     {
+        /// <summary>
+        /// The type of the class.
+        /// </summary>
         public static readonly Type T = typeof(BaseTestClass2);
     }
 }

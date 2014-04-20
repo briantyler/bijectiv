@@ -29,8 +29,17 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    /// <summary>
+    /// A test class with a field.
+    /// </summary>
     public class FieldTestClass
     {
+        /// <summary>
+        /// The field.
+        /// </summary>
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
         public int Field;
     }
 }
