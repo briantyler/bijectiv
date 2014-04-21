@@ -43,7 +43,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var builder = new TransformStoreBuilder();
-            builder.Register<TestClass1, TestClass2>().Activate();
+            builder.Register<TestClass1, TestClass2>();
             var store = builder.Build();
             var transform = store.Resolve(TestClass1.T, TestClass2.T);
 

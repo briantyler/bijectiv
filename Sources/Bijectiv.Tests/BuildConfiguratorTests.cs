@@ -66,7 +66,7 @@ namespace Bijectiv.Tests
 
             // Assert
             var tasks = target.TransformTasks.Select(item => item()).ToArray();
-            Assert.AreEqual(6, tasks.Length);
+            Assert.AreEqual(7, tasks.Length);
             Assert.IsInstanceOfType(tasks[0], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[1], typeof(InitializeVariablesTask));
             Assert.IsInstanceOfType(tasks[2], typeof(CreateTargetTask));
@@ -75,7 +75,9 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(((CreateTargetTask)tasks[3]).ExpressionFactory, typeof(DefaultFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[4], typeof(CreateTargetTask));
             Assert.IsInstanceOfType(((CreateTargetTask)tasks[4]).ExpressionFactory, typeof(CustomFactoryExpressionFactory));
-            Assert.IsInstanceOfType(tasks[5], typeof(ReturnTargetAsObjectTask));
+            Assert.IsInstanceOfType(tasks[5], typeof(CreateTargetTask));
+            Assert.IsInstanceOfType(((CreateTargetTask)tasks[5]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
+            Assert.IsInstanceOfType(tasks[6], typeof(ReturnTargetAsObjectTask));
         }
 
         [TestMethod]

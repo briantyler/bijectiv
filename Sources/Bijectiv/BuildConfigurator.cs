@@ -100,6 +100,7 @@ namespace Bijectiv
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
                     () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
+                    () => new CreateTargetTask(new FallbackFactoryExpressionFactory()),
                     () => new ReturnTargetAsObjectTask()
                 });
         }

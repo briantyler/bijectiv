@@ -78,6 +78,7 @@
     <Compile Include="Factory\CreateTargetTaskTests.cs" />
     <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
+    <Compile Include="Factory\FallbackFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
