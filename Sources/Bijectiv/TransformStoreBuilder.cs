@@ -78,7 +78,7 @@ namespace Bijectiv
         /// <summary>
         /// Gets the registry.
         /// </summary>
-        protected internal ITransformDefinitionRegistry Registry
+        protected internal virtual ITransformDefinitionRegistry Registry
         {
             get { return this.registry; }
         }
@@ -92,7 +92,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void RegisterCallback([NotNull] Action<ITransformDefinitionRegistry> callback)
+        public virtual void RegisterCallback([NotNull] Action<ITransformDefinitionRegistry> callback)
         {
             if (callback == null)
             {
@@ -114,7 +114,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public ITransformStore Build([NotNull] IEnumerable<ITransformStoreFactory> factories)
+        public virtual ITransformStore Build([NotNull] IEnumerable<ITransformStoreFactory> factories)
         {
             if (factories == null)
             {

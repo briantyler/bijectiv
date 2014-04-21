@@ -43,10 +43,6 @@
     <AssemblyOriginatorKeyFile>..\.build\Bijectiv.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=6.1.0.0, Culture=neutral, PublicKeyToken=3f033448d4bb5376, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JetBrains.Annotations.7.0\lib\net45\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -68,6 +64,7 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BuildConfiguratorTests.cs" />
     <Compile Include="Builder\ActivateFragmentTests.cs" />
     <Compile Include="Builder\CustomFactoryFragmentTests.cs" />
     <Compile Include="Builder\CustomFactoryParametersTests.cs" />
@@ -88,9 +85,12 @@
     <Compile Include="Factory\TransformScaffoldTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />
+    <Compile Include="Stores\CollectionTransformStoreTests.cs" />
     <Compile Include="Stores\CompositeTransformStoreTests.cs" />
     <Compile Include="Stores\ConvertibleTransformStoreTests.cs" />
+    <Compile Include="Stores\DelegateTransformStoreFactoryTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStoreTests.cs" />
+    <Compile Include="Stores\InstanceTransformStoreFactoryTests.cs" />
     <Compile Include="TransformContextTests.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />
@@ -124,9 +124,7 @@
       <Name>Bijectiv</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestTools\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

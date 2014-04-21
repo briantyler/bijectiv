@@ -29,13 +29,11 @@
 
 namespace Bijectiv.Tests
 {
-    using System;
-    using System.Reflection;
-
     using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    [Ignore]
     [TestClass]
     public class Spikes
     {
@@ -54,18 +52,6 @@ namespace Bijectiv.Tests
 
             // Assert
             Assert.IsInstanceOfType(result, TestClass2.T);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Behaviour_Variant_ExpectedResult()
-        {
-            // Arrange
-
-            // Act
-            Assert.AreEqual(TypeCode.Int32, Type.GetTypeCode(typeof(TestEnum1)));
-
-            // Assert
         }
     }
 }

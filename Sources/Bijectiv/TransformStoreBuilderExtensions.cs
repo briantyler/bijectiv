@@ -130,7 +130,12 @@ namespace Bijectiv
         /// </exception>
         public static ITransformStore Build([NotNull] this TransformStoreBuilder @this)
         {
-            return @this.Build(BuildConfigurator.TransformStoreFactories.Select(item => item()));
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            return @this.Build(BuildConfigurator.Instance.TransformStoreFactories.Select(item => item()));
         }
     }
 }

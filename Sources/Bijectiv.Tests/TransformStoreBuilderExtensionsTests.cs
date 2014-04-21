@@ -35,6 +35,7 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 
@@ -51,7 +52,7 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Register_BuilderParameterIsNull_Throws()
+        public void Register_ThisParameterIsNull_Throws()
         {
             // Arrange
 
@@ -144,7 +145,7 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void RegisterInherited_BuilderParameterIsNull_Throws()
+        public void RegisterInherited_ThisParameterIsNull_Throws()
         {
             // Arrange
 
@@ -274,6 +275,43 @@ namespace Bijectiv.Tests
             // Assert
             var fragment = (InheritsFragment)defintions.Single().Single();
             Assert.AreEqual(BaseTestClass2.T, fragment.TargetBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Build_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+            
+            // Act
+            default(TransformStoreBuilder).Build();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_ValidParameters_BuildsUsingBuildConfigurator()
+        {
+            // Arrange
+            var expected = Stub.Create<ITransformStore>();
+            var storeFactory = Stub.Create<ITransformStoreFactory>();
+
+            BuildConfigurator.Instance.TransformStoreFactories.Clear();
+            BuildConfigurator.Instance.TransformStoreFactories.Add(() => storeFactory);
+
+            var builderMock = new Mock<TransformStoreBuilder>(MockBehavior.Strict);
+            builderMock
+                .Setup(_ => _.Build(It.Is<IEnumerable<ITransformStoreFactory>>(i => new[] { storeFactory }.SequenceEqual(i))))
+                .Returns(expected);
+
+            // Act
+            var result = builderMock.Object.Build();
+
+            // Assert
+            builderMock.VerifyAll();
+            Assert.AreEqual(expected, result);
         }
     }
 }

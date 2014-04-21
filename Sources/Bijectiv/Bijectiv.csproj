@@ -55,6 +55,9 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
+    <Compile Include="JetBrains.Annotations.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Stores\DelegateTransformStoreFactory.cs" />
     <Compile Include="Stores\InstanceTransformStoreFactory.cs" />
     <Compile Include="Stores\ITransformStoreFactory.cs" />
@@ -104,17 +107,11 @@
     <None Include="..\.build\Bijectiv.snk">
       <Link>Properties\Bijectiv.snk</Link>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\packages\JetBrains.Annotations.Portable.8.0.5185.29681\lib\portable-win+net40+sl40+wp+Xbox40\JetBrains.Annotations.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

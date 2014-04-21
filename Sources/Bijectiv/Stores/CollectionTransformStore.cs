@@ -103,7 +103,7 @@ namespace Bijectiv.Stores
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="IEnumerator{ITransform}"/> that can be used to iterate through the collection..
+        /// An <see cref="IEnumerator{ITransform}"/> that can be used to iterate through the collection.
         /// </returns>
         public IEnumerator<ITransform> GetEnumerator()
         {

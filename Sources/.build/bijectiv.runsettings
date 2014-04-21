@@ -22,17 +22,26 @@
         assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
         <Configuration>
           <CodeCoverage>
+            
             <ModulePaths>
                 <Include>  
                     <ModulePath>^.*\.dll$</ModulePath>  
                 </Include>
                 <Exclude>
                     <ModulePath>^.*\.Tests\.dll$</ModulePath>
-                  <ModulePath>^.*\.TestUtilities\.dll$</ModulePath>
+                    <ModulePath>^.*\.TestUtilities\.dll$</ModulePath>
                 </Exclude>
             </ModulePaths>
-            <PublicKeyTokens>
-            </PublicKeyTokens>
+
+            <Functions>
+              <Include>
+                <Function>^Bijectiv\..*</Function>
+              </Include>
+              <Exclude>
+                <Function>^JetBrains\.Annotations\..*</Function>
+              </Exclude>
+            </Functions>
+            
             <UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
             <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
             <CollectFromChildProcesses>True</CollectFromChildProcesses>

@@ -66,6 +66,14 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
+        /// Gets the <see cref="ITransformStore"/> instance.
+        /// </summary>
+        public ITransformStore Instance
+        {
+            get { return this.instance; }
+        }
+
+        /// <summary>
         /// Returns the registered <see cref="ITransformStore"/>.
         /// </summary>
         /// <param name="registry">
@@ -76,7 +84,7 @@ namespace Bijectiv.Stores
         /// </returns>
         public ITransformStore Create(ITransformDefinitionRegistry registry)
         {
-            return this.instance;
+            return this.Instance;
         }
     }
 }

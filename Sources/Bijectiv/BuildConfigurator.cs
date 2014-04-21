@@ -35,43 +35,73 @@ namespace Bijectiv
 
     using Bijectiv.Factory;
     using Bijectiv.Stores;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Provides default <see cref="ITransformStore"/> build configuration options.
     /// </summary>
-    public static class BuildConfigurator
+    public sealed class BuildConfigurator
     {
         /// <summary>
-        /// Initialises static members of the <see cref="BuildConfigurator"/> class.
+        /// The singleton instance implementation.
         /// </summary>
-        static BuildConfigurator()
-        {
-            TransformStoreFactories = new List<Func<ITransformStoreFactory>>
-            {
-                () => new InstanceTransformStoreFactory(new IdenticalPrimitiveTransformStore()),
-                () => new InstanceTransformStoreFactory(new ConvertibleTransformStore()),
-                () => new DelegateTransformStoreFactory(new TransformFactory(TransformTasks.Select(item => item())))
-            };
+        private static readonly BuildConfigurator InstanceImpl = new BuildConfigurator();
 
-            TransformTasks = new List<Func<ITransformTask>>
-            {
-                () => new InitializeFragmentsTask(),
-                () => new InitializeVariablesTask(),
-                () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
-                () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
-                () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
-                () => new ReturnTargetAsObjectTask(),
-            };
+        /// <summary>
+        /// Initialises a new instance of the <see cref="BuildConfigurator"/> class.
+        /// </summary>
+        internal BuildConfigurator()
+        {
+            this.TransformStoreFactories = new List<Func<ITransformStoreFactory>>();
+            this.TransformTasks = new List<Func<ITransformTask>>();
+
+            this.Reset();
+        }
+
+        /// <summary>
+        /// Gets the configurator instance.
+        /// </summary>
+        public static BuildConfigurator Instance
+        {
+            get { return InstanceImpl; }
         }
 
         /// <summary>
         /// Gets the default sequence of <see cref="ITransformStoreFactory"/> instances.
         /// </summary>
-        public static IList<Func<ITransformStoreFactory>> TransformStoreFactories { get; private set; }
+        public IList<Func<ITransformStoreFactory>> TransformStoreFactories { get; private set; }
 
         /// <summary>
         /// Gets the default sequence of <see cref="ITransformTask"/> instances.
         /// </summary>
-        public static IList<Func<ITransformTask>> TransformTasks { get; private set; }
+        public IList<Func<ITransformTask>> TransformTasks { get; private set; }
+
+        /// <summary>
+        /// Resets the configurator to the default configuration.
+        /// </summary>
+        public void Reset()
+        {
+            this.TransformStoreFactories.Clear();
+            this.TransformStoreFactories.AddRange(
+                new Func<ITransformStoreFactory>[] 
+                {
+                    () => new InstanceTransformStoreFactory(new IdenticalPrimitiveTransformStore()),
+                    () => new InstanceTransformStoreFactory(new ConvertibleTransformStore()),
+                    () => new DelegateTransformStoreFactory(
+                        new TransformFactory(this.TransformTasks.Select(item => item()).ToArray()))
+                });
+
+            this.TransformTasks.Clear();
+            this.TransformTasks.AddRange(
+                new Func<ITransformTask>[] 
+                {
+                    () => new InitializeFragmentsTask(),
+                    () => new InitializeVariablesTask(),
+                    () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
+                    () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
+                    () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
+                    () => new ReturnTargetAsObjectTask()
+                });
+        }
     }
 }

@@ -93,7 +93,8 @@ namespace Bijectiv.Stores
 
             var store = new CollectionTransformStore();
 
-            registry.ForEach(definition => store.Add(this.TransformFactory.Create(registry, definition)));
+            registry.ForEach(definition => 
+                store.Add(this.TransformFactory.Create(registry, definition)));
 
             return store;
         }
