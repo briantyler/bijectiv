@@ -37,8 +37,6 @@ namespace Bijectiv.Tests.Builder
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -119,21 +117,6 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Activate_DefaultParameters_ReturnsF()
-        {
-            // Arrange
-            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
-
-            // Act
-            var result = builder.Activate();
-
-            // Assert
-            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void DefaultFactory_DefaultParameters_AddsDefaultFactoryFragmentToDefintion()
         {
             // Arrange
@@ -145,21 +128,6 @@ namespace Bijectiv.Tests.Builder
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(DefaultFactoryFragment));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void DefaultFactory_DefaultParameters_ReturnsF()
-        {
-            // Arrange
-            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
-
-            // Act
-            var result = builder.DefaultFactory();
-
-            // Assert
-            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
         }
 
         [TestMethod]
@@ -206,37 +174,6 @@ namespace Bijectiv.Tests.Builder
 
             // Assert
             Assert.AreEqual(factory, ((CustomFactoryFragment)defintion.Single()).Factory);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CustomFactory_ValidParameters_ReturnsF()
-        {
-            // Arrange
-            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
-
-            // Act
-            var result = builder.CustomFactory(p => default(TestClass2));
-
-            // Assert
-            AssertBuilder(result, typeof(ITransformDefintionBuilderF<TestClass1, TestClass2>));
-        }
-
-        [UsedImplicitly]
-        private static void AssertBuilder<TSource, TTarget>(
-            ITransformDefinitionBuilder<TSource, TTarget> builder,
-            Type type)
-        {
-            Assert.AreEqual(type, typeof(ITransformDefinitionBuilder<TSource, TTarget>));
-        }
-
-        [UsedImplicitly]
-        private static void AssertBuilder<TSource, TTarget>(
-            ITransformDefintionBuilderF<TSource, TTarget> builder,
-            Type type)
-        {
-            Assert.AreEqual(type, typeof(ITransformDefintionBuilderF<TSource, TTarget>));
         }
     }
 }

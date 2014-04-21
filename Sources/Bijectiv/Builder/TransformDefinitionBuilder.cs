@@ -100,7 +100,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformDefintionBuilderF<TSource, TTarget> Activate()
+        public ITransformDefinitionBuilder<TSource, TTarget> Activate()
         {
             this.Definition.Add(new ActivateFragment(typeof(TSource), typeof(TTarget)));
             return this;
@@ -112,7 +112,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformDefintionBuilderF<TSource, TTarget> DefaultFactory()
+        public ITransformDefinitionBuilder<TSource, TTarget> DefaultFactory()
         {
             this.Definition.Add(new DefaultFactoryFragment(typeof(TSource), typeof(TTarget)));
             return this;
@@ -127,7 +127,7 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformDefintionBuilderF<TSource, TTarget> CustomFactory(
+        public ITransformDefinitionBuilder<TSource, TTarget> CustomFactory(
             Func<CustomFactoryParameters<TSource>, TTarget> factory)
         {
             if (factory == null)

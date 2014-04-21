@@ -44,8 +44,7 @@ namespace Bijectiv
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public interface ITransformDefinitionBuilder<TSource, TTarget> 
-        : ITransformDefintionBuilderF<TSource, TTarget>
+    public interface ITransformDefinitionBuilder<TSource, TTarget>
     {
         /// <summary>
         /// Instructs the transform to construct the target via activation (this is the default option if no other
@@ -54,7 +53,7 @@ namespace Bijectiv
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformDefintionBuilderF<TSource, TTarget> Activate();
+        ITransformDefinitionBuilder<TSource, TTarget> Activate();
 
         /// <summary>
         /// Instructs the transform to construct the target via the default factory.
@@ -62,7 +61,7 @@ namespace Bijectiv
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformDefintionBuilderF<TSource, TTarget> DefaultFactory();
+        ITransformDefinitionBuilder<TSource, TTarget> DefaultFactory();
 
         /// <summary>
         /// Instructs the transform to construct the target via a custom factory delegate.
@@ -73,7 +72,7 @@ namespace Bijectiv
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformDefintionBuilderF<TSource, TTarget> CustomFactory(
+        ITransformDefinitionBuilder<TSource, TTarget> CustomFactory(
             [NotNull] Func<CustomFactoryParameters<TSource>, TTarget> factory);
     }
 }
