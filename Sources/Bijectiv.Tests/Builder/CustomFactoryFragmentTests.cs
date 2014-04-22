@@ -44,12 +44,13 @@ namespace Bijectiv.Tests.Builder
     [TestClass]
     public class CustomFactoryFragmentTests
     {
-        private static readonly Func<CustomFactoryParameters<TestClass1>, TestClass2> Factory = p => default(TestClass2);
+        private static readonly Func<CustomFactoryParameters<TestClass1>, TestClass2> Factory = 
+            p => default(TestClass2);
 
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_FactoryParameterNull_Throws()
+        public void CreateInstance_FactoryParameterIsNull_Throws()
         {
             // Arrange
 

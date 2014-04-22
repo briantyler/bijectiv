@@ -55,7 +55,10 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
+    <Compile Include="Builder\NullSourceMemberStrategy.cs" />
+    <Compile Include="Builder\SourceMemberStrategyFragment.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
+    <Compile Include="ISourceMemberStrategy.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

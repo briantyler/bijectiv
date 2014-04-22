@@ -48,5 +48,10 @@ namespace Bijectiv.Builder
         /// Represents a fragment that describes construction.
         /// </summary>
         public static readonly Guid Factory = new Guid("b113c714-6576-4D9B-BE31-98E886FC2082");
+
+        /// <summary>
+        /// Represents a fragment that describes a source member strategy.
+        /// </summary>
+        public static readonly Guid SourceMemberStrategy = new Guid("b113c714-D396-425B-B0DA-355DA43AD570");
     }
 }
