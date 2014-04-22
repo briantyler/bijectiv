@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Binaries\Release\Bijectiv.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\.build\bijectiv.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -55,6 +55,7 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
+    <Compile Include="Builder\NameRegexSourceMemberStrategy.cs" />
     <Compile Include="Builder\NullSourceMemberStrategy.cs" />
     <Compile Include="Builder\SourceMemberStrategyFragment.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />

@@ -31,6 +31,7 @@ namespace Bijectiv.Utilities
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -61,6 +62,7 @@ namespace Bijectiv.Utilities
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
             Justification = "LambdaExpression base type is not helpful here")]
+        [Pure]
         public static ConstructorInfo Constructor([NotNull] Expression<Func<T>> expression)
         {
             if (expression == null)
@@ -97,6 +99,7 @@ namespace Bijectiv.Utilities
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
             Justification = "LambdaExpression base type is not helpful here")]
+        [Pure]
         public static MethodInfo Method([NotNull] Expression<Action<T>> expression)
         {
             if (expression == null)
@@ -136,6 +139,7 @@ namespace Bijectiv.Utilities
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
             Justification = "LambdaExpression base type is not helpful here")]
+        [Pure]
         public static MethodInfo Method<TReturn>([NotNull] Expression<Func<T, TReturn>> expression)
         {
             if (expression == null)
@@ -175,6 +179,7 @@ namespace Bijectiv.Utilities
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
             Justification = "LambdaExpression base type is not helpful here")]
+        [Pure]
         public static PropertyInfo Property<TProperty>([NotNull] Expression<Func<T, TProperty>> expression)
         {
             if (expression == null)

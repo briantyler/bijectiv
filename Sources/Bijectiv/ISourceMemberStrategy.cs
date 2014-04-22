@@ -38,7 +38,7 @@ namespace Bijectiv
     public interface ISourceMemberStrategy
     {
         /// <summary>
-        /// Tries to gets the source <see cref="MemberInfo"/> that will identified with 
+        /// Tries to gets the source <see cref="MemberInfo"/> that will be identified with 
         /// <paramref name="targetMember"/>.
         /// </summary>
         /// <param name="sourceMembers">
