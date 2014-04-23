@@ -94,9 +94,11 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to construct the target via activation (this is the default option if no other
-        /// construction method is specified).
+        /// Instructs the transform to construct the target via activation.
         /// </summary>
+        /// <remarks>
+        /// This is the default option if no other construction method is specified.
+        /// </remarks>
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
@@ -136,6 +138,161 @@ namespace Bijectiv.Builder
             }
 
             this.Definition.Add(new CustomFactoryFragment(typeof(TSource), typeof(TTarget), factory));
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to not automatically transform any source member to a target member: only
+        /// explicit member transforms will be used.
+        /// </summary>
+        /// <remarks>
+        /// This may be useful in the case of an inherited transform when the auto rules defined in the base
+        /// transform non longer make sense and need to be cancelled, or when the source and target have very
+        /// different structures.
+        /// </remarks>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoNone()
+        {
+            var fragment = new SourceMemberStrategyFragment(
+                typeof(TSource), typeof(TTarget), new NullSourceMemberStrategy());
+
+            this.Definition.Add(fragment);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// they have exactly the same, case sensitive, name.
+        /// </summary>
+        /// <remarks>
+        /// This is the default option if no other auto method is specified.
+        /// </remarks>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoExact()
+        {
+            return this.AutoRegex(NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a source member's name prefixed by <paramref name="prefix"/> is equal to a target member's name.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixSource([NotNull] string prefix)
+        {
+            if (prefix == null)
+            {
+                throw new ArgumentNullException("prefix");
+            }
+
+            return this.AutoRegex(
+                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, 
+                AutoOptions.None);
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a target member's name prefixed by <paramref name="prefix"/> is equal to a source member's name.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixTarget([NotNull] string prefix)
+        {
+            if (prefix == null)
+            {
+                throw new ArgumentNullException("prefix");
+            }
+
+            return this.AutoRegex(
+                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, 
+                AutoOptions.MatchSource);
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a source member's name suffixed by <paramref name="suffix"/> is equal to a target member's name.
+        /// </summary>
+        /// <param name="suffix">
+        /// The suffix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixSource([NotNull] string suffix)
+        {
+            if (suffix == null)
+            {
+                throw new ArgumentNullException("suffix");
+            }
+
+            return this.AutoRegex(
+                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, 
+                AutoOptions.None);
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a target member's name suffixed by <paramref name="suffix"/> is equal to a source member's name.
+        /// </summary>
+        /// <param name="suffix">
+        /// The suffix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixTarget([NotNull] string suffix)
+        {
+            if (suffix == null)
+            {
+                throw new ArgumentNullException("suffix");
+            }
+
+            return this.AutoRegex(
+                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, 
+                AutoOptions.MatchSource);
+        }
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// there is a regex match between the two names.
+        /// </summary>
+        /// <param name="regex">
+        /// The regex with which to match.
+        /// Note that the magic constant  <see cref="NameRegexSourceMemberStrategy.NameTemplateParameter"/> gets 
+        /// substituted for the name of the source member when <see cref="AutoOptions.MatchSource"/> is set and 
+        /// substituted for the target member's name otherwise.
+        /// </param>
+        /// <param name="options">
+        /// The auto transform options.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoOptions options)
+        {
+            if (regex == null)
+            {
+                throw new ArgumentNullException("regex");
+            }
+
+            var strategy = new NameRegexSourceMemberStrategy(regex, options);
+            var fragment = new SourceMemberStrategyFragment(typeof(TSource), typeof(TTarget), strategy);
+            this.Definition.Add(fragment);
+
             return this;
         }
     }

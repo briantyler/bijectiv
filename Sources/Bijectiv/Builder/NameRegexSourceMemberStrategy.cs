@@ -55,18 +55,18 @@ namespace Bijectiv.Builder
         private readonly string patternTemplate;
 
         /// <summary>
-        /// A value indicating whether to ignore case in the match.
+        /// The auto transform options.
         /// </summary>
-        private readonly bool ignoreCase;
+        private readonly AutoOptions options;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="NameRegexSourceMemberStrategy"/> class.
         /// </summary>
         /// <param name="patternTemplate">
-        /// The pattern template into which the name will be substituted.
+        ///     The pattern template into which the name will be substituted.
         /// </param>
-        /// <param name="ignoreCase">
-        /// A value indicating whether to ignore case in the match.
+        /// <param name="options">
+        ///     The auto transform options.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="patternTemplate"/> is null.
@@ -76,7 +76,7 @@ namespace Bijectiv.Builder
             "CA1806:DoNotIgnoreMethodResults", 
             MessageId = "System.Text.RegularExpressions.Regex", 
             Justification = "This is the only reliable way to validate a regex.")]
-        public NameRegexSourceMemberStrategy([NotNull] string patternTemplate, bool ignoreCase)
+        public NameRegexSourceMemberStrategy([NotNull] string patternTemplate, AutoOptions options)
         {
             if (patternTemplate == null)
             {
@@ -101,7 +101,7 @@ namespace Bijectiv.Builder
             }
             
             this.patternTemplate = patternTemplate;
-            this.ignoreCase = ignoreCase;
+            this.options = options;
         }
 
         /// <summary>
@@ -113,11 +113,11 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Gets a value indicating whether to ignore case in the match.
+        /// Gets the auto transform options.
         /// </summary>
-        public bool IgnoreCase
+        public AutoOptions Options
         {
-            get { return this.ignoreCase; }
+            get { return this.options; }
         }
 
         /// <summary>
@@ -155,13 +155,36 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("targetMember");
             }
 
-            var pattern = this.PatternTemplate.Replace(NameTemplateParameter, targetMember.Name);
-            var options = RegexOptions.CultureInvariant 
-                | (this.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
-            var regex = new Regex(pattern, options);
-
-            sourceMember = sourceMembers.FirstOrDefault(candidate => regex.IsMatch(candidate.Name));
+            sourceMember = sourceMembers.FirstOrDefault(candidate => this.IsMatch(candidate, targetMember));
             return sourceMember != null;
+        }
+
+        /// <summary>
+        /// Determines whether <paramref name="sourceMember"/> and <paramref name="targetMember"/> are a match.
+        /// </summary>
+        /// <param name="sourceMember">
+        /// The source member.
+        /// </param>
+        /// <param name="targetMember">
+        /// The target member.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether <paramref name="sourceMember"/> and <paramref name="targetMember"/> 
+        /// are a match.
+        /// </returns>
+        private bool IsMatch(MemberInfo sourceMember, MemberInfo targetMember)
+        {
+            var pattern = this.PatternTemplate.Replace(
+                NameTemplateParameter,
+                this.Options.HasFlag(AutoOptions.MatchSource) ? targetMember.Name : sourceMember.Name);
+
+            var regexOptions = RegexOptions.CultureInvariant
+                | (this.Options.HasFlag(AutoOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
+
+            return Regex.IsMatch(
+                this.Options.HasFlag(AutoOptions.MatchSource) ? sourceMember.Name : targetMember.Name,
+                pattern,
+                regexOptions);
         }
     }
 }

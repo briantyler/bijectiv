@@ -54,7 +54,7 @@ namespace Bijectiv.Tests.Builder
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new NameRegexSourceMemberStrategy(null, false).Naught();
+            new NameRegexSourceMemberStrategy(null, AutoOptions.None).Naught();
 
             // Assert
         }
@@ -67,7 +67,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new NameRegexSourceMemberStrategy(new string(' ', 5), false).Naught();
+            new NameRegexSourceMemberStrategy(new string(' ', 5), AutoOptions.None).Naught();
 
             // Assert
         }
@@ -80,7 +80,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new NameRegexSourceMemberStrategy("*", false).Naught();
+            new NameRegexSourceMemberStrategy("*", AutoOptions.None).Naught();
 
             // Assert
         }
@@ -93,7 +93,7 @@ namespace Bijectiv.Tests.Builder
 
             // Act
             new NameRegexSourceMemberStrategy(
-                NameRegexSourceMemberStrategy.NameTemplateParameter, false).Naught();
+                NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None).Naught();
 
             // Assert
         }
@@ -105,7 +105,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new NameRegexSourceMemberStrategy("Pattern", false);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.None);
 
             // Assert
             Assert.AreEqual("Pattern", target.PatternTemplate);
@@ -113,15 +113,15 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_IgnoreCaseParameter_IsAssignedToIgnoreCaseProperty()
+        public void CreateInstance_OptionsParameter_IsAssignedToOptionsProperty()
         {
             // Arrange
 
             // Act
-            var target = new NameRegexSourceMemberStrategy("Pattern", true);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.MatchSource);
 
             // Assert
-            Assert.AreEqual(true, target.IgnoreCase);
+            Assert.AreEqual(AutoOptions.MatchSource, target.Options);
         }
 
         [TestMethod]
@@ -130,7 +130,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_SourceMembersIsNull_Throws()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Pattern", false);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.None);
             MemberInfo sourceMember;
 
             // Act
@@ -146,7 +146,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_TargetMemberIsNull_Throws()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Pattern", false);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.None);
             MemberInfo sourceMember;
 
             // Act
@@ -161,7 +161,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_NoMatch_ReturnsFalse()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Pattern", false);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.None);
             MemberInfo sourceMember;
 
             // Act
@@ -177,7 +177,43 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_HasMatch_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Target", false);
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.None);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
+
+            MemberInfo sourceMember;
+
+            // Act
+            var result = target.TryGetSourceForTarget(
+                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryGetSourceForTarget_HasMatch_ReturnsMatch()
+        {
+            // Arrange
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.None);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
+
+            MemberInfo sourceMember;
+
+            // Act
+            target.TryGetSourceForTarget(
+                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+
+            // Assert
+            Assert.AreEqual(sourceMembers[0], sourceMember);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryGetSourceForTarget_MatchSourceHasMatch_ReturnsTrue()
+        {
+            // Arrange
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchSource);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
@@ -192,10 +228,10 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_HasMatch_ReturnsMatch()
+        public void TryGetSourceForTarget_MatchSourceHasMatch_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Target", false);
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchSource);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
@@ -213,7 +249,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_HasNoMatchIgnoreCase_ReturnsFalse()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("tARGET", false);
+            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("target") };
 
             MemberInfo sourceMember;
@@ -228,10 +264,10 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_HasMatchIgnoreCase_ReturnsTrue()
+        public void TryGetSourceForTarget_MatchSourceHasMatchIgnoreCase_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("tARGET", true);
+            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchSource);
             var sourceMembers = new[] { CreateMemberInfo("target") };
 
             MemberInfo sourceMember;
@@ -246,10 +282,10 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_HasMatchIgnoreCase_ReturnsMatch()
+        public void TryGetSourceForTarget_MatchSourceHasMatchIgnoreCase_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("tARGET", true);
+            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchSource);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
@@ -268,7 +304,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy(
-                NameRegexSourceMemberStrategy.NameTemplateParameter, false);
+                NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
@@ -287,7 +323,7 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy(
-                NameRegexSourceMemberStrategy.NameTemplateParameter, false);
+                NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
@@ -306,7 +342,34 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy(
-                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", false);
+                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", AutoOptions.None);
+            var sourceMembers = new[]
+            {
+                CreateMemberInfo("XTargetY"),
+                CreateMemberInfo("Target"),
+                CreateMemberInfo("xTARGETy"),
+                CreateMemberInfo("XTargetY"),
+                CreateMemberInfo("Target"),
+                CreateMemberInfo("XTargetY")
+            };
+
+            MemberInfo sourceMember;
+
+            // Act
+            target.TryGetSourceForTarget(
+                sourceMembers, CreateMemberInfo("XTargetY"), out sourceMember);
+
+            // Assert
+            Assert.AreEqual(sourceMembers[1], sourceMember);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryGetSourceForTarget_MatchSourceHasMatchMemberSubstitution_ReturnsFirstMatch()
+        {
+            // Arrange
+            var target = new NameRegexSourceMemberStrategy(
+                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", AutoOptions.MatchSource);
             var sourceMembers = new[]
             {
                 CreateMemberInfo("Target"),
@@ -329,11 +392,12 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_HasMatchMemberSubstitutionIgnoreCase_ReturnsFirstMatch()
+        public void TryGetSourceForTarget_MatchSourceHasMatchMemberSubstitutionIgnoreCase_ReturnsFirstMatch()
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy(
-                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", true);
+                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", 
+                AutoOptions.IgnoreCase | AutoOptions.MatchSource);
             var sourceMembers = new[]
             {
                 CreateMemberInfo("Target"),
