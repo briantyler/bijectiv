@@ -188,6 +188,12 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Prefix = 'Foo'
+        ///     Source = 'Bar'
+        ///     Target = 'FooBar'.
+        /// </example>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixSource([NotNull] string prefix)
         {
             if (prefix == null)
@@ -210,6 +216,12 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Prefix = 'Foo'
+        ///     Source = 'FooBar'
+        ///     Target = 'Bar'.
+        /// </example>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixTarget([NotNull] string prefix)
         {
             if (prefix == null)
@@ -232,6 +244,12 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Suffix = 'Bar'
+        ///     Source = 'Foo'
+        ///     Target = 'FooBar'.
+        /// </example>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixSource([NotNull] string suffix)
         {
             if (suffix == null)
@@ -254,6 +272,12 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Suffix = 'Bar'
+        ///     Source = 'FooBar'
+        ///     Target = 'Foo'.
+        /// </example>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixTarget([NotNull] string suffix)
         {
             if (suffix == null)
