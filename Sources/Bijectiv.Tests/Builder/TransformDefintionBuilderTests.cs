@@ -175,5 +175,415 @@ namespace Bijectiv.Tests.Builder
             // Assert
             Assert.AreEqual(factory, ((CustomFactoryFragment)defintion.Single()).Factory);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoNone_DefaultParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoNone();
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoNone_DefaultParameters_AssignsNullStrategyToFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoNone();
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NullSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoExact_DefaultParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoExact();
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoExact_DefaultParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoExact();
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoExact_DefaultParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoExact();
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.None, strategy.Options);
+            Assert.AreEqual(
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
+                strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AutoPrefixSource_PrefixParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixSource(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixSource_ValidParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixSource("Prefix");
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixSource_ValidParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixSource("Prefix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixSource_ValidParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixSource("Prefix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.MatchTarget, strategy.Options);
+            Assert.AreEqual(
+                "^Prefix" + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
+                strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AutoPrefixTarget_PrefixParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixTarget(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixTarget_ValidParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixTarget("Prefix");
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixTarget_ValidParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixTarget("Prefix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoPrefixTarget_ValidParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoPrefixTarget("Prefix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.None, strategy.Options);
+            Assert.AreEqual(
+                "^Prefix" + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
+                strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AutoSuffixSource_SuffixParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixSource(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixSource_ValidParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixSource("Suffix");
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixSource_ValidParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixSource("Suffix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixSource_ValidParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixSource("Suffix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.MatchTarget, strategy.Options);
+            Assert.AreEqual(
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Suffix$", 
+                strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AutoSuffixTarget_SuffixParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixTarget(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixTarget_ValidParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixTarget("Suffix");
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixTarget_ValidParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixTarget("Suffix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoSuffixTarget_ValidParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoSuffixTarget("Suffix");
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.None, strategy.Options);
+            Assert.AreEqual(
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Suffix$", 
+                strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AutoRegex_RegexParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoRegex(null, AutoOptions.None);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoRegex_ValidParameters_AddsSourceMemberStrategyFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoRegex("^Foo[abc]Bar$", AutoOptions.IgnoreCase);
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(SourceMemberStrategyFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoRegex_ValidParameters_AssignsNameRegexSourceMemberStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoRegex("^Foo[abc]Bar$", AutoOptions.IgnoreCase);
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexSourceMemberStrategy));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AutoRegex_ValidParameters_CreatesExpectedStrategyStrategy()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            builder.AutoRegex("^Foo[abc]Bar$", AutoOptions.IgnoreCase);
+
+            // Assert
+            var fragment = (SourceMemberStrategyFragment)defintion.Single();
+            var strategy = (NameRegexSourceMemberStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoOptions.IgnoreCase, strategy.Options);
+            Assert.AreEqual("^Foo[abc]Bar$", strategy.PatternTemplate);
+        }
     }
 }

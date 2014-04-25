@@ -175,7 +175,9 @@ namespace Bijectiv.Builder
         /// </returns>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoExact()
         {
-            return this.AutoRegex(NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
+            return this.AutoRegex(
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + "$",
+                AutoOptions.None);
         }
 
         /// <summary>
@@ -201,7 +203,9 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("prefix");
             }
 
-            return this.AutoRegex(prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
+            return this.AutoRegex(
+                "^" + prefix + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
+                AutoOptions.MatchTarget);
         }
 
         /// <summary>
@@ -228,7 +232,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.MatchTarget);
+                "^" + prefix + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
+                AutoOptions.None);
         }
 
         /// <summary>
@@ -254,7 +259,9 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("suffix");
             }
 
-            return this.AutoRegex(NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, AutoOptions.None);
+            return this.AutoRegex(
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + suffix + "$", 
+                AutoOptions.MatchTarget);
         }
 
         /// <summary>
@@ -281,7 +288,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, AutoOptions.MatchTarget);
+                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + suffix + "$", 
+                AutoOptions.None);
         }
 
         /// <summary>
