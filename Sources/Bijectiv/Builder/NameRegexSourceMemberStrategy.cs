@@ -63,10 +63,10 @@ namespace Bijectiv.Builder
         /// Initialises a new instance of the <see cref="NameRegexSourceMemberStrategy"/> class.
         /// </summary>
         /// <param name="patternTemplate">
-        ///     The pattern template into which the name will be substituted.
+        /// The pattern template into which the name will be substituted.
         /// </param>
         /// <param name="options">
-        ///     The auto transform options.
+        /// The auto transform options.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="patternTemplate"/> is null.
@@ -76,7 +76,8 @@ namespace Bijectiv.Builder
             "CA1806:DoNotIgnoreMethodResults", 
             MessageId = "System.Text.RegularExpressions.Regex", 
             Justification = "This is the only reliable way to validate a regex.")]
-        public NameRegexSourceMemberStrategy([NotNull] string patternTemplate, AutoOptions options)
+        public NameRegexSourceMemberStrategy(
+            [NotNull] string patternTemplate, AutoOptions options)
         {
             if (patternTemplate == null)
             {
@@ -176,13 +177,13 @@ namespace Bijectiv.Builder
         {
             var pattern = this.PatternTemplate.Replace(
                 NameTemplateParameter,
-                this.Options.HasFlag(AutoOptions.MatchSource) ? targetMember.Name : sourceMember.Name);
+                this.Options.HasFlag(AutoOptions.MatchTarget) ? sourceMember.Name : targetMember.Name);
 
             var regexOptions = RegexOptions.CultureInvariant
                 | (this.Options.HasFlag(AutoOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
 
             return Regex.IsMatch(
-                this.Options.HasFlag(AutoOptions.MatchSource) ? sourceMember.Name : targetMember.Name,
+                this.Options.HasFlag(AutoOptions.MatchTarget) ? targetMember.Name : sourceMember.Name,
                 pattern,
                 regexOptions);
         }

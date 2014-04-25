@@ -201,9 +201,7 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("prefix");
             }
 
-            return this.AutoRegex(
-                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, 
-                AutoOptions.None);
+            return this.AutoRegex(prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.None);
         }
 
         /// <summary>
@@ -230,8 +228,7 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, 
-                AutoOptions.MatchSource);
+                prefix + NameRegexSourceMemberStrategy.NameTemplateParameter, AutoOptions.MatchTarget);
         }
 
         /// <summary>
@@ -257,9 +254,7 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("suffix");
             }
 
-            return this.AutoRegex(
-                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, 
-                AutoOptions.None);
+            return this.AutoRegex(NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, AutoOptions.None);
         }
 
         /// <summary>
@@ -286,8 +281,7 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, 
-                AutoOptions.MatchSource);
+                NameRegexSourceMemberStrategy.NameTemplateParameter + suffix, AutoOptions.MatchTarget);
         }
 
         /// <summary>
@@ -297,7 +291,7 @@ namespace Bijectiv.Builder
         /// <param name="regex">
         /// The regex with which to match.
         /// Note that the magic constant  <see cref="NameRegexSourceMemberStrategy.NameTemplateParameter"/> gets 
-        /// substituted for the name of the source member when <see cref="AutoOptions.MatchSource"/> is set and 
+        /// substituted for the name of the source member when <see cref="AutoOptions.MatchTarget"/> is set and 
         /// substituted for the target member's name otherwise.
         /// </param>
         /// <param name="options">

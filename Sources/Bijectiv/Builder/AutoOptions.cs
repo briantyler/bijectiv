@@ -45,13 +45,13 @@ namespace Bijectiv.Builder
         /// <summary>
         /// Ignore case when matching source and target.
         /// </summary>
-        IgnoreCase = 1,
+        IgnoreCase = (1 << 0),
 
         /// <summary>
-        /// Match against the target, instead of the source. For example, in the case of a prefix match the
-        /// prefix would first be added to the source and then the target would be checked to see if
+        /// Match against the source, instead of the target. For example, in the case of a prefix match the
+        /// prefix would first be added to the target and then the source would be checked to see if
         /// it was a match.
         /// </summary>
-        MatchSource = (1 << 1)
+        MatchTarget = (1 << 1)
     }
 }

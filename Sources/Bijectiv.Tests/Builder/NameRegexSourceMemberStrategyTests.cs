@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.MatchSource);
+            var target = new NameRegexSourceMemberStrategy("Pattern", AutoOptions.MatchTarget);
 
             // Assert
-            Assert.AreEqual(AutoOptions.MatchSource, target.Options);
+            Assert.AreEqual(AutoOptions.MatchTarget, target.Options);
         }
 
         [TestMethod]
@@ -178,13 +178,13 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.None);
-            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
+            var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
             var result = target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+                sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
             Assert.IsTrue(result);
@@ -196,13 +196,12 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.None);
-            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
+            var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -210,17 +209,17 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatch_ReturnsTrue()
+        public void TryGetSourceForTarget_MatchTargetHasMatch_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchSource);
-            var sourceMembers = new[] { CreateMemberInfo("Target") };
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchTarget);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
             var result = target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
+                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
             Assert.IsTrue(result);
@@ -228,17 +227,16 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatch_ReturnsMatch()
+        public void TryGetSourceForTarget_MatchTargetHasMatch_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchSource);
-            var sourceMembers = new[] { CreateMemberInfo("Target") };
+            var target = new NameRegexSourceMemberStrategy("Target", AutoOptions.MatchTarget);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
+            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -264,17 +262,17 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatchIgnoreCase_ReturnsTrue()
+        public void TryGetSourceForTarget_MatchTargetHasMatchIgnoreCase_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchSource);
-            var sourceMembers = new[] { CreateMemberInfo("target") };
+            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchTarget);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
             var result = target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
+                sourceMembers, CreateMemberInfo("target"), out sourceMember);
 
             // Assert
             Assert.IsTrue(result);
@@ -282,17 +280,16 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatchIgnoreCase_ReturnsMatch()
+        public void TryGetSourceForTarget_MatchTargetHasMatchIgnoreCase_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchSource);
-            var sourceMembers = new[] { CreateMemberInfo("Target") };
+            var target = new NameRegexSourceMemberStrategy("tARGET", AutoOptions.IgnoreCase | AutoOptions.MatchTarget);
+            var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
+            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("target"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -345,8 +342,33 @@ namespace Bijectiv.Tests.Builder
                 "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", AutoOptions.None);
             var sourceMembers = new[]
             {
+                CreateMemberInfo("Target"),
+                CreateMemberInfo("xTARGETy"),
                 CreateMemberInfo("XTargetY"),
                 CreateMemberInfo("Target"),
+                CreateMemberInfo("XTargetY")
+            };
+
+            MemberInfo sourceMember;
+
+            // Act
+            target.TryGetSourceForTarget(
+                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+
+            // Assert
+            Assert.AreEqual(sourceMembers[2], sourceMember);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryGetSourceForTarget_MatchTargetHasMatchMemberSubstitution_ReturnsFirstMatch()
+        {
+            // Arrange
+            var target = new NameRegexSourceMemberStrategy(
+                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", AutoOptions.MatchTarget);
+            var sourceMembers = new[]
+            {
+                CreateMemberInfo("NotMe"),
                 CreateMemberInfo("xTARGETy"),
                 CreateMemberInfo("XTargetY"),
                 CreateMemberInfo("Target"),
@@ -360,60 +382,32 @@ namespace Bijectiv.Tests.Builder
                 sourceMembers, CreateMemberInfo("XTargetY"), out sourceMember);
 
             // Assert
-            Assert.AreEqual(sourceMembers[1], sourceMember);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatchMemberSubstitution_ReturnsFirstMatch()
-        {
-            // Arrange
-            var target = new NameRegexSourceMemberStrategy(
-                "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", AutoOptions.MatchSource);
-            var sourceMembers = new[]
-            {
-                CreateMemberInfo("Target"),
-                CreateMemberInfo("Target"),
-                CreateMemberInfo("xTARGETy"),
-                CreateMemberInfo("XTargetY"),
-                CreateMemberInfo("Target"),
-                CreateMemberInfo("XTargetY")
-            };
-
-            MemberInfo sourceMember;
-
-            // Act
-            target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
-
-            // Assert
             Assert.AreEqual(sourceMembers[3], sourceMember);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_MatchSourceHasMatchMemberSubstitutionIgnoreCase_ReturnsFirstMatch()
+        public void TryGetSourceForTarget_MatchTargetHasMatchMemberSubstitutionIgnoreCase_ReturnsFirstMatch()
         {
             // Arrange
             var target = new NameRegexSourceMemberStrategy(
                 "X" + NameRegexSourceMemberStrategy.NameTemplateParameter + "Y", 
-                AutoOptions.IgnoreCase | AutoOptions.MatchSource);
+                AutoOptions.IgnoreCase | AutoOptions.MatchTarget);
             var sourceMembers = new[]
             {
-                CreateMemberInfo("Target"),
-                CreateMemberInfo("Target"),
-                CreateMemberInfo("xTARGETy"),
-                CreateMemberInfo("XTargetY")
+                CreateMemberInfo("NotMe"),
+                CreateMemberInfo("AndNotMe"),
+                CreateMemberInfo("XTARGETY"),
+                CreateMemberInfo("target")
             };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
-                sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("xTargety"), out sourceMember);
 
             // Assert
-            Assert.AreEqual(sourceMembers[2], sourceMember);
+            Assert.AreEqual(sourceMembers[3], sourceMember);
         }
 
         private static MemberInfo CreateMemberInfo(string name)
