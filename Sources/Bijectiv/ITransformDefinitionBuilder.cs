@@ -44,12 +44,15 @@ namespace Bijectiv
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
+    // ReSharper disable once TypeParameterCanBeVariant
     public interface ITransformDefinitionBuilder<TSource, TTarget>
     {
         /// <summary>
-        /// Instructs the transform to construct the target via activation (this is the default option if no other
-        /// construction method is specified).
+        /// Instructs the transform to construct the target via activation.
         /// </summary>
+        /// <remarks>
+        /// This is the default option if no other construction method is specified.
+        /// </remarks>
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
@@ -73,6 +76,122 @@ namespace Bijectiv
         /// An object that allows further configuration of the transform.
         /// </returns>
         ITransformDefinitionBuilder<TSource, TTarget> CustomFactory(
-            [NotNull] Func<CustomFactoryParameters<TSource>, TTarget> factory);
+            Func<CustomFactoryParameters<TSource>, TTarget> factory);
+
+        /// <summary>
+        /// Instructs the transform to not automatically transform any source member to a target member: only
+        /// explicit member transforms will be used.
+        /// </summary>
+        /// <remarks>
+        /// This may be useful in the case of an inherited transform when the auto rules defined in the base
+        /// transform non longer make sense and need to be cancelled, or when the source and target have very
+        /// different structures.
+        /// </remarks>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoNone();
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// they have exactly the same, case sensitive, name.
+        /// </summary>
+        /// <remarks>
+        /// This is the default option if no other auto method is specified.
+        /// </remarks>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoExact();
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a source member's name prefixed by <paramref name="prefix"/> is equal to a target member's name.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Prefix = 'Foo'
+        ///     Source = 'Bar'
+        ///     Target = 'FooBar'.
+        /// </example>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixSource([NotNull] string prefix);
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a target member's name prefixed by <paramref name="prefix"/> is equal to a source member's name.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Prefix = 'Foo'
+        ///     Source = 'FooBar'
+        ///     Target = 'Bar'.
+        /// </example>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixTarget([NotNull] string prefix);
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a source member's name suffixed by <paramref name="suffix"/> is equal to a target member's name.
+        /// </summary>
+        /// <param name="suffix">
+        /// The suffix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Suffix = 'Bar'
+        ///     Source = 'Foo'
+        ///     Target = 'FooBar'.
+        /// </example>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixSource([NotNull] string suffix);
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// a target member's name suffixed by <paramref name="suffix"/> is equal to a source member's name.
+        /// </summary>
+        /// <param name="suffix">
+        /// The suffix.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <example>
+        /// The following is a match:
+        ///     Suffix = 'Bar'
+        ///     Source = 'FooBar'
+        ///     Target = 'Foo'.
+        /// </example>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixTarget([NotNull] string suffix);
+
+        /// <summary>
+        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// there is a regex match between the two names.
+        /// </summary>
+        /// <param name="regex">
+        /// The regex with which to match.
+        /// Note that the magic constant  <see cref="NameRegexSourceMemberStrategy.NameTemplateParameter"/> gets 
+        /// substituted for the name of the source member when <see cref="AutoOptions.MatchTarget"/> is set and 
+        /// substituted for the target member's name otherwise.
+        /// </param>
+        /// <param name="options">
+        /// The auto transform options.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoOptions options);
     }
 }
