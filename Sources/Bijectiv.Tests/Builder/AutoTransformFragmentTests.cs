@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullSourceMemberStrategyTests.cs" company="Bijectiv">
+// <copyright file="AutoTransformFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,65 +23,91 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the NullSourceMemberStrategyTests type.
+//   Defines the AutoTransformFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Tests.Builder
 {
-    using System.Reflection;
-
     using Bijectiv.Builder;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="NullSourceMemberStrategy"/> class.
+    /// This class test the <see cref="AutoTransformFragment"/> class.
     /// </summary>
     [TestClass]
-    public class NullSourceMemberStrategyTests
+    public class AutoTransformFragmentTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_InstanceCreated()
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_StrategyParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new NullSourceMemberStrategy().Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new AutoTransformFragment(TestClass1.T, TestClass2.T, null).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_AnyParameters_ReturnsTrue()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
-            var target = new NullSourceMemberStrategy();
-            MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(null, null, out sourceMember);
+            new AutoTransformFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>()).Naught();
 
             // Assert
-            Assert.IsTrue(result);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void TryGetSourceForTarget_AnyParameters_SetsSourceMemberToNull()
+        public void CreateInstance_InheritedProperty_IsTrue()
         {
             // Arrange
-            var target = new NullSourceMemberStrategy();
-            MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(null, null, out sourceMember);
+            var target = new AutoTransformFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>());
 
             // Assert
-            Assert.IsNull(sourceMember);
+            Assert.IsTrue(target.Inherited);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_FragmentCategoryProperty_IsSourceMemberStrategy()
+        {
+            // Arrange
+
+            // Act
+            var target = new AutoTransformFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>());
+
+            // Assert
+            Assert.AreEqual(LegendryFragments.AutoTransform, target.FragmentCategory);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_StrategyParameter_IsAssignedToStrategyProperty()
+        {
+            // Arrange
+            var strategy = Stub.Create<IAutoTransformStrategy>();
+
+            // Act
+            var target = new AutoTransformFragment(TestClass1.T, TestClass2.T, strategy);
+
+            // Assert
+            Assert.AreEqual(strategy, target.Strategy);
         }
     }
 }

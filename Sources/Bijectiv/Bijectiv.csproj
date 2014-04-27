@@ -55,12 +55,14 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
-    <Compile Include="Builder\AutoOptions.cs" />
-    <Compile Include="Builder\NameRegexSourceMemberStrategy.cs" />
-    <Compile Include="Builder\NullSourceMemberStrategy.cs" />
-    <Compile Include="Builder\SourceMemberStrategyFragment.cs" />
+    <Compile Include="Builder\AutoTransformOptions.cs" />
+    <Compile Include="Builder\NameRegexAutoTransformStrategy.cs" />
+    <Compile Include="Builder\NullAutoTransformStrategy.cs" />
+    <Compile Include="Builder\AutoTransformFragment.cs" />
+    <Compile Include="Factory\AutoTransformTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
-    <Compile Include="ISourceMemberStrategy.cs" />
+    <Compile Include="IAutoTransformStrategy.cs" />
+    <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -107,6 +109,8 @@
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\Placeholder.cs" />
     <Compile Include="Utilities\Reflect.cs" />
+    <Compile Include="Utilities\ReflectionGateway.cs" />
+    <Compile Include="Utilities\ReflectionOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">

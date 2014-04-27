@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FieldTestClass.cs" company="Bijectiv">
+// <copyright file="IAutoTransformStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,44 +23,42 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the FieldTestClass type.
+//   Defines the IAutoTransformStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.TestUtilities.TestTypes
+namespace Bijectiv
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
     using System.Reflection;
 
-    using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// A test class with a field.
+    /// Represents a strategy that automatically identifies a source <see cref="MemberInfo"/> with a target
+    /// <see cref="MemberInfo"/>.
     /// </summary>
-    public class FieldTestClass
+    public interface IAutoTransformStrategy
     {
         /// <summary>
-        /// The readonly field <see cref="FieldInfo"/>.
+        /// Tries to gets the source <see cref="MemberInfo"/> that will be identified with 
+        /// <paramref name="targetMember"/>.
         /// </summary>
-        public static readonly FieldInfo ReadonlyFieldFi = Reflect<FieldTestClass>.Field(_ => _.ReadonlyField);
-
-        /// <summary>
-        /// The field <see cref="FieldInfo"/>.
-        /// </summary>
-        public static readonly FieldInfo FieldFi = Reflect<FieldTestClass>.Field(_ => _.Field);
-       
-        /// <summary>
-        /// A readonly field.
-        /// </summary>
-        [UsedImplicitly]
-        public readonly int ReadonlyField;
-
-        /// <summary>
-        /// A field.
-        /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
-        public int Field;
+        /// <param name="sourceMembers">
+        /// The collection of all source members from which <paramref name="sourceMember"/> can be chosen.
+        /// </param>
+        /// <param name="targetMember">
+        /// The target member with which to identify one of <paramref name="sourceMembers"/>.
+        /// </param>
+        /// <param name="sourceMember">
+        /// The source member with which <paramref name="targetMember"/> is identified. If this parameter is 
+        /// <c>null</c> then <paramref name="targetMember"/> is not identified with any source member under this 
+        /// strategy.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the strategy was successful.
+        /// If the result is <c>true</c> then <paramref name="targetMember"/> will be identified with
+        /// <paramref name="sourceMember"/>; <c>otherwise</c> further strategies will be considered.
+        /// </returns>
+        bool TryGetSourceForTarget(
+            IEnumerable<MemberInfo> sourceMembers, MemberInfo targetMember, out MemberInfo sourceMember);
     }
 }

@@ -33,6 +33,7 @@ namespace Bijectiv.Factory
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     using Bijectiv.Builder;
 
@@ -62,6 +63,11 @@ namespace Bijectiv.Factory
         /// The fragments that have already been processed.
         /// </summary>
         private readonly HashSet<TransformFragment> processedFragments = new HashSet<TransformFragment>();
+
+        /// <summary>
+        /// The target members that have already been processed.
+        /// </summary>
+        private readonly HashSet<MemberInfo> processedMembers = new HashSet<MemberInfo>();
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformScaffold"/> class.
@@ -114,44 +120,51 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="TransformScaffold"/> class.
+        /// </summary>
+        protected TransformScaffold()
+        {
+        }
+
+        /// <summary>
         /// Gets the definition registry consisting of all known definitions.
         /// </summary>
-        public ITransformDefinitionRegistry DefinitionRegistry { get; private set; }
+        public virtual ITransformDefinitionRegistry DefinitionRegistry { get; private set; }
 
         /// <summary>
         /// Gets the definition from which the <see cref="ITransform"/> is being created.
         /// </summary>
-        public TransformDefinition Definition { get; private set; }
+        public virtual TransformDefinition Definition { get; private set; }
 
         /// <summary>
         /// Gets an expression that provides the source as an <see cref="object"/>.
         /// </summary>
-        public Expression SourceAsObject { get; private set; }
+        public virtual Expression SourceAsObject { get; private set; }
 
         /// <summary>
         /// Gets an expression that provides the <see cref="ITransformContext"/>.
         /// </summary>
-        public Expression TransformContext { get; private set; }
+        public virtual Expression TransformContext { get; private set; }
 
         /// <summary>
         /// Gets or sets an expression that provides the source as its mapped type.
         /// </summary>
-        public Expression Source { get; set; }
+        public virtual Expression Source { get; set; }
 
         /// <summary>
         /// Gets or sets an expression that provides the target as an <see cref="object"/>.
         /// </summary>
-        public Expression TargetAsObject { get; set; }
+        public virtual Expression TargetAsObject { get; set; }
 
         /// <summary>
         /// Gets or sets an expression that provides the target as its mapped type.
         /// </summary>
-        public Expression Target { get; set; }
+        public virtual Expression Target { get; set; }
 
         /// <summary>
         /// Gets the fragments that have not been processed.
         /// </summary>
-        public IEnumerable<TransformFragment> UnprocessedFragments
+        public virtual IEnumerable<TransformFragment> UnprocessedFragments
         {
             get
             {
@@ -164,7 +177,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the fragments that can contribute to the <see cref="ITransform"/>.
         /// </summary>
-        public IList<TransformFragment> CandidateFragments 
+        public virtual IList<TransformFragment> CandidateFragments 
         { 
             get { return this.candidateFragments; }
         }
@@ -172,15 +185,23 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the fragments that have already been processed.
         /// </summary>
-        public ISet<TransformFragment> ProcessedFragments
+        public virtual ISet<TransformFragment> ProcessedFragments
         {
             get { return this.processedFragments; }
         }
 
         /// <summary>
+        /// Gets the target members that have already been processed.
+        /// </summary>
+        public virtual ISet<MemberInfo> ProcessedMembers
+        {
+            get { return this.processedMembers; }
+        }
+
+        /// <summary>
         /// Gets the temporary variables that are required by the <see cref="ITransform"/>.
         /// </summary>
-        public IList<ParameterExpression> Variables
+        public virtual IList<ParameterExpression> Variables
         {
             get { return this.variables; }
         }
@@ -188,7 +209,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the sequence of expressions that when compiled will comprise the <see cref="ITransform"/>.
         /// </summary>
-        public IList<Expression> Expressions
+        public virtual IList<Expression> Expressions
         {
             get { return this.expressions; }
         }

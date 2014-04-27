@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISourceMemberStrategy.cs" company="Bijectiv">
+// <copyright file="IReflectionGateway.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,41 +23,49 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ISourceMemberStrategy type.
+//   Defines the IReflectionGateway type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Utilities
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
+    using JetBrains.Annotations;
+
     /// <summary>
-    /// Represents a strategy that identifies a source <see cref="MemberInfo"/> with a target <see cref="MemberInfo"/>.
+    /// Represents a gateway to reflection based operations.
     /// </summary>
-    public interface ISourceMemberStrategy
+    public interface IReflectionGateway
     {
         /// <summary>
-        /// Tries to gets the source <see cref="MemberInfo"/> that will be identified with 
-        /// <paramref name="targetMember"/>.
+        /// Gets the collection of <see cref="FieldInfo"/> that belong to <paramref name="type"/>.
         /// </summary>
-        /// <param name="sourceMembers">
-        /// The collection of all source members from which <paramref name="sourceMember"/> can be chosen.
+        /// <param name="type">
+        /// The type from which to get the <see cref="FieldInfo"/>.
         /// </param>
-        /// <param name="targetMember">
-        /// The target member with which to identify one of <paramref name="sourceMembers"/>.
-        /// </param>
-        /// <param name="sourceMember">
-        /// The source member with which <paramref name="targetMember"/> is identified. If this parameter is 
-        /// <c>null</c> then <paramref name="targetMember"/> is not identified with any source member under this 
-        /// strategy.
+        /// <param name="options">
+        /// The reflection options.
         /// </param>
         /// <returns>
-        /// A value indicating whether the strategy was successful.
-        /// If the result is <c>true</c> then <paramref name="targetMember"/> will be identified with
-        /// <paramref name="sourceMember"/>; <c>otherwise</c> further strategies will be considered.
+        /// The collection of <see cref="FieldInfo"/> that belong to <paramref name="type"/>.
         /// </returns>
-        bool TryGetSourceForTarget(
-            IEnumerable<MemberInfo> sourceMembers, MemberInfo targetMember, out MemberInfo sourceMember);
+        IEnumerable<FieldInfo> GetFields(Type type, ReflectionOptions options);
+
+        /// <summary>
+        /// Gets the collection of <see cref="PropertyInfo"/> that belong to <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The type from which to get the <see cref="PropertyInfo"/>.
+        /// </param>
+        /// <param name="options">
+        /// The reflection options.
+        /// </param>
+        /// <returns>
+        /// The collection of <see cref="PropertyInfo"/> that belong to <paramref name="type"/>.
+        /// </returns>
+        IEnumerable<PropertyInfo> GetProperties(Type type, ReflectionOptions options);
     }
 }

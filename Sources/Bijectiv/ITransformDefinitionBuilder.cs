@@ -182,8 +182,8 @@ namespace Bijectiv
         /// </summary>
         /// <param name="regex">
         /// The regex with which to match.
-        /// Note that the magic constant  <see cref="NameRegexSourceMemberStrategy.NameTemplateParameter"/> gets 
-        /// substituted for the name of the source member when <see cref="AutoOptions.MatchTarget"/> is set and 
+        /// Note that the magic constant  <see cref="NameRegexAutoTransformStrategy.NameTemplateParameter"/> gets 
+        /// substituted for the name of the source member when <see cref="AutoTransformOptions.MatchTarget"/> is set and 
         /// substituted for the target member's name otherwise.
         /// </param>
         /// <param name="options">
@@ -192,6 +192,6 @@ namespace Bijectiv
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoOptions options);
+        ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoTransformOptions options);
     }
 }

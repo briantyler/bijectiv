@@ -70,9 +70,9 @@
     <Compile Include="Builder\CustomFactoryParametersTests.cs" />
     <Compile Include="Builder\DefaultFactoryFragmentTests.cs" />
     <Compile Include="Builder\InheritsFragmentTests.cs" />
-    <Compile Include="Builder\NameRegexSourceMemberStrategyTests.cs" />
-    <Compile Include="Builder\NullSourceMemberStrategyTests.cs" />
-    <Compile Include="Builder\SourceMemberStrategyFragmentTests.cs" />
+    <Compile Include="Builder\NameRegexAutoTransformStrategyTests.cs" />
+    <Compile Include="Builder\NullAutoTransformStrategyTests.cs" />
+    <Compile Include="Builder\AutoTransformFragmentTests.cs" />
     <Compile Include="Builder\TransformDefinitionRegistryTests.cs" />
     <Compile Include="Builder\TransformDefintionBuilderTests.cs" />
     <Compile Include="Builder\TransformDefinitionTests.cs" />
@@ -104,6 +104,7 @@
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
     <Compile Include="Utilities\PlaceholderTests.cs" />
+    <Compile Include="Utilities\ReflectionGatewayTests.cs" />
     <Compile Include="Utilities\ReflectTests.cs" />
   </ItemGroup>
   <ItemGroup>

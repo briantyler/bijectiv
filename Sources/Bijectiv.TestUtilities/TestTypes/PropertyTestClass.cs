@@ -29,14 +29,55 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    using System.Reflection;
+
+    using Bijectiv.Utilities;
+
+    using JetBrains.Annotations;
+
     /// <summary>
     /// A test class with a property.
     /// </summary>
     public class PropertyTestClass
     {
         /// <summary>
+        /// The <see cref="Property"/> <see cref="PropertyInfo"/>.
+        /// </summary>
+        public static readonly PropertyInfo PropertyPi =
+            Reflect<PropertyTestClass>.Property(_ => _.Property);
+
+        /// <summary>
+        /// The <see cref="ReadonlyProperty"/> <see cref="PropertyInfo"/>.
+        /// </summary>
+        public static readonly PropertyInfo ReadonlyPropertyPi =
+            Reflect<PropertyTestClass>.Property(_ => _.ReadonlyProperty);
+
+        /// <summary>
+        /// The <see cref="WriteonlyProperty"/> <see cref="PropertyInfo"/>.
+        /// </summary>
+        public static readonly PropertyInfo WriteonlyPropertyPi =
+            typeof(PropertyTestClass).GetProperty("WriteonlyProperty");
+
+        /// <summary>
         /// Gets or sets the property.
         /// </summary>
         public int Property { get; set; }
+
+        /// <summary>
+        /// Gets the readonly property.
+        /// </summary>
+        public int ReadonlyProperty
+        {
+            get { return 1; }
+        }
+
+        /// <summary>
+        /// Sets the writeonly property.
+        /// </summary>
+        public int WriteonlyProperty 
+        { 
+            // ReSharper disable once ValueParameterNotUsed
+            set { }
+        }
     }
 }

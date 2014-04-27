@@ -49,6 +49,7 @@
         
         <Term CompoundAlternate="DataBind">databind</Term>
       -->
+    <Term CompoundAlternate="NonPublic">nonpublic</Term>
     </Compound>
     <DiscreteExceptions>
       <!--
@@ -65,7 +66,7 @@
   </Words>
   <Acronyms>
     <CasingExceptions>
-      <!-- <Acronym>Pv</Acronym>    IPv4, IPv6 -->
+      <!-- <Acronym>Pv</Acronym> IPv4, IPv6 -->
     </CasingExceptions>
   </Acronyms>
 </Dictionary>

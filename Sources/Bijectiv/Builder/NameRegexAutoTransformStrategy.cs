@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NameRegexSourceMemberStrategy.cs" company="Bijectiv">
+// <copyright file="NameRegexAutoTransformStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the NameRegexSourceMemberStrategy type.
+//   Defines the NameRegexAutoTransformStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,10 +39,10 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A <see cref="ISourceMemberStrategy"/> that substitues the name of the target member into a regular expression
+    /// A <see cref="IAutoTransformStrategy"/> that substitues the name of the target member into a regular expression
     /// and outputs the first source member with a name that is a match, or <c>null</c> otherwise.
     /// </summary>
-    public class NameRegexSourceMemberStrategy : ISourceMemberStrategy
+    public class NameRegexAutoTransformStrategy : IAutoTransformStrategy
     {
         /// <summary>
         /// The name template parameter.
@@ -57,10 +57,10 @@ namespace Bijectiv.Builder
         /// <summary>
         /// The auto transform options.
         /// </summary>
-        private readonly AutoOptions options;
+        private readonly AutoTransformOptions options;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="NameRegexSourceMemberStrategy"/> class.
+        /// Initialises a new instance of the <see cref="NameRegexAutoTransformStrategy"/> class.
         /// </summary>
         /// <param name="patternTemplate">
         /// The pattern template into which the name will be substituted.
@@ -76,8 +76,8 @@ namespace Bijectiv.Builder
             "CA1806:DoNotIgnoreMethodResults", 
             MessageId = "System.Text.RegularExpressions.Regex", 
             Justification = "This is the only reliable way to validate a regex.")]
-        public NameRegexSourceMemberStrategy(
-            [NotNull] string patternTemplate, AutoOptions options)
+        public NameRegexAutoTransformStrategy(
+            [NotNull] string patternTemplate, AutoTransformOptions options)
         {
             if (patternTemplate == null)
             {
@@ -116,7 +116,7 @@ namespace Bijectiv.Builder
         /// <summary>
         /// Gets the auto transform options.
         /// </summary>
-        public AutoOptions Options
+        public AutoTransformOptions Options
         {
             get { return this.options; }
         }
@@ -177,13 +177,13 @@ namespace Bijectiv.Builder
         {
             var pattern = this.PatternTemplate.Replace(
                 NameTemplateParameter,
-                this.Options.HasFlag(AutoOptions.MatchTarget) ? sourceMember.Name : targetMember.Name);
+                this.Options.HasFlag(AutoTransformOptions.MatchTarget) ? sourceMember.Name : targetMember.Name);
 
             var regexOptions = RegexOptions.CultureInvariant
-                | (this.Options.HasFlag(AutoOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
+                | (this.Options.HasFlag(AutoTransformOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
 
             return Regex.IsMatch(
-                this.Options.HasFlag(AutoOptions.MatchTarget) ? targetMember.Name : sourceMember.Name,
+                this.Options.HasFlag(AutoTransformOptions.MatchTarget) ? targetMember.Name : sourceMember.Name,
                 pattern,
                 regexOptions);
         }

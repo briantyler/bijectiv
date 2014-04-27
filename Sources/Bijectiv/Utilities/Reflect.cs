@@ -207,5 +207,54 @@ namespace Bijectiv.Utilities
 
             return property;
         }
+
+        /// <summary>
+        /// Gets a <see cref="FieldInfo"/> from a field expression.
+        /// </summary>
+        /// <typeparam name="TField">
+        /// The field type (should be inferred from the expression).
+        /// </typeparam>
+        /// <param name="expression">
+        /// An expression of the form: _ => _.SomeField.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FieldInfo"/> matching the method in the expression.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the expression does not describe a field.
+        /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
+            Justification = "LambdaExpression base type is not helpful here")]
+        [Pure]
+        public static FieldInfo Field<TField>([NotNull] Expression<Func<T, TField>> expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException("expression");
+            }
+
+            var member = expression.Body as MemberExpression;
+            if (member == null)
+            {
+                throw new ArgumentException(
+                    "The expression does not describe member access. Call as: "
+                    + "Reflect<SomeClass>.Field(_ => _.SimeField).",
+                    "expression");
+            }
+
+            var field = member.Member as FieldInfo;
+            if (field == null)
+            {
+                throw new ArgumentException(
+                    "The expression does not describe field access. "
+                    + "Perhaps the expression describes access to a property.",
+                    "expression");
+            }
+
+            return field;
+        }
     }
 }

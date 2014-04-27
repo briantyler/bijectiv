@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SourceMemberStrategyFragment.cs" company="Bijectiv">
+// <copyright file="AutoTransformFragment.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the SourceMemberStrategyFragment type.
+//   Defines the AutoTransformFragment type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,17 +34,17 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a <see cref="ISourceMemberStrategy"/> fragment.
+    /// Represents an instruction that determines how auto-transform will happen.
     /// </summary>
-    public class SourceMemberStrategyFragment : TransformFragment
+    public class AutoTransformFragment : TransformFragment
     {
         /// <summary>
         /// The strategy.
         /// </summary>
-        private readonly ISourceMemberStrategy strategy;
+        private readonly IAutoTransformStrategy strategy;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="SourceMemberStrategyFragment"/> class.
+        /// Initialises a new instance of the <see cref="AutoTransformFragment"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -58,8 +58,8 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public SourceMemberStrategyFragment(
-            [NotNull] Type source, [NotNull] Type target, [NotNull] ISourceMemberStrategy strategy)
+        public AutoTransformFragment(
+            [NotNull] Type source, [NotNull] Type target, [NotNull] IAutoTransformStrategy strategy)
             : base(source, target)
         {
             if (strategy == null)
@@ -83,13 +83,13 @@ namespace Bijectiv.Builder
         /// </summary>
         public override Guid FragmentCategory
         {
-            get { return LegendryFragments.SourceMemberStrategy; }
+            get { return LegendryFragments.AutoTransform; }
         }
 
         /// <summary>
         /// Gets the strategy.
         /// </summary>
-        public ISourceMemberStrategy Strategy
+        public IAutoTransformStrategy Strategy
         {
             get { return this.strategy; }
         }

@@ -155,8 +155,8 @@ namespace Bijectiv.Builder
         /// </returns>
         public ITransformDefinitionBuilder<TSource, TTarget> AutoNone()
         {
-            var fragment = new SourceMemberStrategyFragment(
-                typeof(TSource), typeof(TTarget), new NullSourceMemberStrategy());
+            var fragment = new AutoTransformFragment(
+                typeof(TSource), typeof(TTarget), new NullAutoTransformStrategy());
 
             this.Definition.Add(fragment);
 
@@ -176,8 +176,8 @@ namespace Bijectiv.Builder
         public ITransformDefinitionBuilder<TSource, TTarget> AutoExact()
         {
             return this.AutoRegex(
-                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + "$",
-                AutoOptions.None);
+                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + "$",
+                AutoTransformOptions.None);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Bijectiv.Builder
         ///     Source = 'Bar'
         ///     Target = 'FooBar'.
         /// </example>
-        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixSource([NotNull] string prefix)
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixSource(string prefix)
         {
             if (prefix == null)
             {
@@ -204,8 +204,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + prefix + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
-                AutoOptions.MatchTarget);
+                "^" + prefix + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
+                AutoTransformOptions.MatchTarget);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Bijectiv.Builder
         ///     Source = 'FooBar'
         ///     Target = 'Bar'.
         /// </example>
-        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixTarget([NotNull] string prefix)
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoPrefixTarget(string prefix)
         {
             if (prefix == null)
             {
@@ -232,8 +232,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + prefix + NameRegexSourceMemberStrategy.NameTemplateParameter + "$", 
-                AutoOptions.None);
+                "^" + prefix + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
+                AutoTransformOptions.None);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Bijectiv.Builder
         ///     Source = 'Foo'
         ///     Target = 'FooBar'.
         /// </example>
-        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixSource([NotNull] string suffix)
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixSource(string suffix)
         {
             if (suffix == null)
             {
@@ -260,8 +260,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + suffix + "$", 
-                AutoOptions.MatchTarget);
+                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + suffix + "$", 
+                AutoTransformOptions.MatchTarget);
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace Bijectiv.Builder
         ///     Source = 'FooBar'
         ///     Target = 'Foo'.
         /// </example>
-        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixTarget([NotNull] string suffix)
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoSuffixTarget(string suffix)
         {
             if (suffix == null)
             {
@@ -288,8 +288,8 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + NameRegexSourceMemberStrategy.NameTemplateParameter + suffix + "$", 
-                AutoOptions.None);
+                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + suffix + "$", 
+                AutoTransformOptions.None);
         }
 
         /// <summary>
@@ -298,8 +298,8 @@ namespace Bijectiv.Builder
         /// </summary>
         /// <param name="regex">
         /// The regex with which to match.
-        /// Note that the magic constant  <see cref="NameRegexSourceMemberStrategy.NameTemplateParameter"/> gets 
-        /// substituted for the name of the source member when <see cref="AutoOptions.MatchTarget"/> is set and 
+        /// Note that the magic constant  <see cref="NameRegexAutoTransformStrategy.NameTemplateParameter"/> gets 
+        /// substituted for the name of the source member when <see cref="AutoTransformOptions.MatchTarget"/> is set and 
         /// substituted for the target member's name otherwise.
         /// </param>
         /// <param name="options">
@@ -308,15 +308,15 @@ namespace Bijectiv.Builder
         /// <returns>
         /// An object that allows further configuration of the transform.
         /// </returns>
-        public ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoOptions options)
+        public ITransformDefinitionBuilder<TSource, TTarget> AutoRegex(string regex, AutoTransformOptions options)
         {
             if (regex == null)
             {
                 throw new ArgumentNullException("regex");
             }
 
-            var strategy = new NameRegexSourceMemberStrategy(regex, options);
-            var fragment = new SourceMemberStrategyFragment(typeof(TSource), typeof(TTarget), strategy);
+            var strategy = new NameRegexAutoTransformStrategy(regex, options);
+            var fragment = new AutoTransformFragment(typeof(TSource), typeof(TTarget), strategy);
             this.Definition.Add(fragment);
 
             return this;

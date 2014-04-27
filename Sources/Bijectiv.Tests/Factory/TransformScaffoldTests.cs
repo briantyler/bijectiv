@@ -49,6 +49,18 @@ namespace Bijectiv.Tests.Factory
     {
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_ProtectedDefaultConstructor_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            Stub.Create<TransformScaffold>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
@@ -271,6 +283,19 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             Assert.IsFalse(target.Expressions.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ProcessedMembersProperty_IsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var target = CreateTarget();
+
+            // Assert
+            Assert.IsFalse(target.ProcessedMembers.Any());
         }
 
         [TestMethod]

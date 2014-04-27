@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullSourceMemberStrategy.cs" company="Bijectiv">
+// <copyright file="NullAutoTransformStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the NullSourceMemberStrategy type.
+//   Defines the NullAutoTransformStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,9 +33,9 @@ namespace Bijectiv.Builder
     using System.Reflection;
 
     /// <summary>
-    /// A <see cref="ISourceMemberStrategy"/> that handles every member and sets it to null.
+    /// A <see cref="IAutoTransformStrategy"/> that handles every member and sets it to null.
     /// </summary>
-    public class NullSourceMemberStrategy : ISourceMemberStrategy
+    public class NullAutoTransformStrategy : IAutoTransformStrategy
     {
         /// <summary>
         /// Tries to gets the source <see cref="MemberInfo"/> that will be identified with 

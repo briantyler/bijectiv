@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoOptions.cs" company="Bijectiv">
+// <copyright file="AutoTransformOptions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoOptions type.
+//   Defines the AutoTransformOptions type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ namespace Bijectiv.Builder
     /// Represents automatic transform options.
     /// </summary>
     [Flags]
-    public enum AutoOptions
+    public enum AutoTransformOptions
     {
         /// <summary>
         /// No options.

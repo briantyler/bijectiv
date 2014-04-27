@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FieldTestClass.cs" company="Bijectiv">
+// <copyright file="ReflectionOptions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,44 +23,38 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the FieldTestClass type.
+//   Defines the ReflectionOptions type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.TestUtilities.TestTypes
+namespace Bijectiv.Utilities
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
-
-    using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
+    using System;
 
     /// <summary>
-    /// A test class with a field.
+    /// Represents options that apply to reflection entities.
     /// </summary>
-    public class FieldTestClass
+    [Flags]
+    public enum ReflectionOptions
     {
         /// <summary>
-        /// The readonly field <see cref="FieldInfo"/>.
+        /// Returns the default entities.
         /// </summary>
-        public static readonly FieldInfo ReadonlyFieldFi = Reflect<FieldTestClass>.Field(_ => _.ReadonlyField);
+        None = 0,
 
         /// <summary>
-        /// The field <see cref="FieldInfo"/>.
+        /// Includes the non-public entities.
         /// </summary>
-        public static readonly FieldInfo FieldFi = Reflect<FieldTestClass>.Field(_ => _.Field);
-       
-        /// <summary>
-        /// A readonly field.
-        /// </summary>
-        [UsedImplicitly]
-        public readonly int ReadonlyField;
+        IncludeNonPublic = (1 << 0),
 
         /// <summary>
-        /// A field.
+        /// Returns only entities that can be read.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
-        public int Field;
+        CanRead = (1 << 1),
+
+        /// <summary>
+        /// Returns only entities that can be written to.
+        /// </summary>
+        CanWrite = (1 << 2),
     }
 }
