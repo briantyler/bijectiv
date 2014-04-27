@@ -76,7 +76,7 @@ namespace Bijectiv.Utilities
 
             return type
                 .GetFields(bindingFlags)
-                .Where(candidate => !options.HasFlag(ReflectionOptions.CanWrite) || !candidate.IsInitOnly);
+                .Where(candidate => !options.HasFlag(ReflectionOptions.CanWrite) || candidate.CanWrite());
         }
 
         /// <summary>
@@ -104,8 +104,8 @@ namespace Bijectiv.Utilities
 
             return type
                 .GetProperties(bindingFlags)
-                .Where(candidate => !options.HasFlag(ReflectionOptions.CanWrite) || candidate.CanWrite)
-                .Where(candidate => !options.HasFlag(ReflectionOptions.CanRead) || candidate.CanRead);
+                .Where(candidate => !options.HasFlag(ReflectionOptions.CanWrite) || candidate.CanWrite())
+                .Where(candidate => !options.HasFlag(ReflectionOptions.CanRead) || candidate.CanRead());
         }
     }
 }

@@ -32,11 +32,9 @@ namespace Bijectiv.Factory
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.Builder;
-    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -45,38 +43,6 @@ namespace Bijectiv.Factory
     /// </summary>
     public class AutoTransformTask : ITransformTask
     {
-        /// <summary>
-        /// The reflection gateway.
-        /// </summary>
-        private readonly IReflectionGateway reflectionGateway;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="AutoTransformTask"/> class.
-        /// </summary>
-        /// <param name="reflectionGateway">
-        /// The reflection gateway.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public AutoTransformTask([NotNull] IReflectionGateway reflectionGateway)
-        {
-            if (reflectionGateway == null)
-            {
-                throw new ArgumentNullException("reflectionGateway");
-            }
-
-            this.reflectionGateway = reflectionGateway;
-        }
-
-        /// <summary>
-        /// Gets the reflection gateway.
-        /// </summary>
-        public IReflectionGateway ReflectionGateway
-        {
-            get { return this.reflectionGateway; }
-        }
-
         /// <summary>
         /// Executes the task.
         /// </summary>
@@ -92,24 +58,15 @@ namespace Bijectiv.Factory
 
             var fragments = scaffold.UnprocessedFragments.OfType<AutoTransformFragment>().ToArray();
 
-            var sourceMembers = this.ReflectionGateway
-                .GetFields(scaffold.Definition.Source, ReflectionOptions.CanRead)
-                .ToArray();
-
-            var targetMembers = this.ReflectionGateway
-                .GetFields(scaffold.Definition.Target, ReflectionOptions.CanWrite)
-                .Where(candidate => !scaffold.ProcessedMembers.Contains(candidate))
-                .ToArray();
-
             var pairings = new List<Tuple<MemberInfo, MemberInfo>>();
-            foreach (var targetMember in targetMembers)
+            foreach (var targetMember in scaffold.UnprocessedTargetMembers)
             {
                 foreach (var strategy in fragments.Select(item => item.Strategy))
                 {
                     MemberInfo sourceMember;
-                    if (strategy.TryGetSourceForTarget(sourceMembers, targetMember, out sourceMember))
+                    if (strategy.TryGetSourceForTarget(scaffold.SourceMembers, targetMember, out sourceMember))
                     {
-                        //pairings.Add(Tuple.Create(sourceMember, targetMember));
+                        pairings.Add(Tuple.Create(sourceMember, targetMember));
                     }
                 }
             }

@@ -65,9 +65,19 @@ namespace Bijectiv.Factory
         private readonly HashSet<TransformFragment> processedFragments = new HashSet<TransformFragment>();
 
         /// <summary>
+        /// The source members.
+        /// </summary>
+        private readonly List<MemberInfo> sourceMembers = new List<MemberInfo>();
+
+        /// <summary>
+        /// The target members.
+        /// </summary>
+        private readonly List<MemberInfo> targetMembers = new List<MemberInfo>();
+
+        /// <summary>
         /// The target members that have already been processed.
         /// </summary>
-        private readonly HashSet<MemberInfo> processedMembers = new HashSet<MemberInfo>();
+        private readonly HashSet<MemberInfo> processedTargetMembers = new HashSet<MemberInfo>();
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformScaffold"/> class.
@@ -191,11 +201,40 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
+        /// Gets the source members.
+        /// </summary>
+        public IList<MemberInfo> SourceMembers
+        {
+            get { return this.sourceMembers; }
+        }
+
+        /// <summary>
+        /// Gets the target members.
+        /// </summary>
+        public IList<MemberInfo> TargetMembers
+        {
+            get { return this.targetMembers; }
+        }
+
+        /// <summary>
         /// Gets the target members that have already been processed.
         /// </summary>
-        public virtual ISet<MemberInfo> ProcessedMembers
+        public virtual ISet<MemberInfo> ProcessedTargetMembers
         {
-            get { return this.processedMembers; }
+            get { return this.processedTargetMembers; }
+        }
+
+        /// <summary>
+        /// Gets the target members that have not been processed.
+        /// </summary>
+        public virtual IEnumerable<MemberInfo> UnprocessedTargetMembers
+        {
+            get
+            {
+                return this.TargetMembers
+                    .Where(candidate => !this.ProcessedTargetMembers.Contains(candidate))
+                    .ToArray();
+            }
         }
 
         /// <summary>

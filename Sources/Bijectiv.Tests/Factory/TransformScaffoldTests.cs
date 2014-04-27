@@ -32,6 +32,7 @@ namespace Bijectiv.Tests.Factory
 {
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     using Bijectiv.Builder;
     using Bijectiv.Factory;
@@ -287,6 +288,32 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_SourceMembersProperty_IsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var target = CreateTarget();
+
+            // Assert
+            Assert.IsFalse(target.SourceMembers.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetMembersProperty_IsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var target = CreateTarget();
+
+            // Assert
+            Assert.IsFalse(target.TargetMembers.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ProcessedMembersProperty_IsEmpty()
         {
             // Arrange
@@ -295,7 +322,7 @@ namespace Bijectiv.Tests.Factory
             var target = CreateTarget();
 
             // Assert
-            Assert.IsFalse(target.ProcessedMembers.Any());
+            Assert.IsFalse(target.ProcessedTargetMembers.Any());
         }
 
         [TestMethod]
@@ -316,6 +343,26 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             Assert.AreEqual(fragment2, result.Single());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnprocessedTargetMembers_DefaultParameters_FiltersTargetMembersByProcessedTargetMembers()
+        {
+            // Arrange
+            var target = CreateTarget();
+            var member1 = Stub.Create<MemberInfo>();
+            var member2 = Stub.Create<MemberInfo>();
+            var member3 = Stub.Create<MemberInfo>();
+
+            target.TargetMembers.AddRange(new[] { member1, member2, member3 });
+            target.ProcessedTargetMembers.AddRange(new[] { member1, member3 });
+
+            // Act
+            var result = target.UnprocessedTargetMembers;
+
+            // Assert
+            Assert.AreEqual(member2, result.Single());
         }
 
         private static TransformScaffold CreateTarget()
