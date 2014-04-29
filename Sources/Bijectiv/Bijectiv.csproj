@@ -63,6 +63,8 @@
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
+    <Compile Include="ITargetCache.cs" />
+    <Compile Include="TargetCache.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

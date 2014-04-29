@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformContext.cs" company="Bijectiv">
+// <copyright file="ITargetCache.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,35 +23,58 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformContext type.
+//   Defines the ITargetCache type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
     using System;
-    using System.Globalization;
 
     /// <summary>
-    /// Represents a transform context.
+    /// Represents a target instance cache.
     /// </summary>
-    public interface ITransformContext
+    public interface ITargetCache
     {
         /// <summary>
-        /// Gets the culture in which the transform is taking place. Defaults to 
-        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
+        /// Adds a target instance to the cache.
         /// </summary>
-        CultureInfo Culture { get; }
+        /// <remarks>
+        /// The key is composed of <paramref name="sourceType"/>, <paramref name="targetType"/> and
+        /// <paramref name="source"/>.
+        /// </remarks>
+        /// <param name="sourceType">
+        /// The source type.
+        /// </param>
+        /// <param name="targetType">
+        /// The target type.
+        /// </param>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The target to add.
+        /// </param>
+        void Add(Type sourceType, Type targetType, object source, object target);
 
         /// <summary>
-        /// Retrieve a service from the default factory.
+        /// Tries to get a target from the cache.
         /// </summary>
-        /// <param name="service">
-        /// The service to retrieve.
+        /// <param name="sourceType">
+        /// The source type.
+        /// </param>
+        /// <param name="targetType">
+        /// The target type.
+        /// </param>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The found target. This value is only valid when the return value is <c>true</c>.
         /// </param>
         /// <returns>
-        /// The component instance that provides the service.
+        /// A value indicating whether a target was found.
         /// </returns>
-        object Resolve(Type service);
+        bool TryGet(Type sourceType, Type targetType, object source, out object target);
     }
 }

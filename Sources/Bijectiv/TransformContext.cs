@@ -107,7 +107,7 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Retrieve a service from the default facotry.
+        /// Retrieve a service from the default factory.
         /// </summary>
         /// <param name="service">
         /// The service to retrieve.

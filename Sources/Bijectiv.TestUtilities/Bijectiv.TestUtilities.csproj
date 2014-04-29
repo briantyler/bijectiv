@@ -66,6 +66,7 @@
     <Compile Include="TestTypes\BaseTestClass2.cs" />
     <Compile Include="TestTypes\DerivedTestClass1.cs" />
     <Compile Include="TestTypes\DerivedTestClass2.cs" />
+    <Compile Include="TestTypes\EquatableClass.cs" />
     <Compile Include="TestTypes\FieldTestClass.cs" />
     <Compile Include="TestTypes\ITestInterface1.cs" />
     <Compile Include="TestTypes\MultiConstructorTestClass.cs" />

@@ -43,6 +43,7 @@
     <AssemblyOriginatorKeyFile>..\.build\Bijectiv.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -82,6 +83,7 @@
     <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactoryTests.cs" />
+    <Compile Include="Factory\IMemberTransformer.cs" />
     <Compile Include="Factory\InitializeMembersTaskTests.cs" />
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Stores\DelegateTransformStoreFactoryTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStoreTests.cs" />
     <Compile Include="Stores\InstanceTransformStoreFactoryTests.cs" />
+    <Compile Include="TargetCacheTests.cs" />
     <Compile Include="TransformContextTests.cs" />
     <Compile Include="TransformStoreBuilderExtensionsTests.cs" />
     <Compile Include="TransformStoreBuilderTests.cs" />
