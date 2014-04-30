@@ -50,6 +50,11 @@ namespace Bijectiv
         private readonly Func<Type, object> resolveDelegate;
 
         /// <summary>
+        /// The target cache.
+        /// </summary>
+        private readonly ITargetCache targetCache = new TargetCache();
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="TransformContext"/> class.
         /// </summary>
         public TransformContext()
@@ -96,6 +101,14 @@ namespace Bijectiv
         public CultureInfo Culture
         {
             get { return this.culture; }
+        }
+
+        /// <summary>
+        /// Gets the target cache.
+        /// </summary>
+        public ITargetCache TargetCache
+        {
+            get { return this.targetCache; }
         }
 
         /// <summary>

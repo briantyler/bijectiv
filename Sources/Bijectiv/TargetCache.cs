@@ -156,16 +156,10 @@ namespace Bijectiv
             /// <returns>
             /// A value indicating whether <paramref name="x"/> and <paramref name="y"/> are equal.
             /// </returns>
-            [SuppressMessage(
-                "Microsoft.Design",
-                "CA1062:Validate arguments of public methods",
-                MessageId = "0",
-                Justification = "Nothing to validate.")]
-            [SuppressMessage(
-                "Microsoft.Design",
-                "CA1062:Validate arguments of public methods",
-                MessageId = "1",
-                Justification = "Nothing to validate.")]
+            [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0",
+                Justification = "Nothing to validate as null tuples cannot occur.")]
+            [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1",
+                Justification = "Nothing to validate as null tuples cannot occur.")]
             public bool Equals(Tuple<Type, Type, object> x, Tuple<Type, Type, object> y)
             {
                 return object.Equals(x, y) && ReferenceEquals(x.Item3, y.Item3);
@@ -180,11 +174,8 @@ namespace Bijectiv
             /// <returns>
             /// A hash code for the specified object.
             /// </returns>
-            [SuppressMessage(
-                "Microsoft.Design", 
-                "CA1062:Validate arguments of public methods", 
-                MessageId = "0", 
-                Justification = "Nothing to validate.")]
+            [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0",
+                Justification = "Nothing to validate as null tuples cannot occur.")]
             public int GetHashCode(Tuple<Type, Type, object> obj)
             {
                 return obj.GetHashCode();

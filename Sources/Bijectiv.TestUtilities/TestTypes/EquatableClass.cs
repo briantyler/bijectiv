@@ -125,6 +125,5 @@ namespace Bijectiv.TestUtilities.TestTypes
         {
             return this.equal == other.equal;
         }
-
     }
 }

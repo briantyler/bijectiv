@@ -60,6 +60,7 @@
     <Compile Include="Builder\NullAutoTransformStrategy.cs" />
     <Compile Include="Builder\AutoTransformFragment.cs" />
     <Compile Include="Factory\AutoTransformTask.cs" />
+    <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Utilities\CollectionExtensions.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\Placeholder.cs" />
+    <Compile Include="Utilities\PlaceholderExpressionVisitor.cs" />
     <Compile Include="Utilities\Reflect.cs" />
     <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\ReflectionGateway.cs" />

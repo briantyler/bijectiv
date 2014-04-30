@@ -29,6 +29,10 @@
 
 namespace Bijectiv.Utilities
 {
+    using System.Diagnostics.CodeAnalysis;
+
+    using JetBrains.Annotations;
+
     /// <summary>
     /// Represents a type placeholder in an expression or 'any old type' in a generic.
     /// </summary>
@@ -44,6 +48,25 @@ namespace Bijectiv.Utilities
         /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
         /// </returns>
         public static T Of<T>()
+        {
+            return default(T);
+        }
+
+        /// <summary>
+        /// A dummy method that has return type <typeparamref name="T"/> and a name associated with it.
+        /// </summary>
+        /// <param name="name">
+        /// The name of the placeholder.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the placeholder to create.
+        /// </typeparam>
+        /// <returns>
+        /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
+        /// </returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "name", 
+            Justification = "Used implicitly")]
+        public static T Of<T>([UsedImplicitly] string name)
         {
             return default(T);
         }

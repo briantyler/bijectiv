@@ -124,6 +124,19 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_TargetCacheProperty_IsNotNull()
+        {
+            // Arrange
+
+            // Act
+            var target = new TransformContext(CultureInfo.InvariantCulture, t => new object());
+
+            // Assert
+            Assert.IsNotNull(target.TargetCache);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_CultureParameter_IsAssignedToCultureProperty()
         {
             // Arrange

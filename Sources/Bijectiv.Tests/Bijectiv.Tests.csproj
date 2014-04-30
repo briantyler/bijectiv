@@ -79,6 +79,7 @@
     <Compile Include="Builder\TransformDefinitionTests.cs" />
     <Compile Include="Builder\TransformFragmentTests.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactoryTests.cs" />
+    <Compile Include="Factory\CacheTargetTaskTests.cs" />
     <Compile Include="Factory\CreateTargetTaskTests.cs" />
     <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Transforms\PassthroughTransformTests.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
+    <Compile Include="Utilities\PlaceholderExpressionVisitorTests.cs" />
     <Compile Include="Utilities\PlaceholderTests.cs" />
     <Compile Include="Utilities\ReflectionExtensionsTests.cs" />
     <Compile Include="Utilities\ReflectionGatewayTests.cs" />

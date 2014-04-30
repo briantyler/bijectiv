@@ -65,5 +65,31 @@ namespace Bijectiv.Tests.Utilities
             // Assert
             Assert.AreEqual(default(int), t);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OfNameClassVariant_DefaultParameters_ReturnsDefault()
+        {
+            // Arrange
+
+            // Act
+            var t = Placeholder.Of<TestClass1>("foo");
+
+            // Assert
+            Assert.IsNull(t);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OfNameValueVariant_DefaultParameters_ReturnsDefault()
+        {
+            // Arrange
+
+            // Act
+            var t = Placeholder.Of<int>("foo");
+
+            // Assert
+            Assert.AreEqual(default(int), t);
+        }
     }
 }

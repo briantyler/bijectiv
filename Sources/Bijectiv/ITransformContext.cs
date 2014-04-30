@@ -44,6 +44,11 @@ namespace Bijectiv
         CultureInfo Culture { get; }
 
         /// <summary>
+        /// Gets the target cache.
+        /// </summary>
+        ITargetCache TargetCache { get; }
+
+        /// <summary>
         /// Retrieve a service from the default factory.
         /// </summary>
         /// <param name="service">

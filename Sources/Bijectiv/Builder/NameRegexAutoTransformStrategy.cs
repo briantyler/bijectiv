@@ -71,10 +71,7 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="patternTemplate"/> is null.
         /// </exception>
-        [SuppressMessage(
-            "Microsoft.Usage", 
-            "CA1806:DoNotIgnoreMethodResults", 
-            MessageId = "System.Text.RegularExpressions.Regex", 
+        [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "System.Text.RegularExpressions.Regex", 
             Justification = "This is the only reliable way to validate a regex.")]
         public NameRegexAutoTransformStrategy(
             [NotNull] string patternTemplate, AutoTransformOptions options)
