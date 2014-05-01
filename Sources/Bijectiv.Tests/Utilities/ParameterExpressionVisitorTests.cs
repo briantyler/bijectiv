@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTaskTests.cs" company="Bijectiv">
+// <copyright file="ParameterExpressionVisitorTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,33 +23,36 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTaskTests type.
+//   Defines the ParameterExpressionVisitorTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Factory
+namespace Bijectiv.Tests.Utilities
 {
     using System;
     using System.Linq.Expressions;
 
-    using Bijectiv.Builder;
-    using Bijectiv.Factory;
     using Bijectiv.TestUtilities;
-    using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="ParameterExpressionVisitor"/> class.
+    /// </summary>
     [TestClass]
-    public class ReturnTargetAsObjectTaskTests
+    public class ParameterExpressionVisitorTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_InstanceCreated()
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_ParameterParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new ReturnTargetAsObjectTask().Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new ParameterExpressionVisitor(null, Stub.Create<Expression>()).Naught();
 
             // Assert
         }
@@ -57,49 +60,45 @@ namespace Bijectiv.Tests.Factory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Execute_ScaffoldParameterIsNull_Throws()
+        public void CreateInstance_ReplacementParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            new ParameterExpressionVisitor(Expression.Parameter(typeof(object)), null).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldTargetAsObjectProperty_IsAddedToScaffoldExpressions()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
-            var targetAsObject = new object();
-            var scaffold = CreateScaffold();
-            scaffold.TargetAsObject = Expression.Constant(targetAsObject);
-
-            var target = CreateTarget();
 
             // Act
-            target.Execute(scaffold);
+            new ParameterExpressionVisitor(Expression.Parameter(typeof(object)), Stub.Create<Expression>()).Naught();
 
             // Assert
-            var @delegate = Expression.Lambda<Func<object>>(Expression.Block(scaffold.Expressions)).Compile();
-            Assert.AreEqual(targetAsObject, @delegate());
         }
 
-        private static ReturnTargetAsObjectTask CreateTarget()
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Visit_SingleSubstitution_SubstitutesParameter()
         {
-            return new ReturnTargetAsObjectTask();
-        }
+            // Arrange
+            Expression<Func<bool, int, int>> expression = (b, i) => b ? i : 2;
+            var parameter = expression.Parameters[1];
+            var target = new ParameterExpressionVisitor(parameter, Expression.Constant(7));
 
-        private static TransformScaffold CreateScaffold()
-        {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
-                Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+            // Act
+            var substituted = target.Visit(expression.Body);
+
+            // Assert
+            var @delegate = Expression.Lambda<Func<bool, int>>(substituted, expression.Parameters[0]).Compile();
+            Assert.AreEqual(7, @delegate(true));
+            Assert.AreEqual(2, @delegate(false));
         }
     }
 }

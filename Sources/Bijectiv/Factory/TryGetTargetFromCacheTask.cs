@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTask.cs" company="Bijectiv">
+// <copyright file="TryGetTargetFromCacheTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTask type.
+//   Defines the TryGetTargetFromCacheTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,12 +32,14 @@ namespace Bijectiv.Factory
     using System;
     using System.Linq.Expressions;
 
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that returns the target as an object.
+    /// A transform task that tries to get the target instance from the cache and jumps to the exit if successful.
     /// </summary>
-    public class ReturnTargetAsObjectTask : ITransformTask
+    public class TryGetTargetFromCacheTask : ITransformTask
     {
         /// <summary>
         /// Executes the task.
@@ -52,11 +54,21 @@ namespace Bijectiv.Factory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var returnTarget = Expression.Label(typeof(object));
+            var expression = (Expression<Action<object>>)
+                // ReSharper disable once RedundantAssignment
+                (o => Placeholder.Of<ITransformContext>("context")
+                     .TargetCache.TryGet(
+                         scaffold.Definition.Source,
+                         scaffold.Definition.Target,
+                         Placeholder.Of<object>("source"),
+                         out o));
 
-            scaffold.Expressions.Add(Expression.Label(scaffold.ReturnLabel));
-            scaffold.Expressions.Add(Expression.Return(returnTarget, scaffold.TargetAsObject, typeof(object)));
-            scaffold.Expressions.Add(Expression.Label(returnTarget, Expression.Constant(default(object))));
+            var substituted = new ParameterExpressionVisitor(expression.Parameters[0], scaffold.TargetAsObject)
+                .Visit(expression.Body);
+            substituted = new PlaceholderExpressionVisitor("context", scaffold.TransformContext).Visit(substituted);
+            substituted = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(substituted);
+
+            scaffold.Expressions.Add(Expression.IfThen(substituted, Expression.Goto(scaffold.ReturnLabel)));
         }
     }
 }

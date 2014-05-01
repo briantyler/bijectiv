@@ -27,6 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#pragma warning disable 1720
 namespace Bijectiv.Tests.Utilities
 {
     using System.Reflection;

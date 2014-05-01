@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ArgumentExceptionExpectedAttribute.cs" company="Bijectiv">
+// <copyright file="CacheTargetTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,30 +23,52 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ArgumentExceptionExpectedAttribute type.
+//   Defines the CacheTargetTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.TestUtilities
+namespace Bijectiv.Factory
 {
     using System;
+    using System.Linq.Expressions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Bijectiv.Utilities;
+
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents the expectation of an <see cref="ArgumentException"/>.
+    /// A transform task that caches a target instance.
     /// </summary>
-    public class ArgumentExceptionExpectedAttribute : ExpectedExceptionBaseAttribute
+    public class CacheTargetTask : ITransformTask
     {
         /// <summary>
-        /// Verifies the thrown exception.
+        /// Executes the task.
         /// </summary>
-        /// <param name="exception">
-        /// The exception.
+        /// <param name="scaffold">
+        /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        protected override void Verify(Exception exception)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public void Execute([NotNull] TransformScaffold scaffold)
         {
-            Assert.AreEqual(typeof(ArgumentException), exception.GetType());
+            if (scaffold == null)
+            {
+                throw new ArgumentNullException("scaffold");
+            }
+            
+            var expression = (Expression)(Expression<Action>)(
+                () => Placeholder.Of<ITransformContext>("context").TargetCache.Add(
+                    scaffold.Definition.Source,
+                    scaffold.Definition.Target,
+                    Placeholder.Of<object>("source"),
+                    Placeholder.Of<object>("target")));
+
+            expression = new PlaceholderExpressionVisitor("context", scaffold.TransformContext).Visit(expression);
+            expression = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(expression);
+            expression = new PlaceholderExpressionVisitor("target", scaffold.TargetAsObject).Visit(expression);
+
+            scaffold.Expressions.Add(((LambdaExpression)expression).Body);
         }
     }
 }

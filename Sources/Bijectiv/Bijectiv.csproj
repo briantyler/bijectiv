@@ -63,6 +63,7 @@
     <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
+    <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="TargetCache.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Transforms\PassthroughTransform.cs" />
     <Compile Include="Utilities\CollectionExtensions.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
+    <Compile Include="Utilities\ParameterExpressionVisitor.cs" />
     <Compile Include="Utilities\Placeholder.cs" />
     <Compile Include="Utilities\PlaceholderExpressionVisitor.cs" />
     <Compile Include="Utilities\Reflect.cs" />

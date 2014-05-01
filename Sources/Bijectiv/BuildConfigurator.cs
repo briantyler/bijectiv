@@ -97,10 +97,12 @@ namespace Bijectiv
                 {
                     () => new InitializeFragmentsTask(),
                     () => new InitializeVariablesTask(),
+                    () => new TryGetTargetFromCacheTask(),
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
                     () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
                     () => new CreateTargetTask(new FallbackFactoryExpressionFactory()),
+                    () => new CacheTargetTask(), 
                     () => new ReturnTargetAsObjectTask()
                 });
         }

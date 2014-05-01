@@ -46,7 +46,7 @@ namespace Bijectiv.TestUtilities
         /// </param>
         protected override void Verify(Exception exception)
         {
-            Assert.AreEqual(exception.GetType(), typeof(InvalidOperationException));
+            Assert.AreEqual(typeof(InvalidOperationException), exception.GetType());
         }
     }
 }

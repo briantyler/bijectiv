@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTaskTests.cs" company="Bijectiv">
+// <copyright file="TryGetTargetFromCacheTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTaskTests type.
+//   Defines the TryGetTargetFromCacheTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,8 +39,11 @@ namespace Bijectiv.Tests.Factory
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="TryGetTargetFromCacheTask"/> class.
+    /// </summary>
     [TestClass]
-    public class ReturnTargetAsObjectTaskTests
+    public class TryGetTargetFromCacheTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -49,7 +52,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new ReturnTargetAsObjectTask().Naught();
+            new TryGetTargetFromCacheTask().Naught();
 
             // Assert
         }
@@ -71,12 +74,11 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldTargetAsObjectProperty_IsAddedToScaffoldExpressions()
+        public void Execute_ValidParameters_TryGetsTargetFromCacheAndExitsOnSuccess()
         {
             // Arrange
-            var targetAsObject = new object();
             var scaffold = CreateScaffold();
-            scaffold.TargetAsObject = Expression.Constant(targetAsObject);
+            scaffold.TargetAsObject = Expression.Variable(typeof(object));
 
             var target = CreateTarget();
 
@@ -84,13 +86,30 @@ namespace Bijectiv.Tests.Factory
             target.Execute(scaffold);
 
             // Assert
-            var @delegate = Expression.Lambda<Func<object>>(Expression.Block(scaffold.Expressions)).Compile();
-            Assert.AreEqual(targetAsObject, @delegate());
+            scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(new object())));
+            new ReturnTargetAsObjectTask().Execute(scaffold);
+
+            var @delegate = Expression
+                .Lambda<Func<ITransformContext, object, object>>(
+                    Expression.Block(
+                        new[] { (ParameterExpression)scaffold.TargetAsObject },
+                        scaffold.Expressions),
+                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.SourceAsObject)
+                .Compile();
+
+            var sourceInstance = new object();
+            var targetInstance = new object();
+            var context = new TransformContext();
+            context.TargetCache.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance);
+
+            Assert.AreEqual(targetInstance, @delegate(context, sourceInstance));
+            Assert.AreNotEqual(targetInstance, @delegate(context, new object()));
         }
 
-        private static ReturnTargetAsObjectTask CreateTarget()
+        private static TryGetTargetFromCacheTask CreateTarget()
         {
-            return new ReturnTargetAsObjectTask();
+            return new TryGetTargetFromCacheTask();
         }
 
         private static TransformScaffold CreateScaffold()

@@ -91,6 +91,7 @@
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
     <Compile Include="Factory\TransformFactoryTests.cs" />
     <Compile Include="Factory\TransformScaffoldTests.cs" />
+    <Compile Include="Factory\TryGetTargetFromCacheTaskTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />
     <Compile Include="Stores\CollectionTransformStoreTests.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Transforms\PassthroughTransformTests.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
+    <Compile Include="Utilities\ParameterExpressionVisitorTests.cs" />
     <Compile Include="Utilities\PlaceholderExpressionVisitorTests.cs" />
     <Compile Include="Utilities\PlaceholderTests.cs" />
     <Compile Include="Utilities\ReflectionExtensionsTests.cs" />

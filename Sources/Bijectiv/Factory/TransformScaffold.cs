@@ -80,6 +80,11 @@ namespace Bijectiv.Factory
         private readonly HashSet<MemberInfo> processedTargetMembers = new HashSet<MemberInfo>();
 
         /// <summary>
+        /// The return label.
+        /// </summary>
+        private readonly LabelTarget returnLabel = Expression.Label("return");
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="TransformScaffold"/> class.
         /// </summary>
         /// <param name="definitionRegistry">
@@ -170,6 +175,14 @@ namespace Bijectiv.Factory
         /// Gets or sets an expression that provides the target as its mapped type.
         /// </summary>
         public virtual Expression Target { get; set; }
+
+        /// <summary>
+        /// Gets the return label.
+        /// </summary>
+        public LabelTarget ReturnLabel
+        {
+            get { return this.returnLabel; }
+        }
 
         /// <summary>
         /// Gets the fragments that have not been processed.
