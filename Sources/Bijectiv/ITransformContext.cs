@@ -49,6 +49,11 @@ namespace Bijectiv
         ITargetCache TargetCache { get; }
 
         /// <summary>
+        /// Gets the transform store.
+        /// </summary>
+        ITransformStore TransformStore { get; }
+
+        /// <summary>
         /// Retrieve a service from the default factory.
         /// </summary>
         /// <param name="service">

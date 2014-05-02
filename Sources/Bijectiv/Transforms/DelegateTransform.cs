@@ -106,8 +106,18 @@ namespace Bijectiv.Transforms
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        public object Transform(object source, ITransformContext context)
+        public object Transform(object source, [NotNull] ITransformContext context)
         {
+            if (source == null)
+            {
+                return this.Target.IsClass ? null : Activator.CreateInstance(this.Target);
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             return this.Delegate(source, context);
         }
     }

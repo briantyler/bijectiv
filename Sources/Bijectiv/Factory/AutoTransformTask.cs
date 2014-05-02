@@ -32,9 +32,11 @@ namespace Bijectiv.Factory
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.Builder;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -69,6 +71,53 @@ namespace Bijectiv.Factory
                         pairings.Add(Tuple.Create(sourceMember, targetMember));
                     }
                 }
+            }
+
+            foreach (var pair in pairings)
+            {
+                var sourceMemberType = pair.Item1.GetReturnType();
+                var targetMemberType = pair.Item2.GetReturnType();
+                Expression<Action> template;
+                if (!sourceMemberType.IsClass || sourceMemberType.IsSealed)
+                {
+                    template =
+                        () =>
+                        Placeholder.Of<ITransformContext>("context")
+                            .TransformStore.Resolve(sourceMemberType, targetMemberType)
+                            .Transform(
+                                // ReSharper disable once RedundantCast
+                                (object)Placeholder.Of<object>("sourceMember"),
+                                Placeholder.Of<ITransformContext>("context"));
+                }
+                else
+                {
+                    template =
+                       () =>
+                       Placeholder.Of<ITransformContext>("context")
+                           .TransformStore.Resolve(
+                                Placeholder.Of<object>("sourceMember") == null 
+                                    ? sourceMemberType 
+                                    : Placeholder.Of<object>("sourceMember").GetType(), 
+                                targetMemberType)
+                           .Transform(
+                               // ReSharper disable once RedundantCast
+                               (object)Placeholder.Of<object>("sourceMember"),
+                               Placeholder.Of<ITransformContext>("context"));
+                }
+
+                template = (Expression<Action>)
+                    new PlaceholderExpressionVisitor("context", scaffold.TransformContext)
+                    .Visit(template);
+
+                template = (Expression<Action>)
+                    new PlaceholderExpressionVisitor("sourceMember", sourceMemberType.GetAccessExpression(scaffold.Source))
+                    .Visit(template);
+
+                var expression = Expression.Assign(
+                    targetMemberType.GetAccessExpression(scaffold.Target), 
+                    template.Body);
+
+                scaffold.Expressions.Add(expression);
             }
         }
     }

@@ -92,11 +92,11 @@ namespace Bijectiv.Transforms
         /// <exception cref="ArgumentNullException">
         /// Thrown if any parameter is null.
         /// </exception>
-        public object Transform([NotNull] object source, [NotNull] ITransformContext context)
+        public object Transform(object source, [NotNull] ITransformContext context)
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                return this.Target.IsClass ? null : Activator.CreateInstance(this.Target);
             }
 
             if (context == null)

@@ -30,6 +30,7 @@
 namespace Bijectiv.Utilities
 {
     using System;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using JetBrains.Annotations;
@@ -95,6 +96,81 @@ namespace Bijectiv.Utilities
 
             var property = @this as PropertyInfo;
             return property != null && property.CanWrite;
+        }
+
+        /// <summary>
+        /// Gets an <see cref="Expression"/> that accesses a member represented by a <see cref="MemberInfo"/>.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="MemberInfo"/> representing the member to access.
+        /// </param>
+        /// <param name="instance">
+        /// The expression that provides the instance that owns the member.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Expression"/> representing access to <paramref name="this"/> on <paramref name="instance"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="this"/> is not a <see cref="FieldInfo"/> or a <see cref="PropertyInfo"/>.
+        /// </exception>
+        public static Expression GetAccessExpression([NotNull] this MemberInfo @this, [NotNull] Expression instance)
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
+            var field = @this as FieldInfo;
+            if (field != null)
+            {
+                return Expression.Field(instance, field);
+            }
+
+            var property = @this as PropertyInfo;
+            if (property != null)
+            {
+                return Expression.Property(instance, property);
+            }
+
+            throw new InvalidOperationException(
+                string.Format("Unable to create access expression for member '{0}", @this));
+        }
+
+        public static Type GetReturnType([NotNull] this MemberInfo @this)
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            var field = @this as FieldInfo;
+            if (field != null)
+            {
+                return field.FieldType;
+            }
+
+            var property = @this as PropertyInfo;
+            if (property != null)
+            {
+                return property.PropertyType;
+            }
+
+            var method = @this as MethodInfo;
+            if (method != null)
+            {
+                return method.ReturnType;
+            }
+
+            throw new InvalidOperationException(
+                string.Format("Unable to determine return type for member '{0}", @this));
         }
     }
 }

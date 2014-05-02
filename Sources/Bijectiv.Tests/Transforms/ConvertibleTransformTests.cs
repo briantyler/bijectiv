@@ -115,16 +115,30 @@ namespace Bijectiv.Tests.Transforms
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void Transform_SourceParameterIsNull_Throws()
+        public void Transform_SourceParameterIsNullTargetTypeIsNotClass_ReturnsDefault()
         {
             // Arrange
             var target = new ConvertibleTransform(typeof(bool));
 
             // Act
-            target.Transform(null, Stub.Create<ITransformContext>());
+            var result = target.Transform(null, Stub.Create<ITransformContext>());
 
             // Assert
+            Assert.AreEqual(default(bool), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_SourceParameterIsNullTargetTypeIsClass_ReturnsDefault()
+        {
+            // Arrange
+            var target = new ConvertibleTransform(typeof(string));
+
+            // Act
+            var result = target.Transform(null, Stub.Create<ITransformContext>());
+
+            // Assert
+            Assert.AreEqual(default(string), result);
         }
 
         [TestMethod]

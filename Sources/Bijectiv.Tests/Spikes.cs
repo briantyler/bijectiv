@@ -48,7 +48,7 @@ namespace Bijectiv.Tests
             var transform = store.Resolve(TestClass1.T, TestClass2.T);
 
             // Act
-            var result = transform.Transform(new TestClass1(), new TransformContext());
+            var result = transform.Transform(new TestClass1(), new TransformContext(store));
 
             // Assert
             Assert.IsInstanceOfType(result, TestClass2.T);

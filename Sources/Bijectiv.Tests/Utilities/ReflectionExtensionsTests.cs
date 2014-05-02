@@ -30,6 +30,8 @@
 #pragma warning disable 1720
 namespace Bijectiv.Tests.Utilities
 {
+    using System;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.TestUtilities;
@@ -226,6 +228,146 @@ namespace Bijectiv.Tests.Utilities
 
             // Assert
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetAccessExpression_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(MethodInfo).GetAccessExpression(Stub.Create<Expression>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetAccessExpression_InstanceParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            Stub.Create<MethodInfo>().GetAccessExpression(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void GetAccessExpression_ThisParameterIsNotPropertyOrField_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            Stub.Create<MethodInfo>().GetAccessExpression(Stub.Create<Expression>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetAccessExpression_ThisParameterIsProperty_CreatesPropertyAccess()
+        {
+            // Arrange
+            var instance = new PropertyTestClass { Property = 123 };
+
+            // Act
+            var expression = Reflect<PropertyTestClass>
+                .Property(_ => _.Property)
+                .GetAccessExpression(Expression.Constant(instance));
+
+            // Assert
+            Assert.AreEqual(123, Expression.Lambda<Func<int>>(expression).Compile()());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetAccessExpression_ThisParameterIsField_CreatesFieldAccess()
+        {
+            // Arrange
+            var instance = new FieldTestClass { Field = 123 };
+
+            // Act
+            var expression = Reflect<FieldTestClass>
+                .Field(_ => _.Field)
+                .GetAccessExpression(Expression.Constant(instance));
+
+            // Assert
+            Assert.AreEqual(123, Expression.Lambda<Func<int>>(expression).Compile()());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetReturnType_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(MethodInfo).GetReturnType();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void GetReturnType_ThisParameterIsUnexpectedType_Throws()
+        {
+            // Arrange
+
+            // Act
+            Stub.Create<MemberInfo>().GetReturnType();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetReturnType_ThisParameterIsField_ReturnsFieldType()
+        {
+            // Arrange
+
+            // Act
+            var result = Reflect<FieldTestClass>.Field(_ => _.Field).GetReturnType();
+
+            // Assert
+            Assert.AreEqual(typeof(int), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetReturnType_ThisParameterIsProperty_ReturnsPropertyType()
+        {
+            // Arrange
+
+            // Act
+            var result = Reflect<PropertyTestClass>.Property(_ => _.Property).GetReturnType();
+
+            // Assert
+            Assert.AreEqual(typeof(int), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetReturnType_ThisParameterIsMethod_ReturnsMethodReturnType()
+        {
+            // Arrange
+
+            // Act
+            var result = Reflect<PropertyTestClass>.Method(_ => _.GetHashCode()).GetReturnType();
+
+            // Assert
+            Assert.AreEqual(typeof(int), result);
         }
     }
 }

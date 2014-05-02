@@ -50,6 +50,11 @@ namespace Bijectiv
         private readonly Func<Type, object> resolveDelegate;
 
         /// <summary>
+        /// The transform store.
+        /// </summary>
+        private readonly ITransformStore transformStore;
+
+        /// <summary>
         /// The target cache.
         /// </summary>
         private readonly ITargetCache targetCache = new TargetCache();
@@ -57,13 +62,14 @@ namespace Bijectiv
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformContext"/> class.
         /// </summary>
-        public TransformContext()
+        /// <param name="transformStore">
+        /// The transform store.
+        /// </param>
+        public TransformContext(ITransformStore transformStore)
             : this(
                 CultureInfo.InvariantCulture,
-                t =>
-                    {
-                        throw new InvalidOperationException("No Default Factory registered.");
-                    })
+                t => { throw new InvalidOperationException("No Default Factory registered."); },
+                transformStore)
         {
         }
 
@@ -76,10 +82,16 @@ namespace Bijectiv
         /// <param name="resolveDelegate">
         /// The resolve delegate.
         /// </param>
+        /// <param name="transformStore">
+        /// The transform store.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformContext([NotNull] CultureInfo culture, [NotNull] Func<Type, object> resolveDelegate)
+        public TransformContext(
+            [NotNull] CultureInfo culture, 
+            [NotNull] Func<Type, object> resolveDelegate,
+            [NotNull] ITransformStore transformStore)
         {
             if (culture == null)
             {
@@ -91,8 +103,14 @@ namespace Bijectiv
                 throw new ArgumentNullException("resolveDelegate");
             }
 
+            if (transformStore == null)
+            {
+                throw new ArgumentNullException("transformStore");
+            }
+
             this.culture = culture;
             this.resolveDelegate = resolveDelegate;
+            this.transformStore = transformStore;
         }
 
         /// <summary>
@@ -117,6 +135,14 @@ namespace Bijectiv
         public Func<Type, object> ResolveDelegate
         {
             get { return this.resolveDelegate; }
+        }
+
+        /// <summary>
+        /// Gets the transform store.
+        /// </summary>
+        public ITransformStore TransformStore
+        {
+            get { return this.transformStore; }
         }
 
         /// <summary>

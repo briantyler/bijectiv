@@ -44,24 +44,38 @@ namespace Bijectiv.Tests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_InstanceCreated()
+        public void CreateInstance_MinimalValidParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            new TransformContext().Naught();
+            new TransformContext(Stub.Create<ITransformStore>()).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_CulturePropertyIsInvariant()
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_MinimalTransformStoreParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            var target = new TransformContext();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new TransformContext(null).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_MinimalValidParameters_CulturePropertyIsInvariant()
+        {
+            // Arrange
+
+            // Act
+            var target = new TransformContext(Stub.Create<ITransformStore>());
 
             // Assert
             Assert.AreEqual(CultureInfo.InvariantCulture, target.Culture);
@@ -70,12 +84,12 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [InvalidOperationExceptionExpected]
-        public void CreateInstance_DefaultParameters_ResolveDelegateThrows()
+        public void CreateInstance_MinimalValidParameters_ResolveDelegateThrows()
         {
             // Arrange
 
             // Act
-            var target = new TransformContext();
+            var target = new TransformContext(Stub.Create<ITransformStore>());
 
             // Assert
             target.ResolveDelegate(typeof(object));
@@ -90,7 +104,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformContext(null, t => new object()).Naught();
+            new TransformContext(null, t => new object(), Stub.Create<ITransformStore>()).Naught();
 
             // Assert
         }
@@ -104,7 +118,21 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformContext(CultureInfo.InvariantCulture, null).Naught();
+            new TransformContext(CultureInfo.InvariantCulture, null, Stub.Create<ITransformStore>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_TransformStoreParameterParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new TransformContext(CultureInfo.InvariantCulture, t => new object(), null).Naught();
 
             // Assert
         }
@@ -117,7 +145,8 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformContext(CultureInfo.InvariantCulture, t => new object()).Naught();
+            new TransformContext(CultureInfo.InvariantCulture, t => new object(), Stub.Create<ITransformStore>())
+                .Naught();
 
             // Assert
         }
@@ -129,7 +158,8 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new TransformContext(CultureInfo.InvariantCulture, t => new object());
+            var target = new TransformContext(
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<ITransformStore>());
 
             // Assert
             Assert.IsNotNull(target.TargetCache);
@@ -143,10 +173,24 @@ namespace Bijectiv.Tests
             var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var target = new TransformContext(culture, t => new object());
+            var target = new TransformContext(culture, t => new object(), Stub.Create<ITransformStore>());
 
             // Assert
             Assert.AreEqual(culture, target.Culture);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TransformStoreParameter_IsAssignedToTransformStoreProperty()
+        {
+            // Arrange
+            var transformStore = Stub.Create<ITransformStore>();
+
+            // Act
+            var target = new TransformContext(CultureInfo.InvariantCulture, t => new object(), transformStore);
+
+            // Assert
+            Assert.AreEqual(transformStore, target.TransformStore);
         }
 
         [TestMethod]
@@ -155,7 +199,8 @@ namespace Bijectiv.Tests
         public void Resolve_TypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformContext(CultureInfo.InvariantCulture, t => new object());
+            var target = new TransformContext(
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<ITransformStore>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -170,7 +215,8 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var expected = new object();
-            var target = new TransformContext(CultureInfo.InvariantCulture, t => t == TestClass1.T ? expected : null);
+            var target = new TransformContext(
+                CultureInfo.InvariantCulture, t => t == TestClass1.T ? expected : null, Stub.Create<ITransformStore>());
 
             // Act
             var result = target.Resolve(TestClass1.T);

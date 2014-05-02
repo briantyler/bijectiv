@@ -100,7 +100,7 @@ namespace Bijectiv.Tests.Factory
 
             var sourceInstance = new object();
             var targetInstance = new object();
-            var context = new TransformContext();
+            var context = new TransformContext(Stub.Create<ITransformStore>());
             context.TargetCache.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance);
 
             Assert.AreEqual(targetInstance, @delegate(context, sourceInstance));

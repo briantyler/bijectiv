@@ -94,7 +94,7 @@ namespace Bijectiv.Tests.Factory
                     (ParameterExpression)scaffold.SourceAsObject,
                     (ParameterExpression)scaffold.TargetAsObject).Compile();
 
-            var context = new TransformContext();
+            var context = new TransformContext(Stub.Create<ITransformStore>());
             var sourceInstance = new TestClass1();
             var targetInstance = new TestClass2();
 
