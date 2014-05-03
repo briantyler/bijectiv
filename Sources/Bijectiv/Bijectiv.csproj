@@ -59,10 +59,12 @@
     <Compile Include="Builder\NameRegexAutoTransformStrategy.cs" />
     <Compile Include="Builder\NullAutoTransformStrategy.cs" />
     <Compile Include="Builder\AutoTransformFragment.cs" />
+    <Compile Include="Builder\NullSourceFragment.cs" />
     <Compile Include="Factory\AutoTransformTask.cs" />
     <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
+    <Compile Include="Factory\NullSourceTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
     <Compile Include="ITargetCache.cs" />

@@ -39,6 +39,8 @@ namespace Bijectiv.Tests.Builder
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Moq;
+
     /// <summary>
     /// This class tests the <see cref="TransformDefinitionBuilder{TSource,TTarget}"/> class.
     /// </summary>
@@ -106,10 +108,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.Activate();
+            target.Activate();
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(ActivateFragment));
@@ -121,10 +123,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.DefaultFactory();
+            target.DefaultFactory();
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(DefaultFactoryFragment));
@@ -137,10 +139,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.CustomFactory(null);
+            target.CustomFactory(null);
 
             // Assert
         }
@@ -151,10 +153,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.CustomFactory(p => default(TestClass2));
+            target.CustomFactory(p => default(TestClass2));
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(CustomFactoryFragment));
@@ -167,10 +169,10 @@ namespace Bijectiv.Tests.Builder
             // Arrange
             Func<CustomFactoryParameters<TestClass1>, TestClass2> factory = p => default(TestClass2);
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.CustomFactory(factory);
+            target.CustomFactory(factory);
 
             // Assert
             Assert.AreEqual(factory, ((CustomFactoryFragment)defintion.Single()).Factory);
@@ -182,10 +184,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoNone();
+            target.AutoNone();
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -197,10 +199,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoNone();
+            target.AutoNone();
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -213,10 +215,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoExact();
+            target.AutoExact();
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -228,10 +230,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoExact();
+            target.AutoExact();
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -244,10 +246,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoExact();
+            target.AutoExact();
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -265,10 +267,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixSource(null);
+            target.AutoPrefixSource(null);
 
             // Assert
         }
@@ -279,10 +281,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixSource("Prefix");
+            target.AutoPrefixSource("Prefix");
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -294,10 +296,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixSource("Prefix");
+            target.AutoPrefixSource("Prefix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -310,10 +312,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixSource("Prefix");
+            target.AutoPrefixSource("Prefix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -331,10 +333,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixTarget(null);
+            target.AutoPrefixTarget(null);
 
             // Assert
         }
@@ -345,10 +347,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixTarget("Prefix");
+            target.AutoPrefixTarget("Prefix");
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -360,10 +362,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixTarget("Prefix");
+            target.AutoPrefixTarget("Prefix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -376,10 +378,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoPrefixTarget("Prefix");
+            target.AutoPrefixTarget("Prefix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -397,10 +399,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixSource(null);
+            target.AutoSuffixSource(null);
 
             // Assert
         }
@@ -411,10 +413,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixSource("Suffix");
+            target.AutoSuffixSource("Suffix");
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -426,10 +428,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixSource("Suffix");
+            target.AutoSuffixSource("Suffix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -442,10 +444,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixSource("Suffix");
+            target.AutoSuffixSource("Suffix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -463,10 +465,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixTarget(null);
+            target.AutoSuffixTarget(null);
 
             // Assert
         }
@@ -477,10 +479,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixTarget("Suffix");
+            target.AutoSuffixTarget("Suffix");
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -492,10 +494,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixTarget("Suffix");
+            target.AutoSuffixTarget("Suffix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -508,10 +510,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoSuffixTarget("Suffix");
+            target.AutoSuffixTarget("Suffix");
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -529,10 +531,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoRegex(null, AutoTransformOptions.None);
+            target.AutoRegex(null, AutoTransformOptions.None);
 
             // Assert
         }
@@ -543,10 +545,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
 
             // Assert
             Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
@@ -558,10 +560,10 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
@@ -574,16 +576,179 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
-            var builder = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            builder.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
 
             // Assert
             var fragment = (AutoTransformFragment)defintion.Single();
             var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
             Assert.AreEqual(AutoTransformOptions.IgnoreCase, strategy.Options);
             Assert.AreEqual("^Foo[abc]Bar$", strategy.PatternTemplate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void NullSourceThrow_ExceptionFactoryParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceThrow(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceThrow_ValidParameters_AddsNullSourceFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceThrow(context => new InvalidOperationException());
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void NullSourceThrow_ValidParameters_FragmentFactoryThrows()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceThrow(context => new InvalidOperationException());
+
+            // Assert
+            var fragment = (NullSourceFragment)defintion.Single();
+            ((Func<ITransformContext, TestClass2>)fragment.Factory)(Stub.Create<ITransformContext>());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceThrow_ValidParameters_FragmentFactoryReceivesContext()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var actualContext = Stub.Create<ITransformContext>();
+            var call = new ITransformContext[1];
+
+            // Act
+            target.NullSourceThrow(context =>
+            {
+                call[0] = context;
+                return new InvalidOperationException();
+            });
+
+            // Assert
+            var fragment = (NullSourceFragment)defintion.Single();
+
+            try
+            {
+                ((Func<ITransformContext, TestClass2>)fragment.Factory)(actualContext);
+            }
+            catch (InvalidOperationException)
+            {
+                Assert.AreEqual(actualContext, call[0]);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceDefault_ValidParameters_AddsNullSourceFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceDefault();
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceDefault_ValidParameters_FragmentFactoryCreatesDefault()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceDefault();
+
+            // Assert
+            var fragment = (NullSourceFragment)defintion.Single();
+            var result = ((Func<ITransformContext, TestClass2>)fragment.Factory)(Stub.Create<ITransformContext>());
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void NullSourceCustom_FactoryParameterIsNull_Throws()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceCustom(null);
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceCustom_ValidParameters_AddsNullSourceFragment()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceCustom(context => new TestClass2());
+
+            // Assert
+            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void NullSourceCustom_ValidParameters_FragmentFactoryCreatesDefault()
+        {
+            // Arrange
+            var defintion = new TransformDefinition(TestClass1.T, TestClass2.T);
+            var target = new TransformDefinitionBuilder<TestClass1, TestClass2>(defintion);
+
+            // Act
+            target.NullSourceCustom(context => (TestClass2)context.Resolve(TestClass2.T));
+
+            // Assert
+            var contextMock = new Mock<ITransformContext>(MockBehavior.Strict);
+            var expected = new TestClass2();
+            contextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expected);
+
+            var fragment = (NullSourceFragment)defintion.Single();
+            var result = ((Func<ITransformContext, TestClass2>)fragment.Factory)(contextMock.Object);
+
+            contextMock.VerifyAll();
+            Assert.AreEqual(expected, result);
         }
     }
 }

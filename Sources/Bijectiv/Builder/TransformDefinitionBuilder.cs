@@ -321,5 +321,74 @@ namespace Bijectiv.Builder
 
             return this;
         }
+
+        /// <summary>
+        /// Instructs the transform to throw an exception if the source instance is <c>NULL</c>.
+        /// </summary>
+        /// <param name="exceptionFactory">
+        /// The exception factory.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public ITransformDefinitionBuilder<TSource, TTarget> NullSourceThrow(
+            Func<ITransformContext, Exception> exceptionFactory)
+        {
+            if (exceptionFactory == null)
+            {
+                throw new ArgumentNullException("exceptionFactory");
+            }
+
+            Func<ITransformContext, TTarget> factory = context => { throw exceptionFactory(context); };
+            var fragment = new NullSourceFragment(typeof(TSource), typeof(TTarget), factory);
+            this.Definition.Add(fragment);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to set the target to its default value (<see langword="default" />) if the 
+        /// source instance is <c>NULL</c>.
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        public ITransformDefinitionBuilder<TSource, TTarget> NullSourceDefault()
+        {
+            Func<ITransformContext, TTarget> factory = context => default(TTarget);
+            var fragment = new NullSourceFragment(typeof(TSource), typeof(TTarget), factory);
+            this.Definition.Add(fragment);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Instructs the transform to create the target from a custom factory if the source instance is <c>NULL</c>.
+        /// </summary>
+        /// <param name="factory">
+        /// The custom factory.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public ITransformDefinitionBuilder<TSource, TTarget> NullSourceCustom(
+            Func<ITransformContext, TTarget> factory)
+        {
+            if (factory == null)
+            {
+                throw new ArgumentNullException("factory");
+            }
+
+            var fragment = new NullSourceFragment(typeof(TSource), typeof(TTarget), factory);
+            this.Definition.Add(fragment);
+
+            return this;
+        }
     }
 }

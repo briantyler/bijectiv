@@ -74,6 +74,7 @@
     <Compile Include="Builder\NameRegexAutoTransformStrategyTests.cs" />
     <Compile Include="Builder\NullAutoTransformStrategyTests.cs" />
     <Compile Include="Builder\AutoTransformFragmentTests.cs" />
+    <Compile Include="Builder\NullSourceFragmentTests.cs" />
     <Compile Include="Builder\TransformDefinitionRegistryTests.cs" />
     <Compile Include="Builder\TransformDefintionBuilderTests.cs" />
     <Compile Include="Builder\TransformDefinitionTests.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Factory\InitializeMembersTaskTests.cs" />
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
+    <Compile Include="Factory\NullSourceTaskTests.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />
     <Compile Include="Factory\TransformFactoryTests.cs" />
     <Compile Include="Factory\TransformScaffoldTests.cs" />

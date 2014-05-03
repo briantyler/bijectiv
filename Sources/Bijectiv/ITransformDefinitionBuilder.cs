@@ -193,5 +193,44 @@ namespace Bijectiv
         /// An object that allows further configuration of the transform.
         /// </returns>
         ITransformDefinitionBuilder<TSource, TTarget> AutoRegex([NotNull] string regex, AutoTransformOptions options);
+
+        /// <summary>
+        /// Instructs the transform to throw an exception if the source instance is <c>NULL</c>.
+        /// </summary>
+        /// <param name="exceptionFactory">
+        /// The exception factory.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        ITransformDefinitionBuilder<TSource, TTarget> NullSourceThrow(
+            [NotNull] Func<ITransformContext, Exception> exceptionFactory);
+
+        /// <summary>
+        /// Instructs the transform to set the target to its default value (<see langword="default" />) if the 
+        /// source instance is <c>NULL</c>.
+        /// </summary>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        ITransformDefinitionBuilder<TSource, TTarget> NullSourceDefault();
+
+        /// <summary>
+        /// Instructs the transform to create the target from a custom factory if the source instance is <c>NULL</c>.
+        /// </summary>
+        /// <param name="factory">
+        /// The custom factory.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the transform.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        ITransformDefinitionBuilder<TSource, TTarget> NullSourceCustom(
+            [NotNull] Func<ITransformContext, TTarget> factory);
     }
 }

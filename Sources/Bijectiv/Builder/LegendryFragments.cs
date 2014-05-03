@@ -53,5 +53,10 @@ namespace Bijectiv.Builder
         /// Represents a fragment that describes an auto-transform.
         /// </summary>
         public static readonly Guid AutoTransform = new Guid("b113c714-D396-425B-B0DA-355DA43AD570");
+
+        /// <summary>
+        /// Represents a fragment that determines how to treat a <c>NULL</c> source.
+        /// </summary>
+        public static readonly Guid NullSource = new Guid("b113c714-21C5-428C-B5CA-84372F03102D");
     }
 }
