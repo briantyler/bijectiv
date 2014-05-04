@@ -29,6 +29,7 @@
 
 namespace Bijectiv.Tests.Factory
 {
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -45,6 +46,8 @@ namespace Bijectiv.Tests.Factory
     [TestClass]
     public class NullSourceTaskTests
     {
+        private static readonly TestClass2 DummyTarget = new TestClass2();
+
         [TestMethod]
         [TestCategory("Unit")]
         public void CreateInstance_DefaultParameters_InstanceCreated()
@@ -78,7 +81,8 @@ namespace Bijectiv.Tests.Factory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            scaffold.ProcessedFragments.Add(Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+            scaffold.ProcessedFragments.Add(
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
 
             var target = CreateTarget();
 
@@ -87,6 +91,165 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             Assert.IsFalse(scaffold.Expressions.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_NoNullSourceUnprocessedFragments_CreatesAndReturnsDefaultTarget()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            // Act
+            target.Execute(scaffold);
+            
+            // Assert
+            var @delegate = CreateDelegate(scaffold);
+
+            Assert.AreEqual(default(object), @delegate(Stub.Create<ITransformContext>(), null));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_NoNullSourceUnprocessedFragments_IgnoresWhenSourceNotNull()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            var @delegate = CreateDelegate(scaffold);
+
+            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<ITransformContext>(), new TestClass1()));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_HasSourceUnprocessedFragments_CreatesTargetFromFragmentDelegate()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            var expected = new TestClass2();
+            scaffold.CandidateFragments.Add(
+                new NullSourceFragment(
+                    TestClass1.T, 
+                    TestClass2.T,
+                    new Func<ITransformContext, TestClass2>(c => expected)));
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            var @delegate = CreateDelegate(scaffold);
+
+            Assert.AreEqual(expected, @delegate(Stub.Create<ITransformContext>(), null));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_HasSourceUnprocessedFragments_IgnoresWhenSourceNotNull()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            var unexpected = new TestClass2();
+            scaffold.CandidateFragments.Add(
+                new NullSourceFragment(
+                    TestClass1.T,
+                    TestClass2.T,
+                    new Func<ITransformContext, TestClass2>(c => unexpected)));
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            var @delegate = CreateDelegate(scaffold);
+
+            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<ITransformContext>(), new TestClass1()));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_HasSourceUnprocessedFragments_TakesFirstFragment()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            var expected = new TestClass2();
+            scaffold.CandidateFragments.Add(
+                new NullSourceFragment(
+                    TestClass1.T,
+                    TestClass2.T,
+                    new Func<ITransformContext, TestClass2>(c => expected)));
+            scaffold.CandidateFragments.Add(
+                new NullSourceFragment(
+                    TestClass1.T,
+                    TestClass2.T,
+                    new Func<ITransformContext, TestClass2>(c => { throw new Exception(); })));
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            var @delegate = CreateDelegate(scaffold);
+
+            Assert.AreEqual(expected, @delegate(Stub.Create<ITransformContext>(), null));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_HasSourceUnprocessedFragments_ProcessesAllFragments()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            var target = CreateTarget();
+
+            var expected = new TestClass2();
+            scaffold.CandidateFragments.Add(
+                new NullSourceFragment(
+                    TestClass1.T,
+                    TestClass2.T,
+                    new Func<ITransformContext, TestClass2>(c => expected)));
+            scaffold.CandidateFragments.Add(
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+            scaffold.CandidateFragments.Add(
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            Assert.AreEqual(3, scaffold.ProcessedFragments.Count());
+        }
+
+        private static Func<ITransformContext, object, object> CreateDelegate(TransformScaffold scaffold)
+        {
+            var assignDummy = Expression.Assign(
+                scaffold.TargetAsObject, 
+                Expression.Constant(DummyTarget, typeof(object)));
+            scaffold.Expressions.Add(assignDummy);
+
+            new ReturnTargetAsObjectTask().Execute(scaffold);
+
+            return
+                Expression.Lambda<Func<ITransformContext, object, object>>(
+                    Expression.Block(
+                        new[]
+                        {
+                            (ParameterExpression)scaffold.TargetAsObject, 
+                            (ParameterExpression)scaffold.Target
+                        },
+                        scaffold.Expressions),
+                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.SourceAsObject).Compile();
         }
 
         private static NullSourceTask CreateTarget()
@@ -100,7 +263,11 @@ namespace Bijectiv.Tests.Factory
                 Stub.Create<ITransformDefinitionRegistry>(),
                 new TransformDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(ITransformContext)))
+            {
+                Target = Expression.Variable(TestClass2.T),
+                TargetAsObject = Expression.Variable(typeof(object))
+            };
         }
     }
 }

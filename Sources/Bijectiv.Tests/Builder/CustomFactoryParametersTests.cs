@@ -30,8 +30,6 @@
 // ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Builder
 {
-    using System;
-
     using Bijectiv.Builder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;

@@ -81,9 +81,11 @@ namespace Bijectiv.Factory
             var targetToObject = Expression.Convert(scaffold.Target, typeof(object));
             var assignTargetAsObject = Expression.Assign(scaffold.TargetAsObject, targetToObject);
 
-            scaffold.Expressions.Add(assignTarget);
-            scaffold.Expressions.Add(assignTargetAsObject);
-            scaffold.Expressions.Add(Expression.Goto(scaffold.ReturnLabel));
+            var ifIsNull = Expression.IfThen(
+                Expression.Equal(scaffold.SourceAsObject, Expression.Constant(null)),
+                Expression.Block(assignTarget, assignTargetAsObject, Expression.Goto(scaffold.ReturnLabel)));
+
+            scaffold.Expressions.Add(ifIsNull);
 
             var nullSourceFragments = scaffold.CandidateFragments
                 .Where(candidate => candidate.FragmentCategory == LegendryFragments.NullSource);

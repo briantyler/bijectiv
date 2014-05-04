@@ -31,6 +31,7 @@ namespace Bijectiv
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Bijectiv.Factory;
@@ -79,6 +80,9 @@ namespace Bijectiv
         /// <summary>
         /// Resets the configurator to the default configuration.
         /// </summary>
+        [SuppressMessage(
+            "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", 
+            Justification = "This method is not hard to maintain.")]
         public void Reset()
         {
             this.TransformStoreFactories.Clear();
@@ -97,6 +101,7 @@ namespace Bijectiv
                 {
                     () => new InitializeFragmentsTask(),
                     () => new InitializeVariablesTask(),
+                    () => new NullSourceTask(),
                     () => new TryGetTargetFromCacheTask(),
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
                     () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),

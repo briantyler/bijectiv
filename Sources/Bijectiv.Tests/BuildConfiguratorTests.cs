@@ -66,21 +66,27 @@ namespace Bijectiv.Tests
 
             // Assert
             var tasks = target.TransformTasks.Select(item => item()).ToArray();
-            Assert.AreEqual(9, tasks.Length);
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeVariablesTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(NullSourceTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(TryGetTargetFromCacheTask));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTargetTask));
-            Assert.IsInstanceOfType(((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(ActivateTargetExpressionFactory));
+            Assert.IsInstanceOfType(
+                ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(ActivateTargetExpressionFactory));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTargetTask));
-            Assert.IsInstanceOfType(((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(DefaultFactoryExpressionFactory));
+            Assert.IsInstanceOfType(
+                ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(DefaultFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTargetTask));
-            Assert.IsInstanceOfType(((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(CustomFactoryExpressionFactory));
+            Assert.IsInstanceOfType(
+                ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(CustomFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTargetTask));
-            Assert.IsInstanceOfType(((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
+            Assert.IsInstanceOfType(
+                ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
-            Assert.IsInstanceOfType(tasks[index], typeof(ReturnTargetAsObjectTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
+
+            Assert.AreEqual(index, tasks.Length);
         }
 
         [TestMethod]

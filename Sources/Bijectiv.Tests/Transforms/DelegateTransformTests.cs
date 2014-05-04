@@ -176,38 +176,6 @@ namespace Bijectiv.Tests.Transforms
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_SourceParameterIsNullTargetTypeIsNotClass_ReturnsDefault()
-        {
-            // Arrange
-            Func<object, ITransformContext, object> @delegate = (s, c) => true;
-
-            var target = new DelegateTransform(typeof(TestClass1), typeof(bool), @delegate);
-
-            // Act
-            var result = target.Transform(null, Stub.Create<ITransformContext>());
-
-            // Assert
-            Assert.AreEqual(default(bool), result);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Transform_SourceParameterIsNullTargetTypeIsClass_ReturnsDefault()
-        {
-            // Arrange
-            Func<object, ITransformContext, object> @delegate = (s, c) => true;
-
-            var target = new DelegateTransform(typeof(TestClass1), typeof(string), @delegate);
-
-            // Act
-            var result = target.Transform(null, Stub.Create<ITransformContext>());
-
-            // Assert
-            Assert.AreEqual(default(string), result);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Transform_ValidParameters_InvokesDelegate()
         {
             // Arrange

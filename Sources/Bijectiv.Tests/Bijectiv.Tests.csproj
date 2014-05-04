@@ -85,7 +85,6 @@
     <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactoryTests.cs" />
-    <Compile Include="Factory\IMemberTransformer.cs" />
     <Compile Include="Factory\InitializeMembersTaskTests.cs" />
     <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />

@@ -78,7 +78,7 @@ namespace Bijectiv.Factory
                 var sourceMemberType = pair.Item1.GetReturnType();
                 var targetMemberType = pair.Item2.GetReturnType();
                 Expression<Action> template;
-                if (!sourceMemberType.IsClass || sourceMemberType.IsSealed)
+                if (!(sourceMemberType.IsClass || sourceMemberType.IsInterface) || sourceMemberType.IsSealed)
                 {
                     template =
                         () =>

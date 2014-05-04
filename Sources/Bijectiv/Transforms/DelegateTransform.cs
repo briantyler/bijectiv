@@ -108,11 +108,6 @@ namespace Bijectiv.Transforms
         /// </returns>
         public object Transform(object source, [NotNull] ITransformContext context)
         {
-            if (source == null)
-            {
-                return this.Target.IsClass ? null : Activator.CreateInstance(this.Target);
-            }
-
             if (context == null)
             {
                 throw new ArgumentNullException("context");

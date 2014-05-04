@@ -144,6 +144,21 @@ namespace Bijectiv.Utilities
                 string.Format("Unable to create access expression for member '{0}", @this));
         }
 
+        /// <summary>
+        /// Gets the static <see cref="Type"/> of the object referenced by the <paramref name="this"/>.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="MemberInfo"/> representing the member.
+        /// </param>
+        /// <returns>
+        /// The static <see cref="Type"/> of the object referenced by the <paramref name="this"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="this"/> is an unrecognised <see cref="MemberInfo"/>.
+        /// </exception>
         public static Type GetReturnType([NotNull] this MemberInfo @this)
         {
             if (@this == null)
