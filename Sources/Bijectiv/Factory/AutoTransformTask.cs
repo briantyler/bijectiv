@@ -30,10 +30,7 @@
 namespace Bijectiv.Factory
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
 
     using Bijectiv.Builder;
     using Bijectiv.Utilities;
@@ -45,6 +42,38 @@ namespace Bijectiv.Factory
     /// </summary>
     public class AutoTransformTask : ITransformTask
     {
+        /// <summary>
+        /// The task detail.
+        /// </summary>
+        private readonly AutoTransformTaskDetail detail;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AutoTransformTask"/> class.
+        /// </summary>
+        /// <param name="detail">
+        /// The task detail.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public AutoTransformTask([NotNull] AutoTransformTaskDetail detail)
+        {
+            if (detail == null)
+            {
+                throw new ArgumentNullException("detail");
+            }
+
+            this.detail = detail;
+        }
+
+        /// <summary>
+        /// Gets the task detail.
+        /// </summary>
+        public AutoTransformTaskDetail Detail
+        {
+            get { return this.detail; }
+        }
+
         /// <summary>
         /// Executes the task.
         /// </summary>
@@ -60,65 +89,11 @@ namespace Bijectiv.Factory
 
             var fragments = scaffold.UnprocessedFragments.OfType<AutoTransformFragment>().ToArray();
 
-            var pairings = new List<Tuple<MemberInfo, MemberInfo>>();
-            foreach (var targetMember in scaffold.UnprocessedTargetMembers)
-            {
-                foreach (var strategy in fragments.Select(item => item.Strategy))
-                {
-                    MemberInfo sourceMember;
-                    if (strategy.TryGetSourceForTarget(scaffold.SourceMembers, targetMember, out sourceMember))
-                    {
-                        pairings.Add(Tuple.Create(sourceMember, targetMember));
-                    }
-                }
-            }
+            this.Detail
+                .CreateSourceTargetPairs(scaffold, fragments.Select(item => item.Strategy))
+                .ForEach(pair => this.Detail.ProcessPair(scaffold, pair));
 
-            foreach (var pair in pairings)
-            {
-                var sourceMemberType = pair.Item1.GetReturnType();
-                var targetMemberType = pair.Item2.GetReturnType();
-                Expression<Action> template;
-                if (!(sourceMemberType.IsClass || sourceMemberType.IsInterface) || sourceMemberType.IsSealed)
-                {
-                    template =
-                        () =>
-                        Placeholder.Of<ITransformContext>("context")
-                            .TransformStore.Resolve(sourceMemberType, targetMemberType)
-                            .Transform(
-                                // ReSharper disable once RedundantCast
-                                (object)Placeholder.Of<object>("sourceMember"),
-                                Placeholder.Of<ITransformContext>("context"));
-                }
-                else
-                {
-                    template =
-                       () =>
-                       Placeholder.Of<ITransformContext>("context")
-                           .TransformStore.Resolve(
-                                Placeholder.Of<object>("sourceMember") == null 
-                                    ? sourceMemberType 
-                                    : Placeholder.Of<object>("sourceMember").GetType(), 
-                                targetMemberType)
-                           .Transform(
-                               // ReSharper disable once RedundantCast
-                               (object)Placeholder.Of<object>("sourceMember"),
-                               Placeholder.Of<ITransformContext>("context"));
-                }
-
-                template = (Expression<Action>)
-                    new PlaceholderExpressionVisitor("context", scaffold.TransformContext)
-                    .Visit(template);
-
-                template = (Expression<Action>)
-                    new PlaceholderExpressionVisitor("sourceMember", sourceMemberType.GetAccessExpression(scaffold.Source))
-                    .Visit(template);
-
-                var expression = Expression.Assign(
-                    targetMemberType.GetAccessExpression(scaffold.Target), 
-                    template.Body);
-
-                scaffold.Expressions.Add(expression);
-            }
+            scaffold.ProcessedFragments.AddRange(fragments);
         }
     }
 }

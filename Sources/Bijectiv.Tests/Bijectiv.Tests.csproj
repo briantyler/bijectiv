@@ -80,6 +80,7 @@
     <Compile Include="Builder\TransformDefinitionTests.cs" />
     <Compile Include="Builder\TransformFragmentTests.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactoryTests.cs" />
+    <Compile Include="Factory\AutoTransformTaskDetailTests.cs" />
     <Compile Include="Factory\CacheTargetTaskTests.cs" />
     <Compile Include="Factory\CreateTargetTaskTests.cs" />
     <Compile Include="Factory\CustomFactoryExpressionFactoryTests.cs" />

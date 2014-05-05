@@ -31,7 +31,6 @@ namespace Bijectiv
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Bijectiv.Factory;
@@ -80,34 +79,46 @@ namespace Bijectiv
         /// <summary>
         /// Resets the configurator to the default configuration.
         /// </summary>
-        [SuppressMessage(
-            "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", 
-            Justification = "This method is not hard to maintain.")]
         public void Reset()
+        {
+            this.ResetTransformStoreFactories();
+            this.ResetTransformTasks();
+        }
+
+        /// <summary>
+        /// Resets <see cref="TransformStoreFactories"/> to its default configuration.
+        /// </summary>
+        private void ResetTransformStoreFactories()
         {
             this.TransformStoreFactories.Clear();
             this.TransformStoreFactories.AddRange(
-                new Func<ITransformStoreFactory>[] 
+                new Func<ITransformStoreFactory>[]
                 {
                     () => new InstanceTransformStoreFactory(new IdenticalPrimitiveTransformStore()),
                     () => new InstanceTransformStoreFactory(new ConvertibleTransformStore()),
                     () => new DelegateTransformStoreFactory(
                         new TransformFactory(this.TransformTasks.Select(item => item()).ToArray()))
                 });
+        }
 
+        /// <summary>
+        /// Resets <see cref="TransformTasks"/> to its default configuration.
+        /// </summary>
+        private void ResetTransformTasks()
+        {
             this.TransformTasks.Clear();
             this.TransformTasks.AddRange(
-                new Func<ITransformTask>[] 
+                new Func<ITransformTask>[]
                 {
-                    () => new InitializeFragmentsTask(),
-                    () => new InitializeVariablesTask(),
+                    () => new InitializeFragmentsTask(), 
+                    () => new InitializeVariablesTask(), 
                     () => new NullSourceTask(),
                     () => new TryGetTargetFromCacheTask(),
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
                     () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
-                    () => new CreateTargetTask(new FallbackFactoryExpressionFactory()),
-                    () => new CacheTargetTask(), 
+                    () => new CreateTargetTask(new FallbackFactoryExpressionFactory()), 
+                    () => new CacheTargetTask(),
                     () => new ReturnTargetAsObjectTask()
                 });
         }

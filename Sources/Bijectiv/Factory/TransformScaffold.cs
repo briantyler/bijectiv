@@ -179,7 +179,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the return label.
         /// </summary>
-        public LabelTarget ReturnLabel
+        public virtual LabelTarget ReturnLabel
         {
             get { return this.returnLabel; }
         }
@@ -216,7 +216,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the source members.
         /// </summary>
-        public IList<MemberInfo> SourceMembers
+        public virtual IList<MemberInfo> SourceMembers
         {
             get { return this.sourceMembers; }
         }
@@ -224,7 +224,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the target members.
         /// </summary>
-        public IList<MemberInfo> TargetMembers
+        public virtual IList<MemberInfo> TargetMembers
         {
             get { return this.targetMembers; }
         }

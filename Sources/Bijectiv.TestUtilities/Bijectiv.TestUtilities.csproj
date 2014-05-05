@@ -62,6 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stub.cs" />
     <Compile Include="TestExtensions.cs" />
+    <Compile Include="TestTypes\AutoTransformTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass2.cs" />
     <Compile Include="TestTypes\DerivedTestClass1.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="TestTypes\ITestInterface1.cs" />
     <Compile Include="TestTypes\MultiConstructorTestClass.cs" />
     <Compile Include="TestTypes\PropertyTestClass.cs" />
+    <Compile Include="TestTypes\SealedClass1.cs" />
     <Compile Include="TestTypes\TestClass1.cs" />
     <Compile Include="TestTypes\TestClass2.cs" />
     <Compile Include="TestTypes\TestEnum1.cs" />

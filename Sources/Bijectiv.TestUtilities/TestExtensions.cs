@@ -32,6 +32,8 @@ namespace Bijectiv.TestUtilities
     using System.Collections.Generic;
     using System.Linq;
 
+    using Bijectiv.Utilities;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -54,6 +56,31 @@ namespace Bijectiv.TestUtilities
         public static TInstance Naught<TInstance>(this TInstance instance)
         {
             return instance;
+        }
+
+        /// <summary>
+        /// A method that pretends to do exactly nothing, but ensures that yield returned methods are called.
+        /// </summary>
+        /// <typeparam name="TItem">
+        /// The type of item contained by <paramref name="instance"/>.
+        /// </typeparam>
+        /// <param name="instance">
+        /// The instance.
+        /// </param>
+        /// <returns>
+        /// The original instance.
+        /// </returns>
+        public static IEnumerable<TItem> Naught<TItem>(this IEnumerable<TItem> instance)
+        {
+            // ReSharper disable PossibleMultipleEnumeration
+            if (instance != null)
+            {
+                
+                instance.ForEach(item => item.Naught());
+            }
+
+            return instance;
+            // ReSharper restore PossibleMultipleEnumeration
         }
 
         /// <summary>
