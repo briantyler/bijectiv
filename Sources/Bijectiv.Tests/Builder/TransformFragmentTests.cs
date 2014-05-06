@@ -29,7 +29,6 @@
 
 namespace Bijectiv.Tests.Builder
 {
-    using System;
     using System.Reflection;
 
     using Bijectiv.Builder;

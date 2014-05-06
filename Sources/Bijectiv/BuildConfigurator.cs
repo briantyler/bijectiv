@@ -112,6 +112,7 @@ namespace Bijectiv
                 {
                     () => new InitializeFragmentsTask(), 
                     () => new InitializeVariablesTask(), 
+                    () => new InitializeMembersTask(new ReflectionGateway()), 
                     () => new NullSourceTask(),
                     () => new TryGetTargetFromCacheTask(),
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
@@ -119,6 +120,7 @@ namespace Bijectiv
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
                     () => new CreateTargetTask(new FallbackFactoryExpressionFactory()), 
                     () => new CacheTargetTask(),
+                    () => new AutoTransformTask(new AutoTransformTaskDetail()), 
                     () => new ReturnTargetAsObjectTask()
                 });
         }

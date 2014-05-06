@@ -33,8 +33,6 @@ namespace Bijectiv.TestUtilities.TestTypes
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A test class with a property.
     /// </summary>
@@ -72,7 +70,7 @@ namespace Bijectiv.TestUtilities.TestTypes
         }
 
         /// <summary>
-        /// Sets the writeonly property.
+        /// Sets the write-only property.
         /// </summary>
         public int WriteonlyProperty 
         { 

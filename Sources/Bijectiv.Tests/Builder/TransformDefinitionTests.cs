@@ -157,7 +157,7 @@ namespace Bijectiv.Tests.Builder
             {
                 Stub.Fragment<TestClass1, TestClass2>(),
                 Stub.Fragment<TestClass1, TestClass2>(),
-                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>()
             };
 
             // Act
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.Builder
             {
                 Stub.Fragment<TestClass1, TestClass2>(),
                 Stub.Fragment<TestClass1, TestClass2>(),
-                Stub.Fragment<TestClass1, TestClass2>(),
+                Stub.Fragment<TestClass1, TestClass2>()
             };
 
             // Act

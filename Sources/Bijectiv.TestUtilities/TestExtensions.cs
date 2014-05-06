@@ -75,7 +75,6 @@ namespace Bijectiv.TestUtilities
             // ReSharper disable PossibleMultipleEnumeration
             if (instance != null)
             {
-                
                 instance.ForEach(item => item.Naught());
             }
 
@@ -84,7 +83,7 @@ namespace Bijectiv.TestUtilities
         }
 
         /// <summary>
-        /// Asserts that sequence <paramref name="expected"/> is equal to <paramref name="actual"/>, failing usefuly
+        /// Asserts that sequence <paramref name="expected"/> is equal to <paramref name="actual"/>, failing usefully
         /// when the assert fails.
         /// </summary>
         /// <param name="expected">

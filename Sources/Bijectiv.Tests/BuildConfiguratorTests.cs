@@ -69,6 +69,7 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeVariablesTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMembersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(NullSourceTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(TryGetTargetFromCacheTask));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTargetTask));
@@ -84,6 +85,7 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(AutoTransformTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
             Assert.AreEqual(index, tasks.Length);

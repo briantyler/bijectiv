@@ -392,6 +392,36 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void ProcessPair_ValidParameters_TargetMemberAddedToProcessedTargetMebers()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+
+            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoTransformTestClass1();
+
+            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
+
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
+
+            List<Expression> expressions;
+            var scaffold = CreateScaffoldForProcessPair(
+                repository, transformContext, sourceInstance, targetInstance, out expressions);
+
+            var target = new AutoTransformTaskDetail();
+
+            // Act
+            target.ProcessPair(scaffold, Tuple.Create(sourceMember, targetMember));
+
+            // Assert
+            Assert.AreEqual(1, scaffold.ProcessedTargetMembers.Count());
+            Assert.IsTrue(scaffold.ProcessedTargetMembers.Contains(targetMember));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void ProcessPair_SourceIsValueTypePropertyToProperty_Transforms()
         {
             // Arrange
@@ -403,7 +433,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
 
-            var transformContext = CreateTransformContextIntToInt(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -432,7 +463,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
 
-            var transformContext = CreateTransformContextIntToInt(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -461,7 +493,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
 
-            var transformContext = CreateTransformContextIntToInt(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -490,7 +523,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
 
-            var transformContext = CreateTransformContextIntToInt(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -519,7 +553,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
 
-            var transformContext = CreateTransformContexDerivedToBase(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -548,7 +583,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
 
-            var transformContext = CreateTransformContexDerivedToBase(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -577,7 +613,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformContext = CreateTransformContexDerivedToBase(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -606,7 +643,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformContext = CreateTransformContexDerivedToBase(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -635,7 +673,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
 
-            var transformContext = CreateTransformContexSealedToSealed(repository);
+            var transformContext = CreateTransformContext(
+                repository, typeof(SealedClass1), typeof(SealedClass1), SourceSealed, ExpectedSealed);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -664,17 +703,8 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformMock = repository.Create<ITransform>();
-
-            var transformStoreMock = repository.Create<ITransformStore>();
-            transformStoreMock.Setup(_ => _.Resolve(typeof(int), typeof(BaseTestClass1)))
-                .Returns(transformMock.Object);
-
-            var transformContextMock = repository.Create<ITransformContext>();
-            transformContextMock.SetupGet(_ => _.TransformStore).Returns(transformStoreMock.Object);
-
-            transformMock.Setup(_ => _.Transform(SourceInt, transformContextMock.Object)).Returns(ExpectedBase);
-            var transformContext = transformContextMock.Object;
+            var transformContext = CreateTransformContext(
+                repository, typeof(int), typeof(BaseTestClass1), SourceInt, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
@@ -690,47 +720,21 @@ namespace Bijectiv.Tests.Factory
             Assert.AreEqual(ExpectedBase, targetInstance.FieldBase);
         }
 
-        private static ITransformContext CreateTransformContextIntToInt(MockRepository repository)
+        private static ITransformContext CreateTransformContext(
+            MockRepository repository, Type sourceMember, Type targetMember, object sourceValue, object targetValue)
         {
             var transformMock = repository.Create<ITransform>();
 
             var transformStoreMock = repository.Create<ITransformStore>();
-            transformStoreMock.Setup(_ => _.Resolve(typeof(int), typeof(int))).Returns(transformMock.Object);
+            transformStoreMock.Setup(_ => _.Resolve(sourceMember, targetMember)).Returns(transformMock.Object);
 
             var transformContextMock = repository.Create<ITransformContext>();
             transformContextMock.SetupGet(_ => _.TransformStore).Returns(transformStoreMock.Object);
 
-            transformMock.Setup(_ => _.Transform(SourceInt, transformContextMock.Object)).Returns(ExpectedInt);
-            return transformContextMock.Object;
-        }
+            transformMock
+                .Setup(_ => _.Transform(sourceValue, transformContextMock.Object))
+                .Returns(targetValue);
 
-        private static ITransformContext CreateTransformContexDerivedToBase(MockRepository repository)
-        {
-            var transformMock = repository.Create<ITransform>();
-
-            var transformStoreMock = repository.Create<ITransformStore>();
-            transformStoreMock.Setup(_ => _.Resolve(typeof(DerivedTestClass1), typeof(BaseTestClass1)))
-                .Returns(transformMock.Object);
-
-            var transformContextMock = repository.Create<ITransformContext>();
-            transformContextMock.SetupGet(_ => _.TransformStore).Returns(transformStoreMock.Object);
-
-            transformMock.Setup(_ => _.Transform(SourceBase, transformContextMock.Object)).Returns(ExpectedBase);
-            return transformContextMock.Object;
-        }
-
-        private static ITransformContext CreateTransformContexSealedToSealed(MockRepository repository)
-        {
-            var transformMock = repository.Create<ITransform>();
-
-            var transformStoreMock = repository.Create<ITransformStore>();
-            transformStoreMock.Setup(_ => _.Resolve(typeof(SealedClass1), typeof(SealedClass1)))
-                .Returns(transformMock.Object);
-
-            var transformContextMock = repository.Create<ITransformContext>();
-            transformContextMock.SetupGet(_ => _.TransformStore).Returns(transformStoreMock.Object);
-
-            transformMock.Setup(_ => _.Transform(SourceSealed, transformContextMock.Object)).Returns(ExpectedSealed);
             return transformContextMock.Object;
         }
 

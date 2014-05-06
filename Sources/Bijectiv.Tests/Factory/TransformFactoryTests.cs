@@ -186,6 +186,7 @@ namespace Bijectiv.Tests.Factory
                         var callResolve = Expression.Call(
                             s.TransformContext,
                             Reflect<ITransformContext>.Method(_ => _.Resolve(Placeholder.Of<Type>())),
+                            // ReSharper disable once PossiblyMistakenUseOfParamsMethod
                             Expression.Constant(s.Definition.Target));
 
                         var @return = Expression.Variable(typeof(object));

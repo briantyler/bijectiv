@@ -33,7 +33,6 @@ namespace Bijectiv.Tests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [Ignore]
     [TestClass]
     public class Spikes
     {
@@ -52,6 +51,46 @@ namespace Bijectiv.Tests
 
             // Assert
             Assert.IsInstanceOfType(result, TestClass2.T);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Spike_AutoTransform_AutoTransforms()
+        {
+            // Arrange
+            var builder = new TransformStoreBuilder();
+            builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
+
+            var @sealed = new SealedClass1();
+            builder
+                .Register<SealedClass1, SealedClass1>()
+                .NullSourceCustom(ctx => @sealed);
+
+            builder.Register<DerivedTestClass1, BaseTestClass1>();
+
+            var @base = new DerivedTestClass1();
+            var source = new AutoTransformTestClass1
+            {
+                PropertyInt = 33,
+                FieldInt = 17,
+                PropertySealed = null,
+                FieldBase = @base,
+                PropertyBase = @base,
+            };
+
+            var store = builder.Build();
+            var transform = store.Resolve(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
+
+            // Act
+            var target = (AutoTransformTestClass1)transform.Transform(source, new TransformContext(store));
+
+            // Assert
+            Assert.AreEqual(33, target.PropertyInt);
+            Assert.AreEqual(17, target.FieldInt);
+            Assert.AreEqual(@sealed, target.PropertySealed);
+            Assert.IsNotNull(target.PropertyBase);
+            Assert.IsNotNull(target.FieldBase);
+            Assert.AreSame(target.PropertyBase, target.FieldBase);
         }
     }
 }

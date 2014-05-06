@@ -30,7 +30,7 @@
 namespace Bijectiv.TestUtilities.TestTypes
 {
     /// <summary>
-    /// Test enum 1.
+    /// Test enumeration 1.
     /// </summary>
     public enum TestEnum1
     {

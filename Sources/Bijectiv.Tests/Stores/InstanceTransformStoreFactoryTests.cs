@@ -29,8 +29,6 @@
 
 namespace Bijectiv.Tests.Stores
 {
-    using System.Runtime.InteropServices;
-
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
 

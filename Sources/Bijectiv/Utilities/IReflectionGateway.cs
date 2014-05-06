@@ -33,8 +33,6 @@ namespace Bijectiv.Utilities
     using System.Collections.Generic;
     using System.Reflection;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Represents a gateway to reflection based operations.
     /// </summary>

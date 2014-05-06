@@ -148,6 +148,7 @@ namespace Bijectiv.Tests.Builder
             var target = new TransformDefinitionRegistry();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Add(null);
 
             // Assert
