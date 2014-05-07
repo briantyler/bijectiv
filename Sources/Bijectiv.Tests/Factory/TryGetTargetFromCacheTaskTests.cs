@@ -39,6 +39,8 @@ namespace Bijectiv.Tests.Factory
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Moq;
+
     /// <summary>
     /// This class tests the <see cref="TryGetTargetFromCacheTask"/> class.
     /// </summary>
@@ -98,13 +100,64 @@ namespace Bijectiv.Tests.Factory
                     (ParameterExpression)scaffold.SourceAsObject)
                 .Compile();
 
-            var sourceInstance = new object();
-            var targetInstance = new object();
-            var context = new TransformContext(Stub.Create<ITransformStore>());
-            context.TargetCache.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance);
+            var repository = new MockRepository(MockBehavior.Strict);
+            var contextMock = repository.Create<ITransformContext>();
+            var cacheMock = repository.Create<ITargetCache>();
 
-            Assert.AreEqual(targetInstance, @delegate(context, sourceInstance));
-            Assert.AreNotEqual(targetInstance, @delegate(context, new object()));
+            contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
+
+            var sourceInstance = new TestClass1();
+            object targetInstance = new TestClass2();
+
+            cacheMock
+                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance))
+                .Returns(true);
+
+            Assert.AreEqual(targetInstance, @delegate(contextMock.Object, sourceInstance));
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_ValidParameters_TryGetsTargetFromCacheAndContinuesOnFailure()
+        {
+            // Arrange
+            var scaffold = CreateScaffold();
+            scaffold.TargetAsObject = Expression.Variable(typeof(object));
+
+            var target = CreateTarget();
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(new object())));
+            new ReturnTargetAsObjectTask().Execute(scaffold);
+
+            var @delegate = Expression
+                .Lambda<Func<ITransformContext, object, object>>(
+                    Expression.Block(
+                        new[] { (ParameterExpression)scaffold.TargetAsObject },
+                        scaffold.Expressions),
+                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.SourceAsObject)
+                .Compile();
+
+            var repository = new MockRepository(MockBehavior.Strict);
+            var contextMock = repository.Create<ITransformContext>();
+            var cacheMock = repository.Create<ITargetCache>();
+
+            contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
+
+            var sourceInstance = new TestClass1();
+            object targetInstance = new TestClass2();
+
+            cacheMock
+                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance))
+                .Returns(false);
+
+            Assert.AreNotEqual(targetInstance, @delegate(contextMock.Object, sourceInstance));
+            repository.VerifyAll();
         }
 
         private static TryGetTargetFromCacheTask CreateTarget()

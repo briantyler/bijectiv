@@ -60,22 +60,16 @@ namespace Bijectiv
         private readonly ITargetCache targetCache = new TargetCache();
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TransformContext"/> class.
+        /// A value indicating whether a merge operation is currently taking place.
         /// </summary>
-        /// <param name="transformStore">
-        /// The transform store.
-        /// </param>
-        public TransformContext(ITransformStore transformStore)
-            : this(
-                CultureInfo.InvariantCulture,
-                t => { throw new InvalidOperationException("No Default Factory registered."); },
-                transformStore)
-        {
-        }
+        private readonly bool isMerging;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformContext"/> class.
         /// </summary>
+        /// <param name="isMerging">
+        /// A value indicating whether a merge operation is currently taking place.
+        /// </param>
         /// <param name="culture">
         /// The culture in which the transform is taking place.
         /// </param>
@@ -89,6 +83,7 @@ namespace Bijectiv
         /// Thrown when any parameter is null.
         /// </exception>
         public TransformContext(
+            bool isMerging,
             [NotNull] CultureInfo culture, 
             [NotNull] Func<Type, object> resolveDelegate,
             [NotNull] ITransformStore transformStore)
@@ -111,6 +106,15 @@ namespace Bijectiv
             this.culture = culture;
             this.resolveDelegate = resolveDelegate;
             this.transformStore = transformStore;
+            this.isMerging = isMerging;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a merge operation is currently taking place.
+        /// </summary>
+        public bool IsMerging
+        {
+            get { return this.isMerging; }
         }
 
         /// <summary>

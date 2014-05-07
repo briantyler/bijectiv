@@ -40,6 +40,8 @@ namespace Bijectiv.Tests.Factory
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Moq;
+
     /// <summary>
     /// This class tests the <see cref="CacheTargetTask"/>
     /// </summary>
@@ -94,14 +96,18 @@ namespace Bijectiv.Tests.Factory
                     (ParameterExpression)scaffold.SourceAsObject,
                     (ParameterExpression)scaffold.TargetAsObject).Compile();
 
-            var context = new TransformContext(Stub.Create<ITransformStore>());
+            var repository = new MockRepository(MockBehavior.Strict);
+            var contextMock = repository.Create<ITransformContext>();
+            var cacheMock = repository.Create<ITargetCache>();
+
+            contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
+
             var sourceInstance = new TestClass1();
             var targetInstance = new TestClass2();
-
-            @delegate(context, sourceInstance, targetInstance);
-            object output;
-            Assert.IsTrue(context.TargetCache.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out output));
-            Assert.AreEqual(targetInstance, output);
+            cacheMock.Setup(_ => _.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance));
+            
+            @delegate(contextMock.Object, sourceInstance, targetInstance);
+            repository.VerifyAll();
         }
 
         private static TransformScaffold CreateScaffold()
