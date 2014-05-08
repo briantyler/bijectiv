@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTaskTests.cs" company="Bijectiv">
+// <copyright file="ReturnMergeTransformResultTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTaskTests type.
+//   Defines the ReturnMergeTransformResultTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,8 +39,11 @@ namespace Bijectiv.Tests.Factory
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="ReturnMergeTransformResultTask"/> class.
+    /// </summary>
     [TestClass]
-    public class ReturnTargetAsObjectTaskTests
+    public class ReturnMergeTransformResultTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -49,7 +52,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new ReturnTargetAsObjectTask().Naught();
+            new ReturnMergeTransformResultTask().Naught();
 
             // Assert
         }
@@ -71,7 +74,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldTargetAsObject_IsReturned()
+        public void Execute_MergeTransformResult_IsReturned()
         {
             // Arrange
             var targetAsObject = new object();
@@ -84,13 +87,45 @@ namespace Bijectiv.Tests.Factory
             target.Execute(scaffold);
 
             // Assert
-            var @delegate = Expression.Lambda<Func<object>>(Expression.Block(scaffold.Expressions)).Compile();
-            Assert.AreEqual(targetAsObject, @delegate());
+            var @delegate = Expression
+                .Lambda<Func<IMergeTransformResult>>(Expression.Block(scaffold.Expressions))
+                .Compile();
+
+            var result = @delegate();
+            Assert.AreEqual(targetAsObject, result.Target);
+            Assert.AreEqual(PostMergeAction.None, result.Action);
         }
 
-        private static ReturnTargetAsObjectTask CreateTarget()
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_PostMergeActionVariable_IsReturned()
         {
-            return new ReturnTargetAsObjectTask();
+            // Arrange
+            var targetAsObject = new object();
+            var scaffold = CreateScaffold();
+            scaffold.TargetAsObject = Expression.Constant(targetAsObject);
+            var postMergeAction = Expression.Variable(typeof(PostMergeAction), "postMergeAction");
+            scaffold.Variables.Add(postMergeAction);
+
+            var target = CreateTarget();
+
+            // Act
+            scaffold.Expressions.Add(Expression.Assign(postMergeAction, Expression.Constant(PostMergeAction.Replace)));
+            target.Execute(scaffold);
+
+            // Assert
+            var @delegate = Expression
+                .Lambda<Func<IMergeTransformResult>>(Expression.Block(scaffold.Variables, scaffold.Expressions))
+                .Compile();
+
+            var result = @delegate();
+            Assert.AreEqual(targetAsObject, result.Target);
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
+        }
+
+        private static ReturnMergeTransformResultTask CreateTarget()
+        {
+            return new ReturnMergeTransformResultTask();
         }
 
         private static TransformScaffold CreateScaffold()

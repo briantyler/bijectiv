@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMergeTransform.cs" company="Bijectiv">
+// <copyright file="PostMergeAction.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,33 +23,27 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IMergeTransform type.
+//   Defines the PostMergeAction type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
     /// <summary>
-    /// Represents a merge transform from a source into an existing target.
+    /// Represents the action that the caller must perform after calling <see cref="IMergeTransform.Merge"/> to
+    /// complete the merge.
     /// </summary>
-    public interface IMergeTransform : ITransform
+    public enum PostMergeAction
     {
         /// <summary>
-        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
-        /// defined by <see cref="ITransform.Source"/> --&lt;  <see cref="ITransform.Target"/>.
+        /// Indicates that no further action is required to complete the merge.
         /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="target">
-        /// The target object.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the transformation will take place.
-        /// </param>
-        /// <returns>
-        /// A <see cref="IMergeTransformResult"/> representing the result of the merge.
-        /// </returns>
-        IMergeTransformResult Merge(object source, object target, ITransformContext context);
+        None,
+
+        /// <summary>
+        /// Indicates that the target should be replaced by <see cref="IMergeTransformResult.Target"/> to complete the
+        /// merge.
+        /// </summary>
+        Replace
     }
 }

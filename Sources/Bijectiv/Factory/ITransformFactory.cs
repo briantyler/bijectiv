@@ -35,7 +35,7 @@ namespace Bijectiv.Factory
     using Bijectiv.Transforms;
 
     using JetBrains.Annotations;
-    
+
     /// <summary>
     /// Represents a factory that creates <see cref="DelegateTransform"/> instances.
     /// </summary>

@@ -66,10 +66,14 @@
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
     <Compile Include="Factory\NullSourceTask.cs" />
+    <Compile Include="Factory\ReturnMergeTransformResultTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
+    <Compile Include="IMergeTransformResult.cs" />
     <Compile Include="ITargetCache.cs" />
+    <Compile Include="PostMergeAction.cs" />
     <Compile Include="TargetCache.cs" />
+    <Compile Include="Transforms\MergeTransformResult.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

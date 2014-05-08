@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTaskTests.cs" company="Bijectiv">
+// <copyright file="MergeTransformResultTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,83 +23,73 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTaskTests type.
+//   Defines the MergeTransformResultTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Factory
+namespace Bijectiv.Tests.Transforms
 {
-    using System;
-    using System.Linq.Expressions;
-
-    using Bijectiv.Builder;
-    using Bijectiv.Factory;
     using Bijectiv.TestUtilities;
-    using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Transforms;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="MergeTransformResult"/> class.
+    /// </summary>
     [TestClass]
-    public class ReturnTargetAsObjectTaskTests
+    public class MergeTransformResultTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_InstanceCreated()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            new ReturnTargetAsObjectTask().Naught();
+            new MergeTransformResult(PostMergeAction.None, new object()).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void Execute_ScaffoldParameterIsNull_Throws()
+        public void CreateInstance_ActionParameter_IsAssignedToActionProperty()
         {
             // Arrange
-            var target = CreateTarget();
 
             // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            var target = new MergeTransformResult(PostMergeAction.Replace, new object());
 
             // Assert
+            Assert.AreEqual(PostMergeAction.Replace, target.Action);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldTargetAsObject_IsReturned()
+        public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
         {
             // Arrange
-            var targetAsObject = new object();
-            var scaffold = CreateScaffold();
-            scaffold.TargetAsObject = Expression.Constant(targetAsObject);
-
-            var target = CreateTarget();
+            var targetInstance = new object();
 
             // Act
-            target.Execute(scaffold);
+            var target = new MergeTransformResult(PostMergeAction.Replace, targetInstance);
 
             // Assert
-            var @delegate = Expression.Lambda<Func<object>>(Expression.Block(scaffold.Expressions)).Compile();
-            Assert.AreEqual(targetAsObject, @delegate());
+            Assert.AreEqual(targetInstance, target.Target);
         }
 
-        private static ReturnTargetAsObjectTask CreateTarget()
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetParameter_CanBeNull()
         {
-            return new ReturnTargetAsObjectTask();
-        }
+            // Arrange
 
-        private static TransformScaffold CreateScaffold()
-        {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
-                Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+            // Act
+            var target = new MergeTransformResult(PostMergeAction.Replace, null);
+
+            // Assert
+            Assert.IsNull(target.Target);
         }
     }
 }
