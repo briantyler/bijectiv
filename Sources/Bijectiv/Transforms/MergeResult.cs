@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MergeTransformResult.cs" company="Bijectiv">
+// <copyright file="MergeResult.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,19 +23,19 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the MergeTransformResult type.
+//   Defines the MergeResult type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Transforms
 {
     /// <summary>
-    /// Represents the result of calling <see cref="IMergeTransform.Merge"/>.
+    /// Represents the result of calling <see cref="IMerge.Merge"/>.
     /// </summary>
-    public sealed class MergeTransformResult : IMergeTransformResult
+    public sealed class MergeResult : IMergeResult
     {
         /// <summary>
-        /// The action that the caller must perform after calling <see cref="IMergeTransform.Merge"/> to complete 
+        /// The action that the caller must perform after calling <see cref="IMerge.Merge"/> to complete 
         /// the merge.
         /// </summary>
         private readonly PostMergeAction action;
@@ -46,23 +46,23 @@ namespace Bijectiv.Transforms
         private readonly object target;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="MergeTransformResult"/> class.
+        /// Initialises a new instance of the <see cref="MergeResult"/> class.
         /// </summary>
         /// <param name="action">
-        /// The action that the caller must perform after calling <see cref="IMergeTransform.Merge"/> to complete 
+        /// The action that the caller must perform after calling <see cref="IMerge.Merge"/> to complete 
         /// the merge.
         /// </param>
         /// <param name="target">
         /// The merge target.
         /// </param>
-        public MergeTransformResult(PostMergeAction action, object target)
+        public MergeResult(PostMergeAction action, object target)
         {
             this.action = action;
             this.target = target;
         }
 
         /// <summary>
-        /// Gets the action that the caller must perform after calling <see cref="IMergeTransform.Merge"/> to complete 
+        /// Gets the action that the caller must perform after calling <see cref="IMerge.Merge"/> to complete 
         /// the merge.
         /// </summary>
         /// <remarks>
@@ -70,7 +70,7 @@ namespace Bijectiv.Transforms
         /// source, for example, it might be necessary to set the original target to null. There are two options:
         /// <list type="number">
         ///     <item>
-        ///         Pass a callback to <see cref="IMergeTransform.Merge"/> that allows it to set the target on
+        ///         Pass a callback to <see cref="IMerge.Merge"/> that allows it to set the target on
         ///         the parent instance.
         ///     </item>
         ///     <item>

@@ -35,7 +35,7 @@ namespace Bijectiv.Tests.Transforms
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="MergeTransformResult"/> class.
+    /// This class tests the <see cref="MergeResult"/> class.
     /// </summary>
     [TestClass]
     public class MergeTransformResultTests
@@ -47,7 +47,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            new MergeTransformResult(PostMergeAction.None, new object()).Naught();
+            new MergeResult(PostMergeAction.None, new object()).Naught();
 
             // Assert
         }
@@ -59,7 +59,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            var target = new MergeTransformResult(PostMergeAction.Replace, new object());
+            var target = new MergeResult(PostMergeAction.Replace, new object());
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, target.Action);
@@ -73,7 +73,7 @@ namespace Bijectiv.Tests.Transforms
             var targetInstance = new object();
 
             // Act
-            var target = new MergeTransformResult(PostMergeAction.Replace, targetInstance);
+            var target = new MergeResult(PostMergeAction.Replace, targetInstance);
 
             // Assert
             Assert.AreEqual(targetInstance, target.Target);
@@ -86,7 +86,7 @@ namespace Bijectiv.Tests.Transforms
             // Arrange
 
             // Act
-            var target = new MergeTransformResult(PostMergeAction.Replace, null);
+            var target = new MergeResult(PostMergeAction.Replace, null);
 
             // Assert
             Assert.IsNull(target.Target);

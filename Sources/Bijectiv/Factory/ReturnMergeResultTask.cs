@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnMergeTransformResultTask.cs" company="Bijectiv">
+// <copyright file="ReturnMergeResultTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnMergeTransformResultTask type.
+//   Defines the ReturnMergeResultTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,20 +40,20 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that returns a <see cref="IMergeTransformResult"/>.
+    /// A transform task that returns a <see cref="IMergeResult"/>.
     /// </summary>
-    public class ReturnMergeTransformResultTask : ITransformTask
+    public class ReturnMergeResultTask : ITransformTask
     {
         /// <summary>
-        /// The <see cref="MergeTransformResult"/> constructor.
+        /// The <see cref="MergeResult"/> constructor.
         /// </summary>
-        private static readonly ConstructorInfo Constructor = Reflect<MergeTransformResult>.Constructor(
-            () => new MergeTransformResult(Placeholder.Of<PostMergeAction>(), Placeholder.Of<object>()));
+        private static readonly ConstructorInfo Constructor = Reflect<MergeResult>.Constructor(
+            () => new MergeResult(Placeholder.Of<PostMergeAction>(), Placeholder.Of<object>()));
 
         /// <summary>
         /// The return type.
         /// </summary>
-        private static readonly Type ReturnType = typeof(IMergeTransformResult);
+        private static readonly Type ReturnType = typeof(IMergeResult);
 
         /// <summary>
         /// Executes the task.

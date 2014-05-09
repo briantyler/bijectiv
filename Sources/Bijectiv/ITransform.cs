@@ -29,26 +29,15 @@
 
 namespace Bijectiv
 {
-    using System;
-
     /// <summary>
     /// Represents a transform from a source to target.
     /// </summary>
-    public interface ITransform
+    public interface ITransform : IProtoTransform
     {
         /// <summary>
-        /// Gets the source type supported by the transform.
-        /// </summary>
-        Type Source { get; }
-
-        /// <summary>
-        /// Gets the target type created by the transform.
-        /// </summary>
-        Type Target { get; }
-
-        /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
-        /// transformation rules defined by <seealso cref="Source"/> --&lt; <seealso cref="Target"/>.
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="IProtoTransform.Target"/>;  
+        /// using the transformation rules defined by <see cref="IProtoTransform.Source"/> --&lt; 
+        /// <see cref="IProtoTransform.Target"/>.
         /// </summary>
         /// <param name="source">
         /// The source object.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnMergeTransformResultTaskTests.cs" company="Bijectiv">
+// <copyright file="ReturnMergeResultTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnMergeTransformResultTaskTests type.
+//   Defines the ReturnMergeResultTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,10 +40,10 @@ namespace Bijectiv.Tests.Factory
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="ReturnMergeTransformResultTask"/> class.
+    /// This class tests the <see cref="ReturnMergeResultTask"/> class.
     /// </summary>
     [TestClass]
-    public class ReturnMergeTransformResultTaskTests
+    public class ReturnMergeResultTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -52,7 +52,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new ReturnMergeTransformResultTask().Naught();
+            new ReturnMergeResultTask().Naught();
 
             // Assert
         }
@@ -88,7 +88,7 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             var @delegate = Expression
-                .Lambda<Func<IMergeTransformResult>>(Expression.Block(scaffold.Expressions))
+                .Lambda<Func<IMergeResult>>(Expression.Block(scaffold.Expressions))
                 .Compile();
 
             var result = @delegate();
@@ -115,7 +115,7 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             var @delegate = Expression
-                .Lambda<Func<IMergeTransformResult>>(Expression.Block(scaffold.Variables, scaffold.Expressions))
+                .Lambda<Func<IMergeResult>>(Expression.Block(scaffold.Variables, scaffold.Expressions))
                 .Compile();
 
             var result = @delegate();
@@ -123,9 +123,9 @@ namespace Bijectiv.Tests.Factory
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
         }
 
-        private static ReturnMergeTransformResultTask CreateTarget()
+        private static ReturnMergeResultTask CreateTarget()
         {
-            return new ReturnMergeTransformResultTask();
+            return new ReturnMergeResultTask();
         }
 
         private static TransformScaffold CreateScaffold()

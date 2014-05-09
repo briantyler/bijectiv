@@ -66,14 +66,15 @@
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
     <Compile Include="Factory\NullSourceTask.cs" />
-    <Compile Include="Factory\ReturnMergeTransformResultTask.cs" />
+    <Compile Include="Factory\ReturnMergeResultTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoTransformStrategy.cs" />
-    <Compile Include="IMergeTransformResult.cs" />
+    <Compile Include="IMergeResult.cs" />
+    <Compile Include="IProtoTransform.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="TargetCache.cs" />
-    <Compile Include="Transforms\MergeTransformResult.cs" />
+    <Compile Include="Transforms\MergeResult.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
@@ -106,7 +107,7 @@
     <Compile Include="Stores\ConvertibleTransformStore.cs" />
     <Compile Include="Stores\CollectionTransformStore.cs" />
     <Compile Include="Stores\IdenticalPrimitiveTransformStore.cs" />
-    <Compile Include="IMergeTransform.cs" />
+    <Compile Include="IMerge.cs" />
     <Compile Include="ITransform.cs" />
     <Compile Include="ITransformer.cs" />
     <Compile Include="ITransformStore.cs" />
