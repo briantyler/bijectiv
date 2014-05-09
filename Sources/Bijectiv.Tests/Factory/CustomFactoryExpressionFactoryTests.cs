@@ -137,12 +137,12 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateExpression_ValidParameters_ExpressionCallsResolveOnTransformContext()
+        public void CreateExpression_ValidParameters_ExpressionCallsResolveOnInjectionContext()
         {
             // Arrange
             var expected = new TestClass2();
-            var transformContextMock = new Mock<ITransformContext>(MockBehavior.Strict);
-            transformContextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expected);
+            var injectionContextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            injectionContextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expected);
 
             Func<CustomFactoryParameters<TestClass1>, TestClass2> factory = 
                 p => p.Source.Id == "Dummy" ? (TestClass2)p.Context.Resolve(TestClass2.T) : new TestClass2();
@@ -157,12 +157,12 @@ namespace Bijectiv.Tests.Factory
             var result = target.CreateExpression(scaffold);
 
             // Assert
-            var @delegate = Expression.Lambda<Func<ITransformContext, TestClass2>>(
-                result, (ParameterExpression)scaffold.TransformContext)
+            var @delegate = Expression.Lambda<Func<IInjectionContext, TestClass2>>(
+                result, (ParameterExpression)scaffold.InjectionContext)
                 .Compile();
 
-            Assert.AreEqual(expected, @delegate(transformContextMock.Object));
-            transformContextMock.VerifyAll();
+            Assert.AreEqual(expected, @delegate(injectionContextMock.Object));
+            injectionContextMock.VerifyAll();
         }
 
         private static CustomFactoryFragment CreateFragment()
@@ -176,13 +176,13 @@ namespace Bijectiv.Tests.Factory
             return new CustomFactoryExpressionFactory();
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(IInjectionContext)));
         }
     }
 }

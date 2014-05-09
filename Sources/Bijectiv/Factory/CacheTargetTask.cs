@@ -37,9 +37,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that caches a target instance.
+    /// A task that caches a target instance.
     /// </summary>
-    public class CacheTargetTask : ITransformTask
+    public class CacheTargetTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -50,7 +50,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -58,13 +58,13 @@ namespace Bijectiv.Factory
             }
             
             var expression = (Expression)(Expression<Action>)(
-                () => Placeholder.Of<ITransformContext>("context").TargetCache.Add(
+                () => Placeholder.Of<IInjectionContext>("context").TargetCache.Add(
                     scaffold.Definition.Source,
                     scaffold.Definition.Target,
                     Placeholder.Of<object>("source"),
                     Placeholder.Of<object>("target")));
 
-            expression = new PlaceholderExpressionVisitor("context", scaffold.TransformContext).Visit(expression);
+            expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(expression);
             expression = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(expression);
             expression = new PlaceholderExpressionVisitor("target", scaffold.TargetAsObject).Visit(expression);
 

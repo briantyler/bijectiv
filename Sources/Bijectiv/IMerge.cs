@@ -32,11 +32,11 @@ namespace Bijectiv
     /// <summary>
     /// Represents a merge from a source into an existing target.
     /// </summary>
-    public interface IMerge : IProtoTransform
+    public interface IMerge : IInjection
     {
         /// <summary>
         /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
-        /// defined by <see cref="IProtoTransform.Source"/> --&lt;  <see cref="IProtoTransform.Target"/>.
+        /// defined by <see cref="IInjection.Source"/> --&lt;  <see cref="IInjection.Target"/>.
         /// </summary>
         /// <param name="source">
         /// The source object.
@@ -50,6 +50,6 @@ namespace Bijectiv
         /// <returns>
         /// A <see cref="IMergeResult"/> representing the result of the merge.
         /// </returns>
-        IMergeResult Merge(object source, object target, ITransformContext context);
+        IMergeResult Merge(object source, object target, IInjectionContext context);
     }
 }

@@ -37,9 +37,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that tries to get the target instance from the cache and jumps to the exit if successful.
+    /// A task that tries to get the target instance from the cache and jumps to the exit if successful.
     /// </summary>
-    public class TryGetTargetFromCacheTask : ITransformTask
+    public class TryGetTargetFromCacheTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -47,7 +47,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -56,7 +56,7 @@ namespace Bijectiv.Factory
 
             var expression = (Expression<Action<object>>)
                 // ReSharper disable once RedundantAssignment
-                (o => Placeholder.Of<ITransformContext>("context")
+                (o => Placeholder.Of<IInjectionContext>("context")
                      .TargetCache.TryGet(
                          scaffold.Definition.Source,
                          scaffold.Definition.Target,
@@ -65,7 +65,7 @@ namespace Bijectiv.Factory
 
             var substituted = new ParameterExpressionVisitor(expression.Parameters[0], scaffold.TargetAsObject)
                 .Visit(expression.Body);
-            substituted = new PlaceholderExpressionVisitor("context", scaffold.TransformContext).Visit(substituted);
+            substituted = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(substituted);
             substituted = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(substituted);
 
             scaffold.Expressions.Add(Expression.IfThen(substituted, Expression.Goto(scaffold.ReturnLabel)));

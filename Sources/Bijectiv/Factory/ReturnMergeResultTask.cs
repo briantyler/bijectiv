@@ -34,15 +34,15 @@ namespace Bijectiv.Factory
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Bijectiv.Transforms;
+    using Bijectiv.Injections;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that returns a <see cref="IMergeResult"/>.
+    /// A task that returns a <see cref="IMergeResult"/>.
     /// </summary>
-    public class ReturnMergeResultTask : ITransformTask
+    public class ReturnMergeResultTask : IInjectionTask
     {
         /// <summary>
         /// The <see cref="MergeResult"/> constructor.
@@ -61,7 +61,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

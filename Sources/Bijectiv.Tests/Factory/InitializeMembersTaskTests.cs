@@ -198,11 +198,11 @@ namespace Bijectiv.Tests.Factory
             Assert.IsTrue(scaffold.TargetMembers.Contains(member2));
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Stub.Create<Expression>(),
                 Stub.Create<Expression>());
         }

@@ -113,7 +113,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
             var expressionFactoryMock = new Mock<ISelectiveExpressionFactory>(MockBehavior.Strict);
             expressionFactoryMock
-                .Setup(_ => _.CanCreateExpression(It.IsAny<TransformScaffold>()))
+                .Setup(_ => _.CanCreateExpression(It.IsAny<InjectionScaffold>()))
                 .Returns(false);
 
             var scaffold = CreateScaffold();
@@ -220,27 +220,27 @@ namespace Bijectiv.Tests.Factory
             Assert.IsTrue(scaffold.ProcessedFragments.Contains(factoryFragment));
         }
 
-        private static void SetupExecuteTest(Mock<ISelectiveExpressionFactory> expressionFactoryMock, TransformScaffold scaffold)
+        private static void SetupExecuteTest(Mock<ISelectiveExpressionFactory> expressionFactoryMock, InjectionScaffold scaffold)
         {
             expressionFactoryMock
-                .Setup(_ => _.CanCreateExpression(It.IsAny<TransformScaffold>()))
+                .Setup(_ => _.CanCreateExpression(It.IsAny<InjectionScaffold>()))
                 .Returns(true);
 
             expressionFactoryMock
-                .Setup(_ => _.CreateExpression(It.IsAny<TransformScaffold>()))
+                .Setup(_ => _.CreateExpression(It.IsAny<InjectionScaffold>()))
                 .Returns(Expression.Constant(Output));
 
             scaffold.Target = Expression.Parameter(TestClass1.T);
             scaffold.TargetAsObject = Expression.Parameter(typeof(object));
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(IInjectionContext)));
         }
     }
 }

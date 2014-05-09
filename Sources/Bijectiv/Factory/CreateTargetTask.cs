@@ -39,9 +39,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The transform task that creates target instances from a <see cref="ISelectiveExpressionFactory"/>.
+    /// The task that creates target instances from a <see cref="ISelectiveExpressionFactory"/>.
     /// </summary>
-    public class CreateTargetTask : ITransformTask
+    public class CreateTargetTask : IInjectionTask
     {
         /// <summary>
         /// The expression factory which will create the expression that creates the target.
@@ -81,7 +81,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

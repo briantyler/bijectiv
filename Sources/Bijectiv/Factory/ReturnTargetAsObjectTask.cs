@@ -35,9 +35,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A transform task that returns the target as an object.
+    /// A task that returns the target as an object.
     /// </summary>
-    public class ReturnTargetAsObjectTask : ITransformTask
+    public class ReturnTargetAsObjectTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -45,7 +45,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Factory
         public void Execute_ScaffoldContainsCandidateFragments_CandidateFragmentsCleared()
         {
             // Arrange
-            var scaffold = CreateScaffold(new TransformDefinitionRegistry());
+            var scaffold = CreateScaffold(new InjectionDefinitionRegistry());
             scaffold.CandidateFragments.Add(Stub.Fragment<object, object>());
             
             var target = CreateTarget();
@@ -94,7 +94,7 @@ namespace Bijectiv.Tests.Factory
         public void Execute_ScaffoldContainsProcessedFragments_ProcessedFragmentsCleared()
         {
             // Arrange
-            var scaffold = CreateScaffold(new TransformDefinitionRegistry());
+            var scaffold = CreateScaffold(new InjectionDefinitionRegistry());
             scaffold.ProcessedFragments.Add(Stub.Fragment<object, object>());
 
             var target = CreateTarget();
@@ -118,7 +118,7 @@ namespace Bijectiv.Tests.Factory
                 Stub.Fragment<TestClass1, TestClass2>()
             };
 
-            var scaffold = CreateScaffold(new TransformDefinitionRegistry(), fragments);
+            var scaffold = CreateScaffold(new InjectionDefinitionRegistry(), fragments);
             var target = CreateTarget();
 
             // Act
@@ -144,26 +144,26 @@ namespace Bijectiv.Tests.Factory
                 new InheritsFragment(DerivedTestClass1.T, DerivedTestClass2.T, BaseTestClass1.T, BaseTestClass2.T) 
             };
 
-            var baseDefinition1 = new TransformDefinition(BaseTestClass1.T, BaseTestClass2.T)
+            var baseDefinition1 = new InjectionDefinition(BaseTestClass1.T, BaseTestClass2.T)
             {
                 Stub.Fragment<BaseTestClass1, BaseTestClass2>(),
                 new InheritsFragment(BaseTestClass1.T, BaseTestClass2.T, typeof(object), BaseTestClass2.T), 
                 Stub.Fragment<BaseTestClass1, BaseTestClass2>(),
             };
 
-            var baseDefinition2 = new TransformDefinition(BaseTestClass1.T, BaseTestClass2.T)
+            var baseDefinition2 = new InjectionDefinition(BaseTestClass1.T, BaseTestClass2.T)
             {
                 Stub.Fragment<BaseTestClass1, BaseTestClass2>(),
                 new InheritsFragment(BaseTestClass1.T, BaseTestClass2.T, typeof(object), BaseTestClass2.T), 
                 Stub.Fragment<BaseTestClass1, BaseTestClass2>(),
             };
 
-            var notUsedDefinition = new TransformDefinition(typeof(object), typeof(object))
+            var notUsedDefinition = new InjectionDefinition(typeof(object), typeof(object))
             {
                 Stub.Fragment<object, object>(),
             };
 
-            var registry = new TransformDefinitionRegistry { baseDefinition1, baseDefinition2, notUsedDefinition };
+            var registry = new InjectionDefinitionRegistry { baseDefinition1, baseDefinition2, notUsedDefinition };
 
             var scaffold = CreateScaffold(registry, fragments);
             var target = CreateTarget();
@@ -192,17 +192,17 @@ namespace Bijectiv.Tests.Factory
             return new InitializeFragmentsTask();
         }
 
-        private static TransformScaffold CreateScaffold(
-            ITransformDefinitionRegistry registry,
-            params TransformFragment[] fragments)
+        private static InjectionScaffold CreateScaffold(
+            IInjectionDefinitionRegistry registry,
+            params InjectionFragment[] fragments)
         {
-            var definition = new TransformDefinition(TestClass1.T, TestClass2.T, fragments);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T, fragments);
 
-            return new TransformScaffold(
+            return new InjectionScaffold(
                 registry,
                 definition,
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(IInjectionContext)));
         }
     }
 }

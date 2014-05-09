@@ -34,9 +34,9 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Specifies that the <see cref="TransformFragment.Target"/> should be created by the default factory.
+    /// Specifies that the <see cref="InjectionFragment.Target"/> should be created by the default factory.
     /// </summary>
-    public class DefaultFactoryFragment : TransformFragment
+    public class DefaultFactoryFragment : InjectionFragment
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Bijectiv.Builder.DefaultFactoryFragment"/> class.

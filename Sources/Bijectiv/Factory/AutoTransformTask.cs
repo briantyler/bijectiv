@@ -40,7 +40,7 @@ namespace Bijectiv.Factory
     /// <summary>
     /// Represents a task that processes <see cref="AutoTransformFragment"/> fragments.
     /// </summary>
-    public class AutoTransformTask : ITransformTask
+    public class AutoTransformTask : IInjectionTask
     {
         /// <summary>
         /// The task detail.
@@ -80,7 +80,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

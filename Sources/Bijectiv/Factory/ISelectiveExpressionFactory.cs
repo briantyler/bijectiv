@@ -33,25 +33,25 @@ namespace Bijectiv.Factory
 
     /// <summary>
     /// Represents a factory that determines whether it can create an expression from a 
-    /// <see cref="TransformScaffold"/> and creates it.
+    /// <see cref="InjectionScaffold"/> and creates it.
     /// </summary>
     public interface ISelectiveExpressionFactory
     {
         /// <summary>
         /// Gets a value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
         /// </param>
         /// <returns>
         /// A value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </returns>
-        bool CanCreateExpression(TransformScaffold scaffold);
+        bool CanCreateExpression(InjectionScaffold scaffold);
 
         /// <summary>
-        /// Creates an expression from a <see cref="TransformScaffold"/>.
+        /// Creates an expression from a <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
@@ -59,6 +59,6 @@ namespace Bijectiv.Factory
         /// <returns>
         /// The created <see cref="Expression"/>.
         /// </returns>
-        Expression CreateExpression(TransformScaffold scaffold);
+        Expression CreateExpression(InjectionScaffold scaffold);
     }
 }

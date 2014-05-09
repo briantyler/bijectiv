@@ -34,9 +34,9 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an inheritance relationship between transforms.
+    /// Represents an inheritance relationship between injections.
     /// </summary>
-    public class InheritsFragment : TransformFragment
+    public class InheritsFragment : InjectionFragment
     {
         /// <summary>
         /// The source base type.
@@ -82,7 +82,7 @@ namespace Bijectiv.Builder
 
             if (source == sourceBase && target == targetBase)
             {
-                throw new ArgumentException("A transform cannot inherit from itself.");
+                throw new ArgumentException("An injection cannot inherit from itself.");
             }
 
             if (!sourceBase.IsAssignableFrom(source))

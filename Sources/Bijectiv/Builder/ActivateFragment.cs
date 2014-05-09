@@ -34,9 +34,9 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Specifies that the <see cref="TransformFragment.Target"/> should be created via some activation strategy.
+    /// Specifies that the <see cref="InjectionFragment.Target"/> should be created via some activation strategy.
     /// </summary>
-    public class ActivateFragment : TransformFragment
+    public class ActivateFragment : InjectionFragment
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="ActivateFragment"/> class.

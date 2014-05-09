@@ -38,7 +38,7 @@ namespace Bijectiv
     using Bijectiv.Utilities;
 
     /// <summary>
-    /// Provides default <see cref="ITransformStore"/> build configuration options.
+    /// Provides default <see cref="IInjectionStore"/> build configuration options.
     /// </summary>
     public sealed class BuildConfigurator
     {
@@ -52,8 +52,8 @@ namespace Bijectiv
         /// </summary>
         internal BuildConfigurator()
         {
-            this.TransformStoreFactories = new List<Func<ITransformStoreFactory>>();
-            this.TransformTasks = new List<Func<ITransformTask>>();
+            this.StoreFactories = new List<Func<IInjectionStoreFactory>>();
+            this.Tasks = new List<Func<IInjectionTask>>();
 
             this.Reset();
         }
@@ -67,48 +67,48 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Gets the default sequence of <see cref="ITransformStoreFactory"/> instances.
+        /// Gets the default sequence of <see cref="IInjectionStoreFactory"/> instances.
         /// </summary>
-        public IList<Func<ITransformStoreFactory>> TransformStoreFactories { get; private set; }
+        public IList<Func<IInjectionStoreFactory>> StoreFactories { get; private set; }
 
         /// <summary>
-        /// Gets the default sequence of <see cref="ITransformTask"/> instances.
+        /// Gets the default sequence of <see cref="IInjectionTask"/> instances.
         /// </summary>
-        public IList<Func<ITransformTask>> TransformTasks { get; private set; }
+        public IList<Func<IInjectionTask>> Tasks { get; private set; }
 
         /// <summary>
         /// Resets the configurator to the default configuration.
         /// </summary>
         public void Reset()
         {
-            this.ResetTransformStoreFactories();
-            this.ResetTransformTasks();
+            this.ResetStoreFactories();
+            this.ResetTasks();
         }
 
         /// <summary>
-        /// Resets <see cref="TransformStoreFactories"/> to its default configuration.
+        /// Resets <see cref="StoreFactories"/> to its default configuration.
         /// </summary>
-        private void ResetTransformStoreFactories()
+        private void ResetStoreFactories()
         {
-            this.TransformStoreFactories.Clear();
-            this.TransformStoreFactories.AddRange(
-                new Func<ITransformStoreFactory>[]
+            this.StoreFactories.Clear();
+            this.StoreFactories.AddRange(
+                new Func<IInjectionStoreFactory>[]
                 {
-                    () => new InstanceTransformStoreFactory(new IdenticalPrimitiveTransformStore()),
-                    () => new InstanceTransformStoreFactory(new ConvertibleTransformStore()),
-                    () => new DelegateTransformStoreFactory(
-                        new TransformFactory(this.TransformTasks.Select(item => item()).ToArray()))
+                    () => new InstanceInjectionStoreFactory(new IdenticalPrimitiveInjectionStore()),
+                    () => new InstanceInjectionStoreFactory(new ConvertibleInjectionStore()),
+                    () => new DelegateInjectionStoreFactory(
+                        new TransformFactory(this.Tasks.Select(item => item()).ToArray()))
                 });
         }
 
         /// <summary>
-        /// Resets <see cref="TransformTasks"/> to its default configuration.
+        /// Resets <see cref="Tasks"/> to its default configuration.
         /// </summary>
-        private void ResetTransformTasks()
+        private void ResetTasks()
         {
-            this.TransformTasks.Clear();
-            this.TransformTasks.AddRange(
-                new Func<ITransformTask>[]
+            this.Tasks.Clear();
+            this.Tasks.AddRange(
+                new Func<IInjectionTask>[]
                 {
                     () => new InitializeFragmentsTask(), 
                     () => new InitializeVariablesTask(), 

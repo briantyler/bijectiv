@@ -36,9 +36,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The transform task that initializes the scaffold members.
+    /// The task that initializes the scaffold members.
     /// </summary>
-    public class InitializeMembersTask : ITransformTask
+    public class InitializeMembersTask : IInjectionTask
     {
         /// <summary>
         /// The reflection gateway.
@@ -81,7 +81,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

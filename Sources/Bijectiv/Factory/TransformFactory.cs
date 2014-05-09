@@ -34,7 +34,7 @@ namespace Bijectiv.Factory
     using System.Linq.Expressions;
 
     using Bijectiv.Builder;
-    using Bijectiv.Transforms;
+    using Bijectiv.Injections;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
@@ -47,7 +47,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// The ordered collection of tasks that build the transform delegate.
         /// </summary>
-        private readonly IEnumerable<ITransformTask> taskCollection;
+        private readonly IEnumerable<IInjectionTask> taskCollection;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="TransformFactory"/> class.
@@ -58,7 +58,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformFactory([NotNull] IEnumerable<ITransformTask> taskCollection)
+        public TransformFactory([NotNull] IEnumerable<IInjectionTask> taskCollection)
         {
             if (taskCollection == null)
             {
@@ -71,16 +71,16 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the ordered collection of tasks that build the transform delegate.
         /// </summary>
-        public IEnumerable<ITransformTask> TaskCollection
+        public IEnumerable<IInjectionTask> TaskCollection
         {
             get { return this.taskCollection; }
         }
 
         /// <summary>
-        /// Creates a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
+        /// Creates a <see cref="ITransform"/> from a <see cref="InjectionDefinition"/>.
         /// </summary>
         /// <param name="definitionRegistry">
-        /// The registry containing all known <see cref="TransformDefinition"/> instances.
+        /// The registry containing all known <see cref="InjectionDefinition"/> instances.
         /// </param>
         /// <param name="definition">
         /// The definition from which to create a <see cref="ITransform"/>.
@@ -91,7 +91,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public ITransform Create(ITransformDefinitionRegistry definitionRegistry, TransformDefinition definition)
+        public ITransform Create(IInjectionDefinitionRegistry definitionRegistry, InjectionDefinition definition)
         {
             if (definitionRegistry == null)
             {
@@ -104,17 +104,17 @@ namespace Bijectiv.Factory
             }
 
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
-            var transformContext = Expression.Parameter(typeof(ITransformContext), "transformContext");
+            var injectionContext = Expression.Parameter(typeof(IInjectionContext), "InjectionContext");
 
-            var scaffold = new TransformScaffold(
-                definitionRegistry, definition, sourceAsObject, transformContext);
+            var scaffold = new InjectionScaffold(
+                definitionRegistry, definition, sourceAsObject, injectionContext);
 
             this.TaskCollection.ForEach(item => item.Execute(scaffold));
 
-            var lambda = Expression.Lambda<Func<object, ITransformContext, object>>(
+            var lambda = Expression.Lambda<Func<object, IInjectionContext, object>>(
                 Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
-                transformContext);
+                injectionContext);
 
             return new DelegateTransform(definition.Source, definition.Target, lambda.Compile());
         }

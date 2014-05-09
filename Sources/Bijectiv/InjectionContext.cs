@@ -1,0 +1,171 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="InjectionContext.cs" company="Bijectiv">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2014 Brian Tyler
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in
+//   all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//   THE SOFTWARE.
+// </copyright>
+// <summary>
+//   Defines the InjectionContext type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Bijectiv
+{
+    using System;
+    using System.Globalization;
+
+    using JetBrains.Annotations;
+
+    /// <summary>
+    /// Represents the context in which a transform is happening.
+    /// </summary>
+    public class InjectionContext : IInjectionContext
+    {
+        /// <summary>
+        /// The culture in which the transform is taking place.
+        /// </summary>
+        private readonly CultureInfo culture;
+
+        /// <summary>
+        /// The resolve delegate.
+        /// </summary>
+        private readonly Func<Type, object> resolveDelegate;
+
+        /// <summary>
+        /// The transform store.
+        /// </summary>
+        private readonly IInjectionStore injectionStore;
+
+        /// <summary>
+        /// The target cache.
+        /// </summary>
+        private readonly ITargetCache targetCache = new TargetCache();
+
+        /// <summary>
+        /// A value indicating whether a merge operation is currently taking place.
+        /// </summary>
+        private readonly bool isMerging;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="InjectionContext"/> class.
+        /// </summary>
+        /// <param name="isMerging">
+        /// A value indicating whether a merge operation is currently taking place.
+        /// </param>
+        /// <param name="culture">
+        /// The culture in which the transform is taking place.
+        /// </param>
+        /// <param name="resolveDelegate">
+        /// The resolve delegate.
+        /// </param>
+        /// <param name="injectionStore">
+        /// The transform store.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public InjectionContext(
+            bool isMerging,
+            [NotNull] CultureInfo culture, 
+            [NotNull] Func<Type, object> resolveDelegate,
+            [NotNull] IInjectionStore injectionStore)
+        {
+            if (culture == null)
+            {
+                throw new ArgumentNullException("culture");
+            }
+
+            if (resolveDelegate == null)
+            {
+                throw new ArgumentNullException("resolveDelegate");
+            }
+
+            if (injectionStore == null)
+            {
+                throw new ArgumentNullException("injectionStore");
+            }
+
+            this.culture = culture;
+            this.resolveDelegate = resolveDelegate;
+            this.injectionStore = injectionStore;
+            this.isMerging = isMerging;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a merge operation is currently taking place.
+        /// </summary>
+        public bool IsMerging
+        {
+            get { return this.isMerging; }
+        }
+
+        /// <summary>
+        /// Gets the culture in which the transform is taking place.
+        /// </summary>
+        public CultureInfo Culture
+        {
+            get { return this.culture; }
+        }
+
+        /// <summary>
+        /// Gets the target cache.
+        /// </summary>
+        public ITargetCache TargetCache
+        {
+            get { return this.targetCache; }
+        }
+
+        /// <summary>
+        /// Gets the resolve delegate.
+        /// </summary>
+        public Func<Type, object> ResolveDelegate
+        {
+            get { return this.resolveDelegate; }
+        }
+
+        /// <summary>
+        /// Gets the transform store.
+        /// </summary>
+        public IInjectionStore InjectionStore
+        {
+            get { return this.injectionStore; }
+        }
+
+        /// <summary>
+        /// Retrieve a service from the default factory.
+        /// </summary>
+        /// <param name="service">
+        /// The service to retrieve.
+        /// </param>
+        /// <returns>
+        /// The component instance that provides the service.
+        /// </returns>
+        public object Resolve([NotNull] Type service)
+        {
+            if (service == null)
+            {
+                throw new ArgumentNullException("service");
+            }
+
+            return this.ResolveDelegate(service);
+        }
+    }
+}

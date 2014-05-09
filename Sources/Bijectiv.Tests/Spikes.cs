@@ -42,13 +42,13 @@ namespace Bijectiv.Tests
         public void Spike_Activate_Activated()
         {
             // Arrange
-            var builder = new TransformStoreBuilder();
+            var builder = new InjectionStoreBuilder();
             builder.Register<TestClass1, TestClass2>();
             var store = builder.Build();
-            var transform = store.Resolve(TestClass1.T, TestClass2.T);
+            //var transform = store.Resolve(TestClass1.T, TestClass2.T);
 
             // Act
-            // var result = transform.Transform(new TestClass1(), new TransformContext(store));
+            // var result = transform.Transform(new TestClass1(), new InjectionContext(store));
 
             // Assert
             // Assert.IsInstanceOfType(result, TestClass2.T);
@@ -59,7 +59,7 @@ namespace Bijectiv.Tests
         public void Spike_AutoTransform_AutoTransforms()
         {
             // Arrange
-            var builder = new TransformStoreBuilder();
+            var builder = new InjectionStoreBuilder();
             builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
 
             var @sealed = new SealedClass1();
@@ -80,10 +80,10 @@ namespace Bijectiv.Tests
             };
 
             var store = builder.Build();
-            var transform = store.Resolve(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
+            //var transform = store.Resolve(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
 
             // Act
-            // var target = (AutoTransformTestClass1)transform.Transform(source, new TransformContext(store));
+            // var target = (AutoTransformTestClass1)transform.Transform(source, new InjectionContext(store));
 
             // Assert
             // Assert.AreEqual(33, target.PropertyInt);

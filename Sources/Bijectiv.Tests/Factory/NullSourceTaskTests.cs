@@ -107,7 +107,7 @@ namespace Bijectiv.Tests.Factory
             // Assert
             var @delegate = CreateDelegate(scaffold);
 
-            Assert.AreEqual(default(object), @delegate(Stub.Create<ITransformContext>(), null));
+            Assert.AreEqual(default(object), @delegate(Stub.Create<IInjectionContext>(), null));
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Bijectiv.Tests.Factory
             // Assert
             var @delegate = CreateDelegate(scaffold);
 
-            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<ITransformContext>(), new TestClass1()));
+            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<IInjectionContext>(), new TestClass1()));
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace Bijectiv.Tests.Factory
                 new NullSourceFragment(
                     TestClass1.T, 
                     TestClass2.T,
-                    new Func<ITransformContext, TestClass2>(c => expected)));
+                    new Func<IInjectionContext, TestClass2>(c => expected)));
 
             // Act
             target.Execute(scaffold);
@@ -148,7 +148,7 @@ namespace Bijectiv.Tests.Factory
             // Assert
             var @delegate = CreateDelegate(scaffold);
 
-            Assert.AreEqual(expected, @delegate(Stub.Create<ITransformContext>(), null));
+            Assert.AreEqual(expected, @delegate(Stub.Create<IInjectionContext>(), null));
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace Bijectiv.Tests.Factory
                 new NullSourceFragment(
                     TestClass1.T,
                     TestClass2.T,
-                    new Func<ITransformContext, TestClass2>(c => unexpected)));
+                    new Func<IInjectionContext, TestClass2>(c => unexpected)));
 
             // Act
             target.Execute(scaffold);
@@ -172,7 +172,7 @@ namespace Bijectiv.Tests.Factory
             // Assert
             var @delegate = CreateDelegate(scaffold);
 
-            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<ITransformContext>(), new TestClass1()));
+            Assert.AreEqual(DummyTarget, @delegate(Stub.Create<IInjectionContext>(), new TestClass1()));
         }
 
         [TestMethod]
@@ -188,12 +188,12 @@ namespace Bijectiv.Tests.Factory
                 new NullSourceFragment(
                     TestClass1.T,
                     TestClass2.T,
-                    new Func<ITransformContext, TestClass2>(c => expected)));
+                    new Func<IInjectionContext, TestClass2>(c => expected)));
             scaffold.CandidateFragments.Add(
                 new NullSourceFragment(
                     TestClass1.T,
                     TestClass2.T,
-                    new Func<ITransformContext, TestClass2>(c => { throw new Exception(); })));
+                    new Func<IInjectionContext, TestClass2>(c => { throw new Exception(); })));
 
             // Act
             target.Execute(scaffold);
@@ -201,7 +201,7 @@ namespace Bijectiv.Tests.Factory
             // Assert
             var @delegate = CreateDelegate(scaffold);
 
-            Assert.AreEqual(expected, @delegate(Stub.Create<ITransformContext>(), null));
+            Assert.AreEqual(expected, @delegate(Stub.Create<IInjectionContext>(), null));
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace Bijectiv.Tests.Factory
                 new NullSourceFragment(
                     TestClass1.T,
                     TestClass2.T,
-                    new Func<ITransformContext, TestClass2>(c => expected)));
+                    new Func<IInjectionContext, TestClass2>(c => expected)));
             scaffold.CandidateFragments.Add(
                 Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
             scaffold.CandidateFragments.Add(
@@ -230,7 +230,7 @@ namespace Bijectiv.Tests.Factory
             Assert.AreEqual(3, scaffold.ProcessedFragments.Count());
         }
 
-        private static Func<ITransformContext, object, object> CreateDelegate(TransformScaffold scaffold)
+        private static Func<IInjectionContext, object, object> CreateDelegate(InjectionScaffold scaffold)
         {
             var assignDummy = Expression.Assign(
                 scaffold.TargetAsObject, 
@@ -240,7 +240,7 @@ namespace Bijectiv.Tests.Factory
             new ReturnTargetAsObjectTask().Execute(scaffold);
 
             return
-                Expression.Lambda<Func<ITransformContext, object, object>>(
+                Expression.Lambda<Func<IInjectionContext, object, object>>(
                     Expression.Block(
                         new[]
                         {
@@ -248,7 +248,7 @@ namespace Bijectiv.Tests.Factory
                             (ParameterExpression)scaffold.Target
                         },
                         scaffold.Expressions),
-                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.InjectionContext,
                     (ParameterExpression)scaffold.SourceAsObject).Compile();
         }
 
@@ -257,13 +257,13 @@ namespace Bijectiv.Tests.Factory
             return new NullSourceTask();
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)))
+                Expression.Parameter(typeof(IInjectionContext)))
             {
                 Target = Expression.Variable(TestClass2.T),
                 TargetAsObject = Expression.Variable(typeof(object))

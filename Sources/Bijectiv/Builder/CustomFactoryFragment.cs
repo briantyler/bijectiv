@@ -34,9 +34,9 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Specifies that the <see cref="TransformFragment.Target"/> should be created by a factory method.
+    /// Specifies that the <see cref="InjectionFragment.Target"/> should be created by a factory method.
     /// </summary>
-    public class CustomFactoryFragment : TransformFragment
+    public class CustomFactoryFragment : InjectionFragment
     {
         /// <summary>
         /// The factory type template.

@@ -35,9 +35,9 @@ namespace Bijectiv.Tests.Factory
 
     using Bijectiv.Builder;
     using Bijectiv.Factory;
+    using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
-    using Bijectiv.Transforms;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,7 +57,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>()).Naught();
+            new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>()).Naught();
 
             // Assert
         }
@@ -82,7 +82,7 @@ namespace Bijectiv.Tests.Factory
         {
             // ReSharper disable PossibleMultipleEnumeration
             // Arrange
-            var taskCollection = Stub.Create<IEnumerable<ITransformTask>>();
+            var taskCollection = Stub.Create<IEnumerable<IInjectionTask>>();
 
             // Act
             var target = new TransformFactory(taskCollection);
@@ -98,11 +98,11 @@ namespace Bijectiv.Tests.Factory
         public void Create_DefinitionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>());
+            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<ITransformDefinitionRegistry>(), null);
+            target.Create(Stub.Create<IInjectionDefinitionRegistry>(), null);
 
             // Assert
         }
@@ -113,11 +113,11 @@ namespace Bijectiv.Tests.Factory
         public void Create_DefinitionRegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<ITransformTask>>());
+            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null, new TransformDefinition(TestClass1.T, TestClass2.T));
+            target.Create(null, new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
         }
@@ -127,18 +127,18 @@ namespace Bijectiv.Tests.Factory
         public void Create_ValidParameters_ReturnsDelegateTransform()
         {
             // Arrange
-            var taskMock = new Mock<ITransformTask>();
+            var taskMock = new Mock<IInjectionTask>();
             taskMock
-                .Setup(_ => _.Execute(It.IsAny<TransformScaffold>()))
-                .Callback((TransformScaffold s) => s.Expressions.Add(Expression.Constant(new object())));
+                .Setup(_ => _.Execute(It.IsAny<InjectionScaffold>()))
+                .Callback((InjectionScaffold s) => s.Expressions.Add(Expression.Constant(new object())));
 
-            var taskCollection = new List<ITransformTask> { taskMock.Object };
+            var taskCollection = new List<IInjectionTask> { taskMock.Object };
             var target = new TransformFactory(taskCollection);
 
             // Act
             var result = target.Create(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T));
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(DelegateTransform));
@@ -162,30 +162,30 @@ namespace Bijectiv.Tests.Factory
             var source = new TestClass1();
             var expectedTarget = new TestClass2();
 
-            var transformContextMock = repository.Create<ITransformContext>();
-            transformContextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expectedTarget);
+            var injectionContextMock = repository.Create<IInjectionContext>();
+            injectionContextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expectedTarget);
 
             var variable = Expression.Variable(TestClass1.T);
-            var assignSourceTaskMock = repository.Create<ITransformTask>();
+            var assignSourceTaskMock = repository.Create<IInjectionTask>();
             assignSourceTaskMock
-                .Setup(_ => _.Execute(It.IsAny<TransformScaffold>()))
+                .Setup(_ => _.Execute(It.IsAny<InjectionScaffold>()))
                 .Callback(
-                    (TransformScaffold s) =>
+                    (InjectionScaffold s) =>
                     {
                         s.Variables.Add(variable);
                         var assign = Expression.Assign(variable, Expression.Convert(s.SourceAsObject, TestClass1.T));
                         s.Expressions.Add(assign);
                     });
 
-            var returnTaskMock = repository.Create<ITransformTask>();
+            var returnTaskMock = repository.Create<IInjectionTask>();
             returnTaskMock
-                .Setup(_ => _.Execute(It.IsAny<TransformScaffold>()))
+                .Setup(_ => _.Execute(It.IsAny<InjectionScaffold>()))
                 .Callback(
-                    (TransformScaffold s) =>
+                    (InjectionScaffold s) =>
                     {
                         var callResolve = Expression.Call(
-                            s.TransformContext,
-                            Reflect<ITransformContext>.Method(_ => _.Resolve(Placeholder.Of<Type>())),
+                            s.InjectionContext,
+                            Reflect<IInjectionContext>.Method(_ => _.Resolve(Placeholder.Of<Type>())),
                             // ReSharper disable once PossiblyMistakenUseOfParamsMethod
                             Expression.Constant(s.Definition.Target));
 
@@ -201,15 +201,15 @@ namespace Bijectiv.Tests.Factory
                         s.Expressions.Add(@return);
                     });
 
-            var taskCollection = new List<ITransformTask> { assignSourceTaskMock.Object, returnTaskMock.Object };
+            var taskCollection = new List<IInjectionTask> { assignSourceTaskMock.Object, returnTaskMock.Object };
             var target = new TransformFactory(taskCollection);
 
             // Act
             var result = target.Create(
-                Stub.Create<ITransformDefinitionRegistry>(), 
-                new TransformDefinition(TestClass1.T, TestClass2.T));
+                Stub.Create<IInjectionDefinitionRegistry>(), 
+                new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            var actualTarget = result.Transform(source, transformContextMock.Object);
+            var actualTarget = result.Transform(source, injectionContextMock.Object);
 
             // Assert
             repository.VerifyAll();

@@ -59,7 +59,7 @@ namespace Bijectiv.TestUtilities
         }
 
         /// <summary>
-        /// Creates a <see cref="TransformFragment"/>.
+        /// Creates a <see cref="InjectionFragment"/>.
         /// </summary>
         /// <param name="inherited">
         /// A value indicating whether the fragment is inherited.
@@ -74,12 +74,12 @@ namespace Bijectiv.TestUtilities
         /// The fragment target type.
         /// </typeparam>
         /// <returns>
-        /// The <see cref="TransformFragment"/>.
+        /// The <see cref="InjectionFragment"/>.
         /// </returns>
-        public static TransformFragment Fragment<TSource, TTarget>(
+        public static InjectionFragment Fragment<TSource, TTarget>(
             bool inherited = true, Guid category = default(Guid))
         {
-            var fragmentStub = new Mock<TransformFragment>(MockBehavior.Loose, typeof(TSource), typeof(TTarget));
+            var fragmentStub = new Mock<InjectionFragment>(MockBehavior.Loose, typeof(TSource), typeof(TTarget));
             fragmentStub.Setup(_ => _.Inherited).Returns(inherited);
             fragmentStub.Setup(_ => _.FragmentCategory).Returns(category);
 

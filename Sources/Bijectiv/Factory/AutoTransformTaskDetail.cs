@@ -60,7 +60,7 @@ namespace Bijectiv.Factory
         /// Thrown when any parameter is null.
         /// </exception>
         public virtual IEnumerable<Tuple<MemberInfo, MemberInfo>> CreateSourceTargetPairs(
-            [NotNull] TransformScaffold scaffold,
+            [NotNull] InjectionScaffold scaffold,
             [NotNull] IEnumerable<IAutoTransformStrategy> strategies)
         {
             if (scaffold == null)
@@ -103,7 +103,7 @@ namespace Bijectiv.Factory
         /// Thrown when any argument is null.
         /// </exception>
         public virtual void ProcessPair(
-            [NotNull] TransformScaffold scaffold,
+            [NotNull] InjectionScaffold scaffold,
             [NotNull] Tuple<MemberInfo, MemberInfo> pair)
         {
             if (scaffold == null)
@@ -167,11 +167,11 @@ namespace Bijectiv.Factory
         private static Expression<Action> CreateStaticExpressionTemplate(Type sourceMemberType, Type targetMemberType)
         {
             return () =>
-                Placeholder.Of<ITransformContext>("context")
-                    .TransformStore.Resolve(sourceMemberType, targetMemberType)
+                Placeholder.Of<IInjectionContext>("context")
+                    .InjectionStore.Resolve<ITransform>(sourceMemberType, targetMemberType)
                     .Transform(
                         Placeholder.Of<object>("sourceMember"),
-                        Placeholder.Of<ITransformContext>("context"));
+                        Placeholder.Of<IInjectionContext>("context"));
         }
 
         /// <summary>
@@ -189,15 +189,15 @@ namespace Bijectiv.Factory
         private static Expression<Action> CreateDynamicExpressionTemplate(Type sourceMemberType, Type targetMemberType)
         {
             return () =>
-                Placeholder.Of<ITransformContext>("context")
-                    .TransformStore.Resolve(
+                Placeholder.Of<IInjectionContext>("context")
+                    .InjectionStore.Resolve<ITransform>(
                         Placeholder.Of<object>("sourceMember") == null
                             ? sourceMemberType
                             : Placeholder.Of<object>("sourceMember").GetType(),
                         targetMemberType)
                     .Transform(
                         Placeholder.Of<object>("sourceMember"),
-                        Placeholder.Of<ITransformContext>("context"));
+                        Placeholder.Of<IInjectionContext>("context"));
         }
 
         /// <summary>
@@ -216,11 +216,11 @@ namespace Bijectiv.Factory
         /// The specific transform <see cref="Expression"/> from a template.
         /// </returns>
         private static Expression CreateTransformExpression(
-           TransformScaffold scaffold,
+           InjectionScaffold scaffold,
            Expression template,
            MemberInfo sourceMember)
         {
-            template = new PlaceholderExpressionVisitor("context", scaffold.TransformContext).Visit(template);
+            template = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(template);
             template = new PlaceholderExpressionVisitor(
                     "sourceMember", 
                     Expression.Convert(sourceMember.GetAccessExpression(scaffold.Source), typeof(object)))

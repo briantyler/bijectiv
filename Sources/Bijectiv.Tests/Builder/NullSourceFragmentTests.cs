@@ -43,7 +43,7 @@ namespace Bijectiv.Tests.Builder
     [TestClass]
     public class NullSourceFragmentTests
     {
-        private static readonly Func<ITransformContext, TestClass2> Factory = context => default(TestClass2);
+        private static readonly Func<IInjectionContext, TestClass2> Factory = context => default(TestClass2);
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -145,7 +145,7 @@ namespace Bijectiv.Tests.Builder
             var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<ITransformContext, TestClass2>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<IInjectionContext, TestClass2>), target.FactoryType);
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace Bijectiv.Tests.Builder
             var target = new NullSourceFragment(TestClass1.T, typeof(object), Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<ITransformContext, object>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<IInjectionContext, object>), target.FactoryType);
         }
     }
 }

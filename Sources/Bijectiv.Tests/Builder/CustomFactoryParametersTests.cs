@@ -49,7 +49,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new CustomFactoryParameters<TestClass1>(new TestClass1(), Stub.Create<ITransformContext>()).Naught();
+            new CustomFactoryParameters<TestClass1>(new TestClass1(), Stub.Create<IInjectionContext>()).Naught();
 
             // Assert
         }
@@ -62,7 +62,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new CustomFactoryParameters<TestClass1>(null, Stub.Create<ITransformContext>()).Naught();
+            new CustomFactoryParameters<TestClass1>(null, Stub.Create<IInjectionContext>()).Naught();
 
             // Assert
         }
@@ -88,7 +88,7 @@ namespace Bijectiv.Tests.Builder
             var source = new TestClass1();
 
             // Act
-            var target = new CustomFactoryParameters<TestClass1>(source, Stub.Create<ITransformContext>());
+            var target = new CustomFactoryParameters<TestClass1>(source, Stub.Create<IInjectionContext>());
 
             // Assert
             Assert.AreEqual(source, target.Source);
@@ -99,7 +99,7 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_ContextParameter_IsAssignedToContext()
         {
             // Arrange
-            var context = Stub.Create<ITransformContext>();
+            var context = Stub.Create<IInjectionContext>();
 
             // Act
             var target = new CustomFactoryParameters<TestClass1>(new TestClass1(), context);

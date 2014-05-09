@@ -1,0 +1,193 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="InjectionContextTests.cs" company="Bijectiv">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2014 Brian Tyler
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in
+//   all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//   THE SOFTWARE.
+// </copyright>
+// <summary>
+//   Defines the InjectionContextTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Bijectiv.Tests
+{
+    using System.Globalization;
+
+    using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// This class tests the <see cref="InjectionContext"/> class.
+    /// </summary>
+    [TestClass]
+    public class InjectionContextTests
+    {
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_CultureParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionContext(false, null, t => new object(), Stub.Create<IInjectionStore>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_ResolveDelegateParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionContext(false, CultureInfo.InvariantCulture, null, Stub.Create<IInjectionStore>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_TransformStoreParameterParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionContext(false, CultureInfo.InvariantCulture, t => new object(), null).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionContext(
+                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>())
+                .Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetCacheProperty_IsNotNull()
+        {
+            // Arrange
+
+            // Act
+            var target = new InjectionContext(
+                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+
+            // Assert
+            Assert.IsNotNull(target.TargetCache);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_IsMergingParameter_IsAssignedToIsMergingProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = new InjectionContext(
+                true, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+
+            // Assert
+            Assert.IsTrue(target.IsMerging);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_CultureParameter_IsAssignedToCultureProperty()
+        {
+            // Arrange
+            var culture = CultureInfo.CreateSpecificCulture("en-GB");
+
+            // Act
+            var target = new InjectionContext(false, culture, t => new object(), Stub.Create<IInjectionStore>());
+
+            // Assert
+            Assert.AreEqual(culture, target.Culture);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TransformStoreParameter_IsAssignedToTransformStoreProperty()
+        {
+            // Arrange
+            var transformStore = Stub.Create<IInjectionStore>();
+
+            // Act
+            var target = new InjectionContext(false, CultureInfo.InvariantCulture, t => new object(), transformStore);
+
+            // Assert
+            Assert.AreEqual(transformStore, target.InjectionStore);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Resolve_TypeParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new InjectionContext(
+                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Resolve(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_ValidParameters_InvokesResolveDelegate()
+        {
+            // Arrange
+            var expected = new object();
+            var target = new InjectionContext(
+                false, 
+                CultureInfo.InvariantCulture, 
+                t => t == TestClass1.T ? expected : null, 
+                Stub.Create<IInjectionStore>());
+
+            // Act
+            var result = target.Resolve(TestClass1.T);
+
+            // Assert
+            Assert.AreEqual(expected, result);
+        }
+    }
+}

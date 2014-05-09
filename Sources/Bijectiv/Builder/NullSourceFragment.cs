@@ -36,7 +36,7 @@ namespace Bijectiv.Builder
     /// <summary>
     /// Represents an instruction that determines how to treat a <c>NULL</c> source.
     /// </summary>
-    public class NullSourceFragment : TransformFragment
+    public class NullSourceFragment : InjectionFragment
     {
         /// <summary>
         /// The factory type template.
@@ -79,7 +79,7 @@ namespace Bijectiv.Builder
                 throw new ArgumentNullException("factory");
             }
 
-            this.factoryType = FactoryTypeTemplate.MakeGenericType(typeof(ITransformContext), target);
+            this.factoryType = FactoryTypeTemplate.MakeGenericType(typeof(IInjectionContext), target);
             if (!this.FactoryType.IsInstanceOfType(factory))
             {
                 var message = string.Format(

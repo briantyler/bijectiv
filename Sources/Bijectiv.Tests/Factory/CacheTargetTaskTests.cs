@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ValidParameters_ExpressionAddsToTransformContextCache()
+        public void Execute_ValidParameters_ExpressionAddsToInjectionContextCache()
         {
             // Arrange
             var scaffold = CreateScaffold();
@@ -90,14 +90,14 @@ namespace Bijectiv.Tests.Factory
 
             // Assert
             var @delegate =
-                Expression.Lambda<Action<ITransformContext, object, object>>(
+                Expression.Lambda<Action<IInjectionContext, object, object>>(
                     scaffold.Expressions.Single(),
-                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.InjectionContext,
                     (ParameterExpression)scaffold.SourceAsObject,
                     (ParameterExpression)scaffold.TargetAsObject).Compile();
 
             var repository = new MockRepository(MockBehavior.Strict);
-            var contextMock = repository.Create<ITransformContext>();
+            var contextMock = repository.Create<IInjectionContext>();
             var cacheMock = repository.Create<ITargetCache>();
 
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
@@ -110,13 +110,13 @@ namespace Bijectiv.Tests.Factory
             repository.VerifyAll();
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(IInjectionContext)));
         }
     }
 }

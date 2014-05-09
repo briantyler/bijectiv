@@ -92,16 +92,16 @@ namespace Bijectiv.Tests.Factory
             new ReturnTargetAsObjectTask().Execute(scaffold);
 
             var @delegate = Expression
-                .Lambda<Func<ITransformContext, object, object>>(
+                .Lambda<Func<IInjectionContext, object, object>>(
                     Expression.Block(
                         new[] { (ParameterExpression)scaffold.TargetAsObject },
                         scaffold.Expressions),
-                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.InjectionContext,
                     (ParameterExpression)scaffold.SourceAsObject)
                 .Compile();
 
             var repository = new MockRepository(MockBehavior.Strict);
-            var contextMock = repository.Create<ITransformContext>();
+            var contextMock = repository.Create<IInjectionContext>();
             var cacheMock = repository.Create<ITargetCache>();
 
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
@@ -135,16 +135,16 @@ namespace Bijectiv.Tests.Factory
             new ReturnTargetAsObjectTask().Execute(scaffold);
 
             var @delegate = Expression
-                .Lambda<Func<ITransformContext, object, object>>(
+                .Lambda<Func<IInjectionContext, object, object>>(
                     Expression.Block(
                         new[] { (ParameterExpression)scaffold.TargetAsObject },
                         scaffold.Expressions),
-                    (ParameterExpression)scaffold.TransformContext,
+                    (ParameterExpression)scaffold.InjectionContext,
                     (ParameterExpression)scaffold.SourceAsObject)
                 .Compile();
 
             var repository = new MockRepository(MockBehavior.Strict);
-            var contextMock = repository.Create<ITransformContext>();
+            var contextMock = repository.Create<IInjectionContext>();
             var cacheMock = repository.Create<ITargetCache>();
 
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
@@ -165,13 +165,13 @@ namespace Bijectiv.Tests.Factory
             return new TryGetTargetFromCacheTask();
         }
 
-        private static TransformScaffold CreateScaffold()
+        private static InjectionScaffold CreateScaffold()
         {
-            return new TransformScaffold(
-                Stub.Create<ITransformDefinitionRegistry>(),
-                new TransformDefinition(TestClass1.T, TestClass2.T),
+            return new InjectionScaffold(
+                Stub.Create<IInjectionDefinitionRegistry>(),
+                new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(ITransformContext)));
+                Expression.Parameter(typeof(IInjectionContext)));
         }
     }
 }

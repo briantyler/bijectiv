@@ -41,28 +41,28 @@ namespace Bijectiv.Factory
 
     /// <summary>
     /// An expression factory that creates an expression that creates a target by resolving from the 
-    /// <see cref="ITransformContext"/>.
+    /// <see cref="IInjectionContext"/>.
     /// </summary>
     public class DefaultFactoryExpressionFactory : ISelectiveExpressionFactory
     {
         /// <summary>
-        /// A reference to the <see cref="ITransformContext.Resolve"/> method.
+        /// A reference to the <see cref="IInjectionContext.Resolve"/> method.
         /// </summary>
         private static readonly MethodInfo ResolveMethod =
-            Reflect<ITransformContext>.Method(_ => _.Resolve(Placeholder.Of<Type>()));
+            Reflect<IInjectionContext>.Method(_ => _.Resolve(Placeholder.Of<Type>()));
 
         /// <summary>
         /// Gets a value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
         /// </param>
         /// <returns>
         /// A value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </returns>
-        public bool CanCreateExpression([NotNull] TransformScaffold scaffold)
+        public bool CanCreateExpression([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -76,7 +76,7 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
-        /// Creates an expression from a <see cref="TransformScaffold"/>.
+        /// Creates an expression from a <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
@@ -84,7 +84,7 @@ namespace Bijectiv.Factory
         /// <returns>
         /// The created <see cref="Expression"/>.
         /// </returns>
-        public Expression CreateExpression(TransformScaffold scaffold)
+        public Expression CreateExpression(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -93,7 +93,7 @@ namespace Bijectiv.Factory
 
             return Expression.Convert(
                 Expression.Call(
-                    scaffold.TransformContext, 
+                    scaffold.InjectionContext, 
                     ResolveMethod,
                     new Expression[] { Expression.Constant(scaffold.Definition.Target) }),
                 scaffold.Definition.Target);

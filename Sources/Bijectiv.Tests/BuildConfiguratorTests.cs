@@ -57,7 +57,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_TransformTasksInitialized()
+        public void CreateInstance_DefaultParameters_TasksInitialized()
         {
             // Arrange
 
@@ -65,7 +65,7 @@ namespace Bijectiv.Tests
             var target = new BuildConfigurator();
 
             // Assert
-            var tasks = target.TransformTasks.Select(item => item()).ToArray();
+            var tasks = target.Tasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeVariablesTask));
@@ -93,7 +93,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_TransformStoreFactoriesInitialized()
+        public void CreateInstance_DefaultParameters_StoreFactoriesInitialized()
         {
             // Arrange
 
@@ -101,13 +101,13 @@ namespace Bijectiv.Tests
             var target = new BuildConfigurator();
 
             // Assert
-            var factories = target.TransformStoreFactories.Select(item => item()).ToArray();
+            var factories = target.StoreFactories.Select(item => item()).ToArray();
             Assert.AreEqual(3, factories.Length);
-            Assert.IsInstanceOfType(factories[0], typeof(InstanceTransformStoreFactory));
-            Assert.IsInstanceOfType(((InstanceTransformStoreFactory)factories[0]).Instance, typeof(IdenticalPrimitiveTransformStore));
-            Assert.IsInstanceOfType(factories[1], typeof(InstanceTransformStoreFactory));
-            Assert.IsInstanceOfType(((InstanceTransformStoreFactory)factories[1]).Instance, typeof(ConvertibleTransformStore));
-            Assert.IsInstanceOfType(factories[2], typeof(DelegateTransformStoreFactory));
+            Assert.IsInstanceOfType(factories[0], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(((InstanceInjectionStoreFactory)factories[0]).Instance, typeof(IdenticalPrimitiveInjectionStore));
+            Assert.IsInstanceOfType(factories[1], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(((InstanceInjectionStoreFactory)factories[1]).Instance, typeof(ConvertibleInjectionStore));
+            Assert.IsInstanceOfType(factories[2], typeof(DelegateInjectionStoreFactory));
         }
     }
 }

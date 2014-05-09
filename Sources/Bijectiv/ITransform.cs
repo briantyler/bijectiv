@@ -32,12 +32,12 @@ namespace Bijectiv
     /// <summary>
     /// Represents a transform from a source to target.
     /// </summary>
-    public interface ITransform : IProtoTransform
+    public interface ITransform : IInjection
     {
         /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <see cref="IProtoTransform.Target"/>;  
-        /// using the transformation rules defined by <see cref="IProtoTransform.Source"/> --&lt; 
-        /// <see cref="IProtoTransform.Target"/>.
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
+        /// using the transformation rules defined by <see cref="IInjection.Source"/> --&lt; 
+        /// <see cref="IInjection.Target"/>.
         /// </summary>
         /// <param name="source">
         /// The source object.
@@ -48,6 +48,6 @@ namespace Bijectiv
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        object Transform(object source, ITransformContext context); 
+        object Transform(object source, IInjectionContext context); 
     }
 }

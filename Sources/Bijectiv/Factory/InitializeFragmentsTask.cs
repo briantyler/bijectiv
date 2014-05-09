@@ -38,9 +38,9 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The transform task that initializes the scaffold fragments.
+    /// The task that initializes the scaffold fragments.
     /// </summary>
-    public class InitializeFragmentsTask : ITransformTask
+    public class InitializeFragmentsTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -48,7 +48,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

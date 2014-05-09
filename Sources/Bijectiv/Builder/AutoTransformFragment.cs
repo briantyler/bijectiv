@@ -36,7 +36,7 @@ namespace Bijectiv.Builder
     /// <summary>
     /// Represents an instruction that determines how auto-transform will happen.
     /// </summary>
-    public class AutoTransformFragment : TransformFragment
+    public class AutoTransformFragment : InjectionFragment
     {
         /// <summary>
         /// The strategy.

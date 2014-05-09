@@ -41,7 +41,7 @@ namespace Bijectiv.Factory
     /// <summary>
     /// Represents a task that processes <see cref="NullSourceFragment"/> fragments.
     /// </summary>
-    public class NullSourceTask : ITransformTask
+    public class NullSourceTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -49,7 +49,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="ITransform"/> is being built.
         /// </param>
-        public void Execute([NotNull] TransformScaffold scaffold)
+        public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -74,7 +74,7 @@ namespace Bijectiv.Factory
                 createTarget = Expression.Call(
                     Expression.Constant(fragment.Factory),
                     fragment.FactoryType.GetMethod("Invoke"),
-                    new[] { scaffold.TransformContext });
+                    new[] { scaffold.InjectionContext });
             }
 
             var assignTarget = Expression.Assign(scaffold.Target, createTarget);

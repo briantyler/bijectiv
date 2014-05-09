@@ -43,16 +43,16 @@ namespace Bijectiv.Factory
     {
         /// <summary>
         /// Gets a value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
         /// </param>
         /// <returns>
         /// A value indicating whether the factory can create an expression from a 
-        /// <see cref="TransformScaffold"/>.
+        /// <see cref="InjectionScaffold"/>.
         /// </returns>
-        public bool CanCreateExpression(TransformScaffold scaffold)
+        public bool CanCreateExpression(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -66,7 +66,7 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
-        /// Creates an expression from a <see cref="TransformScaffold"/>.
+        /// Creates an expression from a <see cref="InjectionScaffold"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
@@ -74,7 +74,7 @@ namespace Bijectiv.Factory
         /// <returns>
         /// The created <see cref="Expression"/>.
         /// </returns>
-        public Expression CreateExpression(TransformScaffold scaffold)
+        public Expression CreateExpression(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -85,9 +85,9 @@ namespace Bijectiv.Factory
 
             var parametersType = typeof(CustomFactoryParameters<>).MakeGenericType(scaffold.Definition.Source);
             var constructor = parametersType.GetConstructor(
-                new[] { scaffold.Definition.Source, typeof(ITransformContext) });
+                new[] { scaffold.Definition.Source, typeof(IInjectionContext) });
             // ReSharper disable once AssignNullToNotNullAttribute
-            var parameters = Expression.New(constructor, scaffold.Source, scaffold.TransformContext);
+            var parameters = Expression.New(constructor, scaffold.Source, scaffold.InjectionContext);
             
             var factory = Expression.Constant(fragment.Factory, fragment.FactoryType);
             var invoke = fragment.FactoryType.GetMethod("Invoke");

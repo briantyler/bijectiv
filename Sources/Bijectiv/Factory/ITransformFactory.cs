@@ -32,7 +32,7 @@ namespace Bijectiv.Factory
     using System;
 
     using Bijectiv.Builder;
-    using Bijectiv.Transforms;
+    using Bijectiv.Injections;
 
     using JetBrains.Annotations;
 
@@ -42,10 +42,10 @@ namespace Bijectiv.Factory
     public interface ITransformFactory
     {
         /// <summary>
-        /// Creates a <see cref="ITransform"/> from a <see cref="TransformDefinition"/>.
+        /// Creates a <see cref="ITransform"/> from a <see cref="InjectionDefinition"/>.
         /// </summary>
         /// <param name="definitionRegistry">
-        /// The registry containing all known <see cref="TransformDefinition"/> instances.
+        /// The registry containing all known <see cref="InjectionDefinition"/> instances.
         /// </param>
         /// <param name="definition">
         /// The definition from which to create a <see cref="ITransform"/>.
@@ -57,7 +57,7 @@ namespace Bijectiv.Factory
         /// Thrown when any parameter is null.
         /// </exception>
         ITransform Create(
-            [NotNull] ITransformDefinitionRegistry definitionRegistry, 
-            [NotNull] TransformDefinition definition);
+            [NotNull] IInjectionDefinitionRegistry definitionRegistry, 
+            [NotNull] InjectionDefinition definition);
     }
 }

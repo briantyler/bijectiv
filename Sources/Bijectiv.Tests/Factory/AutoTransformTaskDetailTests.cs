@@ -99,7 +99,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CreateSourceTargetPairs(Stub.Create<TransformScaffold>(), null).Naught();
+            target.CreateSourceTargetPairs(Stub.Create<InjectionScaffold>(), null).Naught();
 
             // Assert
         }
@@ -110,7 +110,7 @@ namespace Bijectiv.Tests.Factory
         {
             // Arrange
             var target = new AutoTransformTaskDetail();
-            var scaffoldMock = new Mock<TransformScaffold>(MockBehavior.Strict);
+            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             scaffoldMock
                 .SetupGet(_ => _.UnprocessedTargetMembers)
                 .Returns(Enumerable.Empty<MemberInfo>());
@@ -135,7 +135,7 @@ namespace Bijectiv.Tests.Factory
             var repository = new MockRepository(MockBehavior.Strict);
             var target = new AutoTransformTaskDetail();
 
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new[] { Stub.Create<MemberInfo>() });
             scaffoldMock.SetupGet(_ => _.SourceMembers).Returns(new List<MemberInfo>());
 
@@ -170,7 +170,7 @@ namespace Bijectiv.Tests.Factory
             var repository = new MockRepository(MockBehavior.Strict);
             var target = new AutoTransformTaskDetail();
 
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new[] { targetMember });
             scaffoldMock.SetupGet(_ => _.SourceMembers).Returns(new List<MemberInfo>());
@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.Factory
             var repository = new MockRepository(MockBehavior.Strict);
             var target = new AutoTransformTaskDetail();
 
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new[] { targetMember });
             scaffoldMock.SetupGet(_ => _.SourceMembers).Returns(new List<MemberInfo>());
@@ -244,7 +244,7 @@ namespace Bijectiv.Tests.Factory
             var repository = new MockRepository(MockBehavior.Strict);
             var target = new AutoTransformTaskDetail();
 
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new[] { targetMember });
 
@@ -279,7 +279,7 @@ namespace Bijectiv.Tests.Factory
             var repository = new MockRepository(MockBehavior.Loose);
             var target = new AutoTransformTaskDetail();
 
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
 
             var targetMember1 = Stub.Create<MemberInfo>();
             var targetMember2 = Stub.Create<MemberInfo>();
@@ -385,7 +385,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessPair(Stub.Create<TransformScaffold>(), null);
+            target.ProcessPair(Stub.Create<InjectionScaffold>(), null);
 
             // Assert
         }
@@ -403,12 +403,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -433,12 +433,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -463,12 +463,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -493,12 +493,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -523,12 +523,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -553,12 +553,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -583,12 +583,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -613,12 +613,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -643,12 +643,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -673,12 +673,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(SealedClass1), typeof(SealedClass1), SourceSealed, ExpectedSealed);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -703,12 +703,12 @@ namespace Bijectiv.Tests.Factory
             var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
             var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
 
-            var transformContext = CreateTransformContext(
+            var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(BaseTestClass1), SourceInt, ExpectedBase);
 
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(
-                repository, transformContext, sourceInstance, targetInstance, out expressions);
+                repository, injectionContext, sourceInstance, targetInstance, out expressions);
 
             var target = new AutoTransformTaskDetail();
 
@@ -720,34 +720,34 @@ namespace Bijectiv.Tests.Factory
             Assert.AreEqual(ExpectedBase, targetInstance.FieldBase);
         }
 
-        private static ITransformContext CreateTransformContext(
+        private static IInjectionContext CreateInjectionContext(
             MockRepository repository, Type sourceMember, Type targetMember, object sourceValue, object targetValue)
         {
             var transformMock = repository.Create<ITransform>();
 
-            var transformStoreMock = repository.Create<ITransformStore>();
-            transformStoreMock.Setup(_ => _.Resolve(sourceMember, targetMember)).Returns(transformMock.Object);
+            var transformStoreMock = repository.Create<IInjectionStore>();
+            transformStoreMock.Setup(_ => _.Resolve<ITransform>(sourceMember, targetMember)).Returns(transformMock.Object);
 
-            var transformContextMock = repository.Create<ITransformContext>();
-            transformContextMock.SetupGet(_ => _.TransformStore).Returns(transformStoreMock.Object);
+            var injectionContextMock = repository.Create<IInjectionContext>();
+            injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(transformStoreMock.Object);
 
             transformMock
-                .Setup(_ => _.Transform(sourceValue, transformContextMock.Object))
+                .Setup(_ => _.Transform(sourceValue, injectionContextMock.Object))
                 .Returns(targetValue);
 
-            return transformContextMock.Object;
+            return injectionContextMock.Object;
         }
 
-        private static TransformScaffold CreateScaffoldForProcessPair(
+        private static InjectionScaffold CreateScaffoldForProcessPair(
             MockRepository repository,
-            ITransformContext transformContext,
+            IInjectionContext injectionContext,
             AutoTransformTestClass1 sourceInstance,
             AutoTransformTestClass1 targetInstance,
             out List<Expression> expressions)
         {
-            var scaffoldMock = repository.Create<TransformScaffold>();
+            var scaffoldMock = repository.Create<InjectionScaffold>();
 
-            scaffoldMock.SetupGet(_ => _.TransformContext).Returns(Expression.Constant(transformContext));
+            scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(injectionContext));
             scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(sourceInstance));
             scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(targetInstance));
 

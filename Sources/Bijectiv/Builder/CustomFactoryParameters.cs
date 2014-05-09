@@ -49,7 +49,7 @@ namespace Bijectiv.Builder
         /// <summary>
         /// The transform context.
         /// </summary>
-        private readonly ITransformContext context;
+        private readonly IInjectionContext context;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CustomFactoryParameters{TSource}"/> class.
@@ -63,7 +63,7 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public CustomFactoryParameters([NotNull] TSource source, [NotNull] ITransformContext context)
+        public CustomFactoryParameters([NotNull] TSource source, [NotNull] IInjectionContext context)
         {
             if (ReferenceEquals(source, null))
             {
@@ -90,7 +90,7 @@ namespace Bijectiv.Builder
         /// <summary>
         /// Gets the transform context.
         /// </summary>
-        public ITransformContext Context
+        public IInjectionContext Context
         {
             get { return this.context; }
         }
