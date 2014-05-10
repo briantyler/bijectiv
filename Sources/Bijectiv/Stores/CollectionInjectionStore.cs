@@ -37,8 +37,8 @@ namespace Bijectiv.Stores
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that contains a collection of <see cref="ITransform"/> instances that are keyed by thier source and
-    /// target types..
+    /// A store that contains a collection of <see cref="IInjection"/> instances that are keyed by their source and
+    /// target types.
     /// </summary>
     public class CollectionInjectionStore : IInjectionStore, IEnumerable<IInjection>
     {
@@ -67,39 +67,6 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
-        /// Resolves a <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
-        /// </summary>
-        /// <param name="source">
-        /// The source type.
-        /// </param>
-        /// <param name="target">
-        /// The target type.
-        /// </param>
-        /// <returns>
-        /// A <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public IInjection Resolve([NotNull] Type source, [NotNull] Type target)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
-            if (target == null)
-            {
-                throw new ArgumentNullException("target");
-            }
-
-            return this.injections.FirstOrDefault(
-                candidate => candidate.Source == source && candidate.Target == target);
-        }
-
-        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
@@ -114,16 +81,47 @@ namespace Bijectiv.Stores
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="IEnumerator"/> that can be used to iterate through the collection..
+        /// An <see cref="IEnumerator"/> that can be used to iterate through the collection.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)this.injections).GetEnumerator();
         }
 
-        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : IInjection
+        /// <summary>
+        /// Resolves a <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; returns <c>null</c> otherwise.
+        /// </summary>
+        /// <typeparam name="TInjection">
+        /// The type of <see cref="IInjection"/> to resolve.
+        /// </typeparam>
+        /// <param name="source">
+        /// The source type.
+        /// </param>
+        /// <param name="target">
+        /// The target type.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : class, IInjection
         {
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            return this.injections.OfType<TInjection>().FirstOrDefault(
+                candidate => candidate.Source == source && candidate.Target == target);
         }
     }
 }

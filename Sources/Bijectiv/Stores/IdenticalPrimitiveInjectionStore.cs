@@ -33,17 +33,18 @@ namespace Bijectiv.Stores
 
     using Bijectiv.Injections;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A store that contains <see cref="ITransform"/> instances that transforms between primitives of the same type.
     /// </summary>
     public class IdenticalPrimitiveInjectionStore : IInjectionStore
     {
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
+        /// Resolves a <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; returns <c>null</c> otherwise.
         /// </summary>
+        /// <typeparam name="TInjection">
+        /// The type of <see cref="IInjection"/> to resolve.
+        /// </typeparam>
         /// <param name="source">
         /// The source type.
         /// </param>
@@ -51,13 +52,10 @@ namespace Bijectiv.Stores
         /// The target type.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
+        /// A <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into 
+        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
+        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : class, IInjection
         {
             if (source == null)
             {
@@ -76,15 +74,10 @@ namespace Bijectiv.Stores
 
             if (Type.GetTypeCode(source) != TypeCode.Object || source.IsEnum)
             {
-                return new PassThroughTransform(source, target);
+                return new PassThroughInjection(source, target) as TInjection;
             }
 
             return null;
-        }
-
-        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : IInjection
-        {
-            throw new NotImplementedException();
         }
     }
 }

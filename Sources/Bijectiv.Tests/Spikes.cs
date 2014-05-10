@@ -29,6 +29,9 @@
 
 namespace Bijectiv.Tests
 {
+    using System;
+    using System.Globalization;
+
     using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,13 +48,14 @@ namespace Bijectiv.Tests
             var builder = new InjectionStoreBuilder();
             builder.Register<TestClass1, TestClass2>();
             var store = builder.Build();
-            //var transform = store.Resolve(TestClass1.T, TestClass2.T);
+
+            var transform = store.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Act
-            // var result = transform.Transform(new TestClass1(), new InjectionContext(store));
+            var result = transform.Transform(new TestClass1(), CreateContext(store));
 
             // Assert
-            // Assert.IsInstanceOfType(result, TestClass2.T);
+            Assert.IsInstanceOfType(result, TestClass2.T);
         }
 
         [TestMethod]
@@ -80,18 +84,24 @@ namespace Bijectiv.Tests
             };
 
             var store = builder.Build();
-            //var transform = store.Resolve(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
+
+            var transform = store.Resolve<ITransform>(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
 
             // Act
-            // var target = (AutoTransformTestClass1)transform.Transform(source, new InjectionContext(store));
+            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(store));
 
             // Assert
-            // Assert.AreEqual(33, target.PropertyInt);
-            // Assert.AreEqual(17, target.FieldInt);
-            // Assert.AreEqual(@sealed, target.PropertySealed);
-            // Assert.IsNotNull(target.PropertyBase);
-            // Assert.IsNotNull(target.FieldBase);
-            // Assert.AreSame(target.PropertyBase, target.FieldBase);
+            Assert.AreEqual(33, target.PropertyInt);
+            Assert.AreEqual(17, target.FieldInt);
+            Assert.AreEqual(@sealed, target.PropertySealed);
+            Assert.IsNotNull(target.PropertyBase);
+            Assert.IsNotNull(target.FieldBase);
+            Assert.AreSame(target.PropertyBase, target.FieldBase);
+        }
+
+        private static InjectionContext CreateContext(IInjectionStore store)
+        {
+            return new InjectionContext(CultureInfo.InvariantCulture, type => { throw new Exception(); }, store);
         }
     }
 }

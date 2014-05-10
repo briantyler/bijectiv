@@ -128,7 +128,7 @@ namespace Bijectiv.Tests.Stores
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve(null, TestClass2.T);
+            target.Resolve<IInjection>(null, TestClass2.T);
 
             // Assert
         }
@@ -143,7 +143,7 @@ namespace Bijectiv.Tests.Stores
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve(TestClass1.T, null);
+            target.Resolve<IInjection>(TestClass1.T, null);
 
             // Assert
         }
@@ -161,10 +161,37 @@ namespace Bijectiv.Tests.Stores
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve(TestClass1.T, TestClass2.T);
+            var result = target.Resolve<IInjection>(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.AreEqual(injectionMock.Object, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_StoreContainsMatchingTransform_ReturnsTransfrom()
+        {
+            // Arrange
+            var injectionMock = new Mock<IInjection>();
+            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+
+            var transformMock = new Mock<ITransform>();
+            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+
+            var target = new CollectionInjectionStore
+            {
+                injectionMock.Object,
+                transformMock.Object
+            };
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var result = target.Resolve<ITransform>(TestClass1.T, TestClass2.T);
+
+            // Assert
+            Assert.AreEqual(transformMock.Object, result);
         }
 
         [TestMethod]
@@ -180,7 +207,34 @@ namespace Bijectiv.Tests.Stores
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve(TestClass2.T, TestClass1.T);
+            var result = target.Resolve<IInjection>(TestClass2.T, TestClass1.T);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_StoreDoesNotContainsMatchingTransform_ReturnsTransfrom()
+        {
+            // Arrange
+            var injectionMock = new Mock<IInjection>();
+            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+
+            var transformMock = new Mock<IMerge>();
+            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+
+            var target = new CollectionInjectionStore
+            {
+                injectionMock.Object,
+                transformMock.Object
+            };
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var result = target.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.IsNull(result);

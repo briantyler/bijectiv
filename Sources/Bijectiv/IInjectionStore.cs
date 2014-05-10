@@ -53,6 +53,6 @@ namespace Bijectiv
         /// A <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into 
         /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
         /// </returns>
-        TInjection Resolve<TInjection>(Type source, Type target) where TInjection : IInjection;
+        TInjection Resolve<TInjection>(Type source, Type target) where TInjection : class, IInjection;
     }
 }

@@ -65,38 +65,6 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
-        /// Resolves a <see cref="IInjection"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns <c>null</c> otherwise.
-        /// </summary>
-        /// <param name="source">
-        /// The source type.
-        /// </param>
-        /// <param name="target">
-        /// The target type.
-        /// </param>
-        /// <returns>
-        /// A <see cref="IInjection"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
-        /// </returns>
-        public ITransform Resolve(Type source, Type target)
-        {
-            // This method is performance critical as it gets hit all the time and should not use LINQ.
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < this.stores.Count; ++index)
-            {
-                var transform = this.stores[index].Resolve<ITransform>(source, target);
-                if (transform != null)
-                {
-                    return transform;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Returns a strongly typed enumerator that iterates through a collection.
         /// </summary>
         /// <returns>
@@ -118,9 +86,39 @@ namespace Bijectiv.Stores
             return this.GetEnumerator();
         }
 
-        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : IInjection
+        /// <summary>
+        /// Resolves a <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; returns <c>null</c> otherwise.
+        /// </summary>
+        /// <typeparam name="TInjection">
+        /// The type of <see cref="IInjection"/> to resolve.
+        /// </typeparam>
+        /// <param name="source">
+        /// The source type.
+        /// </param>
+        /// <param name="target">
+        /// The target type.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into 
+        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
+        /// </returns>
+        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : class, IInjection
         {
-            throw new NotImplementedException();
+            // This method is performance critical as it gets hit all the time and should not use LINQ.
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var index = 0; index < this.stores.Count; ++index)
+            {
+                var transform = this.stores[index].Resolve<TInjection>(source, target);
+                if (transform != null)
+                {
+                    return transform;
+                }
+            }
+
+            return null;
         }
     }
 }

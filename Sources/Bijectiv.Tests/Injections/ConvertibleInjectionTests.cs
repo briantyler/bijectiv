@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConvertibleTransformTests.cs" company="Bijectiv">
+// <copyright file="ConvertibleInjectionTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ConvertibleTransformTests type.
+//   Defines the ConvertibleInjectionTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -41,10 +41,10 @@ namespace Bijectiv.Tests.Injections
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="ConvertibleTransform"/> class.
+    /// This class tests the <see cref="ConvertibleInjection"/> class.
     /// </summary>
     [TestClass]
-    public class ConvertibleTransformTests
+    public class ConvertibleInjectionTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -54,7 +54,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new ConvertibleTransform(null).Naught();
+            new ConvertibleInjection(null).Naught();
 
             // Assert
         }
@@ -68,7 +68,7 @@ namespace Bijectiv.Tests.Injections
             // Act
             foreach (var type in TypeClasses.ConvertibleTargetTypes)
             {
-                new ConvertibleTransform(type).Naught();
+                new ConvertibleInjection(type).Naught();
             }
 
             // Assert
@@ -82,7 +82,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new ConvertibleTransform(typeof(object)).Naught();
+            new ConvertibleInjection(typeof(object)).Naught();
 
             // Assert
         }
@@ -94,7 +94,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new ConvertibleTransform(typeof(int));
+            var target = new ConvertibleInjection(typeof(int));
 
             // Assert
             Assert.AreEqual(typeof(IConvertible), target.Source);
@@ -107,7 +107,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new ConvertibleTransform(typeof(int));
+            var target = new ConvertibleInjection(typeof(int));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Target);
@@ -118,7 +118,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_SourceParameterIsNullTargetTypeIsNotClass_ReturnsDefault()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
+            var target = new ConvertibleInjection(typeof(bool));
 
             // Act
             var result = target.Transform(null, Stub.Create<IInjectionContext>());
@@ -132,7 +132,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_SourceParameterIsNullTargetTypeIsClass_ReturnsDefault()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(string));
+            var target = new ConvertibleInjection(typeof(string));
 
             // Act
             var result = target.Transform(null, Stub.Create<IInjectionContext>());
@@ -147,7 +147,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
+            var target = new ConvertibleInjection(typeof(bool));
 
             // Act
             target.Transform(true, null);
@@ -160,7 +160,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_ValidSourceParameter_ReturnsConvertedTarget()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(bool));
+            var target = new ConvertibleInjection(typeof(bool));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_ValidSourceParameter_ConvertsUsingInjectionContextCulture()
         {
             // Arrange
-            var target = new ConvertibleTransform(typeof(DateTime));
+            var target = new ConvertibleInjection(typeof(DateTime));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(new CultureInfo("en-US"));
 
@@ -185,6 +185,38 @@ namespace Bijectiv.Tests.Injections
 
             // Assert
             Assert.AreEqual(new DateTime(2014, 04, 06), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_PostMergeActionIsReplace()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(bool));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            var result = target.Merge("TRUE", false, contextMock.Object);
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_TargetIsAssigned()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(bool));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            var result = target.Merge("TRUE", false, contextMock.Object);
+
+            // Assert
+            Assert.AreEqual(true, result.Target);
         }
     }
 }

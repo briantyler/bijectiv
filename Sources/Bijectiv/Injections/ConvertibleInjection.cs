@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PassThroughTransform.cs" company="Bijectiv">
+// <copyright file="ConvertibleInjection.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the PassThroughTransform type.
+//   Defines the ConvertibleInjection type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,52 +34,42 @@ namespace Bijectiv.Injections
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a transform that returns its original source as target.
+    /// Represents a transform from an instance of type <see cref="IConvertible"/> to one of the primitive types.
     /// </summary>
-    public class PassThroughTransform : ITransform
+    public class ConvertibleInjection : ITransform, IMerge
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="PassThroughTransform"/> class.
+        /// Initialises a new instance of the <see cref="ConvertibleInjection"/> class.
         /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
         /// <param name="target">
         /// The target.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when the <paramref name="source"/> type is not assignable to the <paramref name="target"/> type.
-        /// </exception>
-        public PassThroughTransform([NotNull] Type source, [NotNull] Type target)
+        public ConvertibleInjection([NotNull] Type target)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException("source");
-            }
-
             if (target == null)
             {
                 throw new ArgumentNullException("target");
             }
 
-            if (!target.IsAssignableFrom(source))
+            if (Type.GetTypeCode(target) == TypeCode.Object)
             {
-                throw new ArgumentException(
-                    string.Format(@"Source type '{0}' cannot be assigned to target type '{1}'", source, target),
-                    "target");
+                var message = string.Format("Target type '{0}' must not have Type Code 'Object'", target);
+                throw new ArgumentException(message, "target");
             }
 
-            this.Source = source;
             this.Target = target;
         }
 
         /// <summary>
         /// Gets the source type supported by the transform.
         /// </summary>
-        public Type Source { get; private set; }
+        public Type Source 
+        { 
+            get { return typeof(IConvertible); }
+        }
 
         /// <summary>
         /// Gets the target type created by the transform.
@@ -87,7 +77,8 @@ namespace Bijectiv.Injections
         public Type Target { get; private set; }
 
         /// <summary>
-        /// Returns the original source instance.
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/> via
+        /// <see cref="Convert.ChangeType"/>.
         /// </summary>
         /// <param name="source">
         /// The source object.
@@ -96,11 +87,45 @@ namespace Bijectiv.Injections
         /// The context in which the transformation will take place.
         /// </param>
         /// <returns>
-        /// The original source instance.
+        /// The newly minted target instance.
         /// </returns>
-        public object Transform(object source, IInjectionContext context)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if any parameter is null.
+        /// </exception>
+        public object Transform(object source, [NotNull] IInjectionContext context)
         {
-            return source;
+            if (source == null)
+            {
+                return this.Target.IsClass ? null : Activator.CreateInstance(this.Target);
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            return Convert.ChangeType(source, this.Target, context.Culture);
+        }
+
+        /// <summary>
+        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
+        /// defined by <see cref="IInjection.Source"/> --&lt;  <see cref="IInjection.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="target">
+        /// The target object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IMergeResult"/> representing the result of the merge.
+        /// </returns>
+        public IMergeResult Merge(object source, object target, IInjectionContext context)
+        {
+            return new MergeResult(PostMergeAction.Replace, this.Transform(source, context));
         }
     }
 }

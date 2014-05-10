@@ -65,7 +65,7 @@ namespace Bijectiv.Tests.Stores
             var target = new ConvertibleInjectionStore();
 
             // Act
-            target.Resolve(null, typeof(int));
+            target.Resolve<IInjection>(null, typeof(int));
 
             // Assert
         }
@@ -79,7 +79,7 @@ namespace Bijectiv.Tests.Stores
             var target = new ConvertibleInjectionStore();
 
             // Act
-            target.Resolve(typeof(int), null);
+            target.Resolve<IInjection>(typeof(int), null);
 
             // Assert
         }
@@ -94,7 +94,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 // Act
-                var result = target.Resolve(sourceType, typeof(object));
+                var result = target.Resolve<IInjection>(sourceType, typeof(object));
 
                 // Assert
                 Assert.IsNull(result);
@@ -111,7 +111,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
             {
                 // Act
-                var result = target.Resolve(typeof(object), targetType);
+                var result = target.Resolve<IInjection>(typeof(object), targetType);
 
                 // Assert
                 Assert.IsNull(result);
@@ -120,7 +120,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_ValidParameters_ReturnsConvertibleTransform()
+        public void Resolve_ValidParameters_ReturnsConvertibleInjection()
         {
             // Arrange
             var target = new ConvertibleInjectionStore();
@@ -130,17 +130,17 @@ namespace Bijectiv.Tests.Stores
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve(sourceType, targetType);
+                    var result = target.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
-                    Assert.IsInstanceOfType(result, typeof(ConvertibleTransform));
+                    Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
                 }
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_Iconvertible_IsAssignedToConvertibleTransformSourceProperty()
+        public void Resolve_TransformTypeParameter_ReturnsConvertibleInjection()
         {
             // Arrange
             var target = new ConvertibleInjectionStore();
@@ -150,7 +150,47 @@ namespace Bijectiv.Tests.Stores
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve(sourceType, targetType);
+                    var result = target.Resolve<ITransform>(sourceType, targetType);
+
+                    // Assert
+                    Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
+                }
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_MergeTypeParameter_ReturnsConvertibleInjection()
+        {
+            // Arrange
+            var target = new ConvertibleInjectionStore();
+
+            foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
+            {
+                foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
+                {
+                    // Act
+                    var result = target.Resolve<IMerge>(sourceType, targetType);
+
+                    // Assert
+                    Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
+                }
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_Iconvertible_IsAssignedToConvertibleInjectionSourceProperty()
+        {
+            // Arrange
+            var target = new ConvertibleInjectionStore();
+
+            foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
+            {
+                foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
+                {
+                    // Act
+                    var result = target.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
                     Assert.AreEqual(typeof(IConvertible), result.Source);
@@ -160,7 +200,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_TargetParameter_IsAssignedToConvertibleTransformSourceProperty()
+        public void Resolve_TargetParameter_IsAssignedToConvertibleInjectionSourceProperty()
         {
             // Arrange
             var target = new ConvertibleInjectionStore();
@@ -170,7 +210,7 @@ namespace Bijectiv.Tests.Stores
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve(sourceType, targetType);
+                    var result = target.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
                     Assert.AreEqual(targetType, result.Target);

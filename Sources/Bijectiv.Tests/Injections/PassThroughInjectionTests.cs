@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PassThroughTransformTests.cs" company="Bijectiv">
+// <copyright file="PassThroughInjectionTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the PassThroughTransformTests type.
+//   Defines the PassThroughInjectionTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,10 +38,10 @@ namespace Bijectiv.Tests.Injections
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="PassThroughTransform"/> class.
+    /// This class tests the <see cref="PassThroughInjection"/> class.
     /// </summary>
     [TestClass]
-    public class PassThroughTransformTests
+    public class PassThroughInjectionTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -50,7 +50,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(typeof(object), typeof(object)).Naught();
+            new PassThroughInjection(typeof(object), typeof(object)).Naught();
 
             // Assert
         }
@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(null, typeof(object)).Naught();
+            new PassThroughInjection(null, typeof(object)).Naught();
 
             // Assert
         }
@@ -76,7 +76,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(typeof(object), null).Naught();
+            new PassThroughInjection(typeof(object), null).Naught();
 
             // Assert
         }
@@ -89,7 +89,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(typeof(int), typeof(string)).Naught();
+            new PassThroughInjection(typeof(int), typeof(string)).Naught();
 
             // Assert
         }
@@ -101,7 +101,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(typeof(DateTime), typeof(DateTime)).Naught();
+            new PassThroughInjection(typeof(DateTime), typeof(DateTime)).Naught();
 
             // Assert
         }
@@ -113,7 +113,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new PassThroughTransform(typeof(int), typeof(object)).Naught();
+            new PassThroughInjection(typeof(int), typeof(object)).Naught();
 
             // Assert
         }
@@ -125,7 +125,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new PassThroughTransform(typeof(int), typeof(object));
+            var target = new PassThroughInjection(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(int), target.Source);
@@ -138,7 +138,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new PassThroughTransform(typeof(int), typeof(object));
+            var target = new PassThroughInjection(typeof(int), typeof(object));
 
             // Assert
             Assert.AreEqual(typeof(object), target.Target);
@@ -149,7 +149,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_SourceParameterIsNull_ReturnsNull()
         {
             // Arrange
-            var target = new PassThroughTransform(typeof(object), typeof(object));
+            var target = new PassThroughInjection(typeof(object), typeof(object));
 
             // Act
             var result = target.Transform(null, null);
@@ -163,13 +163,41 @@ namespace Bijectiv.Tests.Injections
         public void Transform_SourceParameterIsNotNull_ReturnsSourceParameter()
         {
             // Arrange
-            var target = new PassThroughTransform(typeof(int), typeof(int));
+            var target = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
             var result = target.Transform(7, null);
 
             // Assert
             Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_PostMergeActionIsReplace()
+        {
+            // Arrange
+            var target = new PassThroughInjection(typeof(int), typeof(int));
+
+            // Act
+            var result = target.Merge(7, 1, null);
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_TargetIsAssigned()
+        {
+            // Arrange
+            var target = new PassThroughInjection(typeof(int), typeof(int));
+
+            // Act
+            var result = target.Merge(7, 1, null);
+
+            // Assert
+            Assert.AreEqual(7, result.Target);
         }
     }
 }

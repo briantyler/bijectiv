@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Stores
             var target = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            target.Resolve(null, typeof(int));
+            target.Resolve<IInjection>(null, typeof(int));
 
             // Assert
         }
@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Stores
             var target = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            target.Resolve(typeof(int), null);
+            target.Resolve<IInjection>(typeof(int), null);
 
             // Assert
         }
@@ -90,7 +90,7 @@ namespace Bijectiv.Tests.Stores
             var target = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            var result = target.Resolve(typeof(int), typeof(uint));
+            var result = target.Resolve<IInjection>(typeof(int), typeof(uint));
 
             // Assert
             Assert.IsNull(result);
@@ -104,7 +104,7 @@ namespace Bijectiv.Tests.Stores
             var target = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            var result = target.Resolve(typeof(object), typeof(object));
+            var result = target.Resolve<IInjection>(typeof(object), typeof(object));
 
             // Assert
             Assert.IsNull(result);
@@ -120,10 +120,44 @@ namespace Bijectiv.Tests.Stores
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = target.Resolve(type, type);
+                var result = target.Resolve<IInjection>(type, type);
 
                 // Assert
-                Assert.IsInstanceOfType(result, typeof(PassThroughTransform));
+                Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_TransformTypeParameter_ReturnsPassthroughTransform()
+        {
+            // Arrange
+            var target = new IdenticalPrimitiveInjectionStore();
+
+            foreach (var type in TypeClasses.PrimitiveTypes)
+            {
+                // Act
+                var result = target.Resolve<ITransform>(type, type);
+
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_MergeTypeParameter_ReturnsPassthroughTransform()
+        {
+            // Arrange
+            var target = new IdenticalPrimitiveInjectionStore();
+
+            foreach (var type in TypeClasses.PrimitiveTypes)
+            {
+                // Act
+                var result = target.Resolve<ITransform>(type, type);
+
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
             }
         }
 
@@ -137,7 +171,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassThroughTransform)target.Resolve(type, type);
+                var result = (PassThroughInjection)target.Resolve<IInjection>(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Source);
@@ -154,7 +188,7 @@ namespace Bijectiv.Tests.Stores
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassThroughTransform)target.Resolve(type, type);
+                var result = (PassThroughInjection)target.Resolve<IInjection>(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Target);

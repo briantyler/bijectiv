@@ -114,9 +114,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InjectionContext.cs" />
     <Compile Include="InjectionStoreBuilderExtensions.cs" />
-    <Compile Include="Injections\ConvertibleTransform.cs" />
+    <Compile Include="Injections\ConvertibleInjection.cs" />
     <Compile Include="Injections\DelegateTransform.cs" />
-    <Compile Include="Injections\PassthroughTransform.cs" />
+    <Compile Include="Injections\PassThroughInjection.cs" />
     <Compile Include="Utilities\CollectionExtensions.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\ParameterExpressionVisitor.cs" />

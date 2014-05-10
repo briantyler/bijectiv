@@ -188,7 +188,7 @@ namespace Bijectiv.Tests.Stores
             var target = new CompositeInjectionStore();
 
             // Act
-            var result = target.Resolve(typeof(int), typeof(int));
+            var result = target.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             Assert.IsNull(result);
@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.Stores
             var target = new CompositeInjectionStore { storeMock.Object };
 
             // Act
-            var actual = target.Resolve(typeof(int), typeof(int));
+            var actual = target.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();
@@ -228,7 +228,7 @@ namespace Bijectiv.Tests.Stores
             var target = new CompositeInjectionStore { storeMock.Object };
 
             // Act
-            var result = target.Resolve(typeof(int), typeof(int));
+            var result = target.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();
@@ -260,7 +260,7 @@ namespace Bijectiv.Tests.Stores
             var target = new CompositeInjectionStore { storeMock1.Object, storeMock2.Object, storeMock3.Object };
 
             // Act
-            var actual = target.Resolve(typeof(int), typeof(int));
+            var actual = target.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();
