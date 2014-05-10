@@ -132,7 +132,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Build_ValidParameters_ReturnsCompositeTransformStore()
+        public void Build_ValidParameters_ReturnsInjectionTransformStore()
         {
             // Arrange
             var target = new InjectionStoreBuilder(Stub.Create<IInjectionDefinitionRegistry>());

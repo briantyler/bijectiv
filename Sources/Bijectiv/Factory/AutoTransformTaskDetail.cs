@@ -61,7 +61,7 @@ namespace Bijectiv.Factory
         /// </exception>
         public virtual IEnumerable<Tuple<MemberInfo, MemberInfo>> CreateSourceTargetPairs(
             [NotNull] InjectionScaffold scaffold,
-            [NotNull] IEnumerable<IAutoTransformStrategy> strategies)
+            [NotNull] IEnumerable<IAutoInjectionStrategy> strategies)
         {
             if (scaffold == null)
             {

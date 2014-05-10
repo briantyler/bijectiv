@@ -190,7 +190,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoNone();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -205,8 +205,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoNone();
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NullAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NullAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -221,7 +221,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoExact();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -236,8 +236,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoExact();
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -252,11 +252,11 @@ namespace Bijectiv.Tests.Builder
             target.AutoExact();
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.None, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$", 
                 strategy.PatternTemplate);
         }
 
@@ -287,7 +287,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -302,8 +302,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -318,11 +318,11 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.MatchTarget, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.MatchTarget, strategy.Options);
             Assert.AreEqual(
-                "^Prefix" + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
+                "^Prefix" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$", 
                 strategy.PatternTemplate);
         }
 
@@ -353,7 +353,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -368,8 +368,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -384,11 +384,11 @@ namespace Bijectiv.Tests.Builder
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.None, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
-                "^Prefix" + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
+                "^Prefix" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$", 
                 strategy.PatternTemplate);
         }
 
@@ -419,7 +419,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -434,8 +434,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -450,11 +450,11 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.MatchTarget, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.MatchTarget, strategy.Options);
             Assert.AreEqual(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + "Suffix$", 
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "Suffix$", 
                 strategy.PatternTemplate);
         }
 
@@ -485,7 +485,7 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -500,8 +500,8 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -516,11 +516,11 @@ namespace Bijectiv.Tests.Builder
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.None, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + "Suffix$", 
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "Suffix$", 
                 strategy.PatternTemplate);
         }
 
@@ -534,7 +534,7 @@ namespace Bijectiv.Tests.Builder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            target.AutoRegex(null, AutoTransformOptions.None);
+            target.AutoRegex(null, AutoInjectionOptions.None);
 
             // Assert
         }
@@ -548,10 +548,10 @@ namespace Bijectiv.Tests.Builder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoTransformFragment));
+            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -563,11 +563,11 @@ namespace Bijectiv.Tests.Builder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoTransformStrategy));
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
         [TestMethod]
@@ -579,12 +579,12 @@ namespace Bijectiv.Tests.Builder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
 
             // Act
-            target.AutoRegex("^Foo[abc]Bar$", AutoTransformOptions.IgnoreCase);
+            target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            var fragment = (AutoTransformFragment)defintion.Single();
-            var strategy = (NameRegexAutoTransformStrategy)fragment.Strategy;
-            Assert.AreEqual(AutoTransformOptions.IgnoreCase, strategy.Options);
+            var fragment = (AutoInjectionFragment)defintion.Single();
+            var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
+            Assert.AreEqual(AutoInjectionOptions.IgnoreCase, strategy.Options);
             Assert.AreEqual("^Foo[abc]Bar$", strategy.PatternTemplate);
         }
 

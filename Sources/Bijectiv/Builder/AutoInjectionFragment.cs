@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformFragment.cs" company="Bijectiv">
+// <copyright file="AutoInjectionFragment.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformFragment type.
+//   Defines the AutoInjectionFragment type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,17 +34,17 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an instruction that determines how auto-transform will happen.
+    /// Represents an instruction that determines how auto-injection will happen.
     /// </summary>
-    public class AutoTransformFragment : InjectionFragment
+    public class AutoInjectionFragment : InjectionFragment
     {
         /// <summary>
         /// The strategy.
         /// </summary>
-        private readonly IAutoTransformStrategy strategy;
+        private readonly IAutoInjectionStrategy strategy;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AutoTransformFragment"/> class.
+        /// Initialises a new instance of the <see cref="AutoInjectionFragment"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.
@@ -58,8 +58,8 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public AutoTransformFragment(
-            [NotNull] Type source, [NotNull] Type target, [NotNull] IAutoTransformStrategy strategy)
+        public AutoInjectionFragment(
+            [NotNull] Type source, [NotNull] Type target, [NotNull] IAutoInjectionStrategy strategy)
             : base(source, target)
         {
             if (strategy == null)
@@ -83,13 +83,13 @@ namespace Bijectiv.Builder
         /// </summary>
         public override Guid FragmentCategory
         {
-            get { return LegendryFragments.AutoTransform; }
+            get { return LegendryFragments.AutoInjection; }
         }
 
         /// <summary>
         /// Gets the strategy.
         /// </summary>
-        public IAutoTransformStrategy Strategy
+        public IAutoInjectionStrategy Strategy
         {
             get { return this.strategy; }
         }

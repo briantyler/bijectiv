@@ -38,7 +38,7 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a task that processes <see cref="AutoTransformFragment"/> fragments.
+    /// Represents a task that processes <see cref="AutoInjectionFragment"/> fragments.
     /// </summary>
     public class AutoTransformTask : IInjectionTask
     {
@@ -87,7 +87,7 @@ namespace Bijectiv.Factory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var fragments = scaffold.UnprocessedFragments.OfType<AutoTransformFragment>().ToArray();
+            var fragments = scaffold.UnprocessedFragments.OfType<AutoInjectionFragment>().ToArray();
 
             this.Detail
                 .CreateSourceTargetPairs(scaffold, fragments.Select(item => item.Strategy))

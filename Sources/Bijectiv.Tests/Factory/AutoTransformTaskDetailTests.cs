@@ -84,7 +84,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CreateSourceTargetPairs(null, new IAutoTransformStrategy[0]).Naught();
+            target.CreateSourceTargetPairs(null, new IAutoInjectionStrategy[0]).Naught();
 
             // Assert
         }
@@ -119,7 +119,7 @@ namespace Bijectiv.Tests.Factory
             var result = target
                 .CreateSourceTargetPairs(
                     scaffoldMock.Object,
-                    new[] { Stub.Create<IAutoTransformStrategy>() })
+                    new[] { Stub.Create<IAutoInjectionStrategy>() })
                 .ToArray();
 
             // Assert
@@ -141,7 +141,7 @@ namespace Bijectiv.Tests.Factory
 
             // ReSharper disable once RedundantAssignment
             var sourceMember = Stub.Create<MemberInfo>();
-            var strategyMock = repository.Create<IAutoTransformStrategy>();
+            var strategyMock = repository.Create<IAutoInjectionStrategy>();
             strategyMock
                 .Setup(_ => 
                     _.TryGetSourceForTarget(
@@ -177,7 +177,7 @@ namespace Bijectiv.Tests.Factory
 
             // ReSharper disable once RedundantAssignment
             var sourceMember = Stub.Create<MemberInfo>();
-            var strategyMock = repository.Create<IAutoTransformStrategy>();
+            var strategyMock = repository.Create<IAutoInjectionStrategy>();
             strategyMock
                 .Setup(_ =>
                     _.TryGetSourceForTarget(
@@ -215,7 +215,7 @@ namespace Bijectiv.Tests.Factory
 
             // ReSharper disable once RedundantAssignment
             var sourceMember = Stub.Create<MemberInfo>();
-            var strategyMock = repository.Create<IAutoTransformStrategy>();
+            var strategyMock = repository.Create<IAutoInjectionStrategy>();
             strategyMock
                 .Setup(_ =>
                     _.TryGetSourceForTarget(
@@ -253,7 +253,7 @@ namespace Bijectiv.Tests.Factory
 
             // ReSharper disable once RedundantAssignment
             var sourceMember = Stub.Create<MemberInfo>();
-            var strategyMock = repository.Create<IAutoTransformStrategy>();
+            var strategyMock = repository.Create<IAutoInjectionStrategy>();
             strategyMock
                 .Setup(_ =>
                     _.TryGetSourceForTarget(
@@ -296,7 +296,7 @@ namespace Bijectiv.Tests.Factory
             var sourceMember1 = Stub.Create<MemberInfo>();
             var sourceMember2 = Stub.Create<MemberInfo>();
             var sourceMember3 = Stub.Create<MemberInfo>();
-            var strategyMock1 = repository.Create<IAutoTransformStrategy>();
+            var strategyMock1 = repository.Create<IAutoInjectionStrategy>();
             strategyMock1.Setup(_ =>
                     _.TryGetSourceForTarget(
                         It.IsAny<IEnumerable<MemberInfo>>(),
@@ -322,7 +322,7 @@ namespace Bijectiv.Tests.Factory
                         out sourceMemberX))
                 .Returns(false);
 
-            var strategyMock2 = repository.Create<IAutoTransformStrategy>();
+            var strategyMock2 = repository.Create<IAutoInjectionStrategy>();
             strategyMock2.Setup(_ =>
                     _.TryGetSourceForTarget(
                         It.IsAny<IEnumerable<MemberInfo>>(),
@@ -422,7 +422,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsValueTypePropertyToProperty_Transforms()
+        public void ProcessPair_SourceIsValueTypePropertyToProperty_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -452,7 +452,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsValueTypeFieldToProperty_Transforms()
+        public void ProcessPair_SourceIsValueTypeFieldToProperty_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -482,7 +482,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsValueTypePropertyToField_Transforms()
+        public void ProcessPair_SourceIsValueTypePropertyToField_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -512,7 +512,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsValueTypeFieldToField_Transforms()
+        public void ProcessPair_SourceIsValueTypeFieldToField_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -542,7 +542,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsNotValueTypePropertyToProperty_Transforms()
+        public void ProcessPair_SourceIsNotValueTypePropertyToProperty_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -572,7 +572,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsNotValueTypeFieldToProperty_Transforms()
+        public void ProcessPair_SourceIsNotValueTypeFieldToProperty_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -602,7 +602,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsNotValueTypePropertyToField_Transforms()
+        public void ProcessPair_SourceIsNotValueTypePropertyToField_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -632,7 +632,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsNotValueTypeFieldToField_Transforms()
+        public void ProcessPair_SourceIsNotValueTypeFieldToField_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -662,7 +662,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_SourceIsSealedPropertyToProperty_Transforms()
+        public void ProcessPair_SourceIsSealedPropertyToProperty_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -692,7 +692,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_IntPropertyDerivedField_Transforms()
+        public void ProcessPair_IntPropertyDerivedField_Injects()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -725,11 +725,11 @@ namespace Bijectiv.Tests.Factory
         {
             var transformMock = repository.Create<ITransform>();
 
-            var transformStoreMock = repository.Create<IInjectionStore>();
-            transformStoreMock.Setup(_ => _.Resolve<ITransform>(sourceMember, targetMember)).Returns(transformMock.Object);
+            var injectionStoreMock = repository.Create<IInjectionStore>();
+            injectionStoreMock.Setup(_ => _.Resolve<ITransform>(sourceMember, targetMember)).Returns(transformMock.Object);
 
             var injectionContextMock = repository.Create<IInjectionContext>();
-            injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(transformStoreMock.Object);
+            injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(injectionStoreMock.Object);
 
             transformMock
                 .Setup(_ => _.Transform(sourceValue, injectionContextMock.Object))

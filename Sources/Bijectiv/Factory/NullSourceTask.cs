@@ -47,7 +47,7 @@ namespace Bijectiv.Factory
         /// Executes the task.
         /// </summary>
         /// <param name="scaffold">
-        /// The scaffold on which the <see cref="ITransform"/> is being built.
+        /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
         public void Execute([NotNull] InjectionScaffold scaffold)
         {

@@ -36,7 +36,7 @@ namespace Bijectiv.Tests.Builder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class test the <see cref="AutoTransformFragment"/> class.
+    /// This class test the <see cref="AutoInjectionFragment"/> class.
     /// </summary>
     [TestClass]
     public class AutoTransformFragmentTests
@@ -50,7 +50,7 @@ namespace Bijectiv.Tests.Builder
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new AutoTransformFragment(TestClass1.T, TestClass2.T, null).Naught();
+            new AutoInjectionFragment(TestClass1.T, TestClass2.T, null).Naught();
 
             // Assert
         }
@@ -62,8 +62,8 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new AutoTransformFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>()).Naught();
+            new AutoInjectionFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>()).Naught();
 
             // Assert
         }
@@ -75,8 +75,8 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new AutoTransformFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>());
+            var target = new AutoInjectionFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>());
 
             // Assert
             Assert.IsTrue(target.Inherited);
@@ -89,11 +89,11 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            var target = new AutoTransformFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>());
+            var target = new AutoInjectionFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>());
 
             // Assert
-            Assert.AreEqual(LegendryFragments.AutoTransform, target.FragmentCategory);
+            Assert.AreEqual(LegendryFragments.AutoInjection, target.FragmentCategory);
         }
 
         [TestMethod]
@@ -101,10 +101,10 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_StrategyParameter_IsAssignedToStrategyProperty()
         {
             // Arrange
-            var strategy = Stub.Create<IAutoTransformStrategy>();
+            var strategy = Stub.Create<IAutoInjectionStrategy>();
 
             // Act
-            var target = new AutoTransformFragment(TestClass1.T, TestClass2.T, strategy);
+            var target = new AutoInjectionFragment(TestClass1.T, TestClass2.T, strategy);
 
             // Assert
             Assert.AreEqual(strategy, target.Strategy);

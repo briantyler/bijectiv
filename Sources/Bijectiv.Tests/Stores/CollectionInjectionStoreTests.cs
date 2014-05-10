@@ -74,7 +74,7 @@ namespace Bijectiv.Tests.Stores
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Add_TransformParameterIsNull_Throws()
+        public void Add_InjectionParameterIsNull_Throws()
         {
             // Arrange
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -89,17 +89,17 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Add_ValidParameters_AddsTransformToStore()
+        public void Add_ValidParameters_AddsInjectionToStore()
         {
             // Arrange
-            var transform1 = Stub.Create<ITransform>();
-            var transform2 = Stub.Create<ITransform>();
+            var injection1 = Stub.Create<IInjection>();
+            var injection2 = Stub.Create<IInjection>();
             
             // Act
-            var target = new CollectionInjectionStore { transform1, transform2 };
+            var target = new CollectionInjectionStore { injection1, injection2 };
 
             // Assert
-            new[] { transform1, transform2 }.AssertSequenceEqual(target);
+            new[] { injection1, injection2 }.AssertSequenceEqual(target);
         }
 
         [TestMethod]
@@ -107,14 +107,14 @@ namespace Bijectiv.Tests.Stores
         public void GetEnumerator_DefaultParameters_GetsEnumerator()
         {
             // Arrange
-            var transform1 = Stub.Create<ITransform>();
-            var target = new CollectionInjectionStore { transform1 };
+            var injection1 = Stub.Create<IInjection>();
+            var target = new CollectionInjectionStore { injection1 };
 
             // Act
             foreach (var item in (IEnumerable)target)
             {
                 // Assert
-                Assert.AreEqual(transform1, item);
+                Assert.AreEqual(injection1, item);
             }
         }
 
@@ -150,33 +150,33 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_StoreContainsMatchingTransform_ReturnsTransform()
+        public void Resolve_StoreContainsMatchingInjection_ReturnsInjection()
         {
             // Arrange
-            var transformMock = new Mock<ITransform>();
-            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+            var injectionMock = new Mock<IInjection>();
+            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore { transformMock.Object };
+            var target = new CollectionInjectionStore { injectionMock.Object };
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
             var result = target.Resolve(TestClass1.T, TestClass2.T);
 
             // Assert
-            Assert.AreEqual(transformMock.Object, result);
+            Assert.AreEqual(injectionMock.Object, result);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_StoreDoesNotContainMatchingTransform_ReturnsNull()
+        public void Resolve_StoreDoesNotContainMatchingInjection_ReturnsNull()
         {
             // Arrange
-            var transformMock = new Mock<ITransform>();
-            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+            var injectionMock = new Mock<IInjection>();
+            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
+            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore { transformMock.Object };
+            var target = new CollectionInjectionStore { injectionMock.Object };
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute

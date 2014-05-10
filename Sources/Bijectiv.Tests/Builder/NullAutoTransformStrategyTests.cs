@@ -37,7 +37,7 @@ namespace Bijectiv.Tests.Builder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="NullAutoTransformStrategy"/> class.
+    /// This class tests the <see cref="NullAutoInjectionStrategy"/> class.
     /// </summary>
     [TestClass]
     public class NullAutoTransformStrategyTests
@@ -49,7 +49,7 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new NullAutoTransformStrategy().Naught();
+            new NullAutoInjectionStrategy().Naught();
 
             // Assert
         }
@@ -59,7 +59,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_AnyParameters_ReturnsTrue()
         {
             // Arrange
-            var target = new NullAutoTransformStrategy();
+            var target = new NullAutoInjectionStrategy();
             MemberInfo sourceMember;
 
             // Act
@@ -74,7 +74,7 @@ namespace Bijectiv.Tests.Builder
         public void TryGetSourceForTarget_AnyParameters_SetsSourceMemberToNull()
         {
             // Arrange
-            var target = new NullAutoTransformStrategy();
+            var target = new NullAutoInjectionStrategy();
             MemberInfo sourceMember;
 
             // Act

@@ -38,11 +38,6 @@ namespace Bijectiv
     public interface IInjectionContext
     {
         /// <summary>
-        /// Gets a value indicating whether a merge operation is currently taking place.
-        /// </summary>
-        bool IsMerging { get; }
-
-        /// <summary>
         /// Gets the culture in which the injection is taking place. Defaults to 
         /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
         /// </summary>

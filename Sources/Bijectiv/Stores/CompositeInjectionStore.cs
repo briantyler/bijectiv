@@ -36,7 +36,7 @@ namespace Bijectiv.Stores
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that resolves <see cref="ITransform"/> from other <see cref="IInjectionStore"/>s.
+    /// A store that resolves <see cref="IInjection"/> from other <see cref="IInjectionStore"/>s.
     /// </summary>
     public class CompositeInjectionStore : IInjectionStore, IEnumerable<IInjectionStore>
     {
@@ -65,8 +65,8 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
+        /// Resolves a <see cref="IInjection"/> that transforms instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; returns <c>null</c> otherwise.
         /// </summary>
         /// <param name="source">
         /// The source type.
@@ -75,8 +75,8 @@ namespace Bijectiv.Stores
         /// The target type.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
+        /// A <see cref="IInjection"/> that transforms instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
         /// </returns>
         public ITransform Resolve(Type source, Type target)
         {

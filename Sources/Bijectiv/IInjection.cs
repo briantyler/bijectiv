@@ -37,12 +37,12 @@ namespace Bijectiv
     public interface IInjection
     {
         /// <summary>
-        /// Gets the source type supported by the transform.
+        /// Gets the source type supported by the injection.
         /// </summary>
         Type Source { get; }
 
         /// <summary>
-        /// Gets the target type created by the transform.
+        /// Gets the target type created by the injection.
         /// </summary>
         Type Target { get; } 
     }

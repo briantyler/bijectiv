@@ -42,7 +42,7 @@ namespace Bijectiv
     public static class InjectionStoreBuilderExtensions
     {
         /// <summary>
-        /// Registers a new transform with the store builder.
+        /// Registers a new injection with the store builder.
         /// </summary>
         /// <param name="this">
         /// The <see cref="InjectionStoreBuilder"/> to register with.
@@ -55,7 +55,7 @@ namespace Bijectiv
         /// </typeparam>
         /// <returns>
         /// A <see cref="IInjectionDefinitionBuilder{TSource,TTarget}"/> that allows further configuration of the 
-        /// transform.
+        /// injection.
         /// </returns>
         public static IInjectionDefinitionBuilder<TSource, TTarget> Register<TSource, TTarget>(
             [NotNull] this InjectionStoreBuilder @this)
@@ -72,8 +72,8 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Registers a new transform with the store builder and inherits all of the appropriate fragments from the 
-        /// base transform if it exists.
+        /// Registers a new injection with the store builder and inherits all of the appropriate fragments from the 
+        /// base injection if it exists.
         /// </summary>
         /// <param name="this">
         /// The <see cref="InjectionStoreBuilder"/> to register with.
@@ -92,7 +92,7 @@ namespace Bijectiv
         /// </typeparam>
         /// <returns>
         /// A <see cref="IInjectionDefinitionBuilder{TSource,TTarget}"/> that allows further configuration of the 
-        /// transform.
+        /// injection.
         /// </returns>
         public static IInjectionDefinitionBuilder<TSource, TTarget> 
             RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(

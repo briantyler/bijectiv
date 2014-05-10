@@ -30,7 +30,7 @@
 namespace Bijectiv
 {
     /// <summary>
-    /// Represents a transform from a source to target.
+    /// Represents a <see cref="IInjection"/> that transforms a source instance into a new target instance.
     /// </summary>
     public interface ITransform : IInjection
     {
@@ -43,7 +43,7 @@ namespace Bijectiv
         /// The source object.
         /// </param>
         /// <param name="context">
-        /// The context in which the transformation will take place.
+        /// The context in which the injection will take place.
         /// </param>
         /// <returns>
         /// The newly created target instance.

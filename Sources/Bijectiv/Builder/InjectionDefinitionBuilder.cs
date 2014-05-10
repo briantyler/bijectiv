@@ -94,13 +94,13 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to construct the target via activation.
+        /// Instructs the injection to construct the target via activation.
         /// </summary>
         /// <remarks>
         /// This is the default option if no other construction method is specified.
         /// </remarks>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> Activate()
         {
@@ -109,10 +109,10 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to construct the target via the default factory.
+        /// Instructs the injection to construct the target via the default factory.
         /// </summary>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> DefaultFactory()
         {
@@ -121,13 +121,13 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to construct the target via a custom factory delegate.
+        /// Instructs the injection to construct the target via a custom factory delegate.
         /// </summary>
         /// <param name="factory">
         /// The factory delegate that constructs the target.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> CustomFactory(
             Func<CustomFactoryParameters<TSource>, TTarget> factory)
@@ -142,21 +142,21 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to not automatically transform any source member to a target member: only
-        /// explicit member transforms will be used.
+        /// Instructs the injection to not automatically inject any source member to a target member: only
+        /// explicit member injections will be used.
         /// </summary>
         /// <remarks>
-        /// This may be useful in the case of an inherited transform when the auto rules defined in the base
-        /// transform non longer make sense and need to be cancelled, or when the source and target have very
+        /// This may be useful in the case of an inherited injection when the auto rules defined in the base
+        /// injection non longer make sense and need to be cancelled, or when the source and target have very
         /// different structures.
         /// </remarks>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> AutoNone()
         {
-            var fragment = new AutoTransformFragment(
-                typeof(TSource), typeof(TTarget), new NullAutoTransformStrategy());
+            var fragment = new AutoInjectionFragment(
+                typeof(TSource), typeof(TTarget), new NullAutoInjectionStrategy());
 
             this.Definition.Add(fragment);
 
@@ -164,32 +164,32 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// they have exactly the same, case sensitive, name.
         /// </summary>
         /// <remarks>
         /// This is the default option if no other auto method is specified.
         /// </remarks>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> AutoExact()
         {
             return this.AutoRegex(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + "$",
-                AutoTransformOptions.None);
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$",
+                AutoInjectionOptions.None);
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// a source member's name prefixed by <paramref name="prefix"/> is equal to a target member's name.
         /// </summary>
         /// <param name="prefix">
         /// The prefix.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
-        /// </returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>automatically injection
         /// <example>
         /// The following is a match:
         ///     Prefix = 'Foo'
@@ -204,19 +204,19 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + prefix + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
-                AutoTransformOptions.MatchTarget);
+                "^" + prefix + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$", 
+                AutoInjectionOptions.MatchTarget);
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// a target member's name prefixed by <paramref name="prefix"/> is equal to a source member's name.
         /// </summary>
         /// <param name="prefix">
         /// The prefix.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <example>
         /// The following is a match:
@@ -232,19 +232,19 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + prefix + NameRegexAutoTransformStrategy.NameTemplateParameter + "$", 
-                AutoTransformOptions.None);
+                "^" + prefix + NameRegexAutoInjectionStrategy.NameTemplateParameter + "$", 
+                AutoInjectionOptions.None);
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// a source member's name suffixed by <paramref name="suffix"/> is equal to a target member's name.
         /// </summary>
         /// <param name="suffix">
         /// The suffix.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <example>
         /// The following is a match:
@@ -260,19 +260,19 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + suffix + "$", 
-                AutoTransformOptions.MatchTarget);
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + suffix + "$", 
+                AutoInjectionOptions.MatchTarget);
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// a target member's name suffixed by <paramref name="suffix"/> is equal to a source member's name.
         /// </summary>
         /// <param name="suffix">
         /// The suffix.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <example>
         /// The following is a match:
@@ -288,48 +288,48 @@ namespace Bijectiv.Builder
             }
 
             return this.AutoRegex(
-                "^" + NameRegexAutoTransformStrategy.NameTemplateParameter + suffix + "$", 
-                AutoTransformOptions.None);
+                "^" + NameRegexAutoInjectionStrategy.NameTemplateParameter + suffix + "$", 
+                AutoInjectionOptions.None);
         }
 
         /// <summary>
-        /// Instructs the transform to automatically transform a source member to a target member whenever
+        /// Instructs the injection to automatically inject a source member to a target member whenever
         /// there is a regex match between the two names.
         /// </summary>
         /// <param name="regex">
         /// The regex with which to match.
-        /// Note that the magic constant  <see cref="NameRegexAutoTransformStrategy.NameTemplateParameter"/> gets 
-        /// substituted for the name of the source member when <see cref="AutoTransformOptions.MatchTarget"/> is set and 
+        /// Note that the magic constant  <see cref="NameRegexAutoInjectionStrategy.NameTemplateParameter"/> gets 
+        /// substituted for the name of the source member when <see cref="AutoInjectionOptions.MatchTarget"/> is set and 
         /// substituted for the target member's name otherwise.
         /// </param>
         /// <param name="options">
-        /// The auto transform options.
+        /// The auto injection options.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
-        public IInjectionDefinitionBuilder<TSource, TTarget> AutoRegex(string regex, AutoTransformOptions options)
+        public IInjectionDefinitionBuilder<TSource, TTarget> AutoRegex(string regex, AutoInjectionOptions options)
         {
             if (regex == null)
             {
                 throw new ArgumentNullException("regex");
             }
 
-            var strategy = new NameRegexAutoTransformStrategy(regex, options);
-            var fragment = new AutoTransformFragment(typeof(TSource), typeof(TTarget), strategy);
+            var strategy = new NameRegexAutoInjectionStrategy(regex, options);
+            var fragment = new AutoInjectionFragment(typeof(TSource), typeof(TTarget), strategy);
             this.Definition.Add(fragment);
 
             return this;
         }
 
         /// <summary>
-        /// Instructs the transform to throw an exception if the source instance is <c>NULL</c>.
+        /// Instructs the injection to throw an exception if the source instance is <c>null</c>.
         /// </summary>
         /// <param name="exceptionFactory">
         /// The exception factory.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
@@ -350,11 +350,11 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to set the target to its default value (<see langword="default" />) if the 
-        /// source instance is <c>NULL</c>.
+        /// Instructs the injection to set the target to its default value (<see langword="default" />) if the 
+        /// source instance is <c>null</c>.
         /// </summary>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> NullSourceDefault()
         {
@@ -366,13 +366,13 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Instructs the transform to create the target from a custom factory if the source instance is <c>NULL</c>.
+        /// Instructs the injection to create the target from a custom factory if the source instance is <c>null</c>.
         /// </summary>
         /// <param name="factory">
         /// The custom factory.
         /// </param>
         /// <returns>
-        /// An object that allows further configuration of the transform.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.

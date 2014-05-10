@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NameRegexAutoTransformStrategy.cs" company="Bijectiv">
+// <copyright file="NameRegexAutoInjectionStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the NameRegexAutoTransformStrategy type.
+//   Defines the NameRegexAutoInjectionStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,10 +39,10 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A <see cref="IAutoTransformStrategy"/> that substitues the name of the target member into a regular expression
+    /// A <see cref="IAutoInjectionStrategy"/> that substitues the name of the target member into a regular expression
     /// and outputs the first source member with a name that is a match, or <c>null</c> otherwise.
     /// </summary>
-    public class NameRegexAutoTransformStrategy : IAutoTransformStrategy
+    public class NameRegexAutoInjectionStrategy : IAutoInjectionStrategy
     {
         /// <summary>
         /// The name template parameter.
@@ -55,26 +55,26 @@ namespace Bijectiv.Builder
         private readonly string patternTemplate;
 
         /// <summary>
-        /// The auto transform options.
+        /// The auto injection options.
         /// </summary>
-        private readonly AutoTransformOptions options;
+        private readonly AutoInjectionOptions options;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="NameRegexAutoTransformStrategy"/> class.
+        /// Initialises a new instance of the <see cref="NameRegexAutoInjectionStrategy"/> class.
         /// </summary>
         /// <param name="patternTemplate">
         /// The pattern template into which the name will be substituted.
         /// </param>
         /// <param name="options">
-        /// The auto transform options.
+        /// The auto injection options.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="patternTemplate"/> is null.
         /// </exception>
         [SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "System.Text.RegularExpressions.Regex", 
             Justification = "This is the only reliable way to validate a regex.")]
-        public NameRegexAutoTransformStrategy(
-            [NotNull] string patternTemplate, AutoTransformOptions options)
+        public NameRegexAutoInjectionStrategy(
+            [NotNull] string patternTemplate, AutoInjectionOptions options)
         {
             if (patternTemplate == null)
             {
@@ -111,9 +111,9 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Gets the auto transform options.
+        /// Gets the auto injection options.
         /// </summary>
-        public AutoTransformOptions Options
+        public AutoInjectionOptions Options
         {
             get { return this.options; }
         }
@@ -174,13 +174,13 @@ namespace Bijectiv.Builder
         {
             var pattern = this.PatternTemplate.Replace(
                 NameTemplateParameter,
-                this.Options.HasFlag(AutoTransformOptions.MatchTarget) ? sourceMember.Name : targetMember.Name);
+                this.Options.HasFlag(AutoInjectionOptions.MatchTarget) ? sourceMember.Name : targetMember.Name);
 
             var regexOptions = RegexOptions.CultureInvariant
-                | (this.Options.HasFlag(AutoTransformOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
+                | (this.Options.HasFlag(AutoInjectionOptions.IgnoreCase) ? RegexOptions.IgnoreCase : RegexOptions.None);
 
             return Regex.IsMatch(
-                this.Options.HasFlag(AutoTransformOptions.MatchTarget) ? targetMember.Name : sourceMember.Name,
+                this.Options.HasFlag(AutoInjectionOptions.MatchTarget) ? targetMember.Name : sourceMember.Name,
                 pattern,
                 regexOptions);
         }

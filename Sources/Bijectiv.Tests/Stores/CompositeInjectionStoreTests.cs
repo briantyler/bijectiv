@@ -196,14 +196,14 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_SingleStoreContainingMatchingTransform_ReturnsTransform()
+        public void Resolve_SingleStoreContainingMatchingInjection_ReturnsInjection()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var storeMock = repository.Create<IInjectionStore>();
-            var expected = Stub.Create<ITransform>();
+            var expected = Stub.Create<IInjection>();
 
-            storeMock.Setup(_ => _.Resolve<ITransform>(typeof(int), typeof(int))).Returns(expected);
+            storeMock.Setup(_ => _.Resolve<IInjection>(typeof(int), typeof(int))).Returns(expected);
 
             var target = new CompositeInjectionStore { storeMock.Object };
 
@@ -217,13 +217,13 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_SingleStoreDoesNotContainingMatchingTransform_ReturnsNull()
+        public void Resolve_SingleStoreDoesNotContainingMatchingInjection_ReturnsNull()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var storeMock = repository.Create<IInjectionStore>();
 
-            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), It.IsAny<Type>())).Returns(default(ITransform));
+            storeMock.Setup(_ => _.Resolve<IInjection>(It.IsAny<Type>(), It.IsAny<Type>())).Returns(default(IInjection));
 
             var target = new CompositeInjectionStore { storeMock.Object };
 
@@ -244,17 +244,17 @@ namespace Bijectiv.Tests.Stores
             var storeMock1 = repository.Create<IInjectionStore>();
             var storeMock2 = repository.Create<IInjectionStore>();
             var storeMock3 = repository.Create<IInjectionStore>();
-            var expected = Stub.Create<ITransform>();
+            var expected = Stub.Create<IInjection>();
 
             var sequence = new MockSequence();
             storeMock1
                 .InSequence(sequence)
-                .Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), It.IsAny<Type>()))
-                .Returns(default(ITransform));
+                .Setup(_ => _.Resolve<IInjection>(It.IsAny<Type>(), It.IsAny<Type>()))
+                .Returns(default(IInjection));
 
             storeMock2
                 .InSequence(sequence)
-                .Setup(_ => _.Resolve<ITransform>(typeof(int), typeof(int)))
+                .Setup(_ => _.Resolve<IInjection>(typeof(int), typeof(int)))
                 .Returns(expected);
 
             var target = new CompositeInjectionStore { storeMock1.Object, storeMock2.Object, storeMock3.Object };

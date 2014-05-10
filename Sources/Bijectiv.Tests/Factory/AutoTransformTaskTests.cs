@@ -111,17 +111,17 @@ namespace Bijectiv.Tests.Factory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var strategy1 = Stub.Create<IAutoTransformStrategy>();
-            var strategy2 = Stub.Create<IAutoTransformStrategy>();
+            var strategy1 = Stub.Create<IAutoInjectionStrategy>();
+            var strategy2 = Stub.Create<IAutoInjectionStrategy>();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
-            var transformFragments = new[]
+            var injectionFragments = new[]
             {
-                new AutoTransformFragment(TestClass1.T, TestClass2.T, strategy1),                  
-                new AutoTransformFragment(TestClass1.T, TestClass2.T, strategy2)                  
+                new AutoInjectionFragment(TestClass1.T, TestClass2.T, strategy1),                  
+                new AutoInjectionFragment(TestClass1.T, TestClass2.T, strategy2)                  
             };
 
-            scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(transformFragments);
+            scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(injectionFragments);
             scaffoldMock.Setup(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
 
             var detailMock = repository.Create<AutoTransformTaskDetail>();
@@ -130,8 +130,8 @@ namespace Bijectiv.Tests.Factory
                     _ =>
                     _.CreateSourceTargetPairs(
                         scaffoldMock.Object,
-                        It.Is<IEnumerable<IAutoTransformStrategy>>(
-                            strategies => transformFragments.Select(item => item.Strategy).SequenceEqual(strategies))))
+                        It.Is<IEnumerable<IAutoInjectionStrategy>>(
+                            strategies => injectionFragments.Select(item => item.Strategy).SequenceEqual(strategies))))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
             var target = new AutoTransformTask(detailMock.Object);
@@ -145,22 +145,22 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_AutoTransformFragments_AreAllProcessed()
+        public void Execute_AutoinjectionFragments_AreAllProcessed()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
-            var transformFragments = new[]
+            var injectionFragments = new[]
             {
                 Stub.Fragment<TestClass1, TestClass2>(),          
-                new AutoTransformFragment(TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>()),                  
+                new AutoInjectionFragment(TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>()),                  
                 Stub.Fragment<TestClass1, TestClass2>(),          
-                new AutoTransformFragment(TestClass1.T, TestClass2.T, Stub.Create<IAutoTransformStrategy>()),                  
+                new AutoInjectionFragment(TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>()),                  
                 Stub.Fragment<TestClass1, TestClass2>()               
             };
 
-            scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(transformFragments);
+            scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(injectionFragments);
 
             var processedFragments = new HashSet<InjectionFragment>();
             scaffoldMock.Setup(_ => _.ProcessedFragments).Returns(processedFragments);
@@ -170,7 +170,7 @@ namespace Bijectiv.Tests.Factory
                 .Setup(_ =>
                     _.CreateSourceTargetPairs(
                         scaffoldMock.Object,
-                        It.IsAny<IEnumerable<IAutoTransformStrategy>>()))
+                        It.IsAny<IEnumerable<IAutoInjectionStrategy>>()))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
             var target = new AutoTransformTask(detailMock.Object);
@@ -181,8 +181,8 @@ namespace Bijectiv.Tests.Factory
             // Assert
             repository.VerifyAll();
             Assert.AreEqual(2, processedFragments.Count());
-            Assert.IsTrue(processedFragments.Contains(transformFragments[1]));
-            Assert.IsTrue(processedFragments.Contains(transformFragments[3]));
+            Assert.IsTrue(processedFragments.Contains(injectionFragments[1]));
+            Assert.IsTrue(processedFragments.Contains(injectionFragments[3]));
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.Factory
                 .Setup(_ =>
                     _.CreateSourceTargetPairs(
                         It.IsAny<InjectionScaffold>(),
-                        It.IsAny<IEnumerable<IAutoTransformStrategy>>()))
+                        It.IsAny<IEnumerable<IAutoInjectionStrategy>>()))
                 .Returns(pairs);
 
             var call = new[] { 0 };

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformOptions.cs" company="Bijectiv">
+// <copyright file="AutoInjectionOptions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformOptions type.
+//   Defines the AutoInjectionOptions type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,10 +32,10 @@ namespace Bijectiv.Builder
     using System;
 
     /// <summary>
-    /// Represents automatic transform options.
+    /// Represents the options that will be applied when injecting automatically.
     /// </summary>
     [Flags]
-    public enum AutoTransformOptions
+    public enum AutoInjectionOptions
     {
         /// <summary>
         /// No options.

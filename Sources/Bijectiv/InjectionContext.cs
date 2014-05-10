@@ -60,16 +60,8 @@ namespace Bijectiv
         private readonly ITargetCache targetCache = new TargetCache();
 
         /// <summary>
-        /// A value indicating whether a merge operation is currently taking place.
-        /// </summary>
-        private readonly bool isMerging;
-
-        /// <summary>
         /// Initialises a new instance of the <see cref="InjectionContext"/> class.
         /// </summary>
-        /// <param name="isMerging">
-        /// A value indicating whether a merge operation is currently taking place.
-        /// </param>
         /// <param name="culture">
         /// The culture in which the transform is taking place.
         /// </param>
@@ -83,7 +75,6 @@ namespace Bijectiv
         /// Thrown when any parameter is null.
         /// </exception>
         public InjectionContext(
-            bool isMerging,
             [NotNull] CultureInfo culture, 
             [NotNull] Func<Type, object> resolveDelegate,
             [NotNull] IInjectionStore injectionStore)
@@ -106,15 +97,6 @@ namespace Bijectiv
             this.culture = culture;
             this.resolveDelegate = resolveDelegate;
             this.injectionStore = injectionStore;
-            this.isMerging = isMerging;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether a merge operation is currently taking place.
-        /// </summary>
-        public bool IsMerging
-        {
-            get { return this.isMerging; }
         }
 
         /// <summary>

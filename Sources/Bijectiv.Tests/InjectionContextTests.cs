@@ -51,7 +51,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(false, null, t => new object(), Stub.Create<IInjectionStore>()).Naught();
+            new InjectionContext(null, t => new object(), Stub.Create<IInjectionStore>()).Naught();
 
             // Assert
         }
@@ -65,7 +65,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(false, CultureInfo.InvariantCulture, null, Stub.Create<IInjectionStore>()).Naught();
+            new InjectionContext(CultureInfo.InvariantCulture, null, Stub.Create<IInjectionStore>()).Naught();
 
             // Assert
         }
@@ -79,7 +79,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(false, CultureInfo.InvariantCulture, t => new object(), null).Naught();
+            new InjectionContext(CultureInfo.InvariantCulture, t => new object(), null).Naught();
 
             // Assert
         }
@@ -92,8 +92,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(
-                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>())
+            new InjectionContext(CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>())
                 .Naught();
 
             // Assert
@@ -106,25 +105,10 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new InjectionContext(
-                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
 
             // Assert
             Assert.IsNotNull(target.TargetCache);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_IsMergingParameter_IsAssignedToIsMergingProperty()
-        {
-            // Arrange
-
-            // Act
-            var target = new InjectionContext(
-                true, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
-
-            // Assert
-            Assert.IsTrue(target.IsMerging);
         }
 
         [TestMethod]
@@ -135,7 +119,7 @@ namespace Bijectiv.Tests
             var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var target = new InjectionContext(false, culture, t => new object(), Stub.Create<IInjectionStore>());
+            var target = new InjectionContext(culture, t => new object(), Stub.Create<IInjectionStore>());
 
             // Assert
             Assert.AreEqual(culture, target.Culture);
@@ -149,7 +133,7 @@ namespace Bijectiv.Tests
             var transformStore = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new InjectionContext(false, CultureInfo.InvariantCulture, t => new object(), transformStore);
+            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), transformStore);
 
             // Assert
             Assert.AreEqual(transformStore, target.InjectionStore);
@@ -162,7 +146,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var target = new InjectionContext(
-                false, CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -178,7 +162,6 @@ namespace Bijectiv.Tests
             // Arrange
             var expected = new object();
             var target = new InjectionContext(
-                false, 
                 CultureInfo.InvariantCulture, 
                 t => t == TestClass1.T ? expected : null, 
                 Stub.Create<IInjectionStore>());

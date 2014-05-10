@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAutoTransformStrategy.cs" company="Bijectiv">
+// <copyright file="NullAutoInjectionStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,20 +23,19 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IAutoTransformStrategy type.
+//   Defines the NullAutoInjectionStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Builder
 {
     using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
-    /// Represents a strategy that automatically identifies a source <see cref="MemberInfo"/> with a target
-    /// <see cref="MemberInfo"/>.
+    /// A <see cref="IAutoInjectionStrategy"/> that handles every member and sets it to null.
     /// </summary>
-    public interface IAutoTransformStrategy
+    public class NullAutoInjectionStrategy : IAutoInjectionStrategy
     {
         /// <summary>
         /// Tries to gets the source <see cref="MemberInfo"/> that will be identified with 
@@ -58,7 +57,11 @@ namespace Bijectiv
         /// If the result is <c>true</c> then <paramref name="targetMember"/> will be identified with
         /// <paramref name="sourceMember"/>; <c>otherwise</c> further strategies will be considered.
         /// </returns>
-        bool TryGetSourceForTarget(
-            IEnumerable<MemberInfo> sourceMembers, MemberInfo targetMember, out MemberInfo sourceMember);
+        public bool TryGetSourceForTarget(
+            IEnumerable<MemberInfo> sourceMembers, MemberInfo targetMember, out MemberInfo sourceMember)
+        {
+            sourceMember = null;
+            return true;
+        }
     }
 }

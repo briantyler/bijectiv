@@ -39,7 +39,7 @@ namespace Bijectiv.Builder
     public class DefaultFactoryFragment : InjectionFragment
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="Bijectiv.Builder.DefaultFactoryFragment"/> class.
+        /// Initialises a new instance of the <see cref="DefaultFactoryFragment"/> class.
         /// </summary>
         /// <param name="source">
         /// The source.

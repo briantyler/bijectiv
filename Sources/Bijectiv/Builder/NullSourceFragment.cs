@@ -34,7 +34,7 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an instruction that determines how to treat a <c>NULL</c> source.
+    /// Represents an instruction that determines how to treat a <c>null</c> source.
     /// </summary>
     public class NullSourceFragment : InjectionFragment
     {
@@ -44,7 +44,7 @@ namespace Bijectiv.Builder
         private static readonly Type FactoryTypeTemplate = typeof(Func<,>);
 
         /// <summary>
-        /// The factory that creates the target from a <c>NULL</c> source.
+        /// The factory that creates the target from a <c>null</c> source.
         /// </summary>
         private readonly object factory;
 
@@ -63,7 +63,7 @@ namespace Bijectiv.Builder
         /// The target type.
         /// </param>
         /// <param name="factory">
-        /// The factory that creates the target from a <c>NULL</c> source.
+        /// The factory that creates the target from a <c>null</c> source.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null. 
@@ -107,7 +107,7 @@ namespace Bijectiv.Builder
         }
 
         /// <summary>
-        /// Gets the factory that creates the target from a <c>NULL</c> source.
+        /// Gets the factory that creates the target from a <c>null</c> source.
         /// </summary>
         public object Factory
         {

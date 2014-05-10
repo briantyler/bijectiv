@@ -50,12 +50,12 @@ namespace Bijectiv.Builder
         public static readonly Guid Factory = new Guid("b113c714-6576-4D9B-BE31-98E886FC2082");
 
         /// <summary>
-        /// Represents a fragment that describes an auto-transform.
+        /// Represents a fragment that describes an auto-injection.
         /// </summary>
-        public static readonly Guid AutoTransform = new Guid("b113c714-D396-425B-B0DA-355DA43AD570");
+        public static readonly Guid AutoInjection = new Guid("b113c714-D396-425B-B0DA-355DA43AD570");
 
         /// <summary>
-        /// Represents a fragment that determines how to treat a <c>NULL</c> source.
+        /// Represents a fragment that determines how to treat a <c>null</c> source.
         /// </summary>
         public static readonly Guid NullSource = new Guid("b113c714-21C5-428C-B5CA-84372F03102D");
     }

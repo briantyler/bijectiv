@@ -36,7 +36,7 @@ namespace Bijectiv.Builder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The transform definition registry.
+    /// The <see cref="InjectionDefinition"/> registry.
     /// </summary>
     public class InjectionDefinitionRegistry : IInjectionDefinitionRegistry
     {

@@ -55,10 +55,10 @@
     <Compile Include="Builder\CustomFactoryParameters.cs" />
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
-    <Compile Include="Builder\AutoTransformOptions.cs" />
-    <Compile Include="Builder\NameRegexAutoTransformStrategy.cs" />
-    <Compile Include="Builder\NullAutoTransformStrategy.cs" />
-    <Compile Include="Builder\AutoTransformFragment.cs" />
+    <Compile Include="Builder\AutoInjectionOptions.cs" />
+    <Compile Include="Builder\NameRegexAutoInjectionStrategy.cs" />
+    <Compile Include="Builder\NullAutoInjectionStrategy.cs" />
+    <Compile Include="Builder\AutoInjectionFragment.cs" />
     <Compile Include="Builder\NullSourceFragment.cs" />
     <Compile Include="Factory\AutoTransformTaskDetail.cs" />
     <Compile Include="Factory\AutoTransformTask.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Factory\NullSourceTask.cs" />
     <Compile Include="Factory\ReturnMergeResultTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
-    <Compile Include="IAutoTransformStrategy.cs" />
+    <Compile Include="IAutoInjectionStrategy.cs" />
     <Compile Include="IMergeResult.cs" />
     <Compile Include="IInjection.cs" />
     <Compile Include="ITargetCache.cs" />

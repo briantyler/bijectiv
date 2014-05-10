@@ -40,34 +40,34 @@ namespace Bijectiv.Stores
     /// A store that contains a collection of <see cref="ITransform"/> instances that are keyed by thier source and
     /// target types..
     /// </summary>
-    public class CollectionInjectionStore : IInjectionStore, IEnumerable<ITransform>
+    public class CollectionInjectionStore : IInjectionStore, IEnumerable<IInjection>
     {
         /// <summary> TODO this needs to be a more appropriate data type.
-        /// The transforms.
+        /// The injections.
         /// </summary>
-        private readonly List<ITransform> transforms = new List<ITransform>();
+        private readonly List<IInjection> injections = new List<IInjection>();
 
         /// <summary>
-        /// Adds a new <see cref="ITransform"/> to the store.
+        /// Adds a new <see cref="IInjection"/> to the store.
         /// </summary>
-        /// <param name="transform">
-        /// The transform.
+        /// <param name="injection">
+        /// The injection.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Add([NotNull] ITransform transform)
+        public void Add([NotNull] IInjection injection)
         {
-            if (transform == null)
+            if (injection == null)
             {
-                throw new ArgumentNullException("transform");
+                throw new ArgumentNullException("injection");
             }
 
-            this.transforms.Add(transform);
+            this.injections.Add(injection);
         }
 
         /// <summary>
-        /// Resolves a <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
+        /// Resolves a <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
         /// instances of type <paramref name="target"/> if one exists, or; returns NULL otherwise.
         /// </summary>
         /// <param name="source">
@@ -77,13 +77,13 @@ namespace Bijectiv.Stores
         /// The target type.
         /// </param>
         /// <returns>
-        /// A <see cref="ITransform"/> that transforms instances of type <paramref name="source"/> into
-        /// instances of type <paramref name="target"/> if one exists, or; NULL otherwise.
+        /// A <see cref="IInjection"/> that injects instances of type <paramref name="source"/> into
+        /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public ITransform Resolve([NotNull] Type source, [NotNull] Type target)
+        public IInjection Resolve([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -95,7 +95,7 @@ namespace Bijectiv.Stores
                 throw new ArgumentNullException("target");
             }
 
-            return this.transforms.FirstOrDefault(
+            return this.injections.FirstOrDefault(
                 candidate => candidate.Source == source && candidate.Target == target);
         }
 
@@ -105,9 +105,9 @@ namespace Bijectiv.Stores
         /// <returns>
         /// An <see cref="IEnumerator{ITransform}"/> that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<ITransform> GetEnumerator()
+        public IEnumerator<IInjection> GetEnumerator()
         {
-            return this.transforms.GetEnumerator();
+            return this.injections.GetEnumerator();
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Bijectiv.Stores
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)this.transforms).GetEnumerator();
+            return ((IEnumerable)this.injections).GetEnumerator();
         }
 
         public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : IInjection
