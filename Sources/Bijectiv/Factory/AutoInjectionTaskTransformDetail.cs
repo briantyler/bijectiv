@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformTaskDetail.cs" company="Bijectiv">
+// <copyright file="AutoInjectionTaskTransformDetail.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,110 +23,49 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformTaskDetail type.
+//   Defines the AutoInjectionTaskTransformDetail type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Factory
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// The <see cref="AutoTransformTask"/> implementation detail.
+    /// The <see cref="ITransform"/> specific <see cref="AutoInjectionTask"/> implementation detail.
     /// </summary>
-    public class AutoTransformTaskDetail
+    public class AutoInjectionTaskTransformDetail : AutoInjectionTaskDetail
     {
         /// <summary>
-        /// Creates the (source, target) member pairs that will be auto transformed.
-        /// </summary>
-        /// <param name="scaffold">
-        /// The scaffold on which the transform is being built.
-        /// </param>
-        /// <param name="strategies">
-        /// The strategies to apply.
-        /// </param>
-        /// <returns>
-        /// The collection of (source, target) member pairs that will be auto transformed.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public virtual IEnumerable<Tuple<MemberInfo, MemberInfo>> CreateSourceTargetPairs(
-            [NotNull] InjectionScaffold scaffold,
-            [NotNull] IEnumerable<IAutoInjectionStrategy> strategies)
-        {
-            if (scaffold == null)
-            {
-                throw new ArgumentNullException("scaffold");
-            }
-
-            if (strategies == null)
-            {
-                throw new ArgumentNullException("strategies");
-            }
-
-            var enumeratedStrategies = strategies.ToArray();
-            foreach (var targetMember in scaffold.UnprocessedTargetMembers)
-            {
-                foreach (var strategy in enumeratedStrategies)
-                {
-                    MemberInfo sourceMember;
-                    if (!strategy.TryGetSourceForTarget(scaffold.SourceMembers, targetMember, out sourceMember))
-                    {
-                        continue;
-                    }
-
-                    yield return Tuple.Create(sourceMember, targetMember);
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Processes a pair of members into the scaffold.
+        /// Creates the member mapping <see cref="Expression"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold.
         /// </param>
-        /// <param name="pair">
-        /// The pair of members.
+        /// <param name="sourceMember">
+        /// The source member.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any argument is null.
-        /// </exception>
-        public virtual void ProcessPair(
-            [NotNull] InjectionScaffold scaffold,
-            [NotNull] Tuple<MemberInfo, MemberInfo> pair)
+        /// <param name="targetMember">
+        /// The target member.
+        /// </param>
+        /// <returns>
+        /// The member mapping <see cref="Expression"/>.
+        /// </returns>
+        protected internal override Expression CreateExpression(
+            InjectionScaffold scaffold,
+            MemberInfo sourceMember,
+            MemberInfo targetMember)
         {
-            if (scaffold == null)
-            {
-                throw new ArgumentNullException("scaffold");
-            }
-
-            if (pair == null)
-            {
-                throw new ArgumentNullException("pair");
-            }
-
-            var sourceMember = pair.Item1;
-            var targetMember = pair.Item2;
-
             var template = CreateExpressionTemplate(sourceMember, targetMember);
             var transform = CreateTransformExpression(scaffold, template, sourceMember);
-            var assign = Expression.Assign(
-                targetMember.GetAccessExpression(scaffold.Target), 
-                Expression.Convert(transform, targetMember.GetReturnType()));
 
-            scaffold.Expressions.Add(assign);
-            scaffold.ProcessedTargetMembers.Add(targetMember);
+            return Expression.Assign(
+                targetMember.GetAccessExpression(scaffold.Target),
+                Expression.Convert(transform, targetMember.GetReturnType()));
         }
 
         /// <summary>
@@ -222,7 +161,7 @@ namespace Bijectiv.Factory
         {
             template = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(template);
             template = new PlaceholderExpressionVisitor(
-                    "sourceMember", 
+                    "sourceMember",
                     Expression.Convert(sourceMember.GetAccessExpression(scaffold.Source), typeof(object)))
                 .Visit(template);
 

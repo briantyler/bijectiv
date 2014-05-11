@@ -60,8 +60,10 @@
     <Compile Include="Builder\NullAutoInjectionStrategy.cs" />
     <Compile Include="Builder\AutoInjectionFragment.cs" />
     <Compile Include="Builder\NullSourceFragment.cs" />
-    <Compile Include="Factory\AutoTransformTaskDetail.cs" />
-    <Compile Include="Factory\AutoTransformTask.cs" />
+    <Compile Include="Factory\AutoInjectionTaskDetail.cs" />
+    <Compile Include="Factory\AutoInjectionTask.cs" />
+    <Compile Include="Factory\AutoInjectionTaskMergeDetail.cs" />
+    <Compile Include="Factory\AutoInjectionTaskTransformDetail.cs" />
     <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />

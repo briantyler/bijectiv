@@ -85,7 +85,9 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(AutoTransformTask));
+            Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
+            Assert.IsInstanceOfType(
+                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskTransformDetail));
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
             Assert.AreEqual(index, tasks.Length);

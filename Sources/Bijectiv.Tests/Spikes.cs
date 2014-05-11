@@ -41,7 +41,7 @@ namespace Bijectiv.Tests
     public class Spikes
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Integration")]
         public void Spike_Activate_Activated()
         {
             // Arrange
@@ -59,7 +59,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Integration")]
         public void Spike_AutoTransform_AutoTransforms()
         {
             // Arrange

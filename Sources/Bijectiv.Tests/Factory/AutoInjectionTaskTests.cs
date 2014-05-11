@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformTaskTests.cs" company="Bijectiv">
+// <copyright file="AutoInjectionTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformTaskTests type.
+//   Defines the AutoInjectionTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,10 +44,10 @@ namespace Bijectiv.Tests.Factory
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="AutoTransformTask"/> class.
+    /// This class tests the <see cref="AutoInjectionTask"/> class.
     /// </summary>
     [TestClass]
-    public class AutoTransformTaskTests
+    public class AutoInjectionTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -58,7 +58,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new AutoTransformTask(null).Naught();
+            new AutoInjectionTask(null).Naught();
 
             // Assert
         }
@@ -70,7 +70,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new AutoTransformTask(Stub.Create<AutoTransformTaskDetail>()).Naught();
+            new AutoInjectionTask(Stub.Create<AutoInjectionTaskDetail>()).Naught();
 
             // Assert
         }
@@ -80,10 +80,10 @@ namespace Bijectiv.Tests.Factory
         public void CreateInstance_DetailParameter_IsAssignedToDetailProperty()
         {
             // Arrange
-            var detail = Stub.Create<AutoTransformTaskDetail>();
+            var detail = Stub.Create<AutoInjectionTaskDetail>();
 
             // Act
-            var target = new AutoTransformTask(detail);
+            var target = new AutoInjectionTask(detail);
 
             // Assert
             Assert.AreEqual(detail, target.Detail);
@@ -95,8 +95,8 @@ namespace Bijectiv.Tests.Factory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var detail = Stub.Create<AutoTransformTaskDetail>();
-            var target = new AutoTransformTask(detail);
+            var detail = Stub.Create<AutoInjectionTaskDetail>();
+            var target = new AutoInjectionTask(detail);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -124,7 +124,7 @@ namespace Bijectiv.Tests.Factory
             scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(injectionFragments);
             scaffoldMock.Setup(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
 
-            var detailMock = repository.Create<AutoTransformTaskDetail>();
+            var detailMock = repository.Create<AutoInjectionTaskDetail>();
             detailMock
                 .Setup(
                     _ =>
@@ -134,7 +134,7 @@ namespace Bijectiv.Tests.Factory
                             strategies => injectionFragments.Select(item => item.Strategy).SequenceEqual(strategies))))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
-            var target = new AutoTransformTask(detailMock.Object);
+            var target = new AutoInjectionTask(detailMock.Object);
 
             // Act
             target.Execute(scaffoldMock.Object);
@@ -165,7 +165,7 @@ namespace Bijectiv.Tests.Factory
             var processedFragments = new HashSet<InjectionFragment>();
             scaffoldMock.Setup(_ => _.ProcessedFragments).Returns(processedFragments);
 
-            var detailMock = repository.Create<AutoTransformTaskDetail>();
+            var detailMock = repository.Create<AutoInjectionTaskDetail>();
             detailMock
                 .Setup(_ =>
                     _.CreateSourceTargetPairs(
@@ -173,7 +173,7 @@ namespace Bijectiv.Tests.Factory
                         It.IsAny<IEnumerable<IAutoInjectionStrategy>>()))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
-            var target = new AutoTransformTask(detailMock.Object);
+            var target = new AutoInjectionTask(detailMock.Object);
 
             // Act
             target.Execute(scaffoldMock.Object);
@@ -196,7 +196,7 @@ namespace Bijectiv.Tests.Factory
             scaffoldMock.Setup(_ => _.UnprocessedFragments).Returns(new InjectionFragment[0]);
             scaffoldMock.Setup(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
 
-            var detailMock = repository.Create<AutoTransformTaskDetail>();
+            var detailMock = repository.Create<AutoInjectionTaskDetail>();
             var pairs = new[]
             {
                 Tuple.Create(Stub.Create<MemberInfo>(), Stub.Create<MemberInfo>()),
@@ -216,7 +216,7 @@ namespace Bijectiv.Tests.Factory
             detailMock.Setup(_ => _.ProcessPair(scaffoldMock.Object, pairs[1])).Callback(() => Assert.AreEqual(1, call[0]++));
             detailMock.Setup(_ => _.ProcessPair(scaffoldMock.Object, pairs[2])).Callback(() => Assert.AreEqual(2, call[0]++));
 
-            var target = new AutoTransformTask(detailMock.Object);
+            var target = new AutoInjectionTask(detailMock.Object);
 
             // Act
             target.Execute(scaffoldMock.Object);

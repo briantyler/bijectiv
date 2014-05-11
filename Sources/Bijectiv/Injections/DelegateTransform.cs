@@ -34,7 +34,7 @@ namespace Bijectiv.Injections
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a transform that performs its transformation via a delegate.
+    /// Represents a <see cref="ITransform"/> that performs its transformation via a delegate.
     /// </summary>
     public class DelegateTransform : ITransform
     {

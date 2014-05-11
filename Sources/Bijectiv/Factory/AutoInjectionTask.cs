@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformTask.cs" company="Bijectiv">
+// <copyright file="AutoInjectionTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformTask type.
+//   Defines the AutoInjectionTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,15 +40,15 @@ namespace Bijectiv.Factory
     /// <summary>
     /// Represents a task that processes <see cref="AutoInjectionFragment"/> fragments.
     /// </summary>
-    public class AutoTransformTask : IInjectionTask
+    public class AutoInjectionTask : IInjectionTask
     {
         /// <summary>
         /// The task detail.
         /// </summary>
-        private readonly AutoTransformTaskDetail detail;
+        private readonly AutoInjectionTaskDetail detail;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AutoTransformTask"/> class.
+        /// Initialises a new instance of the <see cref="AutoInjectionTask"/> class.
         /// </summary>
         /// <param name="detail">
         /// The task detail.
@@ -56,7 +56,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public AutoTransformTask([NotNull] AutoTransformTaskDetail detail)
+        public AutoInjectionTask([NotNull] AutoInjectionTaskDetail detail)
         {
             if (detail == null)
             {
@@ -69,7 +69,7 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Gets the task detail.
         /// </summary>
-        public AutoTransformTaskDetail Detail
+        public AutoInjectionTaskDetail Detail
         {
             get { return this.detail; }
         }
