@@ -81,6 +81,7 @@
     <Compile Include="Builder\InjectionFragmentTests.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="Factory\AutoInjectionTaskDetailTests.cs" />
+    <Compile Include="Factory\AutoInjectionTaskMergeDetailTests.cs" />
     <Compile Include="Factory\AutoInjectionTaskTests.cs" />
     <Compile Include="Factory\AutoInjectionTaskTransformDetailTests.cs" />
     <Compile Include="Factory\CacheTargetTaskTests.cs" />

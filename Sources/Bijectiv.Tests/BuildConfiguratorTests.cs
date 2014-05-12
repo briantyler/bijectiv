@@ -87,7 +87,9 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
             Assert.IsInstanceOfType(
-                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskTransformDetail));
+                ((AutoInjectionTask)tasks[index]).Detail, typeof(AutoInjectionTaskTransformDetail));
+            Assert.IsNotInstanceOfType(
+                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
             Assert.AreEqual(index, tasks.Length);

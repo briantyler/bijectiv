@@ -88,7 +88,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -117,7 +117,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -146,7 +146,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -175,7 +175,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -204,7 +204,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -233,7 +233,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -262,7 +262,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -291,7 +291,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -320,7 +320,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(SealedClass1), typeof(SealedClass1), SourceSealed, ExpectedSealed);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -349,7 +349,7 @@ namespace Bijectiv.Tests.Factory
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(BaseTestClass1), SourceInt, ExpectedBase);
 
-            var scaffold = CreateScaffoldForProcessPair(
+            var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstance);
 
             var target = CreateTarget();
@@ -382,7 +382,7 @@ namespace Bijectiv.Tests.Factory
             return injectionContextMock.Object;
         }
 
-        private static InjectionScaffold CreateScaffoldForProcessPair(
+        private static InjectionScaffold CreateScaffold(
             MockRepository repository,
             IInjectionContext injectionContext,
             AutoTransformTestClass1 sourceInstance,
@@ -399,7 +399,7 @@ namespace Bijectiv.Tests.Factory
 
         private static AutoInjectionTaskTransformDetail CreateTarget()
         {
-            return new Mock<AutoInjectionTaskTransformDetail>(MockBehavior.Loose) { CallBase = true }.Object;
+            return new AutoInjectionTaskTransformDetail();
         }
     }
 }
