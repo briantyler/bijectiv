@@ -38,8 +38,39 @@ namespace Bijectiv.Factory
     /// <summary>
     /// The <see cref="IMerge"/> specific <see cref="AutoInjectionTask"/> implementation detail.
     /// </summary>
-    public class AutoInjectionTaskMergeDetail : AutoInjectionTaskTransformDetail
+    public class AutoInjectionTaskMergeDetail : AutoInjectionTaskDetail
     {
+        /// <summary>
+        /// An expression that performs a merge from a <see cref="IInjectionContext"/>.
+        /// </summary>
+        private static readonly Expression MergeExpression = ((Expression<Func<IMergeResult>>)(
+            () =>
+                Placeholder.Of<IInjectionContext>("context")
+                    .InjectionStore.Resolve<IMerge>(
+                        Placeholder.Of<Type>("sourceMemberType"),
+                        Placeholder.Of<Type>("targetMemberType")).Merge(
+                            Placeholder.Of<object>("sourceMember"), 
+                            Placeholder.Of<object>("targetMember"),
+                            Placeholder.Of<IInjectionContext>("context")))).Body;
+
+        /// <summary>
+        /// A <see cref="IMergeResult.Target"/> variable.
+        /// </summary>
+        private static readonly ParameterExpression ResultVariable = Expression.Variable(typeof(IMergeResult));
+
+        /// <summary>
+        /// An expression that accesses <see cref="IMergeResult.Target"/>.
+        /// </summary>
+        private static readonly Expression ResultTargetExpression = ((Expression<Func<object>>)(
+            () => Placeholder.Of<IMergeResult>("result").Target)).Body;
+
+        /// <summary>
+        /// An expression that decides whether <see cref="IMergeResult.Action"/> is 
+        /// <see cref="PostMergeAction.Replace"/>.
+        /// </summary>
+        private static readonly Expression IsReplaceActionExpression = ((Expression<Func<bool>>)(
+            () => Placeholder.Of<IMergeResult>("result").Action == PostMergeAction.Replace)).Body;
+
         /// <summary>
         /// Creates the member mapping <see cref="Expression"/>.
         /// </summary>
@@ -61,122 +92,101 @@ namespace Bijectiv.Factory
             MemberInfo targetMember)
         {
             /* Creates an expression that is equivalent to:
-             * 
-             * if (target.Member == null)
-             * {
-             *     target.Member = transform(source.Member)
-             * }
-             * else
-             * {
-             *      var merge = store.Resolve<IMerge>(source.Member.Type, target.Member.Type)
-             *      if (merge == null)
-             *      {
-             *          target.Member = transform(source.Member)
-             *      }
-             *      else
-             *      {
-             *          var result = merge(source.Member, target.Member)
-             *          if (result.Action == Replace)
-             *          {
-             *              target.Member = result.Target
-             *          }
-             *      }
-             * }
+             *  
+             *  var merge = store.Resolve<IMerge>(source.Member.Type, target.Member.Type)
+             *  var result = merge(source.Member, target.Member)
+             *  if (result.Action == Replace)
+             *  {
+             *      target.Member = result.Target
+             *  }
              */
             
+            var replaceTargetExpression = Expression.Assign(
+                targetMember.GetAccessExpression(scaffold.Target),
+                Expression.Convert(ResultTargetExpression, targetMember.GetReturnType()));
+
+            Expression template = Expression.Block(
+                new[] { ResultVariable },
+                Expression.Assign(ResultVariable, MergeExpression),
+                Expression.IfThen(IsReplaceActionExpression, replaceTargetExpression));
+
+            return ReplacePlaceholders(scaffold, sourceMember, targetMember, template);
+        }
+
+        /// <summary>
+        /// Replaces the placeholders in a template expression.
+        /// </summary>
+        /// <param name="scaffold">
+        /// The scaffold on which the injection is being built.
+        /// </param>
+        /// <param name="sourceMember">
+        /// The source member.
+        /// </param>
+        /// <param name="targetMember">
+        /// The target member.
+        /// </param>
+        /// <param name="template">
+        /// The template expression.
+        /// </param>
+        /// <returns>
+        /// The merge <see cref="Expression"/> with their placeholders replaced.
+        /// </returns>
+        private static Expression ReplacePlaceholders(
+            InjectionScaffold scaffold,
+            MemberInfo sourceMember,
+            MemberInfo targetMember,
+            Expression template)
+        {
             var sourceMemberType = sourceMember.GetReturnType();
             var targetMemberType = targetMember.GetReturnType();
-
-            var sourceMemberTypeExpression = SourceMemberTypeExpression(sourceMemberType);
-            var targetMemberTypeExpression = TargetMemberTypeExpression(targetMemberType);
-            var resolveExpression = ResolveExpression();
-            var isMergeNullExpression = IsMergeNullExpression();
-
-            Expression<Func<IMergeResult>> performMergeExpression = () =>
-                Placeholder.Of<IMerge>("merge").Merge(
-                    Placeholder.Of<object>("sourceMember"), 
-                    Placeholder.Of<object>("targetMember"),
-                    Placeholder.Of<IInjectionContext>("context"));
-
-            Expression<Func<bool>> isTargetMemberNull = () => Placeholder.Of<object>("targetMember") == null;
-            
-            var mergeVariable = Expression.Variable(typeof(IMerge));
-            var assignMerge = Expression.Assign(mergeVariable, resolveExpression.Body);
-
-            var resultVariable = Expression.Variable(typeof(IMergeResult));
-            var assignMergeResult = Expression.Assign(resultVariable, performMergeExpression.Body);
-
-            Expression<Func<bool>> isReplaceTargetExpression = () => 
-                Placeholder.Of<IMergeResult>("result").Action == PostMergeAction.Replace;
-
-            Expression<Func<object>> resultTargetExpression = () => Placeholder.Of<IMergeResult>("result").Target;
-
-            var conditionalReplaceTargetExpression = Expression.IfThen(
-                isReplaceTargetExpression.Body,
-                Expression.Assign(targetMember.GetAccessExpression(scaffold.Target), Expression.Convert(resultTargetExpression.Body, targetMemberType)));
-
-            var transformExpression = base.CreateExpression(scaffold, sourceMember, targetMember);
-
-            var postMergeExpression = Expression.Block(
-                new[] { resultVariable },
-                assignMergeResult,
-                Expression.IfThen(isReplaceTargetExpression.Body, conditionalReplaceTargetExpression));
-
-            var mergeExpression = Expression.Block(
-                new[] { mergeVariable },
-                new Expression[] { assignMerge, Expression.IfThenElse(isMergeNullExpression.Body, transformExpression, postMergeExpression) });
-
+            var sourceMemberTypeExpression = CreateSourceMemberTypeExpression(sourceMemberType);
+            var targetMemberTypeExpression = CreateTargetMemberTypeExpression(targetMemberType);
             var sourceMemberExpression = Expression.Convert(sourceMember.GetAccessExpression(scaffold.Source), typeof(object));
             var targetMemberExpression = Expression.Convert(targetMember.GetAccessExpression(scaffold.Target), typeof(object));
 
-            Expression expression = Expression.IfThenElse(
-                isTargetMemberNull.Body, 
-                transformExpression,
-                mergeExpression);
+            template = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(template);
+            template = new PlaceholderExpressionVisitor("sourceMember", sourceMemberExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("targetMember", targetMemberExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("targetMemberType", targetMemberTypeExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("sourceMemberType", sourceMemberTypeExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("result", ResultVariable).Visit(template);
 
-            expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(expression);
-            expression = new PlaceholderExpressionVisitor("sourceMember", sourceMemberExpression).Visit(expression);
-            expression = new PlaceholderExpressionVisitor("targetMember", targetMemberExpression).Visit(expression);
-            expression = new PlaceholderExpressionVisitor("targetMemberType", targetMemberTypeExpression.Body).Visit(expression);
-            expression = new PlaceholderExpressionVisitor("sourceMemberType", sourceMemberTypeExpression.Body).Visit(expression);
-            expression = new PlaceholderExpressionVisitor("merge", mergeVariable).Visit(expression);
-            return new PlaceholderExpressionVisitor("result", resultVariable).Visit(expression);
+            return template;
         }
 
-        private static Expression<Func<bool>> IsMergeNullExpression()
+        /// <summary>
+        /// Creates an <see cref="Expression"/> that provides the target member <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The target member type.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Expression"/> that provides the target member <see cref="Type"/>.
+        /// </returns>
+        private static Expression CreateTargetMemberTypeExpression(Type type)
         {
-            Expression<Func<bool>> isMergeNull = () => Placeholder.Of<IMerge>("merge") == null;
-            return isMergeNull;
+            return ((type.IsValueType || type.IsSealed)
+                ? (Expression<Func<Type>>)(() => type)
+                : (() => Placeholder.Of<object>("targetMember").GetType())).Body;
         }
 
-        private static Expression<Func<IMerge>> ResolveExpression()
+        /// <summary>
+        /// Creates an <see cref="Expression"/> that provides the source member <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The source member type.
+        /// </param>
+        /// <returns>
+        /// An <see cref="Expression"/> that provides the source member <see cref="Type"/>.
+        /// </returns>
+        private static Expression CreateSourceMemberTypeExpression(Type type)
         {
-            Expression<Func<IMerge>> resolveExpression =
-                () =>
-                Placeholder.Of<IInjectionContext>("context")
-                    .InjectionStore.Resolve<IMerge>(
-                        Placeholder.Of<Type>("sourceMemberType"),
-                        Placeholder.Of<Type>("targetMemberType"));
-            return resolveExpression;
-        }
-
-        private static Expression<Func<Type>> TargetMemberTypeExpression(Type targetMemberType)
-        {
-            var targetMemberTypeExpression = (targetMemberType.IsValueType || targetMemberType.IsSealed)
-                                                 ? (Expression<Func<Type>>)(() => targetMemberType)
-                                                 : (() => Placeholder.Of<object>("targetMember").GetType());
-            return targetMemberTypeExpression;
-        }
-
-        private static Expression<Func<Type>> SourceMemberTypeExpression(Type sourceMemberType)
-        {
-            var sourceMemberTypeExpression = (sourceMemberType.IsValueType || sourceMemberType.IsSealed)
-                                                 ? (Expression<Func<Type>>)(() => sourceMemberType)
-                                                 : (() =>
-                                                    (Placeholder.Of<object>("sourceMember") == null
-                                                         ? sourceMemberType
-                                                         : Placeholder.Of<object>("sourceMember").GetType()));
-            return sourceMemberTypeExpression;
+            return ((type.IsValueType || type.IsSealed)
+                ? (Expression<Func<Type>>)(() => type)
+                : (() => 
+                    (Placeholder.Of<object>("sourceMember") == null
+                        ? type
+                        : Placeholder.Of<object>("sourceMember").GetType()))).Body;
         }
     }
 }
