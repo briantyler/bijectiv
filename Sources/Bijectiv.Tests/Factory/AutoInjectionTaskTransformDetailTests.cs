@@ -70,7 +70,52 @@ namespace Bijectiv.Tests.Factory
             new AutoInjectionTaskTransformDetail().Naught();
 
             // Assert
-        }        
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateExpression_ScaffoldParameterNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.CreateExpression(null, Stub.Create<MemberInfo>(), Stub.Create<MemberInfo>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateExpression_SourceMemberParameterNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.CreateExpression(Stub.Create<InjectionScaffold>(), null, Stub.Create<MemberInfo>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateExpression_TargetMemberParameterNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.CreateExpression(Stub.Create<InjectionScaffold>(), Stub.Create<MemberInfo>(), null);
+
+            // Assert
+        }
 
         [TestMethod]
         [TestCategory("Unit")]

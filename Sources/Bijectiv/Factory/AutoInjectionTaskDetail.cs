@@ -139,8 +139,8 @@ namespace Bijectiv.Factory
         /// The member mapping <see cref="Expression"/>.
         /// </returns>
         protected internal abstract Expression CreateExpression(
-            InjectionScaffold scaffold,
-            MemberInfo sourceMember,
-            MemberInfo targetMember);
+            [NotNull] InjectionScaffold scaffold,
+            [NotNull] MemberInfo sourceMember,
+            [NotNull] MemberInfo targetMember);
     }
 }

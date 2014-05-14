@@ -103,8 +103,21 @@ namespace Bijectiv.Utilities
                 return base.VisitMethodCall(node);
             }
 
-            var argumentName = (ConstantExpression)node.Arguments[0];
-            return !this.name.Equals(argumentName.Value) ? base.VisitMethodCall(node) : this.replacement;
+            var argumentName = node.Arguments[0] as ConstantExpression;
+            if (argumentName != null)
+            {
+                return !this.name.Equals(argumentName.Value) ? base.VisitMethodCall(node) : this.replacement;
+            }
+
+            var member = node.Arguments[0] as MemberExpression;
+            if (member != null)
+            {
+                var value = Expression.Lambda<Func<string>>(member.Member.GetAccessExpression(member.Expression)).Compile()();
+                return !this.name.Equals(value) ? base.VisitMethodCall(node) : this.replacement;
+            }
+
+            throw new InvalidOperationException(
+                string.Format("Unable to replace '{0}' parameter in '{1}'", this.name, node.Arguments[0]));
         }
     }
 }

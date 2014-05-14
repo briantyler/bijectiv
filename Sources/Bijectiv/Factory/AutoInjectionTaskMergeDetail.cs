@@ -100,6 +100,21 @@ namespace Bijectiv.Factory
              *      target.Member = result.Target
              *  }
              */
+
+            if (scaffold == null)
+            {
+                throw new ArgumentNullException("scaffold");
+            }
+
+            if (sourceMember == null)
+            {
+                throw new ArgumentNullException("sourceMember");
+            }
+
+            if (targetMember == null)
+            {
+                throw new ArgumentNullException("targetMember");
+            }
             
             var replaceTargetExpression = Expression.Assign(
                 targetMember.GetAccessExpression(scaffold.Target),
@@ -139,54 +154,41 @@ namespace Bijectiv.Factory
         {
             var sourceMemberType = sourceMember.GetReturnType();
             var targetMemberType = targetMember.GetReturnType();
-            var sourceMemberTypeExpression = CreateSourceMemberTypeExpression(sourceMemberType);
-            var targetMemberTypeExpression = CreateTargetMemberTypeExpression(targetMemberType);
+            var sourceMemberTypeExpression = CreateMemberTypeExpression(sourceMemberType, "sourceMember");
+            var targetMemberTypeExpression = CreateMemberTypeExpression(targetMemberType, "targetMember");
             var sourceMemberExpression = Expression.Convert(sourceMember.GetAccessExpression(scaffold.Source), typeof(object));
             var targetMemberExpression = Expression.Convert(targetMember.GetAccessExpression(scaffold.Target), typeof(object));
 
             template = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(template);
-            template = new PlaceholderExpressionVisitor("sourceMember", sourceMemberExpression).Visit(template);
-            template = new PlaceholderExpressionVisitor("targetMember", targetMemberExpression).Visit(template);
             template = new PlaceholderExpressionVisitor("targetMemberType", targetMemberTypeExpression).Visit(template);
             template = new PlaceholderExpressionVisitor("sourceMemberType", sourceMemberTypeExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("sourceMember", sourceMemberExpression).Visit(template);
+            template = new PlaceholderExpressionVisitor("targetMember", targetMemberExpression).Visit(template);
             template = new PlaceholderExpressionVisitor("result", ResultVariable).Visit(template);
 
             return template;
         }
 
         /// <summary>
-        /// Creates an <see cref="Expression"/> that provides the target member <see cref="Type"/>.
+        /// Creates an <see cref="Expression"/> that provides a member <see cref="Type"/>.
         /// </summary>
         /// <param name="type">
-        /// The target member type.
+        /// The member type.
+        /// </param>
+        /// <param name="name">
+        /// The name that identifies the member.
         /// </param>
         /// <returns>
-        /// An <see cref="Expression"/> that provides the target member <see cref="Type"/>.
+        /// An <see cref="Expression"/> that provides a member <see cref="Type"/>.
         /// </returns>
-        private static Expression CreateTargetMemberTypeExpression(Type type)
+        private static Expression CreateMemberTypeExpression(Type type, string name)
         {
             return ((type.IsValueType || type.IsSealed)
                 ? (Expression<Func<Type>>)(() => type)
-                : (() => Placeholder.Of<object>("targetMember").GetType())).Body;
-        }
-
-        /// <summary>
-        /// Creates an <see cref="Expression"/> that provides the source member <see cref="Type"/>.
-        /// </summary>
-        /// <param name="type">
-        /// The source member type.
-        /// </param>
-        /// <returns>
-        /// An <see cref="Expression"/> that provides the source member <see cref="Type"/>.
-        /// </returns>
-        private static Expression CreateSourceMemberTypeExpression(Type type)
-        {
-            return ((type.IsValueType || type.IsSealed)
-                ? (Expression<Func<Type>>)(() => type)
-                : (() => 
-                    (Placeholder.Of<object>("sourceMember") == null
+                : (() =>
+                    (Placeholder.Of<object>(name) == null
                         ? type
-                        : Placeholder.Of<object>("sourceMember").GetType()))).Body;
+                        : Placeholder.Of<object>(name).GetType()))).Body;
         }
     }
 }

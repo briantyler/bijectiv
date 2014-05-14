@@ -60,6 +60,21 @@ namespace Bijectiv.Factory
             MemberInfo sourceMember,
             MemberInfo targetMember)
         {
+            if (scaffold == null)
+            {
+                throw new ArgumentNullException("scaffold");
+            }
+
+            if (sourceMember == null)
+            {
+                throw new ArgumentNullException("sourceMember");
+            }
+
+            if (targetMember == null)
+            {
+                throw new ArgumentNullException("targetMember");
+            }
+
             var template = CreateExpressionTemplate(sourceMember, targetMember);
             var transform = CreateTransformExpression(scaffold, template, sourceMember);
 

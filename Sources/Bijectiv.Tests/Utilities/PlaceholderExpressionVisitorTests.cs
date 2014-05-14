@@ -139,6 +139,25 @@ namespace Bijectiv.Tests.Utilities
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Substitute_CapturedParameter_SubstitutesExpression()
+        {
+            // Arrange
+            var constant = Expression.Constant(31);
+            const string Parameter = "parameter";
+            Expression<Func<int>> expression = () => Placeholder.Of<int>(Parameter);
+
+            var target = new PlaceholderExpressionVisitor("parameter", constant);
+
+            // Act
+            expression = (Expression<Func<int>>)target.Visit(expression);
+
+            // Assert
+            var @delegate = expression.Compile();
+            Assert.AreEqual(31, @delegate());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Substitute_MultipleParameters_SubstitutesExpression()
         {
             // Arrange
@@ -179,6 +198,27 @@ namespace Bijectiv.Tests.Utilities
             // Assert
             var @delegate = expression.Compile();
             Assert.AreEqual(12, @delegate());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Substitute_DelegateParameter_Throws()
+        {
+            // Arrange
+            var constant = Expression.Constant(31);
+
+            Func<string> parameter = () => "parameter";
+            Expression<Func<int>> expression = () => Placeholder.Of<int>(parameter());
+
+            var target = new PlaceholderExpressionVisitor("parameter", constant);
+
+            // Act
+            expression = (Expression<Func<int>>)target.Visit(expression);
+
+            // Assert
+            var @delegate = expression.Compile();
+            Assert.AreEqual(31, @delegate());
         }
     }
 }
