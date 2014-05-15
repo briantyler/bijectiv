@@ -67,12 +67,14 @@
     <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
+    <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Factory\NullSourceTask.cs" />
     <Compile Include="Factory\ReturnMergeResultTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoInjectionStrategy.cs" />
     <Compile Include="IMergeResult.cs" />
     <Compile Include="IInjection.cs" />
+    <Compile Include="Injections\DelegateMerge.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="TargetCache.cs" />
@@ -92,7 +94,7 @@
     <Compile Include="Factory\ISelectiveExpressionFactory.cs" />
     <Compile Include="Factory\InitializeFragmentsTask.cs" />
     <Compile Include="Factory\InitializeVariablesTask.cs" />
-    <Compile Include="Factory\ITransformFactory.cs" />
+    <Compile Include="Factory\IInjectionFactory.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTask.cs" />
     <Compile Include="Factory\IInjectionTask.cs" />
     <Compile Include="Factory\TransformFactory.cs" />

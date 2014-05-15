@@ -96,8 +96,7 @@ namespace Bijectiv
                 {
                     () => new InstanceInjectionStoreFactory(new IdenticalPrimitiveInjectionStore()),
                     () => new InstanceInjectionStoreFactory(new ConvertibleInjectionStore()),
-                    () => new DelegateInjectionStoreFactory(
-                        new TransformFactory(this.Tasks.Select(item => item()).ToArray()))
+                    () => new DelegateInjectionStoreFactory(new TransformFactory(this.Tasks.Select(item => item()).ToArray()))
                 });
         }
 

@@ -78,17 +78,17 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TaskCollectionParameter_IsAssignedToTaskCollectionProperty()
+        public void CreateInstance_TasksParameter_IsAssignedToTasksProperty()
         {
             // ReSharper disable PossibleMultipleEnumeration
             // Arrange
-            var taskCollection = Stub.Create<IEnumerable<IInjectionTask>>();
+            var tasks = Stub.Create<IEnumerable<IInjectionTask>>();
 
             // Act
-            var target = new TransformFactory(taskCollection);
+            var target = new TransformFactory(tasks);
 
             // Assert
-            Assert.AreEqual(taskCollection, target.TaskCollection);
+            Assert.AreEqual(tasks, target.Tasks);
             // ReSharper restore PossibleMultipleEnumeration
         }
 

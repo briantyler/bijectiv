@@ -62,8 +62,11 @@ namespace Bijectiv.Factory
             scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Target, "target"));
             scaffold.Target = scaffold.Variables.Last();
 
-            scaffold.Variables.Add(Expression.Variable(typeof(object), "targetAsObject"));
-            scaffold.TargetAsObject = scaffold.Variables.Last();
+            if (scaffold.TargetAsObject == null)
+            {
+                scaffold.Variables.Add(Expression.Variable(typeof(object), "targetAsObject"));
+                scaffold.TargetAsObject = scaffold.Variables.Last();
+            }
 
             var sourceToType = Expression.Convert(scaffold.SourceAsObject, scaffold.Definition.Source);
             var assignSource = Expression.Assign(scaffold.Source, sourceToType);

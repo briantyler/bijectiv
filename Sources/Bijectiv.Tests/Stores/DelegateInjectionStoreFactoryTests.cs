@@ -48,7 +48,7 @@ namespace Bijectiv.Tests.Stores
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_TransformFactoryParameterIsNull_Throws()
+        public void CreateInstance_InjectionFactoryParameterIsNull_Throws()
         {
             // Arrange
 
@@ -66,23 +66,23 @@ namespace Bijectiv.Tests.Stores
             // Arrange
 
             // Act
-            new DelegateInjectionStoreFactory(Stub.Create<ITransformFactory>()).Naught();
+            new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>()).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TransformFactoryParameter_IsAssignedToTransformFactoryProperty()
+        public void CreateInstance_InjectionFactoryParameter_IsAssignedToInjectionFactoryProperty()
         {
             // Arrange
-            var transformFactory = Stub.Create<ITransformFactory>();
+            var injectionFactory = Stub.Create<IInjectionFactory<IInjection>>();
 
             // Act
-            var target = new DelegateInjectionStoreFactory(transformFactory);
+            var target = new DelegateInjectionStoreFactory(injectionFactory);
 
             // Assert
-            Assert.AreEqual(transformFactory, target.TransformFactory);
+            Assert.AreEqual(injectionFactory, target.InjectionFactory);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace Bijectiv.Tests.Stores
         public void Create_RegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateInjectionStoreFactory(Stub.Create<ITransformFactory>());
+            var target = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -102,10 +102,10 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Create_ValidParameters_ReturnsCollectionTransformStore()
+        public void Create_ValidParameters_ReturnsCollectionInjectionStore()
         {
             // Arrange
-            var target = new DelegateInjectionStoreFactory(Stub.Create<ITransformFactory>());
+            var target = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
             var registry = new InjectionDefinitionRegistry();
 
             // Act
@@ -124,18 +124,18 @@ namespace Bijectiv.Tests.Stores
             var definition2 = new InjectionDefinition(TestClass1.T, TestClass2.T);
             var registry = new InjectionDefinitionRegistry { definition1, definition2 };
 
-            var transform1 = Stub.Create<ITransform>();
-            var transform2 = Stub.Create<ITransform>();
-            var factoryMock = new Mock<ITransformFactory>(MockBehavior.Strict);
+            var injection1 = Stub.Create<IInjection>();
+            var injection2 = Stub.Create<IInjection>();
+            var factoryMock = new Mock<IInjectionFactory<IInjection>>(MockBehavior.Strict);
 
             // Note: `factoryMock.Setup(_ => _.Create(registry, definition1))` does not work, which is a moq problem.
             factoryMock
                 .Setup(_ => _.Create(registry, It.Is<InjectionDefinition>(d => d == definition1)))
-                .Returns(transform1);
+                .Returns(injection1);
 
             factoryMock
                 .Setup(_ => _.Create(registry, It.Is<InjectionDefinition>(d => d == definition2)))
-                .Returns(transform2);
+                .Returns(injection2);
 
             var target = new DelegateInjectionStoreFactory(factoryMock.Object);
 
@@ -144,7 +144,7 @@ namespace Bijectiv.Tests.Stores
 
             // Assert
             factoryMock.VerifyAll();
-            new[] { transform1, transform2 }.AssertSequenceEqual(result);
+            new[] { injection1, injection2 }.AssertSequenceEqual(result);
         }
     }
 }

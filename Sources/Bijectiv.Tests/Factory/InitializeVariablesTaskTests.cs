@@ -158,6 +158,25 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Execute_ScaffoldTargetAsObjectPropertyIsNotNull_DoesNotAddTargetAsObjectVaraiable()
+        {
+            // Arrange
+            var target = CreateTarget();
+            var scaffold = CreateScaffold();
+
+            var targetAsObject = Expression.Parameter(typeof(object));
+            scaffold.TargetAsObject = targetAsObject;
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            Assert.IsTrue(scaffold.Variables.All(candidate => candidate.Name != "targetAsObject"));
+            Assert.AreEqual(targetAsObject, scaffold.TargetAsObject);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Execute_ValidParameters_AddsTargetAsObjectVariableToScaffoldVariablesProperty()
         {
             // Arrange

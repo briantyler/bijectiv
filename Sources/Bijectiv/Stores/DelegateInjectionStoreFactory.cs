@@ -39,40 +39,40 @@ namespace Bijectiv.Stores
 
     /// <summary>
     /// A <see cref="IInjectionStoreFactory"/> that creates a <see cref="IInjectionStore"/> by using a 
-    /// <see cref="ITransformFactory"/> to create delegate transforms.
+    /// <see cref="IInjectionFactory{T}"/> to create delegate transforms.
     /// </summary>
     public class DelegateInjectionStoreFactory : IInjectionStoreFactory
     {
         /// <summary>
         /// The transform factory that creates the delegate transforms.
         /// </summary>
-        private readonly ITransformFactory transformFactory;
+        private readonly IInjectionFactory<IInjection> injectionFactory;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="DelegateInjectionStoreFactory"/> class.
         /// </summary>
-        /// <param name="transformFactory">
+        /// <param name="injectionFactory">
         /// The transform factory that creates the delegate transforms.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public DelegateInjectionStoreFactory([NotNull] ITransformFactory transformFactory)
+        public DelegateInjectionStoreFactory([NotNull] IInjectionFactory<IInjection> injectionFactory)
         {
-            if (transformFactory == null)
+            if (injectionFactory == null)
             {
-                throw new ArgumentNullException("transformFactory");
+                throw new ArgumentNullException("injectionFactory");
             }
 
-            this.transformFactory = transformFactory;
+            this.injectionFactory = injectionFactory;
         }
 
         /// <summary>
         /// Gets the transform factory that creates the delegate transforms.
         /// </summary>
-        public ITransformFactory TransformFactory
+        public IInjectionFactory<IInjection> InjectionFactory
         {
-            get { return this.transformFactory; }
+            get { return this.injectionFactory; }
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Bijectiv.Stores
             var store = new CollectionInjectionStore();
 
             registry.ForEach(definition => 
-                store.Add(this.TransformFactory.Create(registry, definition)));
+                store.Add(this.InjectionFactory.Create(registry, definition)));
 
             return store;
         }

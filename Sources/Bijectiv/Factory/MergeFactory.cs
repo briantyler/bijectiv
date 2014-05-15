@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformFactory.cs" company="Bijectiv">
+// <copyright file="MergeFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformFactory type.
+//   Defines the MergeFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,25 +40,25 @@ namespace Bijectiv.Factory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A factory that creates <see cref="ITransform"/> instances.
+    /// A factory that creates <see cref="IMerge"/> instances.
     /// </summary>
-    public class TransformFactory : IInjectionFactory<ITransform>
+    public class MergeFactory : IInjectionFactory<IMerge>
     {
-        /// <summary>
+         /// <summary>
         /// The ordered collection of tasks that build the transform delegate.
         /// </summary>
         private readonly IEnumerable<IInjectionTask> tasks;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TransformFactory"/> class.
+        /// Initialises a new instance of the <see cref="MergeFactory"/> class.
         /// </summary>
         /// <param name="tasks">
-        /// The ordered collection of tasks that build the <see cref="ITransform"/>.
+        /// The ordered collection of tasks that build the <see cref="IMerge"/> delegate.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public TransformFactory([NotNull] IEnumerable<IInjectionTask> tasks)
+        public MergeFactory([NotNull] IEnumerable<IInjectionTask> tasks)
         {
             if (tasks == null)
             {
@@ -77,23 +77,23 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
-        /// Creates a <see cref="ITransform"/> from a <see cref="InjectionDefinition"/>.
+        /// Creates a <see cref="IMerge"/> from a <see cref="InjectionDefinition"/>.
         /// </summary>
         /// <param name="definitionRegistry">
         /// The registry containing all known <see cref="InjectionDefinition"/> instances.
         /// </param>
         /// <param name="definition">
-        /// The definition from which to create a <see cref="ITransform"/>.
+        /// The definition from which to create a <see cref="IMerge"/>.
         /// </param>
         /// <returns>
-        /// The <see cref="ITransform"/> that is defined by <paramref name="definition"/>.
+        /// The <see cref="IMerge"/> that is defined by <paramref name="definition"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public ITransform Create(IInjectionDefinitionRegistry definitionRegistry, InjectionDefinition definition)
+        public IMerge Create(IInjectionDefinitionRegistry definitionRegistry, InjectionDefinition definition)
         {
-            if (definitionRegistry == null)
+           if (definitionRegistry == null)
             {
                 throw new ArgumentNullException("definitionRegistry");
             }
@@ -104,19 +104,21 @@ namespace Bijectiv.Factory
             }
 
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
+            var targetAsObject = Expression.Parameter(typeof(object), "targetAsObject");
             var injectionContext = Expression.Parameter(typeof(IInjectionContext), "InjectionContext");
 
             var scaffold = new InjectionScaffold(
-                definitionRegistry, definition, sourceAsObject, injectionContext);
+                definitionRegistry, definition, sourceAsObject, injectionContext)
+                { TargetAsObject = targetAsObject };
 
             this.Tasks.ForEach(item => item.Execute(scaffold));
 
-            var lambda = Expression.Lambda<Func<object, IInjectionContext, object>>(
+            var lambda = Expression.Lambda<Func<object, object, IInjectionContext, IMergeResult>>(
                 Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
                 injectionContext);
 
-            return new DelegateTransform(definition.Source, definition.Target, lambda.Compile());
+            return new DelegateMerge(definition.Source, definition.Target, lambda.Compile());
         }
     }
 }

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransformFactory.cs" company="Bijectiv">
+// <copyright file="IInjectionFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransformFactory type.
+//   Defines the IInjectionFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,31 +32,34 @@ namespace Bijectiv.Factory
     using System;
 
     using Bijectiv.Builder;
-    using Bijectiv.Injections;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a factory that creates <see cref="DelegateTransform"/> instances.
+    /// Represents a factory that creates <typeparamref name="TInjection"/> instances from a 
+    /// <see cref="InjectionDefinition"/> and a <see cref="IInjectionDefinitionRegistry"/>.
     /// </summary>
-    public interface ITransformFactory
+    /// <typeparam name="TInjection">
+    /// The type of <see cref="IInjection"/> to create.
+    /// </typeparam>
+    public interface IInjectionFactory<out TInjection> where TInjection : IInjection
     {
         /// <summary>
-        /// Creates a <see cref="ITransform"/> from a <see cref="InjectionDefinition"/>.
+        /// Creates a <typeparamref name="TInjection"/> from a <see cref="InjectionDefinition"/>.
         /// </summary>
         /// <param name="definitionRegistry">
         /// The registry containing all known <see cref="InjectionDefinition"/> instances.
         /// </param>
         /// <param name="definition">
-        /// The definition from which to create a <see cref="ITransform"/>.
+        /// The definition from which to create a <typeparamref name="TInjection"/>.
         /// </param>
         /// <returns>
-        /// The <see cref="ITransform"/> that is defined by <paramref name="definition"/>.
+        /// The <typeparamref name="TInjection"/> that is defined by <paramref name="definition"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        ITransform Create(
+        TInjection Create(
             [NotNull] IInjectionDefinitionRegistry definitionRegistry, 
             [NotNull] InjectionDefinition definition);
     }
