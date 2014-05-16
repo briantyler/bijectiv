@@ -67,6 +67,7 @@
     <Compile Include="Factory\CacheTargetTask.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactory.cs" />
     <Compile Include="Factory\InitializeMembersTask.cs" />
+    <Compile Include="Factory\InitializeMergeVariablesTask.cs" />
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Factory\NullSourceTask.cs" />
     <Compile Include="Factory\ReturnMergeResultTask.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Factory\DefaultFactoryExpressionFactory.cs" />
     <Compile Include="Factory\ISelectiveExpressionFactory.cs" />
     <Compile Include="Factory\InitializeFragmentsTask.cs" />
-    <Compile Include="Factory\InitializeVariablesTask.cs" />
+    <Compile Include="Factory\InitializeTransformVariablesTask.cs" />
     <Compile Include="Factory\IInjectionFactory.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTask.cs" />
     <Compile Include="Factory\IInjectionTask.cs" />

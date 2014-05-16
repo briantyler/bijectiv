@@ -53,7 +53,8 @@ namespace Bijectiv
         internal BuildConfigurator()
         {
             this.StoreFactories = new List<Func<IInjectionStoreFactory>>();
-            this.Tasks = new List<Func<IInjectionTask>>();
+            this.TransformTasks = new List<Func<IInjectionTask>>();
+            this.MergeTasks = new List<Func<IInjectionTask>>();
 
             this.Reset();
         }
@@ -72,9 +73,16 @@ namespace Bijectiv
         public IList<Func<IInjectionStoreFactory>> StoreFactories { get; private set; }
 
         /// <summary>
-        /// Gets the default sequence of <see cref="IInjectionTask"/> instances.
+        /// Gets the default sequence of <see cref="IInjectionTask"/> instances used for constructing 
+        /// <see cref="ITransform"/> instances.
         /// </summary>
-        public IList<Func<IInjectionTask>> Tasks { get; private set; }
+        public IList<Func<IInjectionTask>> TransformTasks { get; private set; }
+
+        /// <summary>
+        /// Gets the default sequence of <see cref="IInjectionTask"/> instances used for constructing 
+        /// <see cref="IMerge"/> instances.
+        /// </summary>
+        public IList<Func<IInjectionTask>> MergeTasks { get; private set; }
 
         /// <summary>
         /// Resets the configurator to the default configuration.
@@ -82,7 +90,8 @@ namespace Bijectiv
         public void Reset()
         {
             this.ResetStoreFactories();
-            this.ResetTasks();
+            this.ResetTransformTasks();
+            this.ResetMergeTasks();
         }
 
         /// <summary>
@@ -96,21 +105,24 @@ namespace Bijectiv
                 {
                     () => new InstanceInjectionStoreFactory(new IdenticalPrimitiveInjectionStore()),
                     () => new InstanceInjectionStoreFactory(new ConvertibleInjectionStore()),
-                    () => new DelegateInjectionStoreFactory(new TransformFactory(this.Tasks.Select(item => item()).ToArray()))
+                    () => new DelegateInjectionStoreFactory(
+                        new TransformFactory(this.TransformTasks.Select(item => item()).ToArray())),
+                    () => new DelegateInjectionStoreFactory(
+                        new MergeFactory(this.MergeTasks.Select(item => item()).ToArray()))
                 });
         }
 
         /// <summary>
-        /// Resets <see cref="Tasks"/> to its default configuration.
+        /// Resets <see cref="TransformTasks"/> to its default configuration.
         /// </summary>
-        private void ResetTasks()
+        private void ResetTransformTasks()
         {
-            this.Tasks.Clear();
-            this.Tasks.AddRange(
+            this.TransformTasks.Clear();
+            this.TransformTasks.AddRange(
                 new Func<IInjectionTask>[]
                 {
                     () => new InitializeFragmentsTask(), 
-                    () => new InitializeVariablesTask(), 
+                    () => new InitializeTransformVariablesTask(), 
                     () => new InitializeMembersTask(new ReflectionGateway()), 
                     () => new NullSourceTask(),
                     () => new TryGetTargetFromCacheTask(),
@@ -121,6 +133,23 @@ namespace Bijectiv
                     () => new CacheTargetTask(),
                     () => new AutoInjectionTask(new AutoInjectionTaskTransformDetail()), 
                     () => new ReturnTargetAsObjectTask()
+                });
+        }
+
+        /// <summary>
+        /// Resets <see cref="TransformTasks"/> to its default configuration.
+        /// </summary>
+        private void ResetMergeTasks()
+        {
+            this.MergeTasks.Clear();
+            this.MergeTasks.AddRange(
+                new Func<IInjectionTask>[]
+                {
+                    () => new InitializeFragmentsTask(), 
+                    () => new InitializeMergeVariablesTask(), 
+                    () => new InitializeMembersTask(new ReflectionGateway()), 
+                    () => new AutoInjectionTask(new AutoInjectionTaskMergeDetail()), 
+                    () => new ReturnMergeResultTask()
                 });
         }
     }

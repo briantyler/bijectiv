@@ -90,7 +90,8 @@
     <Compile Include="Factory\DefaultFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\FallbackFactoryExpressionFactoryTests.cs" />
     <Compile Include="Factory\InitializeMembersTaskTests.cs" />
-    <Compile Include="Factory\InitializeVariablesTaskTests.cs" />
+    <Compile Include="Factory\InitializeMergeVariablesTaskTests.cs" />
+    <Compile Include="Factory\InitializeTransformVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="Factory\NullSourceTaskTests.cs" />
     <Compile Include="Factory\ReturnMergeResultTaskTests.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Factory\TransformFactoryTests.cs" />
     <Compile Include="Factory\InjectionScaffoldTests.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTaskTests.cs" />
+    <Compile Include="Injections\DelegateMergeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />
     <Compile Include="Stores\CollectionInjectionStoreTests.cs" />

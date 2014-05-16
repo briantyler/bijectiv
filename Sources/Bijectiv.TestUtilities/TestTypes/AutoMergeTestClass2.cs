@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformTestClass1.cs" company="Bijectiv">
+// <copyright file="AutoMergeTestClass2.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,40 +23,35 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformTestClass1 type.
+//   Defines the AutoMergeTestClass2 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
     /// <summary>
-    /// The first auto transform test class.
+    /// The second auto merge test class.
     /// </summary>
-    public class AutoTransformTestClass1
+    public class AutoMergeTestClass2
     {
         /// <summary>
-        /// An <see cref="int"/> field.
+        /// The field string.
         /// </summary>
-        public int FieldInt;
+        public string FieldString;
 
         /// <summary>
-        /// A field that has derived types.
+        /// An <see cref="AutoMergeTestClass1"/> field.
         /// </summary>
-        public BaseTestClass1 FieldBase;
+        public AutoMergeTestClass1 FieldMerge;
 
         /// <summary>
-        /// Gets or sets an <see cref="int"/> property.
+        /// Gets or sets a <see cref="int"/> property.
         /// </summary>
         public int PropertyInt { get; set; }
 
         /// <summary>
-        /// Gets or sets a property that has derived types.
+        /// Gets or sets an <see cref="AutoMergeTestClass1"/> property.
         /// </summary>
-        public BaseTestClass1 PropertyBase { get; set; }
-
-        /// <summary>
-        /// Gets or sets a sealed property.
-        /// </summary>
-        public SealedClass1 PropertySealed { get; set; }
+        public AutoMergeTestClass1 PropertyMerge { get; set; }
     }
 }

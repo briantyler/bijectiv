@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeVariablesTask.cs" company="Bijectiv">
+// <copyright file="InitializeMergeVariablesTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeVariablesTask type.
+//   Defines the InitializeMergeVariablesTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,12 +33,10 @@ namespace Bijectiv.Factory
     using System.Linq;
     using System.Linq.Expressions;
 
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// The task that initializes the scaffold variables.
+    /// The task that initializes the scaffold variables for a <see cref="IMerge"/>.
     /// </summary>
-    public class InitializeVariablesTask : IInjectionTask
+    public class InitializeMergeVariablesTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -46,10 +44,7 @@ namespace Bijectiv.Factory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -62,16 +57,14 @@ namespace Bijectiv.Factory
             scaffold.Variables.Add(Expression.Variable(scaffold.Definition.Target, "target"));
             scaffold.Target = scaffold.Variables.Last();
 
-            if (scaffold.TargetAsObject == null)
-            {
-                scaffold.Variables.Add(Expression.Variable(typeof(object), "targetAsObject"));
-                scaffold.TargetAsObject = scaffold.Variables.Last();
-            }
-
             var sourceToType = Expression.Convert(scaffold.SourceAsObject, scaffold.Definition.Source);
             var assignSource = Expression.Assign(scaffold.Source, sourceToType);
 
+            var targetToType = Expression.Convert(scaffold.TargetAsObject, scaffold.Definition.Target);
+            var assignTarget = Expression.Assign(scaffold.Target, targetToType);
+
             scaffold.Expressions.Add(assignSource);
+            scaffold.Expressions.Add(assignTarget);
         }
     }
 }

@@ -99,6 +99,53 @@ namespace Bijectiv.Tests
             Assert.AreSame(target.PropertyBase, target.FieldBase);
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Spike_AutoMerge_AutoMerges()
+        {
+            // Arrange
+            var builder = new InjectionStoreBuilder();
+            builder.Register<AutoMergeTestClass1, AutoMergeTestClass1>().AutoExact();
+            builder.Register<AutoMergeTestClass2, AutoMergeTestClass2>().AutoExact();
+
+            var mergeTarget1 = new AutoMergeTestClass1 { FieldInt = 10, PropertyString = "1t" };
+            var mergeTarget2 = new AutoMergeTestClass1 { FieldInt = 20, PropertyString = "2t" };
+            var source = new AutoMergeTestClass2
+            {
+                PropertyInt = 5,
+                FieldString = "5s",
+                FieldMerge = new AutoMergeTestClass1 { FieldInt = 1, PropertyString = "1s" },
+                PropertyMerge = new AutoMergeTestClass1 { FieldInt = 2, PropertyString = "2s" },
+            };
+            var target = new AutoMergeTestClass2
+            {
+                PropertyInt = 7,
+                FieldString = "7t",
+                FieldMerge = mergeTarget1,
+                PropertyMerge = mergeTarget2,
+            };
+
+            var store = builder.Build();
+
+            var merge = store.Resolve<IMerge>(typeof(AutoMergeTestClass2), typeof(AutoMergeTestClass2));
+
+            // Act
+            var result = merge.Merge(source, target, CreateContext(store));
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.None, result.Action);
+            Assert.AreEqual(target, result.Target);
+            Assert.AreEqual(5, target.PropertyInt);
+            Assert.AreEqual("5s", target.FieldString);
+            Assert.AreSame(mergeTarget1, target.FieldMerge);
+            Assert.AreSame(mergeTarget2, target.PropertyMerge);
+
+            Assert.AreEqual(1, mergeTarget1.FieldInt);
+            Assert.AreEqual("1s", mergeTarget1.PropertyString);
+            Assert.AreEqual(2, mergeTarget2.FieldInt);
+            Assert.AreEqual("2s", mergeTarget2.PropertyString);
+        }
+
         private static InjectionContext CreateContext(IInjectionStore store)
         {
             return new InjectionContext(CultureInfo.InvariantCulture, type => { throw new Exception(); }, store);

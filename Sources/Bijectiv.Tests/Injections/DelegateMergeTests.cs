@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelegateTransformTests.cs" company="Bijectiv">
+// <copyright file="DelegateMergeTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,11 +23,10 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the DelegateTransformTests type.
+//   Defines the DelegateMergeTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Injections
 {
     using System;
@@ -40,13 +39,13 @@ namespace Bijectiv.Tests.Injections
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="DelegateTransform"/> class.
+    /// This class tests the <see cref="DelegateMerge"/> class.
     /// </summary>
     [TestClass]
-    public class DelegateTransformTests
+    public class DelegateMergeTests
     {
-        private static readonly Func<object, IInjectionContext, object> Delegate = 
-            (source, context) => Placeholder.Of<TestClass2>();
+        private static readonly Func<object, object, IInjectionContext, IMergeResult> Delegate =
+            (source, target, context) => Placeholder.Of<IMergeResult>();
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -55,7 +54,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate).Naught();
+            new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate).Naught();
 
             // Assert
         }
@@ -68,7 +67,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new DelegateTransform(null, typeof(TestClass2), Delegate).Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new DelegateMerge(null, typeof(TestClass2), Delegate).Naught();
 
             // Assert
         }
@@ -81,7 +81,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new DelegateTransform(typeof(TestClass1), null, Delegate).Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new DelegateMerge(typeof(TestClass1), null, Delegate).Naught();
 
             // Assert
         }
@@ -94,7 +95,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new DelegateTransform(typeof(TestClass1), typeof(TestClass2), null).Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new DelegateMerge(typeof(TestClass1), typeof(TestClass2), null).Naught();
 
             // Assert
         }
@@ -106,7 +108,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
             Assert.AreEqual(typeof(TestClass1), target.Source);
@@ -119,7 +121,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
             Assert.AreEqual(typeof(TestClass2), target.Target);
@@ -132,7 +134,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
             Assert.AreEqual(Delegate, target.Delegate);
@@ -141,51 +143,33 @@ namespace Bijectiv.Tests.Injections
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Transform_InjectionContextParameterIsNull_Throws()
+        public void Merge_InjectionContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Act
-            target.Transform(Stub.Create<object>(), null);
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), null);
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_ValidParameters_InvokesDelegate()
+        public void Merge_ValidParameters_InvokesDelegate()
         {
             // Arrange
             var called = new[] { false };
-            Func<object, IInjectionContext, object> @delegate = (s, c) => called[0] = true;
-
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
-
-            // Act
-            target.Transform(Stub.Create<object>(), Stub.Create<IInjectionContext>());
-
-            // Assert
-            Assert.IsTrue(called[0]);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Transform_ValidParameters_PassesSourceToDelegate()
-        {
-            // Arrange
-            var called = new[] { false };
-            var source = Stub.Create<object>();
-            Func<object, IInjectionContext, object> @delegate = (s, c) =>
+            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
             {
-                Assert.AreEqual(source, s);
-                return called[0] = true;
+                called[0] = true;
+                return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Transform(source, Stub.Create<IInjectionContext>());
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>());
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -193,24 +177,88 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_ValidParameters_PassesContextToDelegate()
+        public void Merge_ValidParameters_PassesSourceToDelegate()
+        {
+            // Arrange
+            var called = new[] { false };
+            var sourceInstance = Stub.Create<object>();
+            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            {
+                Assert.AreEqual(sourceInstance, s);
+                called[0] = true;
+                return Stub.Create<IMergeResult>();
+            };
+
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            target.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>());
+
+            // Assert
+            Assert.IsTrue(called[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_PassesTargetToDelegate()
+        {
+            // Arrange
+            var called = new[] { false };
+            var targetInstance = Stub.Create<object>();
+            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            {
+                Assert.AreEqual(targetInstance, t);
+                called[0] = true;
+                return Stub.Create<IMergeResult>();
+            };
+
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            target.Merge(Stub.Create<object>(), targetInstance, Stub.Create<IInjectionContext>());
+
+            // Assert
+            Assert.IsTrue(called[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_PassesContextToDelegate()
         {
             // Arrange
             var called = new[] { false };
             var context = Stub.Create<IInjectionContext>();
-            Func<object, IInjectionContext, object> @delegate = (s, c) =>
+            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
             {
                 Assert.AreEqual(context, c);
-                return called[0] = true;
+                called[0] = true;
+                return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Transform(Stub.Create<object>(), context);
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), context);
 
             // Assert
             Assert.IsTrue(called[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_ValidParameters_ReturnsDelegateResult()
+        {
+            // Arrange
+            var expected = Stub.Create<IMergeResult>();
+            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) => expected;
+
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            var result = target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>());
+
+            // Assert
+            Assert.AreEqual(expected, result);
         }
     }
 }

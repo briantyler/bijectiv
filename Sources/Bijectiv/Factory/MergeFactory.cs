@@ -114,8 +114,9 @@ namespace Bijectiv.Factory
             this.Tasks.ForEach(item => item.Execute(scaffold));
 
             var lambda = Expression.Lambda<Func<object, object, IInjectionContext, IMergeResult>>(
-                Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
+                Expression.Block(typeof(IMergeResult), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
+                targetAsObject,
                 injectionContext);
 
             return new DelegateMerge(definition.Source, definition.Target, lambda.Compile());

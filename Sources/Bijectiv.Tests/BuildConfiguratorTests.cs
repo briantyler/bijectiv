@@ -57,7 +57,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_TasksInitialized()
+        public void CreateInstance_DefaultParameters_TransformTasksInitialized()
         {
             // Arrange
 
@@ -65,10 +65,10 @@ namespace Bijectiv.Tests
             var target = new BuildConfigurator();
 
             // Assert
-            var tasks = target.Tasks.Select(item => item()).ToArray();
+            var tasks = target.TransformTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeVariablesTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeTransformVariablesTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMembersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(NullSourceTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(TryGetTargetFromCacheTask));
@@ -97,6 +97,29 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_MergeTasksInitialized()
+        {
+            // Arrange
+
+            // Act
+            var target = new BuildConfigurator();
+
+            // Assert
+            var tasks = target.MergeTasks.Select(item => item()).ToArray();
+            var index = 0;
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMergeVariablesTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMembersTask));
+            Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
+            Assert.IsInstanceOfType(
+                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
+            Assert.IsInstanceOfType(tasks[index++], typeof(ReturnMergeResultTask));
+
+            Assert.AreEqual(index, tasks.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_DefaultParameters_StoreFactoriesInitialized()
         {
             // Arrange
@@ -105,13 +128,27 @@ namespace Bijectiv.Tests
             var target = new BuildConfigurator();
 
             // Assert
+            var index = 0;
             var factories = target.StoreFactories.Select(item => item()).ToArray();
-            Assert.AreEqual(3, factories.Length);
-            Assert.IsInstanceOfType(factories[0], typeof(InstanceInjectionStoreFactory));
-            Assert.IsInstanceOfType(((InstanceInjectionStoreFactory)factories[0]).Instance, typeof(IdenticalPrimitiveInjectionStore));
-            Assert.IsInstanceOfType(factories[1], typeof(InstanceInjectionStoreFactory));
-            Assert.IsInstanceOfType(((InstanceInjectionStoreFactory)factories[1]).Instance, typeof(ConvertibleInjectionStore));
-            Assert.IsInstanceOfType(factories[2], typeof(DelegateInjectionStoreFactory));
+
+            Assert.IsInstanceOfType(factories[index], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((InstanceInjectionStoreFactory)factories[index++]).Instance, 
+                typeof(IdenticalPrimitiveInjectionStore));
+            Assert.IsInstanceOfType(factories[index], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((InstanceInjectionStoreFactory)factories[index++]).Instance, 
+                typeof(ConvertibleInjectionStore));
+            Assert.IsInstanceOfType(factories[index], typeof(DelegateInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((DelegateInjectionStoreFactory)factories[index++]).InjectionFactory,
+                typeof(TransformFactory));
+            Assert.IsInstanceOfType(factories[index], typeof(DelegateInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((DelegateInjectionStoreFactory)factories[index++]).InjectionFactory,
+                typeof(MergeFactory));
+            
+            Assert.AreEqual(index, factories.Length);
         }
     }
 }

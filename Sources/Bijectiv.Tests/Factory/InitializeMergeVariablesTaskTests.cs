@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeVariablesTaskTests.cs" company="Bijectiv">
+// <copyright file="InitializeMergeVariablesTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeVariablesTaskTests type.
+//   Defines the InitializeMergeVariablesTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -41,10 +41,10 @@ namespace Bijectiv.Tests.Factory
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="InitializeVariablesTask"/> class.
+    /// This class tests the <see cref="InitializeMergeVariablesTask"/> class.
     /// </summary>
     [TestClass]
-    public class InitializeVariablesTaskTests
+    public class InitializeMergeVariablesTaskTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -53,7 +53,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new InitializeVariablesTask().Naught();
+            new InitializeTransformVariablesTask().Naught();
 
             // Assert
         }
@@ -85,7 +85,7 @@ namespace Bijectiv.Tests.Factory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(3, scaffold.Variables.Count());
+            Assert.AreEqual(2, scaffold.Variables.Count());
         }
 
         [TestMethod]
@@ -158,59 +158,6 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldTargetAsObjectPropertyIsNotNull_DoesNotAddTargetAsObjectVaraiable()
-        {
-            // Arrange
-            var target = CreateTarget();
-            var scaffold = CreateScaffold();
-
-            var targetAsObject = Expression.Parameter(typeof(object));
-            scaffold.TargetAsObject = targetAsObject;
-
-            // Act
-            target.Execute(scaffold);
-
-            // Assert
-            Assert.IsTrue(scaffold.Variables.All(candidate => candidate.Name != "targetAsObject"));
-            Assert.AreEqual(targetAsObject, scaffold.TargetAsObject);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Execute_ValidParameters_AddsTargetAsObjectVariableToScaffoldVariablesProperty()
-        {
-            // Arrange
-            var target = CreateTarget();
-            var scaffold = CreateScaffold();
-
-            // Act
-            target.Execute(scaffold);
-
-            // Assert
-            var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "targetAsObject");
-            Assert.IsNotNull(variable);
-            Assert.IsInstanceOfType(variable, typeof(ParameterExpression));
-            Assert.AreEqual(typeof(object), variable.Type);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Execute_ValidParameters_AssignsTargetAsObjectVariableToScaffoldTargetAsObjectProperty()
-        {
-            // Arrange
-            var target = CreateTarget();
-            var scaffold = CreateScaffold();
-
-            // Act
-            target.Execute(scaffold);
-
-            // Assert
-            var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "targetAsObject");
-            Assert.AreEqual(variable, scaffold.TargetAsObject);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Execute_ValidParameters_ExpectedNumberOfExpressionsAddedToScaffold()
         {
             // Arrange
@@ -221,7 +168,7 @@ namespace Bijectiv.Tests.Factory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(1, scaffold.Expressions.Count());
+            Assert.AreEqual(2, scaffold.Expressions.Count());
         }
 
         [TestMethod]
@@ -231,23 +178,50 @@ namespace Bijectiv.Tests.Factory
             // Arrange
             var target = CreateTarget();
             var scaffold = CreateScaffold();
-            object source = new TestClass1();
+            object sourceInstance = new TestClass1();
 
             // Act
             target.Execute(scaffold);
-            
-            // Assert
-            var result = Expression.Lambda<Func<object, TestClass1>>(
-                    Expression.Block(scaffold.Variables, scaffold.Expressions.Concat(new[] { scaffold.Source })),
-                    (ParameterExpression)scaffold.SourceAsObject)
-                .Compile()(source);
 
-            Assert.AreEqual(source, result);
+            // Assert
+            var body = Expression.Block(
+                scaffold.Variables, 
+                scaffold.Expressions.Take(1).Concat(new[] { scaffold.Source }));
+            var result = Expression.Lambda<Func<object, TestClass1>>(
+                    body,
+                    (ParameterExpression)scaffold.SourceAsObject)
+                .Compile()(sourceInstance);
+
+            Assert.AreEqual(sourceInstance, result);
         }
 
-        private static InitializeVariablesTask CreateTarget()
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_ValidParameters_AddedExpressionAssignsTargetAsObjectToTarget()
         {
-            return new InitializeVariablesTask();
+            // Arrange
+            var target = CreateTarget();
+            var scaffold = CreateScaffold();
+            object targetInstance = new TestClass2();
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            var body = Expression.Block(
+               scaffold.Variables,
+               scaffold.Expressions.Skip(1).Concat(new[] { scaffold.Target }));
+            var result = Expression.Lambda<Func<object, TestClass2>>(
+                    body,
+                    (ParameterExpression)scaffold.TargetAsObject)
+                .Compile()(targetInstance);
+
+            Assert.AreEqual(targetInstance, result);
+        }
+
+        private static InitializeMergeVariablesTask CreateTarget()
+        {
+            return new InitializeMergeVariablesTask();
         }
 
         private static InjectionScaffold CreateScaffold()
@@ -256,7 +230,10 @@ namespace Bijectiv.Tests.Factory
                 Stub.Create<IInjectionDefinitionRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
-                Expression.Parameter(typeof(IInjectionContext)));
+                Expression.Parameter(typeof(IInjectionContext)))
+                {
+                    TargetAsObject = Expression.Parameter(typeof(object))
+                };
         }
     }
 }
