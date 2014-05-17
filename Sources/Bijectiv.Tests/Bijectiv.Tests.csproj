@@ -93,6 +93,7 @@
     <Compile Include="Factory\InitializeMergeVariablesTaskTests.cs" />
     <Compile Include="Factory\InitializeTransformVariablesTaskTests.cs" />
     <Compile Include="Factory\InititalizeFragmentsTaskTests.cs" />
+    <Compile Include="Factory\MergeFactoryTests.cs" />
     <Compile Include="Factory\NullSourceTaskTests.cs" />
     <Compile Include="Factory\ReturnMergeResultTaskTests.cs" />
     <Compile Include="Factory\ReturnTargetAsObjectTaskTests.cs" />

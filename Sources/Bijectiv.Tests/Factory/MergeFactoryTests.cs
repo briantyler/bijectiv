@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TransformFactoryTests.cs" company="Bijectiv">
+// <copyright file="MergeFactoryTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TransformFactoryTests type.
+//   Defines the MergeFactoryTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -45,10 +45,10 @@ namespace Bijectiv.Tests.Factory
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="TransformFactory"/> class.
+    /// This class tests the <see cref="MergeFactory"/> class.
     /// </summary>
     [TestClass]
-    public class TransformFactoryTests
+    public class MergeFactoryTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -57,7 +57,7 @@ namespace Bijectiv.Tests.Factory
             // Arrange
 
             // Act
-            new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>()).Naught();
+            new MergeFactory(Stub.Create<IEnumerable<IInjectionTask>>()).Naught();
 
             // Assert
         }
@@ -71,7 +71,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new TransformFactory(null).Naught();
+            new MergeFactory(null).Naught();
 
             // Assert
         }
@@ -85,7 +85,7 @@ namespace Bijectiv.Tests.Factory
             var tasks = Stub.Create<IEnumerable<IInjectionTask>>();
 
             // Act
-            var target = new TransformFactory(tasks);
+            var target = new MergeFactory(tasks);
 
             // Assert
             Assert.AreEqual(tasks, target.Tasks);
@@ -98,7 +98,7 @@ namespace Bijectiv.Tests.Factory
         public void Create_DefinitionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
+            var target = new MergeFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -113,7 +113,7 @@ namespace Bijectiv.Tests.Factory
         public void Create_DefinitionRegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
+            var target = new MergeFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -124,16 +124,18 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Create_ValidParameters_ReturnsDelegateTransform()
+        public void Create_ValidParameters_ReturnsDelegateMerge()
         {
             // Arrange
             var taskMock = new Mock<IInjectionTask>();
             taskMock
                 .Setup(_ => _.Execute(It.IsAny<InjectionScaffold>()))
-                .Callback((InjectionScaffold s) => s.Expressions.Add(Expression.Constant(new object())));
+                .Callback(
+                    (InjectionScaffold s) => 
+                        s.Expressions.Add(Expression.Constant(Stub.Create<IMergeResult>())));
 
             var taskCollection = new List<IInjectionTask> { taskMock.Object };
-            var target = new TransformFactory(taskCollection);
+            var target = new MergeFactory(taskCollection);
 
             // Act
             var result = target.Create(
@@ -141,7 +143,7 @@ namespace Bijectiv.Tests.Factory
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(DelegateTransform));
+            Assert.IsInstanceOfType(result, typeof(DelegateMerge));
             Assert.AreEqual(TestClass1.T, result.Source);
             Assert.AreEqual(TestClass2.T, result.Target);
         }
@@ -155,9 +157,11 @@ namespace Bijectiv.Tests.Factory
             var sourceInstance = new TestClass1();
             var targetInstance = new TestClass2();
             var injectionContext = Stub.Create<IInjectionContext>();
+            var mergeResult = Stub.Create<IMergeResult>();
 
             Expression<Action<IInjectionContext>> validateContext = o => Assert.AreEqual(injectionContext, o);
             Expression<Action<object>> validateSource = o => Assert.AreEqual(sourceInstance, o);
+            Expression<Action<object>> validateTarget = o => Assert.AreEqual(targetInstance, o);
 
             var validateParametersTaskMock = repository.Create<IInjectionTask>();
             validateParametersTaskMock
@@ -171,9 +175,13 @@ namespace Bijectiv.Tests.Factory
                         var validateSourceExpression =
                             new ParameterExpressionVisitor(validateSource.Parameters[0], s.SourceAsObject)
                             .Visit(validateSource.Body);
+                        var validateTargetExpression =
+                            new ParameterExpressionVisitor(validateTarget.Parameters[0], s.TargetAsObject)
+                            .Visit(validateTarget.Body);
 
                         s.Expressions.Add(validateContextExpression);
                         s.Expressions.Add(validateSourceExpression);
+                        s.Expressions.Add(validateTargetExpression);
                     });
 
             var returnTaskMock = new Mock<IInjectionTask>();
@@ -182,8 +190,8 @@ namespace Bijectiv.Tests.Factory
                 .Callback(
                     (InjectionScaffold s) =>
                     {
-                        var variable = Expression.Variable(typeof(TestClass2));
-                        var assign = Expression.Assign(variable, Expression.Constant(targetInstance));
+                        var variable = Expression.Variable(typeof(IMergeResult));
+                        var assign = Expression.Assign(variable, Expression.Constant(mergeResult));
                         s.Variables.Add(variable);
                         s.Expressions.Add(assign);
                         s.Expressions.Add(variable);
@@ -194,18 +202,18 @@ namespace Bijectiv.Tests.Factory
                 validateParametersTaskMock.Object, 
                 returnTaskMock.Object
             };
-            var target = new TransformFactory(taskCollection);
+            var target = new MergeFactory(taskCollection);
 
             // Act
             var injection = target.Create(
                 Stub.Create<IInjectionDefinitionRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            var result = injection.Transform(sourceInstance, injectionContext);
+            var result = injection.Merge(sourceInstance, targetInstance, injectionContext);
 
             // Assert
             repository.VerifyAll();
-            Assert.AreEqual(targetInstance, result);
+            Assert.AreEqual(mergeResult, result);
         }
     }
 }
