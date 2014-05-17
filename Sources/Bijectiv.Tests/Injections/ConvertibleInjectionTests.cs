@@ -189,6 +189,54 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Transform_StringScientificNotationToFloat_Converts()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(float));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            var result = target.Transform("2.3e4", contextMock.Object);
+
+            // Assert
+            Assert.AreEqual(2.3e4f, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_StringScientificNotationToDouble_Converts()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(double));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            var result = target.Transform("2.3e4", contextMock.Object);
+
+            // Assert
+            Assert.AreEqual(2.3e4, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_StringScientificNotationToDecimal_Converts()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(decimal));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            var result = target.Transform("2.3e4", contextMock.Object);
+
+            // Assert
+            Assert.AreEqual(2.3e4m, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Merge_ValidParameters_PostMergeActionIsReplace()
         {
             // Arrange

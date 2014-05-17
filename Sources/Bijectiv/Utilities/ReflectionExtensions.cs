@@ -187,5 +187,27 @@ namespace Bijectiv.Utilities
             throw new InvalidOperationException(
                 string.Format("Unable to determine return type for member '{0}", @this));
         }
+
+        /// <summary>
+        /// Gets the default value for <see cref="Type"/> <paramref name="this"/>.
+        /// </summary>
+        /// <param name="this">
+        /// The type for which to get the default value.
+        /// </param>
+        /// <returns>
+        /// The default value <see cref="object"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public static object GetDefault([NotNull] this Type @this)
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            return @this.IsValueType ? Activator.CreateInstance(@this) : null;
+        }
     }
 }

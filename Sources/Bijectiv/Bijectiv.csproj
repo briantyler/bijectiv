@@ -75,9 +75,11 @@
     <Compile Include="IAutoInjectionStrategy.cs" />
     <Compile Include="IMergeResult.cs" />
     <Compile Include="IInjection.cs" />
+    <Compile Include="Injections\EnumerableToArrayInjection.cs" />
     <Compile Include="Injections\DelegateMerge.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="PostMergeAction.cs" />
+    <Compile Include="Stores\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />

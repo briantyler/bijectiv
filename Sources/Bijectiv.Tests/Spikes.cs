@@ -30,13 +30,16 @@
 namespace Bijectiv.Tests
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Globalization;
 
+    using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class Spikes
     {
@@ -97,6 +100,85 @@ namespace Bijectiv.Tests
             Assert.IsNotNull(target.PropertyBase);
             Assert.IsNotNull(target.FieldBase);
             Assert.AreSame(target.PropertyBase, target.FieldBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Spike_AutoTransformCollection_AutoTransforms()
+        {
+            // Arrange
+            var builder = new InjectionStoreBuilder();
+            builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
+
+            var @sealed = new SealedClass1();
+            builder
+                .Register<SealedClass1, SealedClass1>()
+                .NullSourceCustom(ctx => @sealed);
+
+            builder.Register<BaseTestClass1, BaseTestClass1>();
+            builder.Register<DerivedTestClass1, BaseTestClass1>();
+
+            var @base1 = new BaseTestClass1();
+            var @base2 = new DerivedTestClass1();
+            var source1 = new AutoTransformTestClass1
+            {
+                PropertyInt = 33,
+                FieldInt = 17,
+                PropertySealed = null,
+                FieldBase = @base1,
+                PropertyBase = @base2,
+            };
+
+            var source2 = new AutoTransformTestClass1
+            {
+                PropertyInt = 12,
+                FieldInt = 82,
+                PropertySealed = new SealedClass1(),
+                FieldBase = @base2,
+                PropertyBase = @base1,
+            };
+
+            var store = builder.Build();
+
+            var transform = store.Resolve<ITransform>(typeof(IEnumerable<AutoTransformTestClass1>), typeof(AutoTransformTestClass1[]));
+
+            // Act
+            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(store));
+
+            // Assert
+            Assert.AreEqual(2, target.Length);
+
+            Assert.AreEqual(33, target[0].PropertyInt);
+            Assert.AreEqual(17, target[0].FieldInt);
+            Assert.AreEqual(@sealed, target[0].PropertySealed);
+            Assert.IsNotNull(target[0].FieldBase);
+            Assert.IsNotNull(target[0].PropertyBase);
+
+            Assert.AreEqual(12, target[1].PropertyInt);
+            Assert.AreEqual(82, target[1].FieldInt);
+            Assert.IsNotNull(target[1].PropertySealed);
+            Assert.IsNotNull(target[1].FieldBase);
+            Assert.IsNotNull(target[1].PropertyBase);
+
+            Assert.AreEqual(target[0].FieldBase, target[1].PropertyBase);
+            Assert.AreEqual(target[0].PropertyBase, target[1].FieldBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Spike_StringToDecimalArray_Transforms()
+        {
+            // Arrange
+            var store = new InjectionStoreBuilder().Build();
+
+            var transform = store.Resolve<ITransform>(typeof(IEnumerable), typeof(decimal[]));
+            
+            // Act
+            var result = (decimal[])transform
+                .Transform(new object[] { "1", 5, null, "19.753", 8.8 }, CreateContext(store));
+
+            // Assert
+            new[] { 1, 5, default(decimal), 19.753m, 8.8m }.AssertSequenceEqual(result);
         }
 
         [TestMethod]

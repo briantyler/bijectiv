@@ -369,5 +369,31 @@ namespace Bijectiv.Tests.Utilities
             // Assert
             Assert.AreEqual(typeof(int), result);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetDefault_ThisParameterIsValueType_ReturnsDefault()
+        {
+            // Arrange
+
+            // Act
+            var result = typeof(int).GetDefault();
+
+            // Assert
+            Assert.AreEqual(default(int), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetDefault_ThisParameterIsNotValueType_ReturnsDefault()
+        {
+            // Arrange
+
+            // Act
+            var result = typeof(TestClass1).GetDefault();
+
+            // Assert
+            Assert.AreEqual(default(TestClass1), result);
+        }
     }
 }

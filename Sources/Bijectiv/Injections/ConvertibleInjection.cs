@@ -30,6 +30,9 @@
 namespace Bijectiv.Injections
 {
     using System;
+    using System.Globalization;
+
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -96,7 +99,7 @@ namespace Bijectiv.Injections
         {
             if (source == null)
             {
-                return this.Target.IsClass ? null : Activator.CreateInstance(this.Target);
+                return this.Target.GetDefault();
             }
 
             if (context == null)
@@ -104,7 +107,21 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            return Convert.ChangeType(source, this.Target, context.Culture);
+            try
+            {
+                return Convert.ChangeType(source, this.Target, context.Culture);
+            }
+            catch (FormatException)
+            {
+                var sourceString = source as string;
+                if (sourceString != null && this.Target == typeof(decimal))
+                {
+                    return decimal.Parse(sourceString, NumberStyles.Float, context.Culture);
+                }
+
+                throw;
+            }
+            
         }
 
         /// <summary>

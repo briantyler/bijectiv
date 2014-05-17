@@ -139,6 +139,10 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((InstanceInjectionStoreFactory)factories[index++]).Instance, 
                 typeof(ConvertibleInjectionStore));
+            Assert.IsInstanceOfType(factories[index], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((InstanceInjectionStoreFactory)factories[index++]).Instance,
+                typeof(EnumerableToArrayInjectionStore));
             Assert.IsInstanceOfType(factories[index], typeof(DelegateInjectionStoreFactory));
             Assert.IsInstanceOfType(
                 ((DelegateInjectionStoreFactory)factories[index++]).InjectionFactory,
