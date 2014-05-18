@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionStore.cs" company="Bijectiv">
+// <copyright file="EnumerableToArrayInjectionStore.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,20 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionStore type.
+//   Defines the EnumerableToArrayInjectionStore type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Stores
 {
     using System;
+    using System.Collections;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Injections;
 
     /// <summary>
-    /// Represents a store that holds <see cref="IInjection"/>.
+    /// A store that resolves <see cref="IInjection"/> instances that inject between <see cref="IEnumerable"/> 
+    /// instances and one-dimensional array instances.
     /// </summary>
-    public interface IInjectionStore
+    public class EnumerableToArrayInjectionStore : IInjectionStore
     {
         /// <summary>
         /// Resolves a <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into
@@ -55,7 +57,34 @@ namespace Bijectiv
         /// A <typeparamref name="TInjection"/> that injects instances of type <paramref name="source"/> into 
         /// instances of type <paramref name="target"/> if one exists, or; <c>null</c> otherwise.
         /// </returns>
-        TInjection Resolve<TInjection>([NotNull] Type source, [NotNull] Type target)
-            where TInjection : class, IInjection;
+        public TInjection Resolve<TInjection>(Type source, Type target) where TInjection : class, IInjection
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (!typeof(IEnumerable).IsAssignableFrom(source))
+            {
+                return null;
+            }
+
+            if (!target.IsArray)
+            {
+                return null;
+            }
+
+            if (target.GetArrayRank() != 1)
+            {
+                return null;
+            }
+
+            return new EnumerableToArrayInjection(source, target) as TInjection;
+        }
     }
 }

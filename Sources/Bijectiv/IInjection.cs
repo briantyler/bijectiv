@@ -42,7 +42,7 @@ namespace Bijectiv
         Type Source { get; }
 
         /// <summary>
-        /// Gets the target type created by the injection.
+        /// Gets the target type supported by the injection.
         /// </summary>
         Type Target { get; } 
     }

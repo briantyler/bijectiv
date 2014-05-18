@@ -113,15 +113,14 @@ namespace Bijectiv.Injections
             }
             catch (FormatException)
             {
-                var sourceString = source as string;
-                if (sourceString != null && this.Target == typeof(decimal))
+                var sourceString = (string)source;
+                if (this.Target == typeof(decimal))
                 {
                     return decimal.Parse(sourceString, NumberStyles.Float, context.Culture);
                 }
 
                 throw;
             }
-            
         }
 
         /// <summary>

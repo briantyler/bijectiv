@@ -189,6 +189,22 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ExpectedException(typeof(FormatException))]
+        public void Transform_StringHexadecimalToInt_Throws()
+        {
+            // Arrange
+            var target = new ConvertibleInjection(typeof(int));
+            var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
+            contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
+
+            // Act
+            target.Transform("0xABC", contextMock.Object);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Transform_StringScientificNotationToFloat_Converts()
         {
             // Arrange

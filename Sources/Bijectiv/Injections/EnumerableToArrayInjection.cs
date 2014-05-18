@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ArrayTransform.cs" company="Bijectiv">
+// <copyright file="EnumerableToArrayInjection.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ArrayTransform type.
+//   Defines the EnumerableToArrayInjection type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,15 +44,28 @@ namespace Bijectiv.Injections
     /// </summary>
     public class EnumerableToArrayInjection : ITransform, IMerge
     {
-        private readonly Type source;
-
-        private readonly Type target;
-
-        private readonly Type targetElement;
-
-        private readonly Func<IEnumerable<object>, object> resultFactory;
-
-        public EnumerableToArrayInjection([NotNull] Type source, [NotNull] Type target)
+        /// <summary>
+        /// Initialises a new instance of the <see cref="EnumerableToArrayInjection"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="target">
+        /// The target.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="source"/> does not implement <see cref="IEnumerable"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="target"/> is not an array.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="target"/> is a multi-dimensional array.
+        /// </exception>
+       public EnumerableToArrayInjection([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -83,10 +96,9 @@ namespace Bijectiv.Injections
                     "target");
             }
 
-            this.source = source;
-            this.target = target;
-            this.targetElement = target.GetElementType();
-            this.resultFactory = this.CreateResultFactory();
+            this.Target = target;
+            this.TargetElement = target.GetElementType();
+            this.ResultFactory = this.CreateResultFactory();
         }
 
         /// <summary>
@@ -94,27 +106,38 @@ namespace Bijectiv.Injections
         /// </summary>
         public Type Source
         {
-            get { return this.source; }
+            get { return typeof(IEnumerable); }
         }
 
         /// <summary>
-        /// Gets the target type created by the injection.
+        /// Gets the target type supported by the injection.
         /// </summary>
-        public Type Target
-        {
-            get { return this.target; }
-        }
+        public Type Target { get; private set; }
 
-        public Type TargetElement
-        {
-            get { return this.targetElement; }
-        }
+        /// <summary>
+        /// Gets the target type element (i.e. <see cref="T:int[]"/> returns <see cref="int"/>).
+        /// </summary>
+        public Type TargetElement { get; private set; }
 
-        public Func<IEnumerable<object>, object> ResultFactory
-        {
-            get { return this.resultFactory; }
-        }
+        /// <summary>
+        /// Gets a factory that creates the appropriately typed array result.
+        /// </summary>
+        public Func<IEnumerable<object>, object> ResultFactory { get; private set; }
 
+        /// <summary>
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
+        /// using the transformation rules defined by <see cref="IInjection.Source"/> --&lt; 
+        /// <see cref="IInjection.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the injection will take place.
+        /// </param>
+        /// <returns>
+        /// The newly created target instance.
+        /// </returns>
         public object Transform(object source, [NotNull] IInjectionContext context)
         {
             if (source == null)
@@ -144,6 +167,25 @@ namespace Bijectiv.Injections
             return this.ResultFactory(result);
         }
 
+        /// <summary>
+        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
+        /// defined by <see cref="IInjection.Source"/> --&lt;  <see cref="IInjection.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="target">
+        /// The target object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the transformation will take place.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IMergeResult"/> representing the result of the merge.
+        /// </returns>
+        /// <remarks>
+        /// Merge is not possible for array types so <see cref="PostMergeAction.Replace"/> is always returned.
+        /// </remarks>
         public IMergeResult Merge(object source, object target, IInjectionContext context)
         {
             if (source == null)
@@ -159,6 +201,12 @@ namespace Bijectiv.Injections
             return new MergeResult(PostMergeAction.Replace, this.Transform(source, context));
         }
 
+        /// <summary>
+        /// Creates a factory that creates the appropriately typed array result.
+        /// </summary>
+        /// <returns>
+        /// A factory that creates the appropriately typed array result.
+        /// </returns>
         private Func<IEnumerable<object>, object> CreateResultFactory()
         {
             var itemsParameter = Expression.Parameter(typeof(IEnumerable<object>), "items");

@@ -34,7 +34,7 @@ namespace Bijectiv.Stores
     using Bijectiv.Injections;
 
     /// <summary>
-    /// A store that contains <see cref="ITransform"/> instances that transforms between primitives of the same type.
+    /// A store that resolves <see cref="IInjection"/> instances that inject between primitives of the same type.
     /// </summary>
     public class IdenticalPrimitiveInjectionStore : IInjectionStore
     {

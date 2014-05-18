@@ -372,6 +372,20 @@ namespace Bijectiv.Tests.Utilities
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetDefault_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(Type).GetDefault();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void GetDefault_ThisParameterIsValueType_ReturnsDefault()
         {
             // Arrange
