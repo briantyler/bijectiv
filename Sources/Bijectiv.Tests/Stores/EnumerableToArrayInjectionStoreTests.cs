@@ -117,7 +117,7 @@ namespace Bijectiv.Tests.Stores
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_TargetParameterIsNotOneDimensionalArray_ReturnsNull()
+        public void Resolve_TargetParameterIsMultiDimensionalArray_ReturnsNull()
         {
             // Arrange
             var target = CreateTarget();

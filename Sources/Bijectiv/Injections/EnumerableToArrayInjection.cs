@@ -65,7 +65,7 @@ namespace Bijectiv.Injections
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="target"/> is a multi-dimensional array.
         /// </exception>
-       public EnumerableToArrayInjection([NotNull] Type source, [NotNull] Type target)
+        public EnumerableToArrayInjection([NotNull] Type source, [NotNull] Type target)
         {
             if (source == null)
             {
@@ -80,19 +80,19 @@ namespace Bijectiv.Injections
             if (!typeof(IEnumerable).IsAssignableFrom(source))
             {
                 throw new ArgumentException(
-                    string.Format("Type '{0}' does not implement IEnumerable.", source), "source");
+                    string.Format("Type '{0}' does not implement IEnumerable.", source),
+                    "source");
             }
 
             if (!target.IsArray)
             {
-                throw new ArgumentException(
-                    string.Format("Type '{0}' does is not an array.", target), "target");
+                throw new ArgumentException(string.Format("Type '{0}' does is not an array.", target), "target");
             }
 
             if (target.GetArrayRank() != 1)
             {
                 throw new ArgumentException(
-                    string.Format("Array rank must be 1, but is {0}.", target.GetArrayRank()), 
+                    string.Format("Array rank must be 1, but is {0}.", target.GetArrayRank()),
                     "target");
             }
 
@@ -138,7 +138,7 @@ namespace Bijectiv.Injections
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        public object Transform(object source, [NotNull] IInjectionContext context)
+        public virtual object Transform(object source, [NotNull] IInjectionContext context)
         {
             if (source == null)
             {
@@ -188,16 +188,6 @@ namespace Bijectiv.Injections
         /// </remarks>
         public IMergeResult Merge(object source, object target, IInjectionContext context)
         {
-            if (source == null)
-            {
-                return new MergeResult(PostMergeAction.Replace, null);
-            }
-
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
-
             return new MergeResult(PostMergeAction.Replace, this.Transform(source, context));
         }
 

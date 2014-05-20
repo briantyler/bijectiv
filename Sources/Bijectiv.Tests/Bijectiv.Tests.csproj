@@ -101,6 +101,7 @@
     <Compile Include="Factory\InjectionScaffoldTests.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTaskTests.cs" />
     <Compile Include="Injections\DelegateMergeTests.cs" />
+    <Compile Include="Injections\EnumerableToArrayInjectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />
     <Compile Include="Stores\CollectionInjectionStoreTests.cs" />
