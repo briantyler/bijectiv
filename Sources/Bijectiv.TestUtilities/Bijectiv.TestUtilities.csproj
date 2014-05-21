@@ -71,6 +71,8 @@
     <Compile Include="TestTypes\DerivedTestClass2.cs" />
     <Compile Include="TestTypes\EquatableClass.cs" />
     <Compile Include="TestTypes\FieldTestClass.cs" />
+    <Compile Include="TestTypes\GenericPlaceholderCollection.cs" />
+    <Compile Include="TestTypes\IPlaceholderEnumerable.cs" />
     <Compile Include="TestTypes\ITestInterface1.cs" />
     <Compile Include="TestTypes\MultiConstructorTestClass.cs" />
     <Compile Include="TestTypes\PropertyTestClass.cs" />

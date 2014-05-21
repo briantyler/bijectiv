@@ -121,6 +121,7 @@
     <Compile Include="Injections\PassThroughInjectionTests.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
+    <Compile Include="Utilities\EnumerableFactoryTests.cs" />
     <Compile Include="Utilities\ParameterExpressionVisitorTests.cs" />
     <Compile Include="Utilities\PlaceholderExpressionVisitorTests.cs" />
     <Compile Include="Utilities\PlaceholderTests.cs" />

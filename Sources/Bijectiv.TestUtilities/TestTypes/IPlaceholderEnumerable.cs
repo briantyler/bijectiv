@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Placeholder.cs" company="Bijectiv">
+// <copyright file="IPlaceholderEnumerable.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,52 +23,20 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the Placeholder type.
+//   Defines the IPlaceholderEnumerable type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace Bijectiv.TestUtilities.TestTypes
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
-    /// Represents a type placeholder in an expression or 'any old type' in a generic.
+    /// Represents a collection of placeholders.
     /// </summary>
-    public class Placeholder
+    public interface IPlaceholderEnumerable : IEnumerable<Placeholder>
     {
-        /// <summary>
-        /// A dummy method that has return type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of the placeholder to create.
-        /// </typeparam>
-        /// <returns>
-        /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
-        /// </returns>
-        public static T Of<T>()
-        {
-            return default(T);
-        }
-
-        /// <summary>
-        /// A dummy method that has return type <typeparamref name="T"/> and a name associated with it.
-        /// </summary>
-        /// <param name="name">
-        /// The name of the placeholder.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of the placeholder to create.
-        /// </typeparam>
-        /// <returns>
-        /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
-        /// </returns>
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "name", 
-            Justification = "Used implicitly")]
-        public static T Of<T>([UsedImplicitly] string name)
-        {
-            return default(T);
-        }
     }
 }

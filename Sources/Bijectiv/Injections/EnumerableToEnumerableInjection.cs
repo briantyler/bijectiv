@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Placeholder.cs" company="Bijectiv">
+// <copyright file="EnumerableToEnumerableInjection.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,52 +23,28 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the Placeholder type.
+//   Defines the EnumerableToEnumerableInjection type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace Bijectiv.Injections
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    using JetBrains.Annotations;
+    using System;
+    using System.Collections;
 
     /// <summary>
-    /// Represents a type placeholder in an expression or 'any old type' in a generic.
+    /// Represents a <see cref="IInjection"/> that injects an <see cref="IEnumerable"/> instance into an 
+    /// <see cref="IEnumerable"/>.
     /// </summary>
-    public class Placeholder
+    public class EnumerableToEnumerableInjection : ITransform
     {
-        /// <summary>
-        /// A dummy method that has return type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of the placeholder to create.
-        /// </typeparam>
-        /// <returns>
-        /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
-        /// </returns>
-        public static T Of<T>()
-        {
-            return default(T);
-        }
+        public Type Source { get; private set; }
 
-        /// <summary>
-        /// A dummy method that has return type <typeparamref name="T"/> and a name associated with it.
-        /// </summary>
-        /// <param name="name">
-        /// The name of the placeholder.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of the placeholder to create.
-        /// </typeparam>
-        /// <returns>
-        /// An arbitrary object that can be cast to type <typeparamref name="T"/>.
-        /// </returns>
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "name", 
-            Justification = "Used implicitly")]
-        public static T Of<T>([UsedImplicitly] string name)
+        public Type Target { get; private set; }
+
+        public object Transform(object source, IInjectionContext context)
         {
-            return default(T);
+            throw new NotImplementedException();
         }
     }
 }
