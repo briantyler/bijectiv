@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GenericPlaceholderCollection.cs" company="Bijectiv">
+// <copyright file="ICrazyPlaceholderEnumerable.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,23 +23,26 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the GenericPlaceholderCollection type.
+//   Defines the ICrazyPlaceholderEnumerable type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
     using Bijectiv.Utilities;
 
     /// <summary>
-    /// A generic type masquerading as a generic collection.
+    /// Represents a crazy collection of placeholders.
     /// </summary>
-    /// <typeparam name="T">
+    /// <typeparam name="T1">
     /// Some type.
     /// </typeparam>
-    public class GenericPlaceholderCollection<T> : Collection<Placeholder>, IPlaceholderEnumerable
+    /// <typeparam name="T2">
+    /// Some other type.
+    /// </typeparam>
+    public interface ICrazyPlaceholderEnumerable<T1, out T2> : IEnumerable<T2>
     {
     }
 }

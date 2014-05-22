@@ -29,6 +29,7 @@
 
 namespace Bijectiv.Tests.Utilities
 {
+    using System.Collections;
     using System.Collections.Generic;
 
     using Bijectiv.TestUtilities;
@@ -142,6 +143,177 @@ namespace Bijectiv.Tests.Utilities
             target.Register<IPlaceholderEnumerable, GenericPlaceholderCollection<Placeholder>>();
 
             // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Register_InterfaceTypeIsNotMonad_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Register<ICrazyPlaceholderEnumerable<Placeholder, Placeholder>, CrazyPlaceholderCollection<Placeholder>>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Register_ConcreteTypeParameterIsNotGeneric_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Register<IEnumerable<Placeholder>, PlaceholderCollection>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Register_ConcreteTypeParameterIsNotMonad_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Register<IEnumerable<Placeholder>, NonMonadicPlaceholderCollection<Placeholder, Placeholder>>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_RegistrationDoesNotExist_CreatesRegistration()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Register<ISet<Placeholder>, HashSet<Placeholder>>();
+
+            // Assert
+            Assert.IsTrue(target.Registrations.ContainsKey(typeof(ISet<>)));
+            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(ISet<>)]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Register_RegistrationExists_OverwritesRegistration()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Register<IEnumerable<Placeholder>, HashSet<Placeholder>>();
+
+            // Assert
+            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
+            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(IEnumerable<>)]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_EnumerableParameterIsClass_CreatesType()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.Resolve(typeof(List<TestClass1>));
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(List<TestClass1>));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void Resolve_EnumerableParameterIsNonGeneric_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.Resolve(typeof(IPlaceholderEnumerable));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Resolve_EnumerableParameterIsNotRegistered_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+            target.Registrations.Clear();
+
+            // Act
+            target.Resolve(typeof(IEnumerable<TestClass1>));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_EnumerableParameterIsRegistered_CreatesInstance()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.Resolve(typeof(IEnumerable<TestClass1>));
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<TestClass1>));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_NonGenericEnumerableParameter_CreatesInstanceOfEnumerableObject()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.Resolve(typeof(IEnumerable));
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(IEnumerable<object>));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_NonGenericCollectionParameter_CreatesInstanceOfCollectionObject()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.Resolve(typeof(ICollection));
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ICollection<object>));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_NonGenericListParameter_CreatesInstanceOfListObject()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.Resolve(typeof(IList));
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(IList<object>));
         }
 
         private static EnumerableFactory CreateTarget()

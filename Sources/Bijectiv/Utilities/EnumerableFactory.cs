@@ -30,11 +30,18 @@
 namespace Bijectiv.Utilities
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// A factory that creates <see cref="IEnumerable"/> instances.
+    /// </summary>
     public class EnumerableFactory
     {
+        /// <summary>
+        /// The type registrations.
+        /// </summary>
         private readonly Dictionary<Type, Type> registrations = new Dictionary<Type, Type>
         {
             { typeof(IEnumerable<>), typeof(List<>) },
@@ -42,11 +49,37 @@ namespace Bijectiv.Utilities
             { typeof(IList<>), typeof(List<>) },
         };
 
+        /// <summary>
+        /// Gets the type registrations.
+        /// </summary>
         public IDictionary<Type, Type> Registrations
         {
             get { return this.registrations; }
         }
 
+        /// <summary>
+        /// Registers an enumerable monad interface to a collection monad concrete type.
+        /// </summary>
+        /// <typeparam name="TInterface">
+        /// The <see cref="IEnumerable{T}"/> interface.
+        /// </typeparam>
+        /// <typeparam name="TConcrete">
+        /// The <see cref="ICollection{T}"/> concrete type.
+        /// </typeparam>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when either <typeparamref name="TInterface"/> or <typeparamref name="TConcrete"/> is not a monadic
+        /// type.
+        /// </exception>
+        /// <example>
+        ///     Use the <see cref="Placeholder"/> type to register a generic type:
+        ///     <code>
+        ///         factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
+        ///     </code>
+        /// </example>
+        /// <remarks>
+        /// It would be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
+        /// do this by accident.
+        /// </remarks>
         public void Register<TInterface, TConcrete>()
             where TInterface : IEnumerable<Placeholder>
             where TConcrete : ICollection<Placeholder>, TInterface, new()
@@ -79,6 +112,21 @@ namespace Bijectiv.Utilities
                 typeof(TConcrete).GetGenericTypeDefinition();
         }
 
+        /// <summary>
+        /// Resolves an instance of type <paramref name="enumerable"/>.
+        /// </summary>
+        /// <param name="enumerable">
+        /// The (enumerable) type to resolve.
+        /// </param>
+        /// <returns>
+        /// An instance of <paramref name="enumerable"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="enumerable"/> is neither a class nor generic.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when no registration exists for creating instances of <paramref name="enumerable"/>.
+        /// </exception>
         public object Resolve(Type enumerable)
         {
             if (enumerable.IsClass)
@@ -89,10 +137,17 @@ namespace Bijectiv.Utilities
                 return Activator.CreateInstance(enumerable);
             }
 
-            if (!enumerable.IsInterface)
+            if (enumerable == typeof(IEnumerable))
             {
-                throw new ArgumentException(
-                    string.Format("Type '{0}' is not an interface.", enumerable), "enumerable");
+                enumerable = typeof(IEnumerable<object>);
+            }
+            else if (enumerable == typeof(ICollection))
+            {
+                enumerable = typeof(ICollection<object>);
+            }
+            else if (enumerable == typeof(IList))
+            {
+                enumerable = typeof(IList<object>);
             }
 
             if (!enumerable.IsGenericType)
