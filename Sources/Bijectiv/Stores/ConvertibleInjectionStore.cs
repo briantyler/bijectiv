@@ -33,8 +33,6 @@ namespace Bijectiv.Stores
 
     using Bijectiv.Injections;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A store that contains <see cref="ITransform"/> instances that transform between types that implement 
     /// <see cref="IConvertible"/>.

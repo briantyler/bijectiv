@@ -50,9 +50,14 @@ namespace Bijectiv
         private readonly Func<Type, object> resolveDelegate;
 
         /// <summary>
-        /// The transform store.
+        /// The <see cref="IInjection"/> store.
         /// </summary>
         private readonly IInjectionStore injectionStore;
+
+        /// <summary>
+        /// The <see cref="ITargetFinder{S,T}"/> store.
+        /// </summary>
+        private readonly ITargetFinderStore targetFinderStore;
 
         /// <summary>
         /// The target cache.
@@ -124,11 +129,19 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Gets the transform store.
+        /// Gets the <see cref="IInjection"/> store.
         /// </summary>
         public IInjectionStore InjectionStore
         {
             get { return this.injectionStore; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ITargetFinder{S,T}"/> store.
+        /// </summary>
+        public ITargetFinderStore TargetFinderStore
+        {
+            get { return this.targetFinderStore; }
         }
 
         /// <summary>

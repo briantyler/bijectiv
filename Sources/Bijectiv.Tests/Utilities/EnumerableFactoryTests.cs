@@ -219,6 +219,21 @@ namespace Bijectiv.Tests.Utilities
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Resolve_EnumerableParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Resolve(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Resolve_EnumerableParameterIsClass_CreatesType()
         {
             // Arrange

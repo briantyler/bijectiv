@@ -75,13 +75,17 @@
     <Compile Include="IAutoInjectionStrategy.cs" />
     <Compile Include="IMergeResult.cs" />
     <Compile Include="IInjection.cs" />
+    <Compile Include="Injections\CollectionMerger.cs" />
     <Compile Include="Injections\EnumerableToArrayInjection.cs" />
     <Compile Include="Injections\DelegateMerge.cs" />
     <Compile Include="Injections\EnumerableToEnumerableInjection.cs" />
     <Compile Include="Injections\ICollectionMerger.cs" />
+    <Compile Include="Injections\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
+    <Compile Include="ITargetFinder.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Stores\EnumerableToArrayInjectionStore.cs" />
+    <Compile Include="ITargetFinderStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
     <Compile Include="Utilities\EnumerableFactory.cs" />

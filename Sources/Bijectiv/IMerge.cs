@@ -36,7 +36,7 @@ namespace Bijectiv
     {
         /// <summary>
         /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
-        /// defined by <see cref="IInjection.Source"/> --&lt;  <see cref="IInjection.Target"/>.
+        /// defined by <see cref="IInjection.Source"/> --&gt; <see cref="IInjection.Target"/>.
         /// </summary>
         /// <param name="source">
         /// The source object.
@@ -45,7 +45,7 @@ namespace Bijectiv
         /// The target object.
         /// </param>
         /// <param name="context">
-        /// The context in which the transformation will take place.
+        /// The context in which the injection will take place.
         /// </param>
         /// <returns>
         /// A <see cref="IMergeResult"/> representing the result of the merge.

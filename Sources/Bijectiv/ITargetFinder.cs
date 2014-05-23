@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionContext.cs" company="Bijectiv">
+// <copyright file="ITargetFinder.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,50 +23,45 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionContext type.
+//   Defines the ITargetFinder type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
-    using System;
-    using System.Globalization;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Represents an <see cref="IInjection"/> context.
+    /// Finds the element in a collection that is the target for a source object.
     /// </summary>
-    public interface IInjectionContext
+    /// <typeparam name="TSource">
+    /// The source collection element type.
+    /// </typeparam>
+    /// <typeparam name="TTarget">
+    /// The target collection element type.
+    /// </typeparam>
+    public interface ITargetFinder<in TSource, TTarget>
     {
         /// <summary>
-        /// Gets the culture in which the injection is taking place. Defaults to 
-        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
+        /// Initializes the finder for a given target collection.
         /// </summary>
-        CultureInfo Culture { get; }
+        /// <param name="targets">
+        /// The collection of target elements.
+        /// </param>
+        void Initialize(IEnumerable<TTarget> targets);
 
         /// <summary>
-        /// Gets the target cache.
+        /// Tries to find the target element for <paramref name="source"/>.
         /// </summary>
-        ITargetCache TargetCache { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IInjection"/> store.
-        /// </summary>
-        IInjectionStore InjectionStore { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ITargetFinder{S,T}"/> store.
-        /// </summary>
-        ITargetFinderStore TargetFinderStore { get; }
-
-        /// <summary>
-        /// Retrieve a service from the default factory.
-        /// </summary>
-        /// <param name="service">
-        /// The service to retrieve.
+        /// <param name="source">
+        /// The source element.
+        /// </param>
+        /// <param name="target">
+        /// The target element; this is only valid if the method returns <see langword="true" />.
         /// </param>
         /// <returns>
-        /// The component instance that provides the service.
+        /// A value indicating success.
         /// </returns>
-        object Resolve(Type service);
+        bool TryFind(TSource source, out TTarget target);
     }
 }

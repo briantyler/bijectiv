@@ -36,8 +36,16 @@ namespace Bijectiv.Utilities
     /// <summary>
     /// Represents a type placeholder in an expression or 'any old type' in a generic.
     /// </summary>
-    public class Placeholder
+    // ReSharper disable once ConvertToStaticClass
+    public sealed class Placeholder
     {
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Placeholder"/> class from being created.
+        /// </summary>
+        private Placeholder()
+        {    
+        }
+
         /// <summary>
         /// A dummy method that has return type <typeparamref name="T"/>.
         /// </summary>

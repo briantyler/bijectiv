@@ -36,7 +36,7 @@ namespace Bijectiv
     {
         /// <summary>
         /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
-        /// using the transformation rules defined by <see cref="IInjection.Source"/> --&lt; 
+        /// using the transformation rules defined by <see cref="IInjection.Source"/> --&gt; 
         /// <see cref="IInjection.Target"/>.
         /// </summary>
         /// <param name="source">

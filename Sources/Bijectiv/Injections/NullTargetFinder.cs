@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionContext.cs" company="Bijectiv">
+// <copyright file="NullTargetFinder.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,50 +23,24 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionContext type.
+//   Defines the NullTargetFinder type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Injections
 {
-    using System;
-    using System.Globalization;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Represents an <see cref="IInjection"/> context.
-    /// </summary>
-    public interface IInjectionContext
+    public class NullTargetFinder<TSource, TTarget> : ITargetFinder<TSource, TTarget>
     {
-        /// <summary>
-        /// Gets the culture in which the injection is taking place. Defaults to 
-        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
-        /// </summary>
-        CultureInfo Culture { get; }
+        public void Initialize(IEnumerable<TTarget> targets)
+        {
+        }
 
-        /// <summary>
-        /// Gets the target cache.
-        /// </summary>
-        ITargetCache TargetCache { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IInjection"/> store.
-        /// </summary>
-        IInjectionStore InjectionStore { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ITargetFinder{S,T}"/> store.
-        /// </summary>
-        ITargetFinderStore TargetFinderStore { get; }
-
-        /// <summary>
-        /// Retrieve a service from the default factory.
-        /// </summary>
-        /// <param name="service">
-        /// The service to retrieve.
-        /// </param>
-        /// <returns>
-        /// The component instance that provides the service.
-        /// </returns>
-        object Resolve(Type service);
+        public bool TryFind(TSource source, out TTarget target)
+        {
+            target = default(TTarget);
+            return false;
+        }
     }
 }

@@ -31,7 +31,6 @@ namespace Bijectiv.Injections
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
 
     using Bijectiv.Utilities;
 
@@ -43,6 +42,24 @@ namespace Bijectiv.Injections
     /// </summary>
     public class EnumerableToEnumerableInjection : ITransform, IMerge
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="EnumerableToEnumerableInjection"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source type.
+        /// </param>
+        /// <param name="target">
+        /// The target type.
+        /// </param>
+        /// <param name="factory">
+        /// The factory that creates enumerable instances.
+        /// </param>
+        /// <param name="merger">
+        /// The merger that merges items from one collection into another collection.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public EnumerableToEnumerableInjection(
             [NotNull] Type source, 
             [NotNull] Type target,
@@ -75,14 +92,40 @@ namespace Bijectiv.Injections
             this.Merger = merger;
         }
 
+        /// <summary>
+        /// Gets the source type supported by the injection.
+        /// </summary>
         public Type Source { get; private set; }
 
+        /// <summary>
+        /// Gets the target type supported by the injection.
+        /// </summary>
         public Type Target { get; private set; }
 
+        /// <summary>
+        /// Gets the factory that creates enumerable instances..
+        /// </summary>
         public IEnumerableFactory Factory { get; private set; }
 
+        /// <summary>
+        /// Gets the merger that merges items from one collection into another collection..
+        /// </summary>
         public ICollectionMerger Merger { get; private set; }
 
+        /// <summary>
+        /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
+        /// using the transformation rules defined by <see cref="IInjection.Source"/> --&gt; 
+        /// <see cref="IInjection.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the injection will take place.
+        /// </param>
+        /// <returns>
+        /// The newly created target instance.
+        /// </returns>
         public object Transform(object source, [NotNull] IInjectionContext context)
         {
             if (context == null)
@@ -93,6 +136,22 @@ namespace Bijectiv.Injections
             return this.Merge(source, this.Factory.Resolve(this.Target), context).Target;
         }
 
+        /// <summary>
+        /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
+        /// defined by <see cref="IInjection.Source"/> --&gt; <see cref="IInjection.Target"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source object.
+        /// </param>
+        /// <param name="target">
+        /// The target object.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the injection will take place.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IMergeResult"/> representing the result of the merge.
+        /// </returns>
         public virtual IMergeResult Merge(object source, object target, [NotNull] IInjectionContext context)
         {
             if (context == null)

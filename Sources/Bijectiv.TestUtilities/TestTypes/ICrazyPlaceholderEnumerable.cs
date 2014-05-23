@@ -31,8 +31,6 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using System.Collections.Generic;
 
-    using Bijectiv.Utilities;
-
     /// <summary>
     /// Represents a crazy collection of placeholders.
     /// </summary>

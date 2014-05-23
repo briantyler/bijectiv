@@ -34,6 +34,8 @@ namespace Bijectiv.Utilities
     using System.Collections.Generic;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.
     /// </summary>
@@ -127,8 +129,13 @@ namespace Bijectiv.Utilities
         /// <exception cref="InvalidOperationException">
         /// Thrown when no registration exists for creating instances of <paramref name="enumerable"/>.
         /// </exception>
-        public object Resolve(Type enumerable)
+        public object Resolve([NotNull] Type enumerable)
         {
+            if (enumerable == null)
+            {
+                throw new ArgumentNullException("enumerable");
+            }
+
             if (enumerable.IsClass)
             {
                 // It may as well be assumed that any upstream process simply wants an instance of the type it 
