@@ -37,7 +37,7 @@ namespace Bijectiv.Utilities
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.
     /// </summary>
-    public class EnumerableFactory
+    public class EnumerableFactory : IEnumerableFactory
     {
         /// <summary>
         /// The type registrations.

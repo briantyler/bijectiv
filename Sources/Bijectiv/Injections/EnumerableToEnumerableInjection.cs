@@ -31,20 +31,76 @@ namespace Bijectiv.Injections
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
+
+    using Bijectiv.Utilities;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="IInjection"/> that injects an <see cref="IEnumerable"/> instance into an 
     /// <see cref="IEnumerable"/>.
     /// </summary>
-    public class EnumerableToEnumerableInjection : ITransform
+    public class EnumerableToEnumerableInjection : ITransform, IMerge
     {
+        public EnumerableToEnumerableInjection(
+            [NotNull] Type source, 
+            [NotNull] Type target,
+            [NotNull] IEnumerableFactory factory,
+            [NotNull] ICollectionMerger merger)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (factory == null)
+            {
+                throw new ArgumentNullException("factory");
+            }
+
+            if (merger == null)
+            {
+                throw new ArgumentNullException("merger");
+            }
+
+            this.Source = source;
+            this.Target = target;
+            this.Factory = factory;
+            this.Merger = merger;
+        }
+
         public Type Source { get; private set; }
 
         public Type Target { get; private set; }
 
-        public object Transform(object source, IInjectionContext context)
+        public IEnumerableFactory Factory { get; private set; }
+
+        public ICollectionMerger Merger { get; private set; }
+
+        public object Transform(object source, [NotNull] IInjectionContext context)
         {
-            throw new NotImplementedException();
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            return this.Merge(source, this.Factory.Resolve(this.Target), context).Target;
+        }
+
+        public virtual IMergeResult Merge(object source, object target, [NotNull] IInjectionContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            return this.Merger.Merge((dynamic)source, (dynamic)target, context);
         }
     }
 }
