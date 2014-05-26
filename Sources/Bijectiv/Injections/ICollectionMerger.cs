@@ -43,9 +43,7 @@ namespace Bijectiv.Injections
     public interface ICollectionMerger
     {
         /// <summary>
-        /// Merges <paramref name="source"/> into <paramref name="target"/>. This is a collection merge so the only 
-        /// operations available on the target are <see cref="ICollection{T}.Add"/> and 
-        /// <see cref="ICollection{T}.Remove"/>; given this it is assumed that order is not important.
+        /// Merges <paramref name="source"/> into <paramref name="target"/>.
         /// </summary>
         /// <typeparam name="TTargetElement">
         /// The target element type.
@@ -59,18 +57,13 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the merge will take place.
         /// </param>
-        /// <returns>
-        /// A <see cref="IMergeResult"/> representing the result of the merge.
-        /// </returns>
-        IMergeResult Merge<TTargetElement>(
+        void Merge<TTargetElement>(
             IEnumerable source, 
             ICollection<TTargetElement> target, 
             IInjectionContext context);
 
         /// <summary>
-        /// Merges <paramref name="source"/> into <paramref name="target"/>. This is a collection merge so the only 
-        /// operations available on the target are <see cref="ICollection{T}.Add"/> and 
-        /// <see cref="ICollection{T}.Remove"/>; given this it is assumed that order is not important.
+        /// Merges <paramref name="source"/> into <paramref name="target"/>.
         /// </summary>
         /// <typeparam name="TSourceElement">
         /// The source element type.
@@ -87,39 +80,9 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the merge will take place.
         /// </param>
-        /// <returns>
-        /// A <see cref="IMergeResult"/> representing the result of the merge.
-        /// </returns>
-        IMergeResult Merge<TSourceElement, TTargetElement>(
-            IEnumerable<TSourceElement> source, 
-            ICollection<TTargetElement> target, 
-            IInjectionContext context);
-
-        /// <summary>
-        /// Merges <paramref name="source"/> into <paramref name="target"/>. This is a list merge, so order is 
-        /// preserved.
-        /// </summary>
-        /// <typeparam name="TSourceElement">
-        /// The source element type.
-        /// </typeparam>
-        /// <typeparam name="TTargetElement">
-        /// The target element type.
-        /// </typeparam>
-        /// <param name="source">
-        /// The source collection.
-        /// </param>
-        /// <param name="target">
-        /// The target collection.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the merge will take place.
-        /// </param>
-        /// <returns>
-        /// A <see cref="IMergeResult"/> representing the result of the merge.
-        /// </returns>
-        IMergeResult Merge<TSourceElement, TTargetElement>(
+        void Merge<TSourceElement, TTargetElement>(
             IEnumerable<TSourceElement> source,
-            IList<TTargetElement> target,
+            ICollection<TTargetElement> target,
             IInjectionContext context);
     }
 }

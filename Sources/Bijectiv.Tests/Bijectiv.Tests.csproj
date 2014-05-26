@@ -100,6 +100,7 @@
     <Compile Include="Factory\TransformFactoryTests.cs" />
     <Compile Include="Factory\InjectionScaffoldTests.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTaskTests.cs" />
+    <Compile Include="Injections\CollectionMergerTests.cs" />
     <Compile Include="Injections\DelegateMergeTests.cs" />
     <Compile Include="Injections\EnumerableToArrayInjectionTests.cs" />
     <Compile Include="Injections\EnumerableToEnumerableInjectionTests.cs" />

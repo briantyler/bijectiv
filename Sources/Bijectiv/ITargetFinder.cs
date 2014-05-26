@@ -48,6 +48,10 @@ namespace Bijectiv
         /// <param name="targets">
         /// The collection of target elements.
         /// </param>
+        /// <remarks>
+        /// The consumer should cache the items in the collection as the collection may change during the lifetime
+        /// of the consumer.
+        /// </remarks>
         void Initialize(IEnumerable<TTarget> targets);
 
         /// <summary>

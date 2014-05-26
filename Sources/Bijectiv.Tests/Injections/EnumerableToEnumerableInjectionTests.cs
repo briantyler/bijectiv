@@ -277,19 +277,17 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Merge_SourceIsNonGenericEnumerableTargetIsCollection_Expectation()
+        public void Merge_SourceIsNonGenericEnumerableTargetIsCollection_UsesCorrectMergeOverload()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = Stub.Create<IEnumerable>();
             var targetInstance = new HashSet<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
-            var expectedResult = Stub.Create<IMergeResult>();
+
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock
-                .Setup(_ => _.Merge(sourceInstance, targetInstance, context))
-                .Returns(expectedResult);
+            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
             var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
 
@@ -298,24 +296,22 @@ namespace Bijectiv.Tests.Injections
             
             // Assert
             repository.VerifyAll();
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(targetInstance, result.Target);
+            Assert.AreEqual(PostMergeAction.None, result.Action);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Merge_SourceIsGenericEnumerableTargetIsCollection_Expectation()
+        public void Merge_SourceIsGenericEnumerableTargetIsCollection_UsesCorrectMergeOverload()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = Stub.Create<IEnumerable<object>>();
             var targetInstance = new HashSet<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
-            var expectedResult = Stub.Create<IMergeResult>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock
-                .Setup(_ => _.Merge(sourceInstance, targetInstance, context))
-                .Returns(expectedResult);
+            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
             var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
 
@@ -324,24 +320,22 @@ namespace Bijectiv.Tests.Injections
 
             // Assert
             repository.VerifyAll();
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(targetInstance, result.Target);
+            Assert.AreEqual(PostMergeAction.None, result.Action);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Merge_SourceIsGenericEnumerableTargetIsList_Expectation()
+        public void Merge_SourceIsGenericEnumerableTargetIsList_UsesCorrectMergeOverload()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = Stub.Create<IEnumerable<object>>();
             var targetInstance = new List<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
-            var expectedResult = Stub.Create<IMergeResult>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock
-                .Setup(_ => _.Merge(sourceInstance, targetInstance, context))
-                .Returns(expectedResult);
+            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
             var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
 
@@ -350,7 +344,35 @@ namespace Bijectiv.Tests.Injections
 
             // Assert
             repository.VerifyAll();
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(targetInstance, result.Target);
+            Assert.AreEqual(PostMergeAction.None, result.Action);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Merge_TargetIsNull_ResolvesTargetUsingFactory()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+            var sourceInstance = Stub.Create<IEnumerable<object>>();
+            var targetInstance = new List<TestClass1>();
+            var context = Stub.Create<IInjectionContext>();
+
+            var mergerMock = repository.Create<ICollectionMerger>();
+            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
+
+            var factoryMock = repository.Create<IEnumerableFactory>();
+            factoryMock.Setup(_ => _.Resolve(It.IsAny<Type>())).Returns(targetInstance);
+
+            var target = CreateTarget(factoryMock.Object, mergerMock.Object);
+
+            // Act
+            var result = target.Merge(sourceInstance, null, context);
+
+            // Assert
+            repository.VerifyAll();
+            Assert.AreEqual(targetInstance, result.Target);
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
         }
 
         private static EnumerableToEnumerableInjection CreateTarget(

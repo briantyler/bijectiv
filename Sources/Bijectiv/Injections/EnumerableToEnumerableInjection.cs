@@ -159,7 +159,15 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            return this.Merger.Merge((dynamic)source, (dynamic)target, context);
+            var action = PostMergeAction.None;
+            if (target == null)
+            {
+                target = this.Factory.Resolve(this.Target);
+                action = PostMergeAction.Replace;
+            }
+            
+            this.Merger.Merge((dynamic)source, (dynamic)target, context);
+            return new MergeResult(action, target);
         }
     }
 }
