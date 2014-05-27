@@ -43,7 +43,7 @@ namespace Bijectiv.Utilities
         /// Prevents a default instance of the <see cref="Placeholder"/> class from being created.
         /// </summary>
         private Placeholder()
-        {    
+        {
         }
 
         /// <summary>

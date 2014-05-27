@@ -230,7 +230,8 @@ namespace Bijectiv.Tests
 
         private static InjectionContext CreateContext(IInjectionStore store)
         {
-            return new InjectionContext(CultureInfo.InvariantCulture, type => { throw new Exception(); }, store);
+            // return new InjectionContext(CultureInfo.InvariantCulture, type => { throw new Exception(); }, store);
+            throw new NotImplementedException();
         }
     }
 }

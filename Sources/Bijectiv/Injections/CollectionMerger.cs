@@ -107,8 +107,6 @@ namespace Bijectiv.Injections
 
             if (typeof(TSourceElement).IsValueType && typeof(TTargetElement).IsValueType)
             {
-                // Optimization for struct --> struct collections; the other permutations (struct --> class and
-                // class --> struct) are less important.
                 MergeValueTypeCollections(source, target, context);
 
                 return;
@@ -143,6 +141,29 @@ namespace Bijectiv.Injections
             }
         }
 
+        /// <summary>
+        /// Merges two collections of value type elements.
+        /// </summary>
+        /// <remarks>
+        /// This can be done efficiently because value types cannot be merged and their runtime types are known
+        /// at compile-time. Some efficiency could be gained where both types were sealed, but there is more 
+        /// complexity for less gain.
+        /// </remarks>
+        /// <typeparam name="TSourceElement">
+        /// The source element type.
+        /// </typeparam>
+        /// <typeparam name="TTargetElement">
+        /// The target element type.
+        /// </typeparam>
+        /// <param name="source">
+        /// The source collection.
+        /// </param>
+        /// <param name="target">
+        /// The target collection.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the merge will take place.
+        /// </param>
         private static void MergeValueTypeCollections<TSourceElement, TTargetElement>(
             IEnumerable<TSourceElement> source,
             ICollection<TTargetElement> target,

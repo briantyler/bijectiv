@@ -51,7 +51,11 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(null, t => new object(), Stub.Create<IInjectionStore>()).Naught();
+            new InjectionContext(
+                null,
+                t => new object(), 
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>()).Naught();
 
             // Assert
         }
@@ -65,7 +69,11 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(CultureInfo.InvariantCulture, null, Stub.Create<IInjectionStore>()).Naught();
+            new InjectionContext(
+                CultureInfo.InvariantCulture,
+                null, 
+                Stub.Create<IInjectionStore>(), 
+                Stub.Create<ITargetFinderStore>()).Naught();
 
             // Assert
         }
@@ -79,7 +87,29 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(CultureInfo.InvariantCulture, t => new object(), null).Naught();
+            new InjectionContext(
+                CultureInfo.InvariantCulture, 
+                t => new object(), 
+                null,
+                Stub.Create<ITargetFinderStore>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_TargetFinderStoreParameterParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionContext(
+                CultureInfo.InvariantCulture,
+                t => new object(),
+                Stub.Create<IInjectionStore>(), 
+                null).Naught();
 
             // Assert
         }
@@ -92,8 +122,11 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>())
-                .Naught();
+            new InjectionContext(
+                CultureInfo.InvariantCulture, 
+                t => new object(),
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>()).Naught();
 
             // Assert
         }
@@ -105,7 +138,11 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+            var target = new InjectionContext(
+                CultureInfo.InvariantCulture,
+                t => new object(),
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>());
 
             // Assert
             Assert.IsNotNull(target.TargetCache);
@@ -119,7 +156,11 @@ namespace Bijectiv.Tests
             var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var target = new InjectionContext(culture, t => new object(), Stub.Create<IInjectionStore>());
+            var target = new InjectionContext(
+                culture,
+                t => new object(),
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>());
 
             // Assert
             Assert.AreEqual(culture, target.Culture);
@@ -127,16 +168,38 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TransformStoreParameter_IsAssignedToTransformStoreProperty()
+        public void CreateInstance_InjectionStoreParameter_IsAssignedToInjectionStoreProperty()
         {
             // Arrange
-            var transformStore = Stub.Create<IInjectionStore>();
+            var injectionStore = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), transformStore);
+            var target = new InjectionContext(
+               CultureInfo.InvariantCulture,
+               t => new object(),
+               injectionStore,
+               Stub.Create<ITargetFinderStore>());
 
             // Assert
-            Assert.AreEqual(transformStore, target.InjectionStore);
+            Assert.AreEqual(injectionStore, target.InjectionStore);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetFinderStoreParameter_IsAssignedToTargetFinderStoreProperty()
+        {
+            // Arrange
+            var targetFinderStore = Stub.Create<ITargetFinderStore>();
+
+            // Act
+            var target = new InjectionContext(
+               CultureInfo.InvariantCulture,
+               t => new object(),
+               Stub.Create<IInjectionStore>(),
+               targetFinderStore);
+
+            // Assert
+            Assert.AreEqual(targetFinderStore, target.TargetFinderStore);
         }
 
         [TestMethod]
@@ -146,7 +209,10 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var target = new InjectionContext(
-                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionStore>());
+                CultureInfo.InvariantCulture, 
+                t => new object(), 
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -164,7 +230,8 @@ namespace Bijectiv.Tests
             var target = new InjectionContext(
                 CultureInfo.InvariantCulture, 
                 t => t == TestClass1.T ? expected : null, 
-                Stub.Create<IInjectionStore>());
+                Stub.Create<IInjectionStore>(),
+                Stub.Create<ITargetFinderStore>());
 
             // Act
             var result = target.Resolve(TestClass1.T);

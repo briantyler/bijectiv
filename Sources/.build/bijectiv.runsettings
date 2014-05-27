@@ -38,6 +38,7 @@
                 <Function>^Bijectiv\..*</Function>
               </Include>
               <Exclude>
+                <Function>^Bijectiv\.Utilities\.Placeholder\.*</Function>
                 <Function>^JetBrains\.Annotations\..*</Function>
               </Exclude>
             </Functions>

@@ -285,7 +285,6 @@ namespace Bijectiv.Tests.Injections
             var targetInstance = new HashSet<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
 
-
             var mergerMock = repository.Create<ICollectionMerger>();
             mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 

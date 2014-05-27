@@ -76,13 +76,17 @@ namespace Bijectiv
         /// <param name="injectionStore">
         /// The transform store.
         /// </param>
+        /// <param name="targetFinderStore">
+        /// The target finder store.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
         public InjectionContext(
             [NotNull] CultureInfo culture, 
             [NotNull] Func<Type, object> resolveDelegate,
-            [NotNull] IInjectionStore injectionStore)
+            [NotNull] IInjectionStore injectionStore,
+            [NotNull] ITargetFinderStore targetFinderStore)
         {
             if (culture == null)
             {
@@ -99,9 +103,15 @@ namespace Bijectiv
                 throw new ArgumentNullException("injectionStore");
             }
 
+            if (targetFinderStore == null)
+            {
+                throw new ArgumentNullException("targetFinderStore");
+            }
+
             this.culture = culture;
             this.resolveDelegate = resolveDelegate;
             this.injectionStore = injectionStore;
+            this.targetFinderStore = targetFinderStore;
         }
 
         /// <summary>
