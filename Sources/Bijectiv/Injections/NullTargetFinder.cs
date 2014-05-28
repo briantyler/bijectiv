@@ -29,17 +29,38 @@
 
 namespace Bijectiv.Injections
 {
-    using System.Collections.Generic;
+    using System.Collections;
 
-    public class NullTargetFinder<TSource, TTarget> : ITargetFinder<TSource, TTarget>
+    /// <summary>
+    /// A target finder that always returns <see langword="false"/>.
+    /// </summary>
+    public class NullTargetFinder : ITargetFinder
     {
-        public void Initialize(IEnumerable<TTarget> targets)
+        /// <summary>
+        /// Initializes the finder for a given target collection.
+        /// </summary>
+        /// <param name="targets">
+        /// The collection of target elements.
+        /// </param>
+        public void Initialize(IEnumerable targets)
         {
         }
 
-        public bool TryFind(TSource source, out TTarget target)
+        /// <summary>
+        /// Tries to find the target element for <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source element.
+        /// </param>
+        /// <param name="target">
+        /// Returns <see langword="null"/>.
+        /// </param>
+        /// <returns>
+        /// Returns <see langword="false"/>.
+        /// </returns>
+        public bool TryFind(object source, out object target)
         {
-            target = default(TTarget);
+            target = default(object);
             return false;
         }
     }

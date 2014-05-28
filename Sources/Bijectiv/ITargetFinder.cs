@@ -29,18 +29,12 @@
 
 namespace Bijectiv
 {
-    using System.Collections.Generic;
+    using System.Collections;
 
     /// <summary>
     /// Finds the element in a collection that is the target for a source object.
     /// </summary>
-    /// <typeparam name="TSource">
-    /// The source collection element type.
-    /// </typeparam>
-    /// <typeparam name="TTarget">
-    /// The target collection element type.
-    /// </typeparam>
-    public interface ITargetFinder<in TSource, TTarget>
+    public interface ITargetFinder
     {
         /// <summary>
         /// Initializes the finder for a given target collection.
@@ -52,7 +46,7 @@ namespace Bijectiv
         /// The consumer should cache the items in the collection as the collection may change during the lifetime
         /// of the consumer.
         /// </remarks>
-        void Initialize(IEnumerable<TTarget> targets);
+        void Initialize(IEnumerable targets);
 
         /// <summary>
         /// Tries to find the target element for <paramref name="source"/>.
@@ -66,6 +60,6 @@ namespace Bijectiv
         /// <returns>
         /// A value indicating success.
         /// </returns>
-        bool TryFind(TSource source, out TTarget target);
+        bool TryFind(object source, out object target);
     }
 }

@@ -55,7 +55,7 @@ namespace Bijectiv
         private readonly IInjectionStore injectionStore;
 
         /// <summary>
-        /// The <see cref="ITargetFinder{S,T}"/> store.
+        /// The <see cref="ITargetFinder"/> store.
         /// </summary>
         private readonly ITargetFinderStore targetFinderStore;
 
@@ -147,7 +147,7 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Gets the <see cref="ITargetFinder{S,T}"/> store.
+        /// Gets the <see cref="ITargetFinder"/> store.
         /// </summary>
         public ITargetFinderStore TargetFinderStore
         {

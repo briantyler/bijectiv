@@ -54,7 +54,7 @@ namespace Bijectiv
         IInjectionStore InjectionStore { get; }
 
         /// <summary>
-        /// Gets the <see cref="ITargetFinder{S,T}"/> store.
+        /// Gets the <see cref="ITargetFinder"/> store.
         /// </summary>
         ITargetFinderStore TargetFinderStore { get; }
 

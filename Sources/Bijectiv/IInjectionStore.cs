@@ -34,7 +34,7 @@ namespace Bijectiv
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a store that holds <see cref="IInjection"/>.
+    /// Represents a store that holds <see cref="IInjection"/> instances.
     /// </summary>
     public interface IInjectionStore
     {

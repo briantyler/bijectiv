@@ -112,13 +112,13 @@ namespace Bijectiv.Injections
                 return;
             }
 
-            var finder = context.TargetFinderStore.Resolve<TSourceElement, TTargetElement>();
+            var finder = context.TargetFinderStore.Resolve(typeof(TSourceElement), typeof(TTargetElement));
             finder.Initialize(target);
 
             target.Clear();
             foreach (var sourceElement in source)
             {
-                TTargetElement targetElement;
+                object targetElement;
                 if (finder.TryFind(sourceElement, out targetElement))
                 {
                     var merger =
