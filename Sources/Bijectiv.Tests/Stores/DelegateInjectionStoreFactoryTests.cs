@@ -122,7 +122,8 @@ namespace Bijectiv.Tests.Stores
             // Arrange
             var definition1 = new InjectionDefinition(TestClass1.T, TestClass2.T);
             var definition2 = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var registry = new InstanceRegistry { definition1, definition2 };
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            registryMock.Setup(_ => _.Resolve<InjectionDefinition>()).Returns(new[] { definition1, definition2 });
 
             var injection1 = Stub.Create<IInjection>();
             var injection2 = Stub.Create<IInjection>();
@@ -130,17 +131,17 @@ namespace Bijectiv.Tests.Stores
 
             // Note: `factoryMock.Setup(_ => _.Create(registry, definition1))` does not work, which is a moq problem.
             factoryMock
-                .Setup(_ => _.Create(registry, It.Is<InjectionDefinition>(d => d == definition1)))
+                .Setup(_ => _.Create(registryMock.Object, It.Is<InjectionDefinition>(d => d == definition1)))
                 .Returns(injection1);
 
             factoryMock
-                .Setup(_ => _.Create(registry, It.Is<InjectionDefinition>(d => d == definition2)))
+                .Setup(_ => _.Create(registryMock.Object, It.Is<InjectionDefinition>(d => d == definition2)))
                 .Returns(injection2);
 
             var target = new DelegateInjectionStoreFactory(factoryMock.Object);
 
             // Act
-            var result = (CollectionInjectionStore)target.Create(registry);
+            var result = (CollectionInjectionStore)target.Create(registryMock.Object);
 
             // Assert
             factoryMock.VerifyAll();

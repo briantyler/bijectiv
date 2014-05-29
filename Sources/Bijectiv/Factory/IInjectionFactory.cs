@@ -48,7 +48,7 @@ namespace Bijectiv.Factory
         /// Creates a <typeparamref name="TInjection"/> from a <see cref="InjectionDefinition"/>.
         /// </summary>
         /// <param name="definitionRegistry">
-        /// The registry containing all known <see cref="InjectionDefinition"/> instances.
+        /// The registry containing all known instances.
         /// </param>
         /// <param name="definition">
         /// The definition from which to create a <typeparamref name="TInjection"/>.

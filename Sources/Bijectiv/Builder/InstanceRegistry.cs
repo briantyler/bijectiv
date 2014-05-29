@@ -34,7 +34,7 @@ namespace Bijectiv.Builder
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="InjectionDefinition"/> registry.
+    /// A registry that contains instances.
     /// </summary>
     public class InstanceRegistry : IInstanceRegistry
     {

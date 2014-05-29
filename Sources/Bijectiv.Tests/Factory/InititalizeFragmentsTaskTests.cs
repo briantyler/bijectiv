@@ -39,6 +39,8 @@ namespace Bijectiv.Tests.Factory
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using Moq;
+
     /// <summary>
     /// This class tests the <see cref="InitializeFragmentsTask"/> class.
     /// </summary>
@@ -163,9 +165,12 @@ namespace Bijectiv.Tests.Factory
                 Stub.Fragment<object, object>(),
             };
 
-            var registry = new InstanceRegistry { baseDefinition1, baseDefinition2, notUsedDefinition };
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            registryMock
+                .Setup(_ => _.Resolve<InjectionDefinition>())
+                .Returns(new[] { baseDefinition1, baseDefinition2, notUsedDefinition });
 
-            var scaffold = CreateScaffold(registry, fragments);
+            var scaffold = CreateScaffold(registryMock.Object, fragments);
             var target = CreateTarget();
 
             // Act

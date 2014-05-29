@@ -44,9 +44,9 @@ namespace Bijectiv
     public class InjectionStoreBuilder
     {
         /// <summary>
-        /// The registry.
+        /// The instance registry.
         /// </summary>
-        private readonly IInstanceRegistry registry;
+        private readonly IInstanceRegistry instanceRegistry;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionStoreBuilder"/> class.
@@ -59,28 +59,28 @@ namespace Bijectiv
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionStoreBuilder"/> class.
         /// </summary>
-        /// <param name="registry">
-        /// The registry.
+        /// <param name="instanceRegistry">
+        /// The instance registry.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public InjectionStoreBuilder([NotNull] IInstanceRegistry registry)
+        public InjectionStoreBuilder([NotNull] IInstanceRegistry instanceRegistry)
         {
-            if (registry == null)
+            if (instanceRegistry == null)
             {
-                throw new ArgumentNullException("registry");
+                throw new ArgumentNullException("instanceRegistry");
             }
 
-            this.registry = registry;
+            this.instanceRegistry = instanceRegistry;
         }
 
         /// <summary>
-        /// Gets the registry.
+        /// Gets the instance registry.
         /// </summary>
-        public virtual IInstanceRegistry Registry
+        public virtual IInstanceRegistry InstanceRegistry
         {
-            get { return this.registry; }
+            get { return this.instanceRegistry; }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Bijectiv
 
             var store = new CompositeInjectionStore();
 
-            factories.ForEach(factory => store.Add(factory.Create(this.Registry)));
+            factories.ForEach(factory => store.Add(factory.Create(this.InstanceRegistry)));
 
             return store;
         }

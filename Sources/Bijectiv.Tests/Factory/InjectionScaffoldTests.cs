@@ -80,7 +80,7 @@ namespace Bijectiv.Tests.Factory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_DefinitionRegistryParameterNull_Throws()
+        public void CreateInstance_InstanceRegistryParameterNull_Throws()
         {
             // Arrange
 
@@ -151,7 +151,7 @@ namespace Bijectiv.Tests.Factory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefinitionRegistryParameter_IsAssignedToDefinitionRegistryProperty()
+        public void CreateInstance_InstanceRegistryParameter_IsAssignedToInstanceRegistryProperty()
         {
             // Arrange
             var parameter = Stub.Create<IInstanceRegistry>();

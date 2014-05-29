@@ -110,7 +110,7 @@ namespace Bijectiv.Tests.Factory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Create_DefinitionRegistryParameterIsNull_Throws()
+        public void Create_InstanceRegistryParameterIsNull_Throws()
         {
             // Arrange
             var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());

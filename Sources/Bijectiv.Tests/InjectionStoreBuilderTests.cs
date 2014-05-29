@@ -61,7 +61,7 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_RegistryParameterIsNull_Throws()
+        public void CreateInstance_InstanceRegistryParameterIsNull_Throws()
         {
             // Arrange
 
@@ -73,7 +73,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
+        public void CreateInstance_InstanceRegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
             var registry = Stub.Create<IInstanceRegistry>();
@@ -82,38 +82,7 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registry);
 
             // Assert
-            Assert.AreEqual(registry, target.Registry);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void RegisterCallback_CallbackParameterIsNull_Throws()
-        {
-            // Arrange
-            var registry = Stub.Create<IInstanceRegistry>();
-            var target = new InjectionStoreBuilder(registry);
-
-            // Act
-            target.RegisterCallback(null);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
-        {
-            // Arrange
-            var registry = Stub.Create<IInstanceRegistry>();
-            var target = new InjectionStoreBuilder(registry);
-            IInstanceRegistry calledRegistry = null;
-
-            // Act
-            target.RegisterCallback(_ => calledRegistry = _);
-
-            // Assert
-            Assert.AreEqual(registry, calledRegistry);
+            Assert.AreEqual(registry, target.InstanceRegistry);
         }
 
         [TestMethod]
@@ -132,7 +101,7 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Build_ValidParameters_ReturnsInjectionTransformStore()
+        public void Build_ValidParameters_ReturnsCompositeInjectionStore()
         {
             // Arrange
             var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());

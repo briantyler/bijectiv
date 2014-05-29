@@ -67,7 +67,7 @@ namespace Bijectiv
 
             var definition = new InjectionDefinition(typeof(TSource), typeof(TTarget));
 
-            @this.Registry.Register(typeof(InjectionDefinition), definition);
+            @this.InstanceRegistry.Register(typeof(InjectionDefinition), definition);
 
             return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
         }
@@ -111,7 +111,7 @@ namespace Bijectiv
                 new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase))
             };
 
-            @this.Registry.Register(typeof(InjectionDefinition), definition);
+            @this.InstanceRegistry.Register(typeof(InjectionDefinition), definition);
 
             return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
         }

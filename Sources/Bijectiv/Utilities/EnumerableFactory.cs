@@ -86,32 +86,47 @@ namespace Bijectiv.Utilities
             where TInterface : IEnumerable<Placeholder>
             where TConcrete : ICollection<Placeholder>, TInterface, new()
         {
-            if (!typeof(TInterface).IsGenericType)
+            this.Register(typeof(TInterface), typeof(TConcrete));
+        }
+
+        public void Register([NotNull] Type interfaceType, [NotNull] Type concreteType)
+        {
+            if (interfaceType == null)
             {
-                throw new InvalidOperationException(
-                    string.Format("Type TInterface '{0}' is not generic.", typeof(TInterface)));
+                throw new ArgumentNullException("interfaceType");
             }
 
-            if (typeof(TInterface).GetGenericArguments().Count() != 1)
+            if (concreteType == null)
             {
-                throw new InvalidOperationException(
-                    string.Format("Type TInterface '{0}' is not a monad.", typeof(TInterface)));
+                throw new ArgumentNullException("concreteType");
             }
 
-            if (!typeof(TConcrete).IsGenericType)
+            if (!interfaceType.IsGenericType)
             {
                 throw new InvalidOperationException(
-                    string.Format("Type TConcrete '{0}' is not generic.", typeof(TConcrete)));
+                    string.Format("Type TInterface '{0}' is not generic.", interfaceType));
             }
 
-            if (typeof(TConcrete).GetGenericArguments().Count() != 1)
+            if (interfaceType.GetGenericArguments().Count() != 1)
             {
                 throw new InvalidOperationException(
-                    string.Format("Type TConcrete '{0}' is not a monad.", typeof(TConcrete)));
+                    string.Format("Type TInterface '{0}' is not a monad.", interfaceType));
             }
 
-            this.Registrations[typeof(TInterface).GetGenericTypeDefinition()] = 
-                typeof(TConcrete).GetGenericTypeDefinition();
+            if (!concreteType.IsGenericType)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Type TConcrete '{0}' is not generic.", concreteType));
+            }
+
+            if (concreteType.GetGenericArguments().Count() != 1)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Type TConcrete '{0}' is not a monad.", concreteType));
+            }
+
+            this.Registrations[interfaceType.GetGenericTypeDefinition()] =
+                concreteType.GetGenericTypeDefinition();
         }
 
         /// <summary>

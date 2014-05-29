@@ -31,6 +31,7 @@
 #pragma warning disable 1720
 namespace Bijectiv.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -70,7 +71,7 @@ namespace Bijectiv.Tests
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
-            registryMock.Setup(_ => _.Add(It.IsAny<InjectionDefinition>()));
+            registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
             // Act
             target.Register<TestClass1, TestClass2>();
@@ -89,8 +90,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.Register<TestClass1, TestClass2>();
@@ -110,8 +111,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.Register<TestClass1, TestClass2>();
@@ -131,8 +132,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.Register<TestClass1, TestClass2>();
@@ -163,7 +164,7 @@ namespace Bijectiv.Tests
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
-            registryMock.Setup(_ => _.Add(It.IsAny<InjectionDefinition>()));
+            registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -182,8 +183,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+               .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -203,8 +204,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -224,8 +225,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -245,8 +246,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
@@ -266,8 +267,8 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Add(It.IsAny<InjectionDefinition>()))
-                .Callback((InjectionDefinition a) => defintions.Add(a));
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
             target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
