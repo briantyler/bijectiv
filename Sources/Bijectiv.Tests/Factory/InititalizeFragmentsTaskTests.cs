@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Factory
         public void Execute_ScaffoldContainsCandidateFragments_CandidateFragmentsCleared()
         {
             // Arrange
-            var scaffold = CreateScaffold(new InjectionDefinitionRegistry());
+            var scaffold = CreateScaffold(new InstanceRegistry());
             scaffold.CandidateFragments.Add(Stub.Fragment<object, object>());
             
             var target = CreateTarget();
@@ -94,7 +94,7 @@ namespace Bijectiv.Tests.Factory
         public void Execute_ScaffoldContainsProcessedFragments_ProcessedFragmentsCleared()
         {
             // Arrange
-            var scaffold = CreateScaffold(new InjectionDefinitionRegistry());
+            var scaffold = CreateScaffold(new InstanceRegistry());
             scaffold.ProcessedFragments.Add(Stub.Fragment<object, object>());
 
             var target = CreateTarget();
@@ -118,7 +118,7 @@ namespace Bijectiv.Tests.Factory
                 Stub.Fragment<TestClass1, TestClass2>()
             };
 
-            var scaffold = CreateScaffold(new InjectionDefinitionRegistry(), fragments);
+            var scaffold = CreateScaffold(new InstanceRegistry(), fragments);
             var target = CreateTarget();
 
             // Act
@@ -163,7 +163,7 @@ namespace Bijectiv.Tests.Factory
                 Stub.Fragment<object, object>(),
             };
 
-            var registry = new InjectionDefinitionRegistry { baseDefinition1, baseDefinition2, notUsedDefinition };
+            var registry = new InstanceRegistry { baseDefinition1, baseDefinition2, notUsedDefinition };
 
             var scaffold = CreateScaffold(registry, fragments);
             var target = CreateTarget();
@@ -193,7 +193,7 @@ namespace Bijectiv.Tests.Factory
         }
 
         private static InjectionScaffold CreateScaffold(
-            IInjectionDefinitionRegistry registry,
+            IInstanceRegistry registry,
             params InjectionFragment[] fragments)
         {
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T, fragments);

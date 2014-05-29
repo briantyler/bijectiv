@@ -97,7 +97,7 @@
     <Compile Include="Stores\DelegateInjectionStoreFactory.cs" />
     <Compile Include="Stores\InstanceInjectionStoreFactory.cs" />
     <Compile Include="Stores\IInjectionStoreFactory.cs" />
-    <Compile Include="Builder\InjectionDefinitionRegistry.cs" />
+    <Compile Include="Builder\InstanceRegistry.cs" />
     <Compile Include="Factory\ActivateTargetExpressionFactory.cs" />
     <Compile Include="Factory\CreateTargetTask.cs" />
     <Compile Include="Factory\CustomFactoryExpressionFactory.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Factory\TransformFactory.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />
     <Compile Include="IInjectionDefinitionBuilder.cs" />
-    <Compile Include="Builder\IInjectionDefinitionRegistry.cs" />
+    <Compile Include="Builder\IInstanceRegistry.cs" />
     <Compile Include="Builder\LegendryFragments.cs" />
     <Compile Include="Builder\InjectionDefinition.cs" />
     <Compile Include="Builder\InjectionDefinitionBuilder.cs" />

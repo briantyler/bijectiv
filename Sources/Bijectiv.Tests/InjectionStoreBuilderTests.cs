@@ -53,7 +53,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new InjectionStoreBuilder(Stub.Create<IInjectionDefinitionRegistry>()).Naught();
+            new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>()).Naught();
 
             // Assert
         }
@@ -76,7 +76,7 @@ namespace Bijectiv.Tests
         public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
         {
             // Arrange
-            var registry = Stub.Create<IInjectionDefinitionRegistry>();
+            var registry = Stub.Create<IInstanceRegistry>();
             
             // Act
             var target = new InjectionStoreBuilder(registry);
@@ -91,7 +91,7 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameterIsNull_Throws()
         {
             // Arrange
-            var registry = Stub.Create<IInjectionDefinitionRegistry>();
+            var registry = Stub.Create<IInstanceRegistry>();
             var target = new InjectionStoreBuilder(registry);
 
             // Act
@@ -105,9 +105,9 @@ namespace Bijectiv.Tests
         public void RegisterCallback_CallbackParameter_IsCalledOnRegistryProperty()
         {
             // Arrange
-            var registry = Stub.Create<IInjectionDefinitionRegistry>();
+            var registry = Stub.Create<IInstanceRegistry>();
             var target = new InjectionStoreBuilder(registry);
-            IInjectionDefinitionRegistry calledRegistry = null;
+            IInstanceRegistry calledRegistry = null;
 
             // Act
             target.RegisterCallback(_ => calledRegistry = _);
@@ -122,7 +122,7 @@ namespace Bijectiv.Tests
         public void Build_FactoriesParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InjectionStoreBuilder(Stub.Create<IInjectionDefinitionRegistry>());
+            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             target.Build(null);
@@ -135,7 +135,7 @@ namespace Bijectiv.Tests
         public void Build_ValidParameters_ReturnsInjectionTransformStore()
         {
             // Arrange
-            var target = new InjectionStoreBuilder(Stub.Create<IInjectionDefinitionRegistry>());
+            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             var result = target.Build(Enumerable.Empty<IInjectionStoreFactory>());
@@ -153,13 +153,13 @@ namespace Bijectiv.Tests
 
             var factory1 = repository.Create<IInjectionStoreFactory>();
             var store1 = Stub.Create<IInjectionStore>();
-            factory1.Setup(_ => _.Create(It.IsAny<IInjectionDefinitionRegistry>())).Returns(store1);
+            factory1.Setup(_ => _.Create(It.IsAny<IInstanceRegistry>())).Returns(store1);
 
             var factory2 = repository.Create<IInjectionStoreFactory>();
             var store2 = Stub.Create<IInjectionStore>();
-            factory2.Setup(_ => _.Create(It.IsAny<IInjectionDefinitionRegistry>())).Returns(store2);
+            factory2.Setup(_ => _.Create(It.IsAny<IInstanceRegistry>())).Returns(store2);
 
-            var target = new InjectionStoreBuilder(Stub.Create<IInjectionDefinitionRegistry>());
+            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             var result = (CompositeInjectionStore)target.Build(new[] { factory1.Object, factory2.Object });

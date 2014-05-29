@@ -82,7 +82,7 @@ namespace Bijectiv.Stores
         /// <returns>
         /// The registered <see cref="IInjectionStore"/>.
         /// </returns>
-        public IInjectionStore Create(IInjectionDefinitionRegistry registry)
+        public IInjectionStore Create(IInstanceRegistry registry)
         {
             return this.Instance;
         }

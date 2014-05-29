@@ -102,7 +102,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<IInjectionDefinitionRegistry>(), null);
+            target.Create(Stub.Create<IInstanceRegistry>(), null);
 
             // Assert
         }
@@ -139,7 +139,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             var result = target.Create(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
@@ -206,7 +206,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             var injection = target.Create(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             var result = injection.Merge(sourceInstance, targetInstance, injectionContext);

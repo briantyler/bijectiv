@@ -76,7 +76,7 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
-        /// Creates a <see cref="IInjectionStore"/> from a <see cref="IInjectionDefinitionRegistry"/>.
+        /// Creates a <see cref="IInjectionStore"/> from a <see cref="IInstanceRegistry"/>.
         /// </summary>
         /// <param name="registry">
         /// The registry from which to create the store.
@@ -84,7 +84,7 @@ namespace Bijectiv.Stores
         /// <returns>
         /// The created <see cref="IInjectionStore"/>.
         /// </returns>
-        public IInjectionStore Create([NotNull] IInjectionDefinitionRegistry registry)
+        public IInjectionStore Create([NotNull] IInstanceRegistry registry)
         {
             if (registry == null)
             {
@@ -93,8 +93,9 @@ namespace Bijectiv.Stores
 
             var store = new CollectionInjectionStore();
 
-            registry.ForEach(definition => 
-                store.Add(this.InjectionFactory.Create(registry, definition)));
+            registry
+                .Resolve<InjectionDefinition>()
+                .ForEach(definition => store.Add(this.InjectionFactory.Create(registry, definition)));
 
             return store;
         }

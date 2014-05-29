@@ -67,7 +67,7 @@ namespace Bijectiv.Tests
         public void Register_ValidParameters_DefintionIsAddedToRegistry()
         {
             // Arrange
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Add(It.IsAny<InjectionDefinition>()));
@@ -85,7 +85,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -106,7 +106,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -127,7 +127,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -161,7 +161,7 @@ namespace Bijectiv.Tests
         public void RegisterInherited_ValidParameters_DefintionIsAddedToRegistry()
         {
             // Arrange
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
             registryMock.Setup(_ => _.Add(It.IsAny<InjectionDefinition>()));
 
@@ -178,7 +178,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -199,7 +199,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -220,7 +220,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -241,7 +241,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock
@@ -262,7 +262,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var defintions = new List<InjectionDefinition>();
-            var registryMock = new Mock<IInjectionDefinitionRegistry>(MockBehavior.Strict);
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionStoreBuilder(registryMock.Object);
 
             registryMock

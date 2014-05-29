@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionDefinitionRegistry.cs" company="Bijectiv">
+// <copyright file="IInstanceRegistry.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,64 +23,51 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionDefinitionRegistry type.
+//   Defines the IInstanceRegistry type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Builder
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The <see cref="InjectionDefinition"/> registry.
+    /// Represents a registry that contains instances.
     /// </summary>
-    public class InjectionDefinitionRegistry : IInjectionDefinitionRegistry
+    public interface IInstanceRegistry
     {
         /// <summary>
-        /// The defintions.
+        /// Registers <paramref name="instance"/> as an instance of type <paramref name="instanceType"/>.
         /// </summary>
-        private readonly List<InjectionDefinition> defintions = new List<InjectionDefinition>();
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the registry.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that iterates through the registry.
-        /// </returns>
-        public IEnumerator<InjectionDefinition> GetEnumerator()
-        {
-            return this.defintions.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Adds a definition to the registry.
-        /// </summary>
-        /// <param name="definition">
-        /// The definition.
+        /// <param name="instanceType">
+        /// The type to register <paramref name="instance"/> as.
         /// </param>
-        public void Add([NotNull] InjectionDefinition definition)
-        {
-            if (definition == null)
-            {
-                throw new ArgumentNullException("definition");
-            }
-
-            this.defintions.Add(definition);
-        }
+        /// <param name="instance">
+        /// The instance to register.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="instance"/> is not assignable to a variable of type
+        /// <paramref name="instanceType"/>.
+        /// </exception>
+        void Register([NotNull] Type instanceType, [NotNull] object instance);
 
         /// <summary>
-        /// Returns an enumerator that iterates through the registry.
+        /// Resolves all instances of type <typeparamref name="TInstance"/> in the order in which they were
+        /// registered.
         /// </summary>
+        /// <typeparam name="TInstance">
+        /// The type of instance to resolve.
+        /// </typeparam>
         /// <returns>
-        /// An enumerator that iterates through the registry.
+        /// The collection of all instances of type <typeparamref name="TInstance"/> in the order in which they were
+        /// registered.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)this.defintions).GetEnumerator();
-        }
+        IEnumerable<TInstance> Resolve<TInstance>();
     }
 }

@@ -91,7 +91,7 @@ namespace Bijectiv.Factory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public IMerge Create(IInjectionDefinitionRegistry definitionRegistry, InjectionDefinition definition)
+        public IMerge Create(IInstanceRegistry definitionRegistry, InjectionDefinition definition)
         {
            if (definitionRegistry == null)
             {

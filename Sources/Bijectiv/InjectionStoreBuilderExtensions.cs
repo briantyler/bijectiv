@@ -65,10 +65,11 @@ namespace Bijectiv
                 throw new ArgumentNullException("this");
             }
 
-            var defintion = new InjectionDefinition(typeof(TSource), typeof(TTarget));
-            @this.RegisterCallback(registry => registry.Add(defintion));
+            var definition = new InjectionDefinition(typeof(TSource), typeof(TTarget));
 
-            return new InjectionDefinitionBuilder<TSource, TTarget>(defintion);
+            @this.Registry.Register(typeof(InjectionDefinition), definition);
+
+            return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
         }
 
         /// <summary>
@@ -105,14 +106,14 @@ namespace Bijectiv
                 throw new ArgumentNullException("this");
             }
 
-            var defintion = new InjectionDefinition(typeof(TSource), typeof(TTarget))
+            var definition = new InjectionDefinition(typeof(TSource), typeof(TTarget))
             {
                 new InheritsFragment(typeof(TSource), typeof(TTarget), typeof(TSourceBase), typeof(TTargetBase))
             };
 
-            @this.RegisterCallback(registry => registry.Add(defintion));
+            @this.Registry.Register(typeof(InjectionDefinition), definition);
 
-            return new InjectionDefinitionBuilder<TSource, TTarget>(defintion);
+            return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
         }
 
         /// <summary>

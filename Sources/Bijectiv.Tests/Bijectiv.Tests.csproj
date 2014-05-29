@@ -75,7 +75,6 @@
     <Compile Include="Builder\NullAutoTransformStrategyTests.cs" />
     <Compile Include="Builder\AutoTransformFragmentTests.cs" />
     <Compile Include="Builder\NullSourceFragmentTests.cs" />
-    <Compile Include="Builder\InjectionDefinitionRegistryTests.cs" />
     <Compile Include="Builder\InjectionDefinitionBuilderTests.cs" />
     <Compile Include="Builder\InjectionDefinitionTests.cs" />
     <Compile Include="Builder\InjectionFragmentTests.cs" />

@@ -68,7 +68,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)))
@@ -104,7 +104,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 null,
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)))
@@ -122,7 +122,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 null,
                 Expression.Parameter(typeof(IInjectionContext)))
@@ -140,7 +140,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 null)
@@ -154,7 +154,7 @@ namespace Bijectiv.Tests.Factory
         public void CreateInstance_DefinitionRegistryParameter_IsAssignedToDefinitionRegistryProperty()
         {
             // Arrange
-            var parameter = Stub.Create<IInjectionDefinitionRegistry>();
+            var parameter = Stub.Create<IInstanceRegistry>();
 
             // Act
             var target = new InjectionScaffold(
@@ -164,7 +164,7 @@ namespace Bijectiv.Tests.Factory
                 Expression.Parameter(typeof(IInjectionContext)));
 
             // Assert
-            Assert.AreEqual(parameter, target.DefinitionRegistry);
+            Assert.AreEqual(parameter, target.InstanceRegistry);
         }
 
         [TestMethod]
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             var target = new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 parameter,
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)));
@@ -194,7 +194,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             var target = new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 parameter,
                 Expression.Parameter(typeof(IInjectionContext)));
@@ -212,7 +212,7 @@ namespace Bijectiv.Tests.Factory
 
             // Act
             var target = new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 parameter);
@@ -368,7 +368,7 @@ namespace Bijectiv.Tests.Factory
         private static InjectionScaffold CreateTarget()
         {
             return new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)));

@@ -201,7 +201,7 @@ namespace Bijectiv.Tests.Factory
         private static InjectionScaffold CreateScaffold()
         {
             return new InjectionScaffold(
-                Stub.Create<IInjectionDefinitionRegistry>(),
+                Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Stub.Create<Expression>(),
                 Stub.Create<Expression>());

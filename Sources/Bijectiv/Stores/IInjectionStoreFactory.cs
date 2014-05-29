@@ -37,7 +37,7 @@ namespace Bijectiv.Stores
     public interface IInjectionStoreFactory
     {
         /// <summary>
-        /// Creates a <see cref="IInjectionStore"/> from a <see cref="IInjectionDefinitionRegistry"/>.
+        /// Creates a <see cref="IInjectionStore"/> from a <see cref="IInstanceRegistry"/>.
         /// </summary>
         /// <param name="registry">
         /// The registry from which to create the store.
@@ -45,6 +45,6 @@ namespace Bijectiv.Stores
         /// <returns>
         /// The created <see cref="IInjectionStore"/>.
         /// </returns>
-        IInjectionStore Create(IInjectionDefinitionRegistry registry);
+        IInjectionStore Create(IInstanceRegistry registry);
     }
 }

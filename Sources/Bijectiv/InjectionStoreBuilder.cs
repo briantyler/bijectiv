@@ -46,13 +46,13 @@ namespace Bijectiv
         /// <summary>
         /// The registry.
         /// </summary>
-        private readonly IInjectionDefinitionRegistry registry;
+        private readonly IInstanceRegistry registry;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionStoreBuilder"/> class.
         /// </summary>
         public InjectionStoreBuilder()
-            : this(new InjectionDefinitionRegistry())
+            : this(new InstanceRegistry())
         {
         }
 
@@ -65,7 +65,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public InjectionStoreBuilder([NotNull] IInjectionDefinitionRegistry registry)
+        public InjectionStoreBuilder([NotNull] IInstanceRegistry registry)
         {
             if (registry == null)
             {
@@ -78,28 +78,9 @@ namespace Bijectiv
         /// <summary>
         /// Gets the registry.
         /// </summary>
-        protected internal virtual IInjectionDefinitionRegistry Registry
+        public virtual IInstanceRegistry Registry
         {
             get { return this.registry; }
-        }
-
-        /// <summary>
-        /// Registers a callback with the store builder: an extensibility point.
-        /// </summary>
-        /// <param name="callback">
-        /// The configuration callback.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public virtual void RegisterCallback([NotNull] Action<IInjectionDefinitionRegistry> callback)
-        {
-            if (callback == null)
-            {
-                throw new ArgumentNullException("callback");
-            }
-
-            callback(this.Registry);
         }
 
         /// <summary>

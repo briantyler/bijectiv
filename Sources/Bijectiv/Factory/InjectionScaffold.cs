@@ -87,8 +87,8 @@ namespace Bijectiv.Factory
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionScaffold"/> class.
         /// </summary>
-        /// <param name="definitionRegistry">
-        /// The definition registry consisting of all known defintions.
+        /// <param name="instanceRegistry">
+        /// The instance registry consisting of all known instances.
         /// </param>
         /// <param name="definition">
         /// The definition from which the <see cref="IInjection"/> is being constructed.
@@ -103,14 +103,14 @@ namespace Bijectiv.Factory
         /// Thrown when any parameter is null.
         /// </exception>
         public InjectionScaffold(
-            [NotNull] IInjectionDefinitionRegistry definitionRegistry,
+            [NotNull] IInstanceRegistry instanceRegistry,
             [NotNull] InjectionDefinition definition,
             [NotNull] Expression sourceAsObject,
             [NotNull] Expression injectionContext)
         {
-            if (definitionRegistry == null)
+            if (instanceRegistry == null)
             {
-                throw new ArgumentNullException("definitionRegistry");
+                throw new ArgumentNullException("instanceRegistry");
             }
 
             if (definition == null)
@@ -128,7 +128,7 @@ namespace Bijectiv.Factory
                 throw new ArgumentNullException("injectionContext");
             }
 
-            this.DefinitionRegistry = definitionRegistry;
+            this.InstanceRegistry = instanceRegistry;
             this.Definition = definition;
             this.InjectionContext = injectionContext;
             this.SourceAsObject = sourceAsObject;
@@ -142,9 +142,9 @@ namespace Bijectiv.Factory
         }
 
         /// <summary>
-        /// Gets the definition registry consisting of all known definitions.
+        /// Gets the instance registry consisting of all known instances.
         /// </summary>
-        public virtual IInjectionDefinitionRegistry DefinitionRegistry { get; private set; }
+        public virtual IInstanceRegistry InstanceRegistry { get; private set; }
 
         /// <summary>
         /// Gets the definition from which the <see cref="IInjection"/> is being created.

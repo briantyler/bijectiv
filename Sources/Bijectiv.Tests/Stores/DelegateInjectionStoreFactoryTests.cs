@@ -106,7 +106,7 @@ namespace Bijectiv.Tests.Stores
         {
             // Arrange
             var target = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
-            var registry = new InjectionDefinitionRegistry();
+            var registry = new InstanceRegistry();
 
             // Act
             var result = target.Create(registry);
@@ -122,7 +122,7 @@ namespace Bijectiv.Tests.Stores
             // Arrange
             var definition1 = new InjectionDefinition(TestClass1.T, TestClass2.T);
             var definition2 = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var registry = new InjectionDefinitionRegistry { definition1, definition2 };
+            var registry = new InstanceRegistry { definition1, definition2 };
 
             var injection1 = Stub.Create<IInjection>();
             var injection2 = Stub.Create<IInjection>();

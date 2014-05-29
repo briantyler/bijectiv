@@ -37,7 +37,7 @@ namespace Bijectiv.Factory
 
     /// <summary>
     /// Represents a factory that creates <typeparamref name="TInjection"/> instances from a 
-    /// <see cref="InjectionDefinition"/> and a <see cref="IInjectionDefinitionRegistry"/>.
+    /// <see cref="InjectionDefinition"/> and a <see cref="IInstanceRegistry"/>.
     /// </summary>
     /// <typeparam name="TInjection">
     /// The type of <see cref="IInjection"/> to create.
@@ -60,7 +60,7 @@ namespace Bijectiv.Factory
         /// Thrown when any parameter is null.
         /// </exception>
         TInjection Create(
-            [NotNull] IInjectionDefinitionRegistry definitionRegistry, 
+            [NotNull] IInstanceRegistry definitionRegistry, 
             [NotNull] InjectionDefinition definition);
     }
 }
