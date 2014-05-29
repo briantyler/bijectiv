@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bijectiv", "Bijectiv\Bijectiv.csproj", "{C49092A4-1985-4A13-9324-CC23EC29884A}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{83772A
 	ProjectSection(SolutionItems) = preProject
 		.build\bijectiv.ruleset = .build\bijectiv.ruleset
 		.build\bijectiv.runsettings = .build\bijectiv.runsettings
+		Bijectiv.sln.DotSettings = Bijectiv.sln.DotSettings
 		.build\Bijectiv.snk = .build\Bijectiv.snk
 		CustomDictionary.xml = CustomDictionary.xml
 		license.txt = license.txt
