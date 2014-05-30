@@ -44,6 +44,14 @@ namespace Bijectiv.Builder
         private readonly IDictionary<Type, IList<object>> registrations = new Dictionary<Type, IList<object>>();
 
         /// <summary>
+        /// Gets the registrations.
+        /// </summary>
+        public IDictionary<Type, IList<object>> Registrations
+        {
+            get { return this.registrations; }
+        }
+
+        /// <summary>
         /// Registers <paramref name="instance"/> as an instance of type <paramref name="instanceType"/>.
         /// </summary>
         /// <param name="instanceType">
@@ -77,12 +85,12 @@ namespace Bijectiv.Builder
                     string.Format("Instance '{0}' is not an instance of type '{1}", instance, instanceType), "instance");
             }
 
-            if (!this.registrations.ContainsKey(instanceType))
+            if (!this.Registrations.ContainsKey(instanceType))
             {
-                this.registrations.Add(instanceType, new List<object>());
+                this.Registrations.Add(instanceType, new List<object>());
             }
 
-            this.registrations[instanceType].Add(instance);
+            this.Registrations[instanceType].Add(instance);
         }
 
         /// <summary>
@@ -98,12 +106,9 @@ namespace Bijectiv.Builder
         /// </returns>
         public IEnumerable<TInstance> Resolve<TInstance>()
         {
-            if (!this.registrations.ContainsKey(typeof(TInstance)))
-            {
-                return new TInstance[0];
-            }
-
-            return this.registrations[typeof(TInstance)].Cast<TInstance>();
+            return !this.Registrations.ContainsKey(typeof(TInstance)) 
+                ? new TInstance[0] 
+                : this.Registrations[typeof(TInstance)].Cast<TInstance>();
         }
     }
 }
