@@ -88,7 +88,7 @@
     <Compile Include="ITargetFinderStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
-    <Compile Include="Utilities\Enumerable FactoryRegistration.cs" />
+    <Compile Include="Utilities\EnumerableFactoryRegistration.cs" />
     <Compile Include="Utilities\EnumerableFactory.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
