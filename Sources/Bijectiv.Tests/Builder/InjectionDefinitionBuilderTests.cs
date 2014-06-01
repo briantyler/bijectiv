@@ -27,7 +27,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Builder
 {
     using System;
@@ -55,7 +54,23 @@ namespace Bijectiv.Tests.Builder
             // Arrange
 
             // Act
-            new InjectionDefinitionBuilder<TestClass1, TestClass2>(null).Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionDefinitionBuilder<TestClass1, TestClass2>(null, Stub.Create<IInstanceRegistry>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_RegistryParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, null).Naught();
 
             // Assert
         }
@@ -65,13 +80,28 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_DefintionParameter_IsAssignedToDefintionProperty()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Assert
-            Assert.AreEqual(defintion, target.Definition);
+            Assert.AreEqual(definition, target.Definition);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_RegistryParameter_IsAssignedToRegistryProperty()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var registry = Stub.Create<IInstanceRegistry>();
+
+            // Act
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registry);
+
+            // Assert
+            Assert.AreEqual(registry, target.Registry);
         }
 
         [TestMethod]
@@ -80,10 +110,10 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_SourceTypeMismatch_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            new InjectionDefinitionBuilder<BaseTestClass1, TestClass2>(defintion).Naught();
+            new InjectionDefinitionBuilder<BaseTestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>()).Naught();
 
             // Assert
         }
@@ -94,10 +124,10 @@ namespace Bijectiv.Tests.Builder
         public void CreateInstance_TargetTypeMismatch_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            new InjectionDefinitionBuilder<TestClass1, BaseTestClass2>(defintion).Naught();
+            new InjectionDefinitionBuilder<TestClass1, BaseTestClass2>(definition, Stub.Create<IInstanceRegistry>()).Naught();
 
             // Assert
         }
@@ -107,14 +137,14 @@ namespace Bijectiv.Tests.Builder
         public void Activate_DefaultParameters_AddsActivatorFragmentToDefintion()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.Activate();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(ActivateFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(ActivateFragment));
         }
 
         [TestMethod]
@@ -122,14 +152,14 @@ namespace Bijectiv.Tests.Builder
         public void DefaultFactory_DefaultParameters_AddsDefaultFactoryFragmentToDefintion()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.DefaultFactory();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(DefaultFactoryFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(DefaultFactoryFragment));
         }
 
         [TestMethod]
@@ -138,8 +168,8 @@ namespace Bijectiv.Tests.Builder
         public void CustomFactory_FactoryParameterNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.CustomFactory(null);
@@ -152,14 +182,14 @@ namespace Bijectiv.Tests.Builder
         public void CustomFactory_ValidParameters_AddsCustomFactoryFragmentToDefintion()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.CustomFactory(p => default(TestClass2));
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(CustomFactoryFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(CustomFactoryFragment));
         }
 
         [TestMethod]
@@ -168,14 +198,14 @@ namespace Bijectiv.Tests.Builder
         {
             // Arrange
             Func<CustomFactoryParameters<TestClass1>, TestClass2> factory = p => default(TestClass2);
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.CustomFactory(factory);
 
             // Assert
-            Assert.AreEqual(factory, ((CustomFactoryFragment)defintion.Single()).Factory);
+            Assert.AreEqual(factory, ((CustomFactoryFragment)definition.Single()).Factory);
         }
 
         [TestMethod]
@@ -183,14 +213,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoNone_DefaultParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoNone();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -198,14 +228,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoNone_DefaultParameters_AssignsNullStrategyToFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoNone();
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NullAutoInjectionStrategy));
         }
 
@@ -214,14 +244,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoExact_DefaultParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoExact();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -229,14 +259,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoExact_DefaultParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoExact();
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -245,14 +275,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoExact_DefaultParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoExact();
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
@@ -266,10 +296,11 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixSource_PrefixParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AutoPrefixSource(null);
 
             // Assert
@@ -280,14 +311,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixSource_ValidParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -295,14 +326,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixSource_ValidParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -311,14 +342,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixSource_ValidParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixSource("Prefix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.MatchTarget, strategy.Options);
             Assert.AreEqual(
@@ -332,10 +363,11 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixTarget_PrefixParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AutoPrefixTarget(null);
 
             // Assert
@@ -346,14 +378,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixTarget_ValidParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -361,14 +393,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixTarget_ValidParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -377,14 +409,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoPrefixTarget_ValidParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoPrefixTarget("Prefix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
@@ -398,10 +430,11 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixSource_SuffixParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AutoSuffixSource(null);
 
             // Assert
@@ -412,14 +445,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixSource_ValidParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -427,14 +460,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixSource_ValidParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -443,14 +476,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixSource_ValidParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixSource("Suffix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.MatchTarget, strategy.Options);
             Assert.AreEqual(
@@ -464,10 +497,11 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixTarget_SuffixParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AutoSuffixTarget(null);
 
             // Assert
@@ -478,14 +512,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixTarget_ValidParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -493,14 +527,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixTarget_ValidParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -509,14 +543,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoSuffixTarget_ValidParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoSuffixTarget("Suffix");
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.None, strategy.Options);
             Assert.AreEqual(
@@ -530,10 +564,11 @@ namespace Bijectiv.Tests.Builder
         public void AutoRegex_RegexParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AutoRegex(null, AutoInjectionOptions.None);
 
             // Assert
@@ -544,14 +579,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoRegex_ValidParameters_AddsSourceMemberStrategyFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(AutoInjectionFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(AutoInjectionFragment));
         }
 
         [TestMethod]
@@ -559,14 +594,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoRegex_ValidParameters_AssignsNameRegexSourceMemberStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             Assert.IsInstanceOfType(fragment.Strategy, typeof(NameRegexAutoInjectionStrategy));
         }
 
@@ -575,14 +610,14 @@ namespace Bijectiv.Tests.Builder
         public void AutoRegex_ValidParameters_CreatesExpectedStrategyStrategy()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.AutoRegex("^Foo[abc]Bar$", AutoInjectionOptions.IgnoreCase);
 
             // Assert
-            var fragment = (AutoInjectionFragment)defintion.Single();
+            var fragment = (AutoInjectionFragment)definition.Single();
             var strategy = (NameRegexAutoInjectionStrategy)fragment.Strategy;
             Assert.AreEqual(AutoInjectionOptions.IgnoreCase, strategy.Options);
             Assert.AreEqual("^Foo[abc]Bar$", strategy.PatternTemplate);
@@ -594,10 +629,11 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceThrow_ExceptionFactoryParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.NullSourceThrow(null);
 
             // Assert
@@ -608,14 +644,14 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceThrow_ValidParameters_AddsNullSourceFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceThrow(context => new InvalidOperationException());
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(NullSourceFragment));
         }
 
         [TestMethod]
@@ -624,14 +660,14 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceThrow_ValidParameters_FragmentFactoryThrows()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceThrow(context => new InvalidOperationException());
 
             // Assert
-            var fragment = (NullSourceFragment)defintion.Single();
+            var fragment = (NullSourceFragment)definition.Single();
             ((Func<IInjectionContext, TestClass2>)fragment.Factory)(Stub.Create<IInjectionContext>());
         }
 
@@ -640,8 +676,8 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceThrow_ValidParameters_FragmentFactoryReceivesContext()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
             var actualContext = Stub.Create<IInjectionContext>();
             var call = new IInjectionContext[1];
 
@@ -653,7 +689,7 @@ namespace Bijectiv.Tests.Builder
             });
 
             // Assert
-            var fragment = (NullSourceFragment)defintion.Single();
+            var fragment = (NullSourceFragment)definition.Single();
 
             try
             {
@@ -670,14 +706,14 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceDefault_ValidParameters_AddsNullSourceFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceDefault();
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(NullSourceFragment));
         }
 
         [TestMethod]
@@ -685,14 +721,14 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceDefault_ValidParameters_FragmentFactoryCreatesDefault()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceDefault();
 
             // Assert
-            var fragment = (NullSourceFragment)defintion.Single();
+            var fragment = (NullSourceFragment)definition.Single();
             var result = ((Func<IInjectionContext, TestClass2>)fragment.Factory)(Stub.Create<IInjectionContext>());
             Assert.IsNull(result);
         }
@@ -703,14 +739,15 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceCustom_FactoryParameterIsNull_Throws()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.NullSourceCustom(null);
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(NullSourceFragment));
         }
 
         [TestMethod]
@@ -718,14 +755,14 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceCustom_ValidParameters_AddsNullSourceFragment()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceCustom(context => new TestClass2());
 
             // Assert
-            Assert.IsInstanceOfType(defintion.Single(), typeof(NullSourceFragment));
+            Assert.IsInstanceOfType(definition.Single(), typeof(NullSourceFragment));
         }
 
         [TestMethod]
@@ -733,8 +770,8 @@ namespace Bijectiv.Tests.Builder
         public void NullSourceCustom_ValidParameters_FragmentFactoryCreatesDefault()
         {
             // Arrange
-            var defintion = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(defintion);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
             target.NullSourceCustom(context => (TestClass2)context.Resolve(TestClass2.T));
@@ -744,7 +781,7 @@ namespace Bijectiv.Tests.Builder
             var expected = new TestClass2();
             contextMock.Setup(_ => _.Resolve(TestClass2.T)).Returns(expected);
 
-            var fragment = (NullSourceFragment)defintion.Single();
+            var fragment = (NullSourceFragment)definition.Single();
             var result = ((Func<IInjectionContext, TestClass2>)fragment.Factory)(contextMock.Object);
 
             contextMock.VerifyAll();

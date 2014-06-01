@@ -71,7 +71,7 @@ namespace Bijectiv
 
             @this.InstanceRegistry.Register(typeof(InjectionDefinition), definition);
 
-            return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
+            return new InjectionDefinitionBuilder<TSource, TTarget>(definition, @this.InstanceRegistry);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Bijectiv
 
             @this.InstanceRegistry.Register(typeof(InjectionDefinition), definition);
 
-            return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
+            return new InjectionDefinitionBuilder<TSource, TTarget>(definition, @this.InstanceRegistry);
         }
 
         /// <summary>

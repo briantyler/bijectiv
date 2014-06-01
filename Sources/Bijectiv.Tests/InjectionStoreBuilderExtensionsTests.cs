@@ -147,6 +147,28 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Register_ValidParameters_ResultIsInjectionDefinitionBuilder()
+        {
+            // Arrange
+            var defintions = new List<InjectionDefinition>();
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var target = new InjectionStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
+
+            // Act
+            var result = (InjectionDefinitionBuilder<TestClass1, TestClass2>)target.Register<TestClass1, TestClass2>();
+
+            // Assert
+            var defintion = defintions.Single();
+            Assert.AreEqual(defintion, result.Definition);
+            Assert.AreEqual(registryMock.Object, result.Registry);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
         public void RegisterInherited_ThisParameterIsNull_Throws()
         {
@@ -279,6 +301,29 @@ namespace Bijectiv.Tests
             // Assert
             var fragment = (InheritsFragment)defintions.Single().Single();
             Assert.AreEqual(BaseTestClass2.T, fragment.TargetBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterInherited_ValidParameters_ResultIsInjectionDefinitionBuilder()
+        {
+            // Arrange
+            var defintions = new List<InjectionDefinition>();
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var target = new InjectionStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
+                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
+
+            // Act
+            var result = (InjectionDefinitionBuilder<DerivedTestClass1, DerivedTestClass2>)
+                target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+
+            // Assert
+            var defintion = defintions.Single();
+            Assert.AreEqual(defintion, result.Definition);
+            Assert.AreEqual(registryMock.Object, result.Registry);
         }
 
         [TestMethod]

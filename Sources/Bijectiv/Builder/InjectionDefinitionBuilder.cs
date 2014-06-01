@@ -50,10 +50,18 @@ namespace Bijectiv.Builder
         private readonly InjectionDefinition definition;
 
         /// <summary>
+        /// The instance registry to which <see cref="definition"/> belongs.
+        /// </summary>
+        private readonly IInstanceRegistry registry;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="InjectionDefinitionBuilder{TSource,TTarget}"/> class.
         /// </summary>
         /// <param name="definition">
-        /// The definition.
+        /// The definition being built.
+        /// </param>
+        /// <param name="registry">
+        /// The instance registry to which <see cref="definition"/> belongs.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
@@ -61,11 +69,18 @@ namespace Bijectiv.Builder
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="definition"/> is incompatible with the builder.
         /// </exception>
-        public InjectionDefinitionBuilder([NotNull] InjectionDefinition definition)
+        public InjectionDefinitionBuilder(
+            [NotNull] InjectionDefinition definition, 
+            [NotNull] IInstanceRegistry registry)
         {
             if (definition == null)
             {
                 throw new ArgumentNullException("definition");
+            }
+
+            if (registry == null)
+            {
+                throw new ArgumentNullException("registry");
             }
 
             if (definition.Source != typeof(TSource))
@@ -83,6 +98,7 @@ namespace Bijectiv.Builder
             }
 
             this.definition = definition;
+            this.registry = registry;
         }
 
         /// <summary>
@@ -91,6 +107,14 @@ namespace Bijectiv.Builder
         protected internal InjectionDefinition Definition
         {
             get { return this.definition; }
+        }
+
+        /// <summary>
+        /// Gets the instance registry to which <see cref="definition"/> belongs.
+        /// </summary>
+        protected internal IInstanceRegistry Registry
+        {
+            get { return this.registry; }
         }
 
         /// <summary>
