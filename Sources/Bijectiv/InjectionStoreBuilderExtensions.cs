@@ -30,9 +30,11 @@
 namespace Bijectiv
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Bijectiv.Builder;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -114,6 +116,49 @@ namespace Bijectiv
             @this.InstanceRegistry.Register(typeof(InjectionDefinition), definition);
 
             return new InjectionDefinitionBuilder<TSource, TTarget>(definition);
+        }
+
+        /// <summary>
+        /// Registers an enumerable monad interface to a collection monad concrete type.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="InjectionStoreBuilder"/> to register with.
+        /// </param>
+        /// <typeparam name="TInterface">
+        /// The <see cref="IEnumerable{T}"/> interface.
+        /// </typeparam>
+        /// <typeparam name="TConcrete">
+        /// The <see cref="ICollection{T}"/> concrete type.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either <typeparamref name="TInterface"/> or <typeparamref name="TConcrete"/> is not a monadic
+        /// type.
+        /// </exception>
+        /// <example>
+        /// Use the <see cref="Placeholder"/> type to register a generic type:
+        ///     <code>
+        /// factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
+        ///     </code>
+        /// </example>
+        /// <remarks>
+        /// It might be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
+        /// do this by accident.
+        /// </remarks>
+        public static void RegisterEnumerable<TInterface, TConcrete>([NotNull] this InjectionStoreBuilder @this)
+            where TInterface : IEnumerable<Placeholder>
+            where TConcrete : ICollection<Placeholder>, TInterface, new()
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            @this.InstanceRegistry.Register(
+                typeof(EnumerableFactoryRegistration), 
+                new EnumerableFactoryRegistration(typeof(TInterface), typeof(TConcrete)));
         }
 
         /// <summary>

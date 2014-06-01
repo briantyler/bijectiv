@@ -31,6 +31,7 @@ namespace Bijectiv.Tests.Utilities
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -133,56 +134,41 @@ namespace Bijectiv.Tests.Utilities
 
         [TestMethod]
         [TestCategory("Unit")]
-        [InvalidOperationExceptionExpected]
-        public void Register_InterfaceTypeParameterIsNotGeneric_Throws()
+        public void CreateInstance_DefaultParameters_SetRegistered()
         {
             // Arrange
-            var target = CreateTarget();
 
             // Act
-            target.Register<IPlaceholderEnumerable, GenericPlaceholderCollection<Placeholder>>();
+            var target = new EnumerableFactory();
 
             // Assert
+            Assert.IsTrue(target.Registrations.ContainsKey(typeof(ISet<>)));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        [InvalidOperationExceptionExpected]
-        public void Register_InterfaceTypeIsNotMonad_Throws()
+        public void CreateInstance_DefaultParameters_SetIsHashSet()
         {
             // Arrange
-            var target = CreateTarget();
 
             // Act
-            target.Register<ICrazyPlaceholderEnumerable<Placeholder, Placeholder>, CrazyPlaceholderCollection<Placeholder>>();
+            var target = new EnumerableFactory();
 
             // Assert
+            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(ISet<>)]);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        [InvalidOperationExceptionExpected]
-        public void Register_ConcreteTypeParameterIsNotGeneric_Throws()
+        [ArgumentNullExceptionExpected]
+        public void Register_RegistrationParameterIsNull_Throws()
         {
             // Arrange
             var target = CreateTarget();
 
             // Act
-            target.Register<IEnumerable<Placeholder>, PlaceholderCollection>();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [InvalidOperationExceptionExpected]
-        public void Register_ConcreteTypeParameterIsNotMonad_Throws()
-        {
-            // Arrange
-            var target = CreateTarget();
-
-            // Act
-            target.Register<IEnumerable<Placeholder>, NonMonadicPlaceholderCollection<Placeholder, Placeholder>>();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Register(null);
 
             // Assert
         }
@@ -193,13 +179,15 @@ namespace Bijectiv.Tests.Utilities
         {
             // Arrange
             var target = CreateTarget();
+            target.Registrations.Clear();
 
             // Act
-            target.Register<ISet<Placeholder>, HashSet<Placeholder>>();
+            target.Register(new EnumerableFactoryRegistration(
+                typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(ISet<>)));
-            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(ISet<>)]);
+            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
+            Assert.AreEqual(typeof(Collection<>), target.Registrations[typeof(IEnumerable<>)]);
         }
 
         [TestMethod]
@@ -208,13 +196,16 @@ namespace Bijectiv.Tests.Utilities
         {
             // Arrange
             var target = CreateTarget();
+            target.Registrations.Clear();
+            target.Registrations.Add(typeof(IEnumerable<>), typeof(List<Placeholder>));
 
             // Act
-            target.Register<IEnumerable<Placeholder>, HashSet<Placeholder>>();
+            target.Register(new EnumerableFactoryRegistration(
+               typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert
             Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
-            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(IEnumerable<>)]);
+            Assert.AreEqual(typeof(Collection<>), target.Registrations[typeof(IEnumerable<>)]);
         }
 
         [TestMethod]

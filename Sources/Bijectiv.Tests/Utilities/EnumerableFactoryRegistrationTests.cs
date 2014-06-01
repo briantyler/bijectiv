@@ -287,37 +287,5 @@ namespace Bijectiv.Tests.Utilities
             // Assert
             Assert.AreEqual(typeof(Collection<>), target.ConcreteType);
         }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetHashCode_IdenticalInstances_HashCodesAreIdentical()
-        {
-            // Arrange
-            var target1 = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<>));
-            var target2 = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<>));
-
-            // Act
-            var result1 = target1.GetHashCode();
-            var result2 = target2.GetHashCode();
-
-            // Assert
-            Assert.AreEqual(result1, result2);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetHashCode_DifferentInstances_HashCodesAreDifferent()
-        {
-            // Arrange
-            var target1 = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<>));
-            var target2 = new EnumerableFactoryRegistration(typeof(IList<>), typeof(List<>));
-
-            // Act
-            var result1 = target1.GetHashCode();
-            var result2 = target2.GetHashCode();
-
-            // Assert
-            Assert.AreNotEqual(result1, result2);
-        }
     }
 }

@@ -31,7 +31,6 @@ namespace Bijectiv.Utilities
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
 
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.
@@ -39,31 +38,12 @@ namespace Bijectiv.Utilities
     public interface IEnumerableFactory
     {
         /// <summary>
-        /// Registers an enumerable monad interface to a collection monad concrete type.
+        /// Registers a <see cref="EnumerableFactoryRegistration"/> with the factory.
         /// </summary>
-        /// <typeparam name="TInterface">
-        /// The <see cref="IEnumerable{T}"/> interface.
-        /// </typeparam>
-        /// <typeparam name="TConcrete">
-        /// The <see cref="ICollection{T}"/> concrete type.
-        /// </typeparam>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when either <typeparamref name="TInterface"/> or <typeparamref name="TConcrete"/> is not a monadic
-        /// type.
-        /// </exception>
-        /// <example>
-        ///     Use the <see cref="Placeholder"/> type to register a generic type:
-        ///     <code>
-        ///         factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
-        ///     </code>
-        /// </example>
-        /// <remarks>
-        /// It would be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
-        /// do this by accident.
-        /// </remarks>
-        void Register<TInterface, TConcrete>()
-            where TInterface : IEnumerable<Placeholder>
-            where TConcrete : ICollection<Placeholder>, TInterface, new();
+        /// <param name="registration">
+        /// The registration.
+        /// </param>
+        void Register(EnumerableFactoryRegistration registration);
 
         /// <summary>
         /// Resolves an instance of type <paramref name="enumerable"/>.

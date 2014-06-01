@@ -32,7 +32,6 @@ namespace Bijectiv.Utilities
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     using JetBrains.Annotations;
 
@@ -49,6 +48,7 @@ namespace Bijectiv.Utilities
             { typeof(IEnumerable<>), typeof(List<>) },
             { typeof(ICollection<>), typeof(List<>) },
             { typeof(IList<>), typeof(List<>) },
+            { typeof(ISet<>), typeof(HashSet<>) },
         };
 
         /// <summary>
@@ -60,73 +60,22 @@ namespace Bijectiv.Utilities
         }
 
         /// <summary>
-        /// Registers an enumerable monad interface to a collection monad concrete type.
+        /// Registers a <see cref="EnumerableFactoryRegistration"/> with the factory.
         /// </summary>
-        /// <typeparam name="TInterface">
-        /// The <see cref="IEnumerable{T}"/> interface.
-        /// </typeparam>
-        /// <typeparam name="TConcrete">
-        /// The <see cref="ICollection{T}"/> concrete type.
-        /// </typeparam>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when either <typeparamref name="TInterface"/> or <typeparamref name="TConcrete"/> is not a monadic
-        /// type.
+        /// <param name="registration">
+        /// The registration.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
         /// </exception>
-        /// <example>
-        ///     Use the <see cref="Placeholder"/> type to register a generic type:
-        ///     <code>
-        ///         factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
-        ///     </code>
-        /// </example>
-        /// <remarks>
-        /// It would be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
-        /// do this by accident.
-        /// </remarks>
-        public void Register<TInterface, TConcrete>()
-            where TInterface : IEnumerable<Placeholder>
-            where TConcrete : ICollection<Placeholder>, TInterface, new()
+        public void Register([NotNull] EnumerableFactoryRegistration registration)
         {
-            this.Register(typeof(TInterface), typeof(TConcrete));
-        }
-
-        public void Register([NotNull] Type interfaceType, [NotNull] Type concreteType)
-        {
-            if (interfaceType == null)
+            if (registration == null)
             {
-                throw new ArgumentNullException("interfaceType");
+                throw new ArgumentNullException("registration");
             }
 
-            if (concreteType == null)
-            {
-                throw new ArgumentNullException("concreteType");
-            }
-
-            if (!interfaceType.IsGenericType)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Type TInterface '{0}' is not generic.", interfaceType));
-            }
-
-            if (interfaceType.GetGenericArguments().Count() != 1)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Type TInterface '{0}' is not a monad.", interfaceType));
-            }
-
-            if (!concreteType.IsGenericType)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Type TConcrete '{0}' is not generic.", concreteType));
-            }
-
-            if (concreteType.GetGenericArguments().Count() != 1)
-            {
-                throw new InvalidOperationException(
-                    string.Format("Type TConcrete '{0}' is not a monad.", concreteType));
-            }
-
-            this.Registrations[interfaceType.GetGenericTypeDefinition()] =
-                concreteType.GetGenericTypeDefinition();
+            this.Registrations[registration.InterfaceType] = registration.ConcreteType;
         }
 
         /// <summary>

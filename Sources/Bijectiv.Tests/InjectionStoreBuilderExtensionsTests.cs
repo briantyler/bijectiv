@@ -27,18 +27,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
 #pragma warning disable 1720
 namespace Bijectiv.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     using Bijectiv.Builder;
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,6 +59,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             default(InjectionStoreBuilder).Register<TestClass1, TestClass2>();
 
             // Assert
@@ -151,6 +153,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             default(InjectionStoreBuilder)
                 .RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
@@ -281,11 +284,86 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
+        public void RegisterEnumerable_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(InjectionStoreBuilder).RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterEnumerable_ValidParameters_EnumerableFactoryRegistrationIsAddedToRegistry()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var target = new InjectionStoreBuilder(registryMock.Object);
+
+            registryMock.Setup(_ => _.Register(
+                typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()));
+
+            // Act
+            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+
+            // Assert
+            registryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterEnumerable_ValidParameters_RegistrationHasCorrectInterfaceType()
+        {
+            // Arrange
+            var registrations = new List<EnumerableFactoryRegistration>();
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var target = new InjectionStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
+                .Callback((Type t, object o) => registrations.Add((EnumerableFactoryRegistration)o));
+
+            // Act
+            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+
+            // Assert
+            var registration = registrations.Single();
+            Assert.AreEqual(typeof(IEnumerable<>), registration.InterfaceType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterEnumerable_ValidParameters_RegistrationHasCorrectConcreteType()
+        {
+            // Arrange
+            var registrations = new List<EnumerableFactoryRegistration>();
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var target = new InjectionStoreBuilder(registryMock.Object);
+
+            registryMock
+                .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
+                .Callback((Type t, object o) => registrations.Add((EnumerableFactoryRegistration)o));
+
+            // Act
+            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+
+            // Assert
+            var registration = registrations.Single();
+            Assert.AreEqual(typeof(Collection<>), registration.ConcreteType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
         public void Build_ThisParameterIsNull_Throws()
         {
             // Arrange
             
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             default(InjectionStoreBuilder).Build();
 
             // Assert

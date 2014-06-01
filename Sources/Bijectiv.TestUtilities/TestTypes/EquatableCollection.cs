@@ -30,53 +30,28 @@
 namespace Bijectiv.TestUtilities.TestTypes
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
-    public class EquatableCollection<T> : IEquatable<T>, ICollection<T>
+    /// <summary>
+    /// A collection that is equal to every instance it contains (pointless and weird!).
+    /// </summary>
+    /// <typeparam name="T">
+    /// The amplified type.
+    /// </typeparam>
+    public class EquatableCollection<T> : Collection<T>, IEquatable<T>
     {
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// True if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">
+        /// An object to compare with this object.
+        /// </param>
         public bool Equals(T other)
         {
-            throw new NotImplementedException();
+            return true;
         }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        public void Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Count { get; private set; }
-
-        public bool IsReadOnly { get; private set; }
     }
 }

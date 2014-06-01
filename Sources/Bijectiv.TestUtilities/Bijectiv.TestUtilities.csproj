@@ -67,7 +67,9 @@
     <Compile Include="TestTypes\AutoTransformTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass2.cs" />
-    <Compile Include="TestTypes\EquatableCollection.cs" />
+    <Compile Include="TestTypes\EquatableCollection.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="TestTypes\NonMonadicPlaceholderCollection.cs" />
     <Compile Include="TestTypes\CrazyPlaceholderCollection.cs" />
     <Compile Include="TestTypes\DerivedTestClass1.cs" />

@@ -38,7 +38,7 @@ namespace Bijectiv.Utilities
     /// <summary>
     /// Represents a registration for a <see cref="IEnumerableFactory"/>.
     /// </summary>
-    public struct EnumerableFactoryRegistration
+    public class EnumerableFactoryRegistration
     {
         /// <summary>
         /// The interface type that implements <see cref="IEnumerable{T}"/>.
@@ -51,7 +51,7 @@ namespace Bijectiv.Utilities
         private readonly Type concreteType;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="EnumerableFactoryRegistration"/> struct.
+        /// Initialises a new instance of the <see cref="EnumerableFactoryRegistration"/> class.
         /// </summary>
         /// <param name="interfaceType">
         /// The interface type that implements <see cref="IEnumerable{T}"/>.
@@ -168,17 +168,6 @@ namespace Bijectiv.Utilities
         public Type ConcreteType
         {
             get { return this.concreteType; }
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// The hash code for this instance.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return Tuple.Create(this.InterfaceType, this.InterfaceType).GetHashCode();
         }
     }
 }

@@ -148,7 +148,6 @@ namespace Bijectiv.Tests.Builder
             var target = new InstanceRegistry();
             target.Register(typeof(TestClass1), new TestClass1());
 
-
             // Act
             target.Register(typeof(TestClass1), new TestClass1());
 
