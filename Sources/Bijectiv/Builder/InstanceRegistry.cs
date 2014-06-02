@@ -33,6 +33,8 @@ namespace Bijectiv.Builder
     using System.Collections.Generic;
     using System.Linq;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// A registry that contains instances.
     /// </summary>
@@ -49,6 +51,16 @@ namespace Bijectiv.Builder
         public IDictionary<Type, IList<object>> Registrations
         {
             get { return this.registrations; }
+        }
+
+        public void Register(Tuple<Type, object> registration)
+        {
+            if (registration == null)
+            {
+                throw new ArgumentNullException("registration");
+            }
+
+            this.Register(registration.Item1, registration.Item2);
         }
 
         /// <summary>

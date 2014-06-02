@@ -94,7 +94,7 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            target.Build(null);
+            target.Build(null, Enumerable.Empty<IInstanceFactory>());
 
             // Assert
         }
@@ -107,7 +107,7 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = target.Build(Enumerable.Empty<IInjectionStoreFactory>());
+            var result = target.Build(Enumerable.Empty<IInjectionStoreFactory>(), Enumerable.Empty<IInstanceFactory>());
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(CompositeInjectionStore));
@@ -131,7 +131,9 @@ namespace Bijectiv.Tests
             var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = (CompositeInjectionStore)target.Build(new[] { factory1.Object, factory2.Object });
+            var result = (CompositeInjectionStore)target.Build(
+                new[] { factory1.Object, factory2.Object }, 
+                Enumerable.Empty<IInstanceFactory>());
 
             // Assert
             new[] { store1, store2 }.AssertSequenceEqual(result);

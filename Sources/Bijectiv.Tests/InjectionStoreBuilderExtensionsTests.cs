@@ -427,7 +427,9 @@ namespace Bijectiv.Tests
 
             var builderMock = new Mock<InjectionStoreBuilder>(MockBehavior.Strict);
             builderMock
-                .Setup(_ => _.Build(It.Is<IEnumerable<IInjectionStoreFactory>>(i => new[] { storeFactory }.SequenceEqual(i))))
+                .Setup(_ => _.Build(
+                    It.Is<IEnumerable<IInjectionStoreFactory>>(i => new[] { storeFactory }.SequenceEqual(i)),
+                    It.IsAny<IEnumerable<IInstanceFactory>>()))
                 .Returns(expected);
 
             // Act

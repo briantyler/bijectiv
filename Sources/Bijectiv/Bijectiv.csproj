@@ -60,6 +60,7 @@
     <Compile Include="Builder\NullAutoInjectionStrategy.cs" />
     <Compile Include="Builder\AutoInjectionFragment.cs" />
     <Compile Include="Builder\NullSourceFragment.cs" />
+    <Compile Include="Builder\TargetFinderRegistration.cs" />
     <Compile Include="Factory\AutoInjectionTaskDetail.cs" />
     <Compile Include="Factory\AutoInjectionTask.cs" />
     <Compile Include="Factory\AutoInjectionTaskMergeDetail.cs" />
@@ -80,12 +81,15 @@
     <Compile Include="Injections\DelegateMerge.cs" />
     <Compile Include="Injections\EnumerableToEnumerableInjection.cs" />
     <Compile Include="Injections\ICollectionMerger.cs" />
+    <Compile Include="Injections\IdenticalKeyTargetFinder.cs" />
     <Compile Include="Injections\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="ITargetFinder.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Stores\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />
+    <Compile Include="Stores\IInstanceFactory.cs" />
+    <Compile Include="Stores\MasterInjectionStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
     <Compile Include="Utilities\EnumerableFactoryRegistration.cs" />

@@ -113,7 +113,7 @@ namespace Bijectiv.Injections
             }
 
             var finder = context.TargetFinderStore.Resolve(typeof(TSourceElement), typeof(TTargetElement));
-            finder.Initialize(target);
+            finder.Initialize(target, context);
 
             target.Clear();
             foreach (var sourceElement in source)

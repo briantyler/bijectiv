@@ -62,20 +62,33 @@ namespace Bijectiv.Tests.Injections
             var target = new NullTargetFinder();
 
             // Act
-            target.Initialize(null);
+            target.Initialize(null, Stub.Create<IInjectionContext>());
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Initialize_TargetsParameterIsAnything_DoesNothing()
+        public void Initialize_ContextParameterIsNull_DoesNothing()
         {
             // Arrange
             var target = new NullTargetFinder();
 
             // Act
-            target.Initialize(Stub.Create<IEnumerable>());
+            target.Initialize(Stub.Create<IEnumerable>(), null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Initialize_ValidParameters_DoesNothing()
+        {
+            // Arrange
+            var target = new NullTargetFinder();
+
+            // Act
+            target.Initialize(Stub.Create<IEnumerable>(), Stub.Create<IInjectionContext>());
 
             // Assert
         }

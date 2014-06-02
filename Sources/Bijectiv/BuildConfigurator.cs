@@ -53,6 +53,7 @@ namespace Bijectiv
         internal BuildConfigurator()
         {
             this.StoreFactories = new List<Func<IInjectionStoreFactory>>();
+            this.InstanceFactories = new List<Func<IInstanceFactory>>();
             this.TransformTasks = new List<Func<IInjectionTask>>();
             this.MergeTasks = new List<Func<IInjectionTask>>();
 
@@ -71,6 +72,8 @@ namespace Bijectiv
         /// Gets the default sequence of <see cref="IInjectionStoreFactory"/> instances.
         /// </summary>
         public IList<Func<IInjectionStoreFactory>> StoreFactories { get; private set; }
+
+        public IList<Func<IInstanceFactory>> InstanceFactories { get; private set; }
 
         /// <summary>
         /// Gets the default sequence of <see cref="IInjectionTask"/> instances used for constructing 

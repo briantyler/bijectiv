@@ -86,7 +86,7 @@ namespace Bijectiv
         /// <summary>
         /// Builds a store according to the current specification.
         /// </summary>
-        /// <param name="factories">
+        /// <param name="storeFactories">
         /// The factories that create the transform stores.
         /// </param>
         /// <returns>
@@ -95,18 +95,27 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public virtual IInjectionStore Build([NotNull] IEnumerable<IInjectionStoreFactory> factories)
+        public virtual IInjectionStore Build(
+            [NotNull] IEnumerable<IInjectionStoreFactory> storeFactories,
+            [NotNull] IEnumerable<IInstanceFactory> instanceFactories)
         {
-            if (factories == null)
+            if (storeFactories == null)
             {
-                throw new ArgumentNullException("factories");
+                throw new ArgumentNullException("storeFactories");
+            }
+
+            if (instanceFactories == null)
+            {
+                throw new ArgumentNullException("instanceFactories");
             }
 
             var store = new CompositeInjectionStore();
+            storeFactories.ForEach(factory => store.Add(factory.Create(this.InstanceRegistry)));
 
-            factories.ForEach(factory => store.Add(factory.Create(this.InstanceRegistry)));
+            var registry = new InstanceRegistry();
+            instanceFactories.ForEach(factory => registry.Register(factory.Create(this.InstanceRegistry)));
 
-            return store;
+            return new MasterInjectionStore(store, registry);
         }
     }
 }

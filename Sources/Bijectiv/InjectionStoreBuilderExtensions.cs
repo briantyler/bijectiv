@@ -182,7 +182,9 @@ namespace Bijectiv
                 throw new ArgumentNullException("this");
             }
 
-            return @this.Build(BuildConfigurator.Instance.StoreFactories.Select(item => item()));
+            return @this.Build(
+                BuildConfigurator.Instance.StoreFactories.Select(item => item()),
+                BuildConfigurator.Instance.InstanceFactories.Select(item => item()));
         }
     }
 }

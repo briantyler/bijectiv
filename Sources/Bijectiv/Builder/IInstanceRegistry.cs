@@ -69,5 +69,7 @@ namespace Bijectiv.Builder
         /// registered.
         /// </returns>
         IEnumerable<TInstance> Resolve<TInstance>();
+
+        void Register([NotNull] Tuple<Type, object> registration);
     }
 }

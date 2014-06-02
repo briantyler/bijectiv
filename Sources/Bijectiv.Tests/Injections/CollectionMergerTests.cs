@@ -235,7 +235,7 @@ namespace Bijectiv.Tests.Injections
 
             var targetInstance = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
 
-            finderMock.Setup(_ => _.Initialize(targetInstance));
+            finderMock.Setup(_ => _.Initialize(targetInstance, contextMock.Object));
 
             object dummy;
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out dummy)).Returns(false);
@@ -295,7 +295,7 @@ namespace Bijectiv.Tests.Injections
 
             var targetInstance = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
 
-            finderMock.Setup(_ => _.Initialize(targetInstance));
+            finderMock.Setup(_ => _.Initialize(targetInstance, contextMock.Object));
 
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out targetExpected[0])).Returns(true);
             baseMergeMock

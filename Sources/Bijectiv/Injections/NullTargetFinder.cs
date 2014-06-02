@@ -42,7 +42,10 @@ namespace Bijectiv.Injections
         /// <param name="targets">
         /// The collection of target elements.
         /// </param>
-        public void Initialize(IEnumerable targets)
+        /// <param name="context">
+        /// The context in which the target is being found.
+        /// </param>
+        public void Initialize(IEnumerable targets, IInjectionContext context)
         {
         }
 

@@ -30,6 +30,9 @@
 namespace Bijectiv.Builder
 {
     using System;
+    using System.Collections.Generic;
+
+    using Bijectiv.Injections;
 
     using JetBrains.Annotations;
 
@@ -411,6 +414,33 @@ namespace Bijectiv.Builder
 
             var fragment = new NullSourceFragment(typeof(TSource), typeof(TTarget), factory);
             this.Definition.Add(fragment);
+
+            return this;
+        }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> MergeOnIdenticalKey<TMember>(
+            Func<TSource, TMember> sourceKeyLocator,
+            Func<TTarget, TMember> targetKeyLocator)
+        {
+            if (sourceKeyLocator == null)
+            {
+                throw new ArgumentNullException("sourceKeyLocator");
+            }
+
+            if (targetKeyLocator == null)
+            {
+                throw new ArgumentNullException("targetKeyLocator");
+            }
+
+            Func<ITargetFinder> factory = () =>
+                new IdenticalKeyTargetFinder(
+                    s => sourceKeyLocator((TSource)s),
+                    t => targetKeyLocator((TTarget)t),
+                    EqualityComparer<object>.Default);
+
+            this.Registry.Register(
+                typeof(TargetFinderRegistration),
+                new TargetFinderRegistration(typeof(TSource), typeof(TTarget), factory));
 
             return this;
         }

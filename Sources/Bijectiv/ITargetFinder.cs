@@ -42,11 +42,14 @@ namespace Bijectiv
         /// <param name="targets">
         /// The collection of target elements.
         /// </param>
+        /// <param name="context">
+        /// The context in which the target is being found.
+        /// </param>
         /// <remarks>
         /// The consumer should cache the items in the collection as the collection may change during the lifetime
         /// of the consumer.
         /// </remarks>
-        void Initialize(IEnumerable targets);
+        void Initialize(IEnumerable targets, IInjectionContext context);
 
         /// <summary>
         /// Tries to find the target element for <paramref name="source"/>.
