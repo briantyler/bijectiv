@@ -27,6 +27,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+//// TODO: Rename this to InjectionKernelBuilder
+
 namespace Bijectiv
 {
     using System;
@@ -90,12 +92,12 @@ namespace Bijectiv
         /// The factories that create the transform stores.
         /// </param>
         /// <returns>
-        /// A <see cref="IInjectionStore"/> that matches the current specification.
+        /// A <see cref="IInjectionKernel"/> that matches the current specification.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public virtual IInjectionStore Build(
+        public virtual IInjectionKernel Build(
             [NotNull] IEnumerable<IInjectionStoreFactory> storeFactories,
             [NotNull] IEnumerable<IInstanceFactory> instanceFactories)
         {
@@ -115,7 +117,7 @@ namespace Bijectiv
             var registry = new InstanceRegistry();
             instanceFactories.ForEach(factory => registry.Register(factory.Create(this.InstanceRegistry)));
 
-            return new MasterInjectionStore(store, registry);
+            return new InjectionKernel(store, registry);
         }
     }
 }

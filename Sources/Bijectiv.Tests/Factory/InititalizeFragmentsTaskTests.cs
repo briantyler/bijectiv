@@ -167,7 +167,7 @@ namespace Bijectiv.Tests.Factory
 
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             registryMock
-                .Setup(_ => _.Resolve<InjectionDefinition>())
+                .Setup(_ => _.ResolveAll<InjectionDefinition>())
                 .Returns(new[] { baseDefinition1, baseDefinition2, notUsedDefinition });
 
             var scaffold = CreateScaffold(registryMock.Object, fragments);

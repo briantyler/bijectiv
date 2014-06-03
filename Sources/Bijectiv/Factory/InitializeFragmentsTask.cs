@@ -65,7 +65,7 @@ namespace Bijectiv.Factory
             {
                 scaffold.ProcessedFragments.AddRange(inheritsFragments);
 
-                var baseDefintion = scaffold.InstanceRegistry.Resolve<InjectionDefinition>()
+                var baseDefintion = scaffold.InstanceRegistry.ResolveAll<InjectionDefinition>()
                     .Reverse()
                     .FirstOrDefault(candidate =>
                         candidate.Source == inheritsFragments[0].SourceBase

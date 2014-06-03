@@ -123,7 +123,7 @@ namespace Bijectiv.Tests.Stores
             var definition1 = new InjectionDefinition(TestClass1.T, TestClass2.T);
             var definition2 = new InjectionDefinition(TestClass1.T, TestClass2.T);
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            registryMock.Setup(_ => _.Resolve<InjectionDefinition>()).Returns(new[] { definition1, definition2 });
+            registryMock.Setup(_ => _.ResolveAll<InjectionDefinition>()).Returns(new[] { definition1, definition2 });
 
             var injection1 = Stub.Create<IInjection>();
             var injection2 = Stub.Create<IInjection>();

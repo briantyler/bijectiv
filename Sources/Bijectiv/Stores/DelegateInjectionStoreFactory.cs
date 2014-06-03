@@ -94,7 +94,7 @@ namespace Bijectiv.Stores
             var store = new CollectionInjectionStore();
 
             registry
-                .Resolve<InjectionDefinition>()
+                .ResolveAll<InjectionDefinition>()
                 .ForEach(definition => store.Add(this.InjectionFactory.Create(registry, definition)));
 
             return store;

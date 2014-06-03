@@ -56,6 +56,7 @@
     <Compile Include="Builder\DefaultFactoryFragment.cs" />
     <Compile Include="BuildConfigurator.cs" />
     <Compile Include="Builder\AutoInjectionOptions.cs" />
+    <Compile Include="Builder\InjectionKernel.cs" />
     <Compile Include="Builder\NameRegexAutoInjectionStrategy.cs" />
     <Compile Include="Builder\NullAutoInjectionStrategy.cs" />
     <Compile Include="Builder\AutoInjectionFragment.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Factory\ReturnMergeResultTask.cs" />
     <Compile Include="Factory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoInjectionStrategy.cs" />
+    <Compile Include="IInjectionKernel.cs" />
     <Compile Include="IMergeResult.cs" />
     <Compile Include="IInjection.cs" />
     <Compile Include="Injections\CollectionMerger.cs" />
@@ -89,7 +91,6 @@
     <Compile Include="Stores\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />
     <Compile Include="Stores\IInstanceFactory.cs" />
-    <Compile Include="Stores\MasterInjectionStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
     <Compile Include="Utilities\EnumerableFactoryRegistration.cs" />

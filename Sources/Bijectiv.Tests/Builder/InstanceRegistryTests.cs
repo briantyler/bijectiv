@@ -174,13 +174,13 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_InstanceTypeParameterIsNotRegistered_ReturnsEmptyCollection()
+        public void ResolveAll_InstanceTypeParameterIsNotRegistered_ReturnsEmptyCollection()
         {
             // Arrange
             var target = new InstanceRegistry();
 
             // Act
-            var result = target.Resolve<TestClass1>();
+            var result = target.ResolveAll<TestClass1>();
 
             // Assert
             Assert.IsFalse(result.Any());
@@ -188,7 +188,7 @@ namespace Bijectiv.Tests.Builder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_InstanceTypeParameterIsNotRegistered_ReturnsInstances()
+        public void ResolveAll_InstanceTypeParameterIsNotRegistered_ReturnsInstances()
         {
             // Arrange
             var target = new InstanceRegistry();
@@ -196,7 +196,7 @@ namespace Bijectiv.Tests.Builder
             target.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
 
             // Act
-            var result = target.Resolve<TestClass1>();
+            var result = target.ResolveAll<TestClass1>();
 
             // Assert
             registrations.AssertSequenceEqual(result);

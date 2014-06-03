@@ -68,8 +68,19 @@ namespace Bijectiv.Builder
         /// The collection of all instances of type <typeparamref name="TInstance"/> in the order in which they were
         /// registered.
         /// </returns>
-        IEnumerable<TInstance> Resolve<TInstance>();
+        IEnumerable<TInstance> ResolveAll<TInstance>();
 
         void Register([NotNull] Tuple<Type, object> registration);
+
+        /// <summary>
+        /// Resolves the most recently registered instance of type <typeparamref name="TInstance"/>.
+        /// </summary>
+        /// <typeparam name="TInstance">
+        /// The type of instance to resolve.
+        /// </typeparam>
+        /// <returns>
+        /// The most recently registered instance of type <typeparamref name="TInstance"/>.
+        /// </returns>
+        TInstance Resolve<TInstance>();
     }
 }

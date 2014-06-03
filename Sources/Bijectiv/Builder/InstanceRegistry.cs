@@ -116,11 +116,31 @@ namespace Bijectiv.Builder
         /// The collection of all instances of type <typeparamref name="TInstance"/> in the order in which they were
         /// registered.
         /// </returns>
-        public IEnumerable<TInstance> Resolve<TInstance>()
+        public IEnumerable<TInstance> ResolveAll<TInstance>()
         {
             return !this.Registrations.ContainsKey(typeof(TInstance)) 
                 ? new TInstance[0] 
                 : this.Registrations[typeof(TInstance)].Cast<TInstance>();
+        }
+
+        /// <summary>
+        /// Resolves the most recently registered instance of type <typeparamref name="TInstance"/>.
+        /// </summary>
+        /// <typeparam name="TInstance">
+        /// The type of instance to resolve.
+        /// </typeparam>
+        /// <returns>
+        /// The most recently registered instance of type <typeparamref name="TInstance"/>.
+        /// </returns>
+        public TInstance Resolve<TInstance>()
+        {
+            if (!this.Registrations.ContainsKey(typeof(TInstance)))
+            {
+                throw new InvalidOperationException(
+                    string.Format("The registry contains no instance of type '{0}'", typeof(TInstance)));
+            }
+
+            return (TInstance)this.Registrations[typeof(TInstance)].Last();
         }
     }
 }

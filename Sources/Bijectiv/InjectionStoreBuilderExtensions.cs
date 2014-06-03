@@ -175,7 +175,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public static IInjectionStore Build([NotNull] this InjectionStoreBuilder @this)
+        public static IInjectionKernel Build([NotNull] this InjectionStoreBuilder @this)
         {
             if (@this == null)
             {
