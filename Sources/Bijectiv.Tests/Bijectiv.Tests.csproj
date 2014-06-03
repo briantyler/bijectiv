@@ -116,8 +116,8 @@
     <Compile Include="Stores\InstanceInjectionStoreFactoryTests.cs" />
     <Compile Include="TargetCacheTests.cs" />
     <Compile Include="InjectionContextTests.cs" />
-    <Compile Include="InjectionStoreBuilderExtensionsTests.cs" />
-    <Compile Include="InjectionStoreBuilderTests.cs" />
+    <Compile Include="InjectionKernelBuilderExtensionsTests.cs" />
+    <Compile Include="InjectionKernelBuilderTests.cs" />
     <Compile Include="Injections\ConvertibleInjectionTests.cs" />
     <Compile Include="Injections\DelegateTransformTests.cs" />
     <Compile Include="Injections\MergeResultTests.cs" />

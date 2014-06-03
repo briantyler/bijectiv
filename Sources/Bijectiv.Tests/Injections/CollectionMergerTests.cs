@@ -33,6 +33,7 @@ namespace Bijectiv.Tests.Injections
     using System.Collections.Generic;
     using System.Linq;
 
+    using Bijectiv.Builder;
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -202,6 +203,7 @@ namespace Bijectiv.Tests.Injections
             var baseMergeMock = repository.Create<IMerge>();
             var derivedMergeMock = repository.Create<IMerge>();
             var storeMock = repository.Create<IInjectionStore>();
+            var registryMock = repository.Create<IInstanceRegistry>();
             var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
@@ -218,7 +220,8 @@ namespace Bijectiv.Tests.Injections
                 .Setup(_ => _.Resolve<IMerge>(DerivedTestClass1.T, DerivedTestClass2.T))
                 .Returns(derivedMergeMock.Object);
 
-            contextMock.SetupGet(_ => _.TargetFinderStore).Returns(finderStoreMock.Object);
+            registryMock.Setup(_ => _.Resolve<ITargetFinderStore>()).Returns(finderStoreMock.Object);
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
             finderStoreMock.Setup(_ => _.Resolve(BaseTestClass1.T, BaseTestClass2.T)).Returns(finderMock.Object);
 
             var sourceInstance = new[]
@@ -280,6 +283,7 @@ namespace Bijectiv.Tests.Injections
             var finderStoreMock = repository.Create<ITargetFinderStore>();
             var baseMergeMock = repository.Create<IMerge>();
             var storeMock = repository.Create<IInjectionStore>();
+            var registryMock = repository.Create<IInstanceRegistry>();
             var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
@@ -287,7 +291,8 @@ namespace Bijectiv.Tests.Injections
                 .Setup(_ => _.Resolve<IMerge>(BaseTestClass1.T, BaseTestClass2.T))
                 .Returns(baseMergeMock.Object);
 
-            contextMock.SetupGet(_ => _.TargetFinderStore).Returns(finderStoreMock.Object);
+            registryMock.Setup(_ => _.Resolve<ITargetFinderStore>()).Returns(finderStoreMock.Object);
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
             finderStoreMock.Setup(_ => _.Resolve(BaseTestClass1.T, BaseTestClass2.T)).Returns(finderMock.Object);
 
             var sourceInstance = new BaseTestClass1[] { null };

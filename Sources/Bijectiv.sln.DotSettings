@@ -436,6 +436,7 @@
   <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=TypeParameters/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="T" Suffix="" Style="AaBb" /&gt;</s:String>
   <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=TypesAndNamespaces/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb" /&gt;</s:String>
   <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/UserRules/=b35d6480_002D0b57_002D4c1e_002Dacb4_002Da76ff7f38747/@EntryIndexedValue">&lt;Policy&gt;&lt;Descriptor Staticness="Instance" AccessRightKinds="Public" Description="Test Method"&gt;&lt;ElementKinds&gt;&lt;Kind Name="TEST_MEMBER" /&gt;&lt;/ElementKinds&gt;&lt;/Descriptor&gt;&lt;Policy Inspect="True" Prefix="" Suffix="" Style="AaBb_AaBb" /&gt;&lt;/Policy&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>
   <s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C1BC34FB16F6F24AB457DC6D71D11AA5/@KeyIndexDefined">True</s:Boolean>
   <s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C1BC34FB16F6F24AB457DC6D71D11AA5/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
   <s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C1BC34FB16F6F24AB457DC6D71D11AA5/Field/=Behaviour/@KeyIndexDefined">True</s:Boolean>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionStoreBuilderExtensionsTests.cs" company="Bijectiv">
+// <copyright file="InjectionKernelBuilderExtensionsTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionStoreBuilderExtensionsTests type.
+//   Defines the InjectionKernelBuilderExtensionsTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -46,10 +46,10 @@ namespace Bijectiv.Tests
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="InjectionStoreBuilderExtensions"/> class.
+    /// This class tests the <see cref="InjectionKernelBuilderExtensions"/> class.
     /// </summary>
     [TestClass]
-    public class InjectionStoreBuilderExtensionsTests
+    public class InjectionKernelBuilderExtensionsTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -60,7 +60,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            default(InjectionStoreBuilder).Register<TestClass1, TestClass2>();
+            default(InjectionKernelBuilder).Register<TestClass1, TestClass2>();
 
             // Assert
         }
@@ -71,7 +71,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
@@ -89,7 +89,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -110,7 +110,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -131,7 +131,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -152,7 +152,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            default(InjectionStoreBuilder)
+            default(InjectionKernelBuilder)
                 .RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
@@ -188,7 +188,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
             registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
             // Act
@@ -205,7 +205,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -226,7 +226,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -247,7 +247,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -268,7 +268,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -289,7 +289,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -310,7 +310,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -335,7 +335,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            default(InjectionStoreBuilder).RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+            default(InjectionKernelBuilder).RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
 
             // Assert
         }
@@ -346,7 +346,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Register(
                 typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()));
@@ -365,7 +365,7 @@ namespace Bijectiv.Tests
             // Arrange
             var registrations = new List<EnumerableFactoryRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
@@ -386,7 +386,7 @@ namespace Bijectiv.Tests
             // Arrange
             var registrations = new List<EnumerableFactoryRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionStoreBuilder(registryMock.Object);
+            var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
@@ -409,7 +409,7 @@ namespace Bijectiv.Tests
             
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            default(InjectionStoreBuilder).Build();
+            default(InjectionKernelBuilder).Build();
 
             // Assert
         }
@@ -419,13 +419,13 @@ namespace Bijectiv.Tests
         public void Build_ValidParameters_BuildsUsingBuildConfigurator()
         {
             // Arrange
-            var expected = Stub.Create<IInjectionStore>();
+            var expected = Stub.Create<IInjectionKernel>();
             var storeFactory = Stub.Create<IInjectionStoreFactory>();
 
             BuildConfigurator.Instance.StoreFactories.Clear();
             BuildConfigurator.Instance.StoreFactories.Add(() => storeFactory);
 
-            var builderMock = new Mock<InjectionStoreBuilder>(MockBehavior.Strict);
+            var builderMock = new Mock<InjectionKernelBuilder>(MockBehavior.Strict);
             builderMock
                 .Setup(_ => _.Build(
                     It.Is<IEnumerable<IInjectionStoreFactory>>(i => new[] { storeFactory }.SequenceEqual(i)),

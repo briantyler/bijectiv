@@ -48,7 +48,7 @@ namespace Bijectiv.Tests
         public void Spike_Activate_Activated()
         {
             // Arrange
-            var builder = new InjectionStoreBuilder();
+            var builder = new InjectionKernelBuilder();
             builder.Register<TestClass1, TestClass2>();
             var kernel = builder.Build();
 
@@ -66,7 +66,7 @@ namespace Bijectiv.Tests
         public void Spike_AutoTransform_AutoTransforms()
         {
             // Arrange
-            var builder = new InjectionStoreBuilder();
+            var builder = new InjectionKernelBuilder();
             builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
 
             var @sealed = new SealedClass1();
@@ -107,7 +107,7 @@ namespace Bijectiv.Tests
         public void Spike_AutoTransformCollection_AutoTransforms()
         {
             // Arrange
-            var builder = new InjectionStoreBuilder();
+            var builder = new InjectionKernelBuilder();
             builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
 
             var @sealed = new SealedClass1();
@@ -169,7 +169,7 @@ namespace Bijectiv.Tests
         public void Spike_StringToDecimalArray_Transforms()
         {
             // Arrange
-            var kernel = new InjectionStoreBuilder().Build();
+            var kernel = new InjectionKernelBuilder().Build();
 
             var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable), typeof(decimal[]));
             
@@ -186,7 +186,7 @@ namespace Bijectiv.Tests
         public void Spike_AutoMerge_AutoMerges()
         {
             // Arrange
-            var builder = new InjectionStoreBuilder();
+            var builder = new InjectionKernelBuilder();
             builder.Register<AutoMergeTestClass1, AutoMergeTestClass1>().AutoExact();
             builder.Register<AutoMergeTestClass2, AutoMergeTestClass2>().AutoExact();
 

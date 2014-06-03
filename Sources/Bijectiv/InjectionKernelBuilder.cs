@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionStoreBuilder.cs" company="Bijectiv">
+// <copyright file="InjectionKernelBuilder.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionStoreBuilder type.
+//   Defines the InjectionKernelBuilder type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -41,9 +41,9 @@ namespace Bijectiv
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a fine grained factory that can be used to incrementally build a <see cref="IInjectionStore"/>.
+    /// Represents a fine grained factory that can be used to incrementally build a <see cref="IInjectionKernel"/>.
     /// </summary>
-    public class InjectionStoreBuilder
+    public class InjectionKernelBuilder
     {
         /// <summary>
         /// The instance registry.
@@ -51,15 +51,15 @@ namespace Bijectiv
         private readonly IInstanceRegistry instanceRegistry;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="InjectionStoreBuilder"/> class.
+        /// Initialises a new instance of the <see cref="InjectionKernelBuilder"/> class.
         /// </summary>
-        public InjectionStoreBuilder()
+        public InjectionKernelBuilder()
             : this(new InstanceRegistry())
         {
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="InjectionStoreBuilder"/> class.
+        /// Initialises a new instance of the <see cref="InjectionKernelBuilder"/> class.
         /// </summary>
         /// <param name="instanceRegistry">
         /// The instance registry.
@@ -67,7 +67,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public InjectionStoreBuilder([NotNull] IInstanceRegistry instanceRegistry)
+        public InjectionKernelBuilder([NotNull] IInstanceRegistry instanceRegistry)
         {
             if (instanceRegistry == null)
             {

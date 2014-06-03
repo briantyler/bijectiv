@@ -131,10 +131,10 @@
     <Compile Include="IMerge.cs" />
     <Compile Include="ITransform.cs" />
     <Compile Include="IInjectionStore.cs" />
-    <Compile Include="InjectionStoreBuilder.cs" />
+    <Compile Include="InjectionKernelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InjectionContext.cs" />
-    <Compile Include="InjectionStoreBuilderExtensions.cs" />
+    <Compile Include="InjectionKernelBuilderExtensions.cs" />
     <Compile Include="Injections\ConvertibleInjection.cs" />
     <Compile Include="Injections\DelegateTransform.cs" />
     <Compile Include="Injections\PassThroughInjection.cs" />

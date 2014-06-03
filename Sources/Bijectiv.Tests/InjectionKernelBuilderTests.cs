@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionStoreBuilderTests.cs" company="Bijectiv">
+// <copyright file="InjectionKernelBuilderTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,28 +23,30 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionStoreBuilderTests type.
+//   Defines the InjectionKernelBuilderTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 // ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests
 {
+    using System;
     using System.Linq;
 
     using Bijectiv.Builder;
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="InjectionStoreBuilder"/> class.
+    /// This class tests the <see cref="InjectionKernelBuilder"/> class.
     /// </summary>
     [TestClass]
-    public class InjectionStoreBuilderTests
+    public class InjectionKernelBuilderTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -53,7 +55,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>()).Naught();
+            new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>()).Naught();
 
             // Assert
         }
@@ -66,7 +68,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            new InjectionStoreBuilder(null).Naught();
+            new InjectionKernelBuilder(null).Naught();
 
             // Assert
         }
@@ -79,7 +81,7 @@ namespace Bijectiv.Tests
             var registry = Stub.Create<IInstanceRegistry>();
             
             // Act
-            var target = new InjectionStoreBuilder(registry);
+            var target = new InjectionKernelBuilder(registry);
 
             // Assert
             Assert.AreEqual(registry, target.InstanceRegistry);
@@ -91,7 +93,7 @@ namespace Bijectiv.Tests
         public void Build_FactoriesParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
+            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             target.Build(null, Enumerable.Empty<IInstanceFactory>());
@@ -101,16 +103,16 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Build_ValidParameters_ReturnsCompositeInjectionStore()
+        public void Build_ValidParameters_ReturnedInjectionKernelStoreIsCompositeInjectionStore()
         {
             // Arrange
-            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
+            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             var result = target.Build(Enumerable.Empty<IInjectionStoreFactory>(), Enumerable.Empty<IInstanceFactory>());
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(CompositeInjectionStore));
+            Assert.IsInstanceOfType(result.Store, typeof(CompositeInjectionStore));
         }
 
         [TestMethod]
@@ -128,15 +130,46 @@ namespace Bijectiv.Tests
             var store2 = Stub.Create<IInjectionStore>();
             factory2.Setup(_ => _.Create(It.IsAny<IInstanceRegistry>())).Returns(store2);
 
-            var target = new InjectionStoreBuilder(Stub.Create<IInstanceRegistry>());
+            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = (CompositeInjectionStore)target.Build(
+            var result = target.Build(
                 new[] { factory1.Object, factory2.Object }, 
                 Enumerable.Empty<IInstanceFactory>());
 
             // Assert
-            new[] { store1, store2 }.AssertSequenceEqual(result);
+            new[] { store1, store2 }.AssertSequenceEqual((CompositeInjectionStore)result.Store);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Build_ValidParameters_ConstructsRegistryUsingFactories()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+
+            var factory1 = repository.Create<IInstanceFactory>();
+            var instance1 = Stub.Create<ITargetFinderStore>();
+            factory1
+                .Setup(_ => _.Create(It.IsAny<IInstanceRegistry>()))
+                .Returns(new Tuple<Type, object>(typeof(ITargetFinderStore), instance1));
+
+            var factory2 = repository.Create<IInstanceFactory>();
+            var instance2 = Stub.Create<IEnumerableFactory>();
+            factory2
+                .Setup(_ => _.Create(It.IsAny<IInstanceRegistry>()))
+                .Returns(new Tuple<Type, object>(typeof(IEnumerableFactory), instance2));
+
+            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+
+            // Act
+            var result = target.Build(
+                Enumerable.Empty<IInjectionStoreFactory>(),
+                new[] { factory1.Object, factory2.Object });
+
+            // Assert
+            Assert.AreEqual(instance1, result.Registry.Resolve<ITargetFinderStore>());
+            Assert.AreEqual(instance2, result.Registry.Resolve<IEnumerableFactory>());
         }
     }
 }

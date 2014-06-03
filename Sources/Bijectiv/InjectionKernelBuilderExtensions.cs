@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionStoreBuilderExtensions.cs" company="Bijectiv">
+// <copyright file="InjectionKernelBuilderExtensions.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionStoreBuilderExtensions type.
+//   Defines the InjectionKernelBuilderExtensions type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,15 +39,15 @@ namespace Bijectiv
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Extensions to the <see cref="InjectionStoreBuilder"/> class.
+    /// Extensions to the <see cref="InjectionKernelBuilder"/> class.
     /// </summary>
-    public static class InjectionStoreBuilderExtensions
+    public static class InjectionKernelBuilderExtensions
     {
         /// <summary>
-        /// Registers a new injection with the store builder.
+        /// Registers a new injection with the builder.
         /// </summary>
         /// <param name="this">
-        /// The <see cref="InjectionStoreBuilder"/> to register with.
+        /// The <see cref="InjectionKernelBuilder"/> to register with.
         /// </param>
         /// <typeparam name="TSource">
         /// The source type.
@@ -60,7 +60,7 @@ namespace Bijectiv
         /// injection.
         /// </returns>
         public static IInjectionDefinitionBuilder<TSource, TTarget> Register<TSource, TTarget>(
-            [NotNull] this InjectionStoreBuilder @this)
+            [NotNull] this InjectionKernelBuilder @this)
         {
             if (@this == null)
             {
@@ -75,11 +75,11 @@ namespace Bijectiv
         }
 
         /// <summary>
-        /// Registers a new injection with the store builder and inherits all of the appropriate fragments from the 
+        /// Registers a new injection with the builder and inherits all of the appropriate fragments from the 
         /// base injection if it exists.
         /// </summary>
         /// <param name="this">
-        /// The <see cref="InjectionStoreBuilder"/> to register with.
+        /// The <see cref="InjectionKernelBuilder"/> to register with.
         /// </param>
         /// <typeparam name="TSource">
         /// The source type.
@@ -99,7 +99,7 @@ namespace Bijectiv
         /// </returns>
         public static IInjectionDefinitionBuilder<TSource, TTarget> 
             RegisterInherited<TSource, TTarget, TSourceBase, TTargetBase>(
-            [NotNull] this InjectionStoreBuilder @this)
+            [NotNull] this InjectionKernelBuilder @this)
             where TSource : TSourceBase
             where TTarget : TTargetBase
         {
@@ -122,7 +122,7 @@ namespace Bijectiv
         /// Registers an enumerable monad interface to a collection monad concrete type.
         /// </summary>
         /// <param name="this">
-        /// The <see cref="InjectionStoreBuilder"/> to register with.
+        /// The <see cref="InjectionKernelBuilder"/> to register with.
         /// </param>
         /// <typeparam name="TInterface">
         /// The <see cref="IEnumerable{T}"/> interface.
@@ -147,7 +147,7 @@ namespace Bijectiv
         /// It might be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
         /// do this by accident.
         /// </remarks>
-        public static void RegisterEnumerable<TInterface, TConcrete>([NotNull] this InjectionStoreBuilder @this)
+        public static void RegisterEnumerable<TInterface, TConcrete>([NotNull] this InjectionKernelBuilder @this)
             where TInterface : IEnumerable<Placeholder>
             where TConcrete : ICollection<Placeholder>, TInterface, new()
         {
@@ -166,7 +166,7 @@ namespace Bijectiv
         /// with the default configuration options.
         /// </summary>
         /// <param name="this">
-        /// The <see cref="InjectionStoreBuilder"/> from which to build.
+        /// The <see cref="InjectionKernelBuilder"/> from which to build.
         /// </param>
         /// <returns>
         /// A <see cref="IInjectionStore"/> that matches the specification in <paramref name="this"/>, built with the 
@@ -175,7 +175,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public static IInjectionKernel Build([NotNull] this InjectionStoreBuilder @this)
+        public static IInjectionKernel Build([NotNull] this InjectionKernelBuilder @this)
         {
             if (@this == null)
             {
