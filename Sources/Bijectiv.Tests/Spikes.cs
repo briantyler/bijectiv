@@ -50,12 +50,12 @@ namespace Bijectiv.Tests
             // Arrange
             var builder = new InjectionStoreBuilder();
             builder.Register<TestClass1, TestClass2>();
-            var store = builder.Build();
+            var kernel = builder.Build();
 
-            var transform = store.Resolve<ITransform>(TestClass1.T, TestClass2.T);
+            var transform = kernel.Store.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Act
-            var result = transform.Transform(new TestClass1(), CreateContext(store));
+            var result = transform.Transform(new TestClass1(), CreateContext(kernel));
 
             // Assert
             Assert.IsInstanceOfType(result, TestClass2.T);
@@ -86,12 +86,12 @@ namespace Bijectiv.Tests
                 PropertyBase = @base,
             };
 
-            var store = builder.Build();
+            var kernel = builder.Build();
 
-            var transform = store.Resolve<ITransform>(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
+            var transform = kernel.Store.Resolve<ITransform>(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
 
             // Act
-            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(store));
+            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(kernel));
 
             // Assert
             Assert.AreEqual(33, target.PropertyInt);
@@ -138,12 +138,12 @@ namespace Bijectiv.Tests
                 PropertyBase = @base1,
             };
 
-            var store = builder.Build();
+            var kernel = builder.Build();
 
-            var transform = store.Resolve<ITransform>(typeof(IEnumerable<AutoTransformTestClass1>), typeof(AutoTransformTestClass1[]));
+            var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable<AutoTransformTestClass1>), typeof(AutoTransformTestClass1[]));
 
             // Act
-            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(store));
+            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(kernel));
 
             // Assert
             Assert.AreEqual(2, target.Length);
@@ -169,13 +169,13 @@ namespace Bijectiv.Tests
         public void Spike_StringToDecimalArray_Transforms()
         {
             // Arrange
-            var store = new InjectionStoreBuilder().Build();
+            var kernel = new InjectionStoreBuilder().Build();
 
-            var transform = store.Resolve<ITransform>(typeof(IEnumerable), typeof(decimal[]));
+            var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable), typeof(decimal[]));
             
             // Act
             var result = (decimal[])transform
-                .Transform(new object[] { "1", 5, null, "19.753", 8.8 }, CreateContext(store));
+                .Transform(new object[] { "1", 5, null, "19.753", 8.8 }, CreateContext(kernel));
 
             // Assert
             new[] { 1, 5, default(decimal), 19.753m, 8.8m }.AssertSequenceEqual(result);
@@ -207,12 +207,12 @@ namespace Bijectiv.Tests
                 PropertyMerge = mergeTarget2,
             };
 
-            var store = builder.Build();
+            var kernel = builder.Build();
 
-            var merge = store.Resolve<IMerge>(typeof(AutoMergeTestClass2), typeof(AutoMergeTestClass2));
+            var merge = kernel.Store.Resolve<IMerge>(typeof(AutoMergeTestClass2), typeof(AutoMergeTestClass2));
 
             // Act
-            var result = merge.Merge(source, target, CreateContext(store));
+            var result = merge.Merge(source, target, CreateContext(kernel));
 
             // Assert
             Assert.AreEqual(PostMergeAction.None, result.Action);
@@ -228,13 +228,12 @@ namespace Bijectiv.Tests
             Assert.AreEqual("2s", mergeTarget2.PropertyString);
         }
 
-        private static InjectionContext CreateContext(IInjectionStore store)
+        private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(
                 CultureInfo.InvariantCulture, 
                 type => { throw new Exception(); },
-                store, 
-                Stub.Create<ITargetFinderStore>());
+                kernel);
         }
     }
 }

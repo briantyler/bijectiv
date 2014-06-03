@@ -32,6 +32,8 @@ namespace Bijectiv
     using System;
     using System.Globalization;
 
+    using Bijectiv.Builder;
+
     /// <summary>
     /// Represents an <see cref="IInjection"/> context.
     /// </summary>
@@ -54,9 +56,9 @@ namespace Bijectiv
         IInjectionStore InjectionStore { get; }
 
         /// <summary>
-        /// Gets the <see cref="ITargetFinder"/> store.
+        /// Gets the instance registry.
         /// </summary>
-        ITargetFinderStore TargetFinderStore { get; }
+        IInstanceRegistry InstanceRegistry { get; }
 
         /// <summary>
         /// Retrieve a service from the default factory.

@@ -112,7 +112,11 @@ namespace Bijectiv.Injections
                 return;
             }
 
-            var finder = context.TargetFinderStore.Resolve(typeof(TSourceElement), typeof(TTargetElement));
+            var finder = context
+                .InstanceRegistry
+                .Resolve<ITargetFinderStore>()
+                .Resolve(typeof(TSourceElement), typeof(TTargetElement));
+
             finder.Initialize(target, context);
 
             target.Clear();

@@ -32,10 +32,12 @@ namespace Bijectiv
     using System;
     using System.Globalization;
 
+    using Bijectiv.Builder;
+
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents the context in which a transform is happening.
+    /// Represents the context in which a <see cref="IInjection"/> is happening.
     /// </summary>
     public class InjectionContext : IInjectionContext
     {
@@ -50,14 +52,9 @@ namespace Bijectiv
         private readonly Func<Type, object> resolveDelegate;
 
         /// <summary>
-        /// The <see cref="IInjection"/> store.
+        /// The injection kernel.
         /// </summary>
-        private readonly IInjectionStore injectionStore;
-
-        /// <summary>
-        /// The <see cref="ITargetFinder"/> store.
-        /// </summary>
-        private readonly ITargetFinderStore targetFinderStore;
+        private readonly IInjectionKernel injectionKernel;
 
         /// <summary>
         /// The target cache.
@@ -73,11 +70,8 @@ namespace Bijectiv
         /// <param name="resolveDelegate">
         /// The resolve delegate.
         /// </param>
-        /// <param name="injectionStore">
-        /// The transform store.
-        /// </param>
-        /// <param name="targetFinderStore">
-        /// The target finder store.
+        /// <param name="injectionKernel">
+        /// The injection kernel.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
@@ -85,8 +79,7 @@ namespace Bijectiv
         public InjectionContext(
             [NotNull] CultureInfo culture, 
             [NotNull] Func<Type, object> resolveDelegate,
-            [NotNull] IInjectionStore injectionStore,
-            [NotNull] ITargetFinderStore targetFinderStore)
+            [NotNull] IInjectionKernel injectionKernel)
         {
             if (culture == null)
             {
@@ -98,20 +91,14 @@ namespace Bijectiv
                 throw new ArgumentNullException("resolveDelegate");
             }
 
-            if (injectionStore == null)
+            if (injectionKernel == null)
             {
-                throw new ArgumentNullException("injectionStore");
-            }
-
-            if (targetFinderStore == null)
-            {
-                throw new ArgumentNullException("targetFinderStore");
+                throw new ArgumentNullException("injectionKernel");
             }
 
             this.culture = culture;
             this.resolveDelegate = resolveDelegate;
-            this.injectionStore = injectionStore;
-            this.targetFinderStore = targetFinderStore;
+            this.injectionKernel = injectionKernel;
         }
 
         /// <summary>
@@ -143,15 +130,15 @@ namespace Bijectiv
         /// </summary>
         public IInjectionStore InjectionStore
         {
-            get { return this.injectionStore; }
+            get { return this.injectionKernel.Store; }
         }
 
         /// <summary>
-        /// Gets the <see cref="ITargetFinder"/> store.
+        /// Gets the instance registry.
         /// </summary>
-        public ITargetFinderStore TargetFinderStore
+        public IInstanceRegistry InstanceRegistry
         {
-            get { return this.targetFinderStore; }
+            get { return this.injectionKernel.Registry; }
         }
 
         /// <summary>

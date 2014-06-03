@@ -31,10 +31,13 @@ namespace Bijectiv.Tests
 {
     using System.Globalization;
 
+    using Bijectiv.Builder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="InjectionContext"/> class.
@@ -51,11 +54,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(
-                null,
-                t => new object(), 
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>()).Naught();
+            new InjectionContext(null, t => new object(), Stub.Create<IInjectionKernel>()).Naught();
 
             // Assert
         }
@@ -69,11 +68,7 @@ namespace Bijectiv.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(
-                CultureInfo.InvariantCulture,
-                null, 
-                Stub.Create<IInjectionStore>(), 
-                Stub.Create<ITargetFinderStore>()).Naught();
+            new InjectionContext(CultureInfo.InvariantCulture, null, Stub.Create<IInjectionKernel>()).Naught();
 
             // Assert
         }
@@ -81,35 +76,13 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_TransformStoreParameterParameterIsNull_Throws()
+        public void CreateInstance_InjectionKernelParameterParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(
-                CultureInfo.InvariantCulture, 
-                t => new object(), 
-                null,
-                Stub.Create<ITargetFinderStore>()).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_TargetFinderStoreParameterParameterIsNull_Throws()
-        {
-            // Arrange
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionContext(
-                CultureInfo.InvariantCulture,
-                t => new object(),
-                Stub.Create<IInjectionStore>(), 
-                null).Naught();
+            new InjectionContext(CultureInfo.InvariantCulture, t => new object(), null).Naught();
 
             // Assert
         }
@@ -123,10 +96,7 @@ namespace Bijectiv.Tests
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
             new InjectionContext(
-                CultureInfo.InvariantCulture, 
-                t => new object(),
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>()).Naught();
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>()).Naught();
 
             // Assert
         }
@@ -139,10 +109,7 @@ namespace Bijectiv.Tests
 
             // Act
             var target = new InjectionContext(
-                CultureInfo.InvariantCulture,
-                t => new object(),
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>());
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Assert
             Assert.IsNotNull(target.TargetCache);
@@ -156,11 +123,7 @@ namespace Bijectiv.Tests
             var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var target = new InjectionContext(
-                culture,
-                t => new object(),
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>());
+            var target = new InjectionContext(culture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Assert
             Assert.AreEqual(culture, target.Culture);
@@ -168,17 +131,15 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InjectionStoreParameter_IsAssignedToInjectionStoreProperty()
+        public void CreateInstance_InjectionKernelParameter_ProvidesInjectionStoreProperty()
         {
             // Arrange
+            var kernelMock = new Mock<IInjectionKernel>(MockBehavior.Strict);
             var injectionStore = Stub.Create<IInjectionStore>();
+            kernelMock.SetupGet(_ => _.Store).Returns(injectionStore);
 
             // Act
-            var target = new InjectionContext(
-               CultureInfo.InvariantCulture,
-               t => new object(),
-               injectionStore,
-               Stub.Create<ITargetFinderStore>());
+            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
 
             // Assert
             Assert.AreEqual(injectionStore, target.InjectionStore);
@@ -186,20 +147,18 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TargetFinderStoreParameter_IsAssignedToTargetFinderStoreProperty()
+        public void CreateInstance_InjectionKernelParameter_ProvidesInstanceRegistryProperty()
         {
             // Arrange
-            var targetFinderStore = Stub.Create<ITargetFinderStore>();
+            var kernelMock = new Mock<IInjectionKernel>(MockBehavior.Strict);
+            var instanceRegistry = Stub.Create<IInstanceRegistry>();
+            kernelMock.SetupGet(_ => _.Registry).Returns(instanceRegistry);
 
             // Act
-            var target = new InjectionContext(
-               CultureInfo.InvariantCulture,
-               t => new object(),
-               Stub.Create<IInjectionStore>(),
-               targetFinderStore);
+            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
 
             // Assert
-            Assert.AreEqual(targetFinderStore, target.TargetFinderStore);
+            Assert.AreEqual(instanceRegistry, target.InstanceRegistry);
         }
 
         [TestMethod]
@@ -209,10 +168,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var target = new InjectionContext(
-                CultureInfo.InvariantCulture, 
-                t => new object(), 
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>());
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -229,9 +185,8 @@ namespace Bijectiv.Tests
             var expected = new object();
             var target = new InjectionContext(
                 CultureInfo.InvariantCulture, 
-                t => t == TestClass1.T ? expected : null, 
-                Stub.Create<IInjectionStore>(),
-                Stub.Create<ITargetFinderStore>());
+                t => t == TestClass1.T ? expected : null,
+                Stub.Create<IInjectionKernel>());
 
             // Act
             var result = target.Resolve(TestClass1.T);
