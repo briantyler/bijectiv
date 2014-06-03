@@ -52,7 +52,7 @@ namespace Bijectiv.Stores
         /// Initialises a new instance of the <see cref="DelegateInjectionStoreFactory"/> class.
         /// </summary>
         /// <param name="injectionFactory">
-        /// The transform factory that creates the delegate transforms.
+        /// The injection factory that creates the delegate injections.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
@@ -68,7 +68,7 @@ namespace Bijectiv.Stores
         }
 
         /// <summary>
-        /// Gets the transform factory that creates the delegate transforms.
+        /// Gets the injection factory that creates the delegate injections.
         /// </summary>
         public IInjectionFactory<IInjection> InjectionFactory
         {

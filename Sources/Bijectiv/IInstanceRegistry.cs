@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Builder
+namespace Bijectiv
 {
     using System;
     using System.Collections.Generic;
@@ -39,6 +39,8 @@ namespace Bijectiv.Builder
     /// </summary>
     public interface IInstanceRegistry
     {
+        void Register([NotNull] Tuple<Type, object> registration);
+
         /// <summary>
         /// Registers <paramref name="instance"/> as an instance of type <paramref name="instanceType"/>.
         /// </summary>
@@ -69,8 +71,6 @@ namespace Bijectiv.Builder
         /// registered.
         /// </returns>
         IEnumerable<TInstance> ResolveAll<TInstance>();
-
-        void Register([NotNull] Tuple<Type, object> registration);
 
         /// <summary>
         /// Resolves the most recently registered instance of type <typeparamref name="TInstance"/>.

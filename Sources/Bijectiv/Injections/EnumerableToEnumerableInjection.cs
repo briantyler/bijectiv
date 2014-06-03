@@ -51,9 +51,6 @@ namespace Bijectiv.Injections
         /// <param name="target">
         /// The target type.
         /// </param>
-        /// <param name="factory">
-        /// The factory that creates enumerable instances.
-        /// </param>
         /// <param name="merger">
         /// The merger that merges items from one collection into another collection.
         /// </param>
@@ -63,7 +60,6 @@ namespace Bijectiv.Injections
         public EnumerableToEnumerableInjection(
             [NotNull] Type source, 
             [NotNull] Type target,
-            [NotNull] IEnumerableFactory factory,
             [NotNull] ICollectionMerger merger)
         {
             if (source == null)
@@ -76,11 +72,6 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("target");
             }
 
-            if (factory == null)
-            {
-                throw new ArgumentNullException("factory");
-            }
-
             if (merger == null)
             {
                 throw new ArgumentNullException("merger");
@@ -88,7 +79,6 @@ namespace Bijectiv.Injections
 
             this.Source = source;
             this.Target = target;
-            this.Factory = factory;
             this.Merger = merger;
         }
 
@@ -101,11 +91,6 @@ namespace Bijectiv.Injections
         /// Gets the target type supported by the injection.
         /// </summary>
         public Type Target { get; private set; }
-
-        /// <summary>
-        /// Gets the factory that creates enumerable instances..
-        /// </summary>
-        public IEnumerableFactory Factory { get; private set; }
 
         /// <summary>
         /// Gets the merger that merges items from one collection into another collection..
@@ -133,7 +118,8 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            return this.Merge(source, this.Factory.Resolve(this.Target), context).Target;
+            var enumerableFactory = context.InstanceRegistry.Resolve<IEnumerableFactory>();
+            return this.Merge(source, enumerableFactory.Resolve(this.Target), context).Target;
         }
 
         /// <summary>
@@ -162,7 +148,8 @@ namespace Bijectiv.Injections
             var action = PostMergeAction.None;
             if (target == null)
             {
-                target = this.Factory.Resolve(this.Target);
+                var enumerableFactory = context.InstanceRegistry.Resolve<IEnumerableFactory>();
+                target = enumerableFactory.Resolve(this.Target);
                 action = PostMergeAction.Replace;
             }
             

@@ -31,6 +31,8 @@ namespace Bijectiv
 {
     using System;
 
+    using Bijectiv.Builder;
+
     using JetBrains.Annotations;
 
     /// <summary>
@@ -38,6 +40,14 @@ namespace Bijectiv
     /// </summary>
     public interface ITargetFinderStore
     {
+        /// <summary>
+        /// Registers a <see cref="TargetFinderRegistration"/> with the store.
+        /// </summary>
+        /// <param name="registration">
+        /// The registration.
+        /// </param>
+        void Register(TargetFinderRegistration registration);
+
         /// <summary>
         /// Resolves a <see cref="ITargetFinder"/> that finds the target element for a source element in a collection
         /// of elements of type <paramref name="targetElement"/> or <see langword="null"/> if one does not exist.

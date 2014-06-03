@@ -27,8 +27,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-//// TODO: Rename this to InjectionKernelBuilder
-
 namespace Bijectiv
 {
     using System;
@@ -89,7 +87,10 @@ namespace Bijectiv
         /// Builds a store according to the current specification.
         /// </summary>
         /// <param name="storeFactories">
-        /// The factories that create the transform stores.
+        /// The factories that create the <see cref="IInjectionStore"/>.
+        /// </param>
+        /// <param name="instanceFactories">
+        /// The factories that create helper objects required for injection.
         /// </param>
         /// <returns>
         /// A <see cref="IInjectionKernel"/> that matches the current specification.

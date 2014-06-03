@@ -33,6 +33,7 @@ namespace Bijectiv.Tests
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
 
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -226,6 +227,97 @@ namespace Bijectiv.Tests
             Assert.AreEqual("1s", mergeTarget1.PropertyString);
             Assert.AreEqual(2, mergeTarget2.FieldInt);
             Assert.AreEqual("2s", mergeTarget2.PropertyString);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Spike_AutoMerge_AutoMergesCollectionAgainstKey()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            builder
+                .Register<KeyedClass1, KeyedClass1>()
+                .AutoExact()
+                .MergeOnIdenticalKey(s => s.Key, t => t.Key);
+
+            var kernel = builder.Build();
+            var merge = kernel.Store.Resolve<IMerge>(typeof(IEnumerable<KeyedClass1>), typeof(IEnumerable<KeyedClass1>));
+
+            var source = new[]
+            {
+                new KeyedClass1 { Key = 1, Value = "1s" },
+                new KeyedClass1 { Key = 2, Value = "2s" },
+                new KeyedClass1 { Key = 3, Value = "3s" },
+                new KeyedClass1 { Key = 4, Value = "4s" },
+            };
+
+            var t1 = new KeyedClass1 { Key = 1, Value = "1t" };
+            var t4 = new KeyedClass1 { Key = 4, Value = "4t" };
+            var t3 = new KeyedClass1 { Key = 3, Value = "3t" };
+            var target = new List<KeyedClass1> 
+            {
+                t3,
+                new KeyedClass1 { Key = 9, Value = "9t" },
+                t4,
+                new KeyedClass1 { Key = 8, Value = "8t" },
+                t1,
+            };
+
+            // Act
+            merge.Merge(source, target, CreateContext(kernel));
+
+            // Assert
+            Assert.AreEqual(4, target.Count());
+            Assert.AreEqual(t1, target.ElementAt(0));
+            Assert.AreEqual(1, target.ElementAt(0).Key);
+            Assert.AreEqual("1s", target.ElementAt(0).Value);
+            Assert.AreEqual(2, target.ElementAt(1).Key);
+            Assert.AreEqual("2s", target.ElementAt(1).Value);
+            Assert.AreEqual(t3, target.ElementAt(2));
+            Assert.AreEqual(3, target.ElementAt(2).Key);
+            Assert.AreEqual("3s", target.ElementAt(2).Value);
+            Assert.AreEqual(t4, target.ElementAt(3));
+            Assert.AreEqual(4, target.ElementAt(3).Key);
+            Assert.AreEqual("4s", target.ElementAt(3).Value);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Spike_AutoMerge_AutoMergesIntoNull()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            builder
+                .Register<KeyedClass1, KeyedClass1>()
+                .AutoExact()
+                .MergeOnIdenticalKey(s => s.Key, t => t.Key);
+
+            var kernel = builder.Build();
+            var merge = kernel.Store.Resolve<IMerge>(typeof(IEnumerable<KeyedClass1>), typeof(IEnumerable<KeyedClass1>));
+
+            var source = new[]
+            {
+                new KeyedClass1 { Key = 1, Value = "1s" },
+                new KeyedClass1 { Key = 2, Value = "2s" },
+                new KeyedClass1 { Key = 3, Value = "3s" },
+                new KeyedClass1 { Key = 4, Value = "4s" },
+            };
+
+            // Act
+            var result = merge.Merge(source, null, CreateContext(kernel));
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
+            var target = (IEnumerable<KeyedClass1>)result.Target;
+            Assert.AreEqual(4, target.Count());
+            Assert.AreEqual(1, target.ElementAt(0).Key);
+            Assert.AreEqual("1s", target.ElementAt(0).Value);
+            Assert.AreEqual(2, target.ElementAt(1).Key);
+            Assert.AreEqual("2s", target.ElementAt(1).Value);
+            Assert.AreEqual(3, target.ElementAt(2).Key);
+            Assert.AreEqual("3s", target.ElementAt(2).Value);
+            Assert.AreEqual(4, target.ElementAt(3).Key);
+            Assert.AreEqual("4s", target.ElementAt(3).Value);
         }
 
         private static InjectionContext CreateContext(IInjectionKernel kernel)

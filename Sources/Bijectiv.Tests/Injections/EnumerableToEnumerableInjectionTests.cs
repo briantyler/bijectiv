@@ -58,7 +58,6 @@ namespace Bijectiv.Tests.Injections
             new EnumerableToEnumerableInjection(
                 typeof(IEnumerable), 
                 typeof(IEnumerable<TestClass1>), 
-                Stub.Create<IEnumerableFactory>(),
                 Stub.Create<ICollectionMerger>())
                 .Naught();
 
@@ -77,7 +76,6 @@ namespace Bijectiv.Tests.Injections
             new EnumerableToEnumerableInjection(
                 null,
                 typeof(IEnumerable<TestClass1>),
-                Stub.Create<IEnumerableFactory>(),
                 Stub.Create<ICollectionMerger>())
                 .Naught();
 
@@ -95,26 +93,6 @@ namespace Bijectiv.Tests.Injections
             // ReSharper disable once AssignNullToNotNullAttribute
             new EnumerableToEnumerableInjection(
                 typeof(IEnumerable),
-                null,
-                Stub.Create<IEnumerableFactory>(),
-                Stub.Create<ICollectionMerger>())
-                .Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_FactoryParameterIsNull_Throws()
-        {
-            // Arrange
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            new EnumerableToEnumerableInjection(
-                typeof(IEnumerable),
-                typeof(IEnumerable<TestClass1>),
                 null,
                 Stub.Create<ICollectionMerger>())
                 .Naught();
@@ -134,7 +112,6 @@ namespace Bijectiv.Tests.Injections
             new EnumerableToEnumerableInjection(
                 typeof(IEnumerable),
                 typeof(IEnumerable<TestClass1>),
-                Stub.Create<IEnumerableFactory>(),
                 null)
                 .Naught();
 
@@ -151,7 +128,6 @@ namespace Bijectiv.Tests.Injections
             var target = new EnumerableToEnumerableInjection(
                 typeof(IEnumerable),
                 typeof(IEnumerable<TestClass1>),
-                Stub.Create<IEnumerableFactory>(),
                 Stub.Create<ICollectionMerger>());
 
             // Assert
@@ -168,29 +144,10 @@ namespace Bijectiv.Tests.Injections
             var target = new EnumerableToEnumerableInjection(
                 typeof(IEnumerable),
                 typeof(IEnumerable<TestClass1>),
-                Stub.Create<IEnumerableFactory>(),
                 Stub.Create<ICollectionMerger>());
 
             // Assert
             Assert.AreEqual(typeof(IEnumerable<TestClass1>), target.Target);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_FactoryParameterIsAssignedToFactoryProperty()
-        {
-            // Arrange
-            var factory = Stub.Create<IEnumerableFactory>();
-
-            // Act
-            var target = new EnumerableToEnumerableInjection(
-                typeof(IEnumerable),
-                typeof(IEnumerable<TestClass1>),
-                factory,
-                Stub.Create<ICollectionMerger>());
-
-            // Assert
-            Assert.AreEqual(factory, target.Factory);
         }
 
         [TestMethod]
@@ -204,7 +161,6 @@ namespace Bijectiv.Tests.Injections
             var target = new EnumerableToEnumerableInjection(
                 typeof(IEnumerable),
                 typeof(IEnumerable<TestClass1>),
-                Stub.Create<IEnumerableFactory>(),
                 merger);
 
             // Assert
@@ -217,7 +173,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget(Stub.Create<IEnumerableFactory>(), Stub.Create<ICollectionMerger>());
+            var target = CreateTarget(Stub.Create<ICollectionMerger>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -234,26 +190,29 @@ namespace Bijectiv.Tests.Injections
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = Stub.Create<IEnumerable>();
             var targetInstance = new HashSet<TestClass1>();
-            var context = Stub.Create<IInjectionContext>();
+            var contextMock = repository.Create<IInjectionContext>();
             var expectedResult = new HashSet<TestClass1>();
 
             var factoryMock = repository.Create<IEnumerableFactory>();
             factoryMock.Setup(_ => _.Resolve(It.IsAny<Type>())).Returns(targetInstance);
 
+            var registryMock = repository.Create<IInstanceRegistry>();
+            registryMock.Setup(_ => _.Resolve<IEnumerableFactory>()).Returns(factoryMock.Object);
+
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
+
             var target = repository.Create<EnumerableToEnumerableInjection>(
                 typeof(IEnumerable),
                 typeof(IEnumerable<TestClass1>),
-                factoryMock.Object,
                 Stub.Create<ICollectionMerger>());
             target.CallBase = false;
 
             target
-                .Setup(_ => _.Merge(sourceInstance, targetInstance, context))
+                .Setup(_ => _.Merge(sourceInstance, targetInstance, contextMock.Object))
                 .Returns(new MergeResult(PostMergeAction.None, expectedResult));
 
             // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Object.Transform(sourceInstance, context);
+            var result = target.Object.Transform(sourceInstance, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -266,7 +225,7 @@ namespace Bijectiv.Tests.Injections
         public void Merge_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget(Stub.Create<IEnumerableFactory>(), Stub.Create<ICollectionMerger>());
+            var target = CreateTarget(Stub.Create<ICollectionMerger>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -288,7 +247,7 @@ namespace Bijectiv.Tests.Injections
             var mergerMock = repository.Create<ICollectionMerger>();
             mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
-            var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
+            var target = CreateTarget(mergerMock.Object);
 
             // Act
             var result = target.Merge(sourceInstance, targetInstance, context);
@@ -312,7 +271,7 @@ namespace Bijectiv.Tests.Injections
             var mergerMock = repository.Create<ICollectionMerger>();
             mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
-            var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
+            var target = CreateTarget(mergerMock.Object);
 
             // Act
             var result = target.Merge(sourceInstance, targetInstance, context);
@@ -336,7 +295,7 @@ namespace Bijectiv.Tests.Injections
             var mergerMock = repository.Create<ICollectionMerger>();
             mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
 
-            var target = CreateTarget(Stub.Create<IEnumerableFactory>(), mergerMock.Object);
+            var target = CreateTarget(mergerMock.Object);
 
             // Act
             var result = target.Merge(sourceInstance, targetInstance, context);
@@ -355,18 +314,22 @@ namespace Bijectiv.Tests.Injections
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = Stub.Create<IEnumerable<object>>();
             var targetInstance = new List<TestClass1>();
-            var context = Stub.Create<IInjectionContext>();
+            var contextMock = repository.Create<IInjectionContext>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, context));
+            mergerMock.Setup(_ => _.Merge(sourceInstance, targetInstance, contextMock.Object));
 
             var factoryMock = repository.Create<IEnumerableFactory>();
             factoryMock.Setup(_ => _.Resolve(It.IsAny<Type>())).Returns(targetInstance);
 
-            var target = CreateTarget(factoryMock.Object, mergerMock.Object);
+            var registryMock = repository.Create<IInstanceRegistry>();
+            registryMock.Setup(_ => _.Resolve<IEnumerableFactory>()).Returns(factoryMock.Object);
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
+
+            var target = CreateTarget(mergerMock.Object);
 
             // Act
-            var result = target.Merge(sourceInstance, null, context);
+            var result = target.Merge(sourceInstance, null, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -374,12 +337,10 @@ namespace Bijectiv.Tests.Injections
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
         }
 
-        private static EnumerableToEnumerableInjection CreateTarget(
-            IEnumerableFactory factory,
-            ICollectionMerger merger)
+        private static EnumerableToEnumerableInjection CreateTarget(ICollectionMerger merger)
         {
             return new EnumerableToEnumerableInjection(
-                typeof(IEnumerable), typeof(IEnumerable<TestClass1>), factory, merger);
+                typeof(IEnumerable), typeof(IEnumerable<TestClass1>), merger);
         }
     }
 }

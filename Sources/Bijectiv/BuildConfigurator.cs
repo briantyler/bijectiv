@@ -34,6 +34,7 @@ namespace Bijectiv
     using System.Linq;
 
     using Bijectiv.Factory;
+    using Bijectiv.Injections;
     using Bijectiv.Stores;
     using Bijectiv.Utilities;
 
@@ -73,6 +74,9 @@ namespace Bijectiv
         /// </summary>
         public IList<Func<IInjectionStoreFactory>> StoreFactories { get; private set; }
 
+        /// <summary>
+        /// Gets the default sequence of <see cref="IInstanceFactory"/> instances.
+        /// </summary>
         public IList<Func<IInstanceFactory>> InstanceFactories { get; private set; }
 
         /// <summary>
@@ -93,6 +97,7 @@ namespace Bijectiv
         public void Reset()
         {
             this.ResetStoreFactories();
+            this.ResetInstanceFactories();
             this.ResetTransformTasks();
             this.ResetMergeTasks();
         }
@@ -109,10 +114,25 @@ namespace Bijectiv
                     () => new InstanceInjectionStoreFactory(new IdenticalPrimitiveInjectionStore()),
                     () => new InstanceInjectionStoreFactory(new ConvertibleInjectionStore()),
                     () => new InstanceInjectionStoreFactory(new EnumerableToArrayInjectionStore()),
+                    () => new InstanceInjectionStoreFactory(new EnumerableToEnumerableInjectionStore()),
                     () => new DelegateInjectionStoreFactory(
                         new TransformFactory(this.TransformTasks.Select(item => item()).ToArray())),
                     () => new DelegateInjectionStoreFactory(
                         new MergeFactory(this.MergeTasks.Select(item => item()).ToArray()))
+                });
+        }
+
+        /// <summary>
+        /// Resets <see cref="InstanceFactories"/> to its default configuration.
+        /// </summary>
+        private void ResetInstanceFactories()
+        {
+            this.InstanceFactories.Clear();
+            this.InstanceFactories.AddRange(
+                new Func<IInstanceFactory>[]
+                {
+                    () => new EnumerableFactoryInstanceFactory(),
+                    () => new TargetFinderStoreInstanceFactory()
                 });
         }
 

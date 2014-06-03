@@ -90,9 +90,12 @@
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Stores\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />
+    <Compile Include="Stores\EnumerableToEnumerableInjectionStore.cs" />
     <Compile Include="Stores\IInstanceFactory.cs" />
+    <Compile Include="Stores\TargetFinderStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
+    <Compile Include="Utilities\EnumerableFactoryInstanceFactory.cs" />
     <Compile Include="Utilities\EnumerableFactoryRegistration.cs" />
     <Compile Include="Utilities\EnumerableFactory.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
@@ -117,7 +120,7 @@
     <Compile Include="Factory\TransformFactory.cs" />
     <Compile Include="Builder\InheritsFragment.cs" />
     <Compile Include="IInjectionDefinitionBuilder.cs" />
-    <Compile Include="Builder\IInstanceRegistry.cs" />
+    <Compile Include="IInstanceRegistry.cs" />
     <Compile Include="Builder\LegendryFragments.cs" />
     <Compile Include="Builder\InjectionDefinition.cs" />
     <Compile Include="Builder\InjectionDefinitionBuilder.cs" />
@@ -147,6 +150,7 @@
     <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\ReflectionGateway.cs" />
     <Compile Include="Utilities\ReflectionOptions.cs" />
+    <Compile Include="Utilities\TargetFinderStoreInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">
