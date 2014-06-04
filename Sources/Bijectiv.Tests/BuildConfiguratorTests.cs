@@ -143,6 +143,10 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((InstanceInjectionStoreFactory)factories[index++]).Instance,
                 typeof(EnumerableToArrayInjectionStore));
+            Assert.IsInstanceOfType(factories[index], typeof(InstanceInjectionStoreFactory));
+            Assert.IsInstanceOfType(
+                ((InstanceInjectionStoreFactory)factories[index++]).Instance,
+                typeof(EnumerableToEnumerableInjectionStore));
             Assert.IsInstanceOfType(factories[index], typeof(DelegateInjectionStoreFactory));
             Assert.IsInstanceOfType(
                 ((DelegateInjectionStoreFactory)factories[index++]).InjectionFactory,
@@ -152,6 +156,25 @@ namespace Bijectiv.Tests
                 ((DelegateInjectionStoreFactory)factories[index++]).InjectionFactory,
                 typeof(MergeFactory));
             
+            Assert.AreEqual(index, factories.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_InstanceFactoriesInitialized()
+        {
+            // Arrange
+
+            // Act
+            var target = new BuildConfigurator();
+
+            // Assert
+            var index = 0;
+            var factories = target.InstanceFactories.Select(item => item()).ToArray();
+
+            Assert.IsInstanceOfType(factories[index++], typeof(EnumerableFactoryInstanceFactory));
+            Assert.IsInstanceOfType(factories[index++], typeof(TargetFinderStoreInstanceFactory));
+
             Assert.AreEqual(index, factories.Length);
         }
     }

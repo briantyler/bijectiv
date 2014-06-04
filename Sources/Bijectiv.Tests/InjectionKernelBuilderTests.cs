@@ -89,13 +89,27 @@ namespace Bijectiv.Tests
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void Build_FactoriesParameterIsNull_Throws()
+        public void Build_StoreFactoriesParameterIsNull_Throws()
         {
             // Arrange
             var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
             target.Build(null, Enumerable.Empty<IInstanceFactory>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Build_InstanceFactoriesParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+
+            // Act
+            target.Build(Enumerable.Empty<IInjectionStoreFactory>(), null);
 
             // Assert
         }

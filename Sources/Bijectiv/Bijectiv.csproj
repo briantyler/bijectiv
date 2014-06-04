@@ -150,7 +150,7 @@
     <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\ReflectionGateway.cs" />
     <Compile Include="Utilities\ReflectionOptions.cs" />
-    <Compile Include="Utilities\TargetFinderStoreInstanceFactory.cs" />
+    <Compile Include="Stores\TargetFinderStoreInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">

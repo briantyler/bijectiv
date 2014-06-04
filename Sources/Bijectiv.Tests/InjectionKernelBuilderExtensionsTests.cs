@@ -33,6 +33,7 @@ namespace Bijectiv.Tests
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Bijectiv.KernelBuilder;
@@ -414,6 +415,7 @@ namespace Bijectiv.Tests
             // Assert
         }
 
+        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1501:StatementMustNotBeOnSingleLine", Justification = "Reviewed. Suppression is OK here.")]
         [TestMethod]
         [TestCategory("Unit")]
         public void Build_ValidParameters_BuildsUsingBuildConfigurator()

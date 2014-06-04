@@ -1,9 +1,9 @@
-﻿namespace Bijectiv.Utilities
+﻿namespace Bijectiv.Stores
 {
     using System;
 
     using Bijectiv.KernelBuilder;
-    using Bijectiv.Stores;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
