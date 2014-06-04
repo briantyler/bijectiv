@@ -50,6 +50,7 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IInjectionContext.cs" />
     <Compile Include="KernelBuilder\ActivateFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryParameters.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Stores\EnumerableToEnumerableInjectionStore.cs" />
     <Compile Include="Stores\IInstanceFactory.cs" />
     <Compile Include="Stores\TargetFinderStore.cs" />
-    <Compile Include="TargetCache.cs" />
+    <Compile Include="Stores\TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
     <Compile Include="Stores\EnumerableFactoryInstanceFactory.cs" />
     <Compile Include="KernelBuilder\EnumerableRegistration.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="KernelBuilder\InjectionDefinitionBuilder.cs" />
     <Compile Include="KernelBuilder\InjectionFragment.cs" />
     <Compile Include="InjectionFactory\InjectionScaffold.cs" />
-    <Compile Include="IInjectionContext.cs" />
     <Compile Include="Stores\CompositeInjectionStore.cs" />
     <Compile Include="Stores\ConvertibleInjectionStore.cs" />
     <Compile Include="Stores\CollectionInjectionStore.cs" />
@@ -136,7 +136,7 @@
     <Compile Include="IInjectionStore.cs" />
     <Compile Include="InjectionKernelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="InjectionContext.cs" />
+    <Compile Include="Injections\InjectionContext.cs" />
     <Compile Include="InjectionKernelBuilderExtensions.cs" />
     <Compile Include="Injections\ConvertibleInjection.cs" />
     <Compile Include="Injections\DelegateTransform.cs" />

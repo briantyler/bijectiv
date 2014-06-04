@@ -27,10 +27,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Injections
 {
     using System;
     using System.Globalization;
+
+    using Bijectiv.Stores;
 
     using JetBrains.Annotations;
 

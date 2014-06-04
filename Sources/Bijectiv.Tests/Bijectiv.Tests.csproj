@@ -114,8 +114,8 @@
     <Compile Include="Stores\EnumerableToArrayInjectionStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveInjectionStoreTests.cs" />
     <Compile Include="Stores\InstanceInjectionStoreFactoryTests.cs" />
-    <Compile Include="TargetCacheTests.cs" />
-    <Compile Include="InjectionContextTests.cs" />
+    <Compile Include="Stores\TargetCacheTests.cs" />
+    <Compile Include="Injections\InjectionContextTests.cs" />
     <Compile Include="InjectionKernelBuilderExtensionsTests.cs" />
     <Compile Include="InjectionKernelBuilderTests.cs" />
     <Compile Include="Injections\ConvertibleInjectionTests.cs" />

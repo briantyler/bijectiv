@@ -27,10 +27,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests
+namespace Bijectiv.Tests.Injections
 {
     using System.Globalization;
 
+    using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 

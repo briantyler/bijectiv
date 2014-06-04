@@ -35,6 +35,7 @@ namespace Bijectiv.Tests
     using System.Globalization;
     using System.Linq;
 
+    using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 
