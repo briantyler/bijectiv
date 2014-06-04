@@ -111,6 +111,7 @@
     <Compile Include="Stores\CompositeInjectionStoreTests.cs" />
     <Compile Include="Stores\ConvertibleInjectionStoreTests.cs" />
     <Compile Include="Stores\DelegateInjectionStoreFactoryTests.cs" />
+    <Compile Include="Stores\EnumerableFactoryInstanceFactoryTests.cs" />
     <Compile Include="Stores\EnumerableToArrayInjectionStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveInjectionStoreTests.cs" />
     <Compile Include="Stores\InstanceInjectionStoreFactoryTests.cs" />

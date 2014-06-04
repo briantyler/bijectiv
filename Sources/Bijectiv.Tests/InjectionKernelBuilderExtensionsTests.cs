@@ -33,7 +33,6 @@ namespace Bijectiv.Tests
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Bijectiv.KernelBuilder;
@@ -415,23 +414,23 @@ namespace Bijectiv.Tests
             // Assert
         }
 
-        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1501:StatementMustNotBeOnSingleLine", Justification = "Reviewed. Suppression is OK here.")]
         [TestMethod]
         [TestCategory("Unit")]
         public void Build_ValidParameters_BuildsUsingBuildConfigurator()
         {
             // Arrange
             var expected = Stub.Create<IInjectionKernel>();
-            var storeFactory = Stub.Create<IInjectionStoreFactory>();
-
+            var storeFactories = new[] { Stub.Create<IInjectionStoreFactory>() };
+            var instanceFactories = new[] { Stub.Create<IInstanceFactory>() };
+            
             BuildConfigurator.Instance.StoreFactories.Clear();
-            BuildConfigurator.Instance.StoreFactories.Add(() => storeFactory);
+            BuildConfigurator.Instance.StoreFactories.Add(() => storeFactories[0]);
 
             var builderMock = new Mock<InjectionKernelBuilder>(MockBehavior.Strict);
             builderMock
                 .Setup(_ => _.Build(
-                    It.Is<IEnumerable<IInjectionStoreFactory>>(i => new[] { storeFactory }.SequenceEqual(i)),
-                    It.IsAny<IEnumerable<IInstanceFactory>>()))
+                    It.Is<IEnumerable<IInjectionStoreFactory>>(i => storeFactories.SequenceEqual(i)),
+                    It.Is<IEnumerable<IInstanceFactory>>(i => instanceFactories.SequenceEqual(i))))
                 .Returns(expected);
 
             // Act

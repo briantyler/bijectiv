@@ -130,7 +130,7 @@ namespace Bijectiv
             this.InstanceFactories.AddRange(
                 new Func<IInstanceFactory>[]
                 {
-                    () => new EnumerableFactoryInstanceFactory(),
+                    () => new EnumerableFactoryInstanceFactory(() => new EnumerableFactory()),
                     () => new TargetFinderStoreInstanceFactory()
                 });
         }
