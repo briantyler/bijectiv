@@ -33,7 +33,7 @@ namespace Bijectiv
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bijectiv.Factory;
+    using Bijectiv.InjectionFactory;
     using Bijectiv.Injections;
     using Bijectiv.Stores;
     using Bijectiv.Utilities;

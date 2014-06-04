@@ -32,8 +32,6 @@ namespace Bijectiv
     using System;
     using System.Globalization;
 
-    using Bijectiv.Builder;
-
     using JetBrains.Annotations;
 
     /// <summary>

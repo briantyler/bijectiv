@@ -31,8 +31,6 @@ namespace Bijectiv.Stores
 {
     using System;
 
-    using Bijectiv.Builder;
-
     using JetBrains.Annotations;
 
     /// <summary>

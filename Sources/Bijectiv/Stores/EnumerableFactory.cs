@@ -33,7 +33,7 @@ namespace Bijectiv.Stores
     using System.Collections;
     using System.Collections.Generic;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;

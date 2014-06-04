@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using Bijectiv.Builder;
     using Bijectiv.Injections;
+    using Bijectiv.KernelBuilder;
 
     using JetBrains.Annotations;
 

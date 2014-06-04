@@ -29,8 +29,8 @@
 
 namespace Bijectiv.Tests.Stores
 {
-    using Bijectiv.Builder;
-    using Bijectiv.Factory;
+    using Bijectiv.InjectionFactory;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;

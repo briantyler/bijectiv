@@ -33,7 +33,6 @@ namespace Bijectiv.Tests.Injections
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bijectiv.Builder;
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;

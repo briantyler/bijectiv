@@ -32,7 +32,7 @@ namespace Bijectiv.Utilities
     using System;
     using System.Collections;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
 
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.

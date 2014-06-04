@@ -31,7 +31,6 @@ namespace Bijectiv.Tests
 {
     using System.Globalization;
 
-    using Bijectiv.Builder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
 

@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;

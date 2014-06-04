@@ -32,8 +32,6 @@ namespace Bijectiv
     using System;
     using System.Globalization;
 
-    using Bijectiv.Builder;
-
     /// <summary>
     /// Represents an <see cref="IInjection"/> context.
     /// </summary>

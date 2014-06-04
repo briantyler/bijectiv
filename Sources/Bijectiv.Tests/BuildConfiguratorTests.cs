@@ -31,7 +31,7 @@ namespace Bijectiv.Tests
 {
     using System.Linq;
 
-    using Bijectiv.Factory;
+    using Bijectiv.InjectionFactory;
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
 

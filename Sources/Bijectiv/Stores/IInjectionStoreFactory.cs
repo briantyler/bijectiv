@@ -29,8 +29,6 @@
 
 namespace Bijectiv.Stores
 {
-    using Bijectiv.Builder;
-
     /// <summary>
     /// Represents a factory that creates <see cref="IInjectionStore"/> instances.
     /// </summary>

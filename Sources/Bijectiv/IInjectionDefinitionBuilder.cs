@@ -31,7 +31,7 @@ namespace Bijectiv
 {
     using System;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
 
     using JetBrains.Annotations;
 

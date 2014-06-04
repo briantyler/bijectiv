@@ -32,7 +32,7 @@ namespace Bijectiv
     using System;
     using System.Collections.Generic;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Stores;
     using Bijectiv.Utilities;
 

@@ -33,7 +33,7 @@ namespace Bijectiv
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bijectiv.Builder;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
