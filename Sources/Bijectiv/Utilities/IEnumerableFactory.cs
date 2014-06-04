@@ -32,18 +32,20 @@ namespace Bijectiv.Utilities
     using System;
     using System.Collections;
 
+    using Bijectiv.Builder;
+
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.
     /// </summary>
     public interface IEnumerableFactory
     {
         /// <summary>
-        /// Registers a <see cref="EnumerableFactoryRegistration"/> with the factory.
+        /// Registers a <see cref="EnumerableRegistration"/> with the factory.
         /// </summary>
         /// <param name="registration">
         /// The registration.
         /// </param>
-        void Register(EnumerableFactoryRegistration registration);
+        void Register(EnumerableRegistration registration);
 
         /// <summary>
         /// Resolves an instance of type <paramref name="enumerable"/>.

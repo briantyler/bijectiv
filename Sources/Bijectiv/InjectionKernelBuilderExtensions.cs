@@ -157,8 +157,8 @@ namespace Bijectiv
             }
 
             @this.InstanceRegistry.Register(
-                typeof(EnumerableFactoryRegistration), 
-                new EnumerableFactoryRegistration(typeof(TInterface), typeof(TConcrete)));
+                typeof(EnumerableRegistration), 
+                new EnumerableRegistration(typeof(TInterface), typeof(TConcrete)));
         }
 
         /// <summary>

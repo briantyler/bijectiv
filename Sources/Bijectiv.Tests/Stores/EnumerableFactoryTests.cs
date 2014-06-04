@@ -27,18 +27,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Utilities
+namespace Bijectiv.Tests.Stores
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Bijectiv.Builder;
+    using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// This class tests the <see cref="EnumerableFactory"/> class.
+    /// </summary>
     [TestClass]
     public class EnumerableFactoryTests
     {
@@ -182,7 +187,7 @@ namespace Bijectiv.Tests.Utilities
             target.Registrations.Clear();
 
             // Act
-            target.Register(new EnumerableFactoryRegistration(
+            target.Register(new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert
@@ -200,7 +205,7 @@ namespace Bijectiv.Tests.Utilities
             target.Registrations.Add(typeof(IEnumerable<>), typeof(List<Placeholder>));
 
             // Act
-            target.Register(new EnumerableFactoryRegistration(
+            target.Register(new EnumerableRegistration(
                typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert

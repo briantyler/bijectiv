@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumerableFactoryRegistration.cs" company="Bijectiv">
+// <copyright file="EnumerableRegistration.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,24 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the EnumerableFactoryRegistration type.
+//   Defines the EnumerableRegistration type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace Bijectiv.Builder
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a registration for a <see cref="IEnumerableFactory"/>.
     /// </summary>
-    public class EnumerableFactoryRegistration
+    public class EnumerableRegistration
     {
         /// <summary>
         /// The interface type that implements <see cref="IEnumerable{T}"/>.
@@ -51,7 +53,7 @@ namespace Bijectiv.Utilities
         private readonly Type concreteType;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="EnumerableFactoryRegistration"/> class.
+        /// Initialises a new instance of the <see cref="EnumerableRegistration"/> class.
         /// </summary>
         /// <param name="interfaceType">
         /// The interface type that implements <see cref="IEnumerable{T}"/>.
@@ -69,7 +71,7 @@ namespace Bijectiv.Utilities
         /// Thrown when <paramref name="concreteType"/> does not implement <see cref="ICollection{T}"/>.
         /// Thrown when <paramref name="interfaceType"/> is not assignable from <paramref name="concreteType"/>.
         /// </exception>
-        public EnumerableFactoryRegistration([NotNull] Type interfaceType, [NotNull] Type concreteType)
+        public EnumerableRegistration([NotNull] Type interfaceType, [NotNull] Type concreteType)
         {
             if (interfaceType == null)
             {

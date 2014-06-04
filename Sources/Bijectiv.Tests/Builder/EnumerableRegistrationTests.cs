@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumerableFactoryRegistrationTests.cs" company="Bijectiv">
+// <copyright file="EnumerableRegistrationTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,16 +23,17 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the EnumerableFactoryRegistrationTests type.
+//   Defines the EnumerableRegistrationTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests.Utilities
+namespace Bijectiv.Tests.Builder
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Bijectiv.Builder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
@@ -40,10 +41,10 @@ namespace Bijectiv.Tests.Utilities
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="EnumerableFactoryRegistration"/> class.
+    /// This class tests the <see cref="EnumerableRegistration"/> class.
     /// </summary>
     [TestClass]
-    public class EnumerableFactoryRegistrationTests
+    public class EnumerableRegistrationTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -54,7 +55,7 @@ namespace Bijectiv.Tests.Utilities
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new EnumerableFactoryRegistration(null, typeof(Collection<>)).Naught();
+            new EnumerableRegistration(null, typeof(Collection<>)).Naught();
             
             // Assert
         }
@@ -68,7 +69,7 @@ namespace Bijectiv.Tests.Utilities
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new EnumerableFactoryRegistration(typeof(IEnumerable<>), null).Naught();
+            new EnumerableRegistration(typeof(IEnumerable<>), null).Naught();
 
             // Assert
         }
@@ -81,7 +82,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(typeof(Collection<>), typeof(List<>)).Naught();
+            new EnumerableRegistration(typeof(Collection<>), typeof(List<>)).Naught();
 
             // Assert
         }
@@ -94,7 +95,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IPlaceholderEnumerable), typeof(GenericPlaceholderCollection<Placeholder>)).Naught();
 
             // Assert
@@ -108,7 +109,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(ICrazyPlaceholderEnumerable<,>), typeof(CrazyPlaceholderCollection<>)).Naught();
 
             // Assert
@@ -122,7 +123,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(ICollection<>)).Naught();
+            new EnumerableRegistration(typeof(IEnumerable<>), typeof(ICollection<>)).Naught();
 
             // Assert
         }
@@ -135,7 +136,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(NonMonadicPlaceholderCollection<Placeholder, Placeholder>)).Naught();
 
             // Assert
@@ -149,7 +150,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(PlaceholderCollection)).Naught();
 
             // Assert
@@ -163,7 +164,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEquatable<>), typeof(EquatableCollection<>)).Naught();
 
             // Assert
@@ -177,7 +178,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<>), typeof(Queue<>)).Naught();
 
             // Assert
@@ -191,7 +192,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(ISet<>), typeof(Collection<>)).Naught();
 
             // Assert
@@ -204,7 +205,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<>), typeof(Collection<>)).Naught();
 
             // Assert
@@ -217,7 +218,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)).Naught();
 
             // Assert
@@ -230,7 +231,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            new EnumerableFactoryRegistration(
+            new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(Collection<>)).Naught();
 
             // Assert
@@ -243,7 +244,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            var target = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<>));
+            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
 
             // Assert
             Assert.AreEqual(typeof(IEnumerable<>), target.InterfaceType);
@@ -256,7 +257,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            var target = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<>));
+            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
 
             // Assert
             Assert.AreEqual(typeof(Collection<>), target.ConcreteType);
@@ -269,7 +270,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            var target = new EnumerableFactoryRegistration(typeof(IEnumerable<Placeholder>), typeof(Collection<>));
+            var target = new EnumerableRegistration(typeof(IEnumerable<Placeholder>), typeof(Collection<>));
 
             // Assert
             Assert.AreEqual(typeof(IEnumerable<>), target.InterfaceType);
@@ -282,7 +283,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
 
             // Act
-            var target = new EnumerableFactoryRegistration(typeof(IEnumerable<>), typeof(Collection<Placeholder>));
+            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<Placeholder>));
 
             // Assert
             Assert.AreEqual(typeof(Collection<>), target.ConcreteType);

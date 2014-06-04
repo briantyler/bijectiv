@@ -349,7 +349,7 @@ namespace Bijectiv.Tests
             var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Register(
-                typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()));
+                typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()));
 
             // Act
             target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
@@ -363,13 +363,13 @@ namespace Bijectiv.Tests
         public void RegisterEnumerable_ValidParameters_RegistrationHasCorrectInterfaceType()
         {
             // Arrange
-            var registrations = new List<EnumerableFactoryRegistration>();
+            var registrations = new List<EnumerableRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
-                .Callback((Type t, object o) => registrations.Add((EnumerableFactoryRegistration)o));
+                .Setup(_ => _.Register(typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()))
+                .Callback((Type t, object o) => registrations.Add((EnumerableRegistration)o));
 
             // Act
             target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
@@ -384,13 +384,13 @@ namespace Bijectiv.Tests
         public void RegisterEnumerable_ValidParameters_RegistrationHasCorrectConcreteType()
         {
             // Arrange
-            var registrations = new List<EnumerableFactoryRegistration>();
+            var registrations = new List<EnumerableRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
             var target = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
-                .Setup(_ => _.Register(typeof(EnumerableFactoryRegistration), It.IsAny<EnumerableFactoryRegistration>()))
-                .Callback((Type t, object o) => registrations.Add((EnumerableFactoryRegistration)o));
+                .Setup(_ => _.Register(typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()))
+                .Callback((Type t, object o) => registrations.Add((EnumerableRegistration)o));
 
             // Act
             target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();

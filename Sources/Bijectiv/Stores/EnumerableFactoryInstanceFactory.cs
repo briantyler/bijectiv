@@ -1,8 +1,9 @@
-﻿namespace Bijectiv.Utilities
+﻿namespace Bijectiv.Stores
 {
     using System;
 
-    using Bijectiv.Stores;
+    using Bijectiv.Builder;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -17,7 +18,7 @@
 
             var instance = new EnumerableFactory();
 
-            registry.ResolveAll<EnumerableFactoryRegistration>().ForEach(instance.Register);
+            registry.ResolveAll<EnumerableRegistration>().ForEach(instance.Register);
 
             return new Tuple<Type, object>(typeof(IEnumerableFactory), instance);
         }

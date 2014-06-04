@@ -95,9 +95,9 @@
     <Compile Include="Stores\TargetFinderStore.cs" />
     <Compile Include="TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
-    <Compile Include="Utilities\EnumerableFactoryInstanceFactory.cs" />
-    <Compile Include="Utilities\EnumerableFactoryRegistration.cs" />
-    <Compile Include="Utilities\EnumerableFactory.cs" />
+    <Compile Include="Stores\EnumerableFactoryInstanceFactory.cs" />
+    <Compile Include="Builder\EnumerableRegistration.cs" />
+    <Compile Include="Stores\EnumerableFactory.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">

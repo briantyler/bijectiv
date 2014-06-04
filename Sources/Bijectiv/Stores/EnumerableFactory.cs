@@ -27,11 +27,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace Bijectiv.Stores
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
+
+    using Bijectiv.Builder;
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -60,7 +63,7 @@ namespace Bijectiv.Utilities
         }
 
         /// <summary>
-        /// Registers a <see cref="EnumerableFactoryRegistration"/> with the factory.
+        /// Registers a <see cref="EnumerableRegistration"/> with the factory.
         /// </summary>
         /// <param name="registration">
         /// The registration.
@@ -68,7 +71,7 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Register([NotNull] EnumerableFactoryRegistration registration)
+        public void Register([NotNull] EnumerableRegistration registration)
         {
             if (registration == null)
             {
