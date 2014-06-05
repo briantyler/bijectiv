@@ -29,7 +29,11 @@
 
 namespace Bijectiv.Tests.Injections
 {
+    using System;
+    using System.Collections.Generic;
+
     using Bijectiv.Injections;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,6 +43,97 @@ namespace Bijectiv.Tests.Injections
     [TestClass]
     public class IdenticalKeyTargetFinderTests
     {
-         
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_SourceKeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new IdenticalKeyTargetFinder(null, x => x, Stub.Create<IEqualityComparer<object>>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_TargetKeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new IdenticalKeyTargetFinder(x => x, null, Stub.Create<IEqualityComparer<object>>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_ComparerParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new IdenticalKeyTargetFinder(x => x, x => x, null).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_SourceKeySelectorParameter_IsAssignedToSourceKeySelectorProperty()
+        {
+            // Arrange
+            Func<object, object> sourceKeySelector = x => x;
+
+            // Act
+            var target = new IdenticalKeyTargetFinder(sourceKeySelector, x => x, Stub.Create<IEqualityComparer<object>>());
+
+            // Assert
+            Assert.AreEqual(sourceKeySelector, target.SourceKeySelector);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetKeySelectorParameter_IsAssignedToTargetKeySelectorProperty()
+        {
+            // Arrange
+            Func<object, object> targetKeySelector = x => x;
+
+            // Act
+            var target = new IdenticalKeyTargetFinder(x => x, targetKeySelector, Stub.Create<IEqualityComparer<object>>());
+
+            // Assert
+            Assert.AreEqual(targetKeySelector, target.TargetKeySelector);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ComparerParameter_IsAssignedToTargetCache()
+        {
+            // Arrange
+            var comparer = Stub.Create<IEqualityComparer<object>>();
+
+            // Act
+            var target = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
+
+            // Assert
+            Assert.AreEqual(comparer, ((dynamic)target.TargetCache).Comparer);
+        }
     }
 }

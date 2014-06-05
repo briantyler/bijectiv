@@ -71,7 +71,7 @@ namespace Bijectiv.Injections
         public IdenticalKeyTargetFinder(
             [NotNull] Func<object, object> sourceKeySelector,
             [NotNull] Func<object, object> targetKeySelector,
-            IEqualityComparer<object> comparer)
+            [NotNull] IEqualityComparer<object> comparer)
         {
             if (sourceKeySelector == null)
             {
@@ -81,6 +81,11 @@ namespace Bijectiv.Injections
             if (targetKeySelector == null)
             {
                 throw new ArgumentNullException("targetKeySelector");
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException("comparer");
             }
 
             this.sourceKeySelector = sourceKeySelector;
@@ -102,6 +107,14 @@ namespace Bijectiv.Injections
         public Func<object, object> TargetKeySelector
         {
             get { return this.targetKeySelector; }
+        }
+
+        /// <summary>
+        /// Gets the cache of target values.
+        /// </summary>
+        public IDictionary<object, object> TargetCache
+        {
+            get { return this.targetCache; }
         }
 
         /// <summary>
@@ -128,7 +141,7 @@ namespace Bijectiv.Injections
                 }
 
                 var key = this.TargetKeySelector(target);
-                this.targetCache[key] = target;
+                this.TargetCache[key] = target;
             }
         }
 
@@ -153,12 +166,12 @@ namespace Bijectiv.Injections
             }
 
             var key = this.SourceKeySelector(source);
-            if (!this.targetCache.ContainsKey(key))
+            if (!this.TargetCache.ContainsKey(key))
             {
                 return false;
             }
 
-            target = this.targetCache[key];
+            target = this.TargetCache[key];
             return true;
         }
     }

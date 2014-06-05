@@ -424,13 +424,23 @@ namespace Bijectiv.Tests
             var instanceFactories = new[] { Stub.Create<IInstanceFactory>() };
             
             BuildConfigurator.Instance.StoreFactories.Clear();
+            BuildConfigurator.Instance.InstanceFactories.Clear();
+            // ReSharper disable ImplicitlyCapturedClosure
             BuildConfigurator.Instance.StoreFactories.Add(() => storeFactories[0]);
+            BuildConfigurator.Instance.InstanceFactories.Add(() => instanceFactories[0]);
+            //// ReSharper restore ImplicitlyCapturedClosure
 
             var builderMock = new Mock<InjectionKernelBuilder>(MockBehavior.Strict);
             builderMock
                 .Setup(_ => _.Build(
-                    It.Is<IEnumerable<IInjectionStoreFactory>>(i => storeFactories.SequenceEqual(i)),
-                    It.Is<IEnumerable<IInstanceFactory>>(i => instanceFactories.SequenceEqual(i))))
+                    It.IsAny<IEnumerable<IInjectionStoreFactory>>(),
+                    It.IsAny<IEnumerable<IInstanceFactory>>()))
+                .Callback(
+                    (IEnumerable<IInjectionStoreFactory> sfx, IEnumerable<IInstanceFactory> ifx) =>
+                    {
+                        storeFactories.AssertSequenceEqual(sfx);
+                        instanceFactories.AssertSequenceEqual(ifx);
+                    })
                 .Returns(expected);
 
             // Act
