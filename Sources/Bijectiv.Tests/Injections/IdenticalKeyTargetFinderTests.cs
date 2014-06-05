@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITargetFinder.cs" company="Bijectiv">
+// <copyright file="IdenticalKeyTargetFinderTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,46 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITargetFinder type.
+//   Defines the IdenticalKeyTargetFinderTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.Injections
 {
-    using System.Collections;
+    using Bijectiv.Injections;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Finds the element in a collection that is the target for a source object.
+    /// This class tests the <see cref="IdenticalKeyTargetFinder"/> class.
     /// </summary>
-    public interface ITargetFinder
+    [TestClass]
+    public class IdenticalKeyTargetFinderTests
     {
-        /// <summary>
-        /// Initializes the finder for a given target collection.
-        /// </summary>
-        /// <param name="targets">
-        /// The collection of target elements.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the targets are being found.
-        /// </param>
-        /// <remarks>
-        /// The consumer should cache the items in the collection as the collection may change during the lifetime
-        /// of the consumer.
-        /// </remarks>
-        void Initialize(IEnumerable targets, IInjectionContext context);
-
-        /// <summary>
-        /// Tries to find the target element for <paramref name="source"/>.
-        /// </summary>
-        /// <param name="source">
-        /// The source element.
-        /// </param>
-        /// <param name="target">
-        /// The target element; this is only valid if the method returns <see langword="true" />.
-        /// </param>
-        /// <returns>
-        /// A value indicating success.
-        /// </returns>
-        bool TryFind(object source, out object target);
+         
     }
 }

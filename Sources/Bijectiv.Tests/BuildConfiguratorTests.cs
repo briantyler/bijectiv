@@ -172,7 +172,10 @@ namespace Bijectiv.Tests
             var index = 0;
             var factories = target.InstanceFactories.Select(item => item()).ToArray();
 
-            Assert.IsInstanceOfType(factories[index++], typeof(EnumerableFactoryInstanceFactory));
+            Assert.IsInstanceOfType(factories[index], typeof(EnumerableFactoryInstanceFactory));
+            Assert.IsInstanceOfType(
+                ((EnumerableFactoryInstanceFactory)factories[index++]).CreateFactory(), 
+                typeof(EnumerableFactory));
             Assert.IsInstanceOfType(factories[index++], typeof(TargetFinderStoreInstanceFactory));
 
             Assert.AreEqual(index, factories.Length);
