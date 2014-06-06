@@ -30,10 +30,12 @@
 namespace Bijectiv.Tests.Injections
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -134,6 +136,67 @@ namespace Bijectiv.Tests.Injections
 
             // Assert
             Assert.AreEqual(comparer, ((dynamic)target.TargetCache).Comparer);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Initialize_TargetsParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
+
+            // Act
+            target.Initialize(null, Stub.Create<IInjectionContext>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Initialize_ValidParameters_CachesTargetsAgainstSelectedKey()
+        {
+            // Arrange
+            var targets = new[] { new TestClass1(), null, new TestClass1() };
+            Func<object, object> targetKeySelector =
+                t =>
+                {
+                    if (t == targets[0])
+                    {
+                        return 0;
+                    }
+
+                    if (t == targets[2])
+                    {
+                        return 2;
+                    }
+
+                    throw new ArgumentException("Unknown target", "t");
+                };
+
+            var target = new IdenticalKeyTargetFinder(x => x, targetKeySelector, EqualityComparer<object>.Default);
+
+            // Act
+            target.Initialize(targets, Stub.Create<IInjectionContext>());
+
+            // Assert
+            Assert.AreEqual(2, target.TargetCache.Count());
+            Assert.AreEqual(targets[0], target.TargetCache[0]);
+            Assert.AreEqual(targets[2], target.TargetCache[2]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Initialize_TargetsParameterContainsDuplicateKeys_Throws()
+        {
+            // Arrange
+            var target = new IdenticalKeyTargetFinder(x => x, t => true, EqualityComparer<object>.Default);
+
+            // Act
+            target.Initialize(new[] { new TestClass1(), new TestClass1() }, Stub.Create<IInjectionContext>());
+
+            // Assert
         }
     }
 }

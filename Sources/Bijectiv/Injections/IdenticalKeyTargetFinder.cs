@@ -126,6 +126,12 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the targets are being found.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="targets"/> is null.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="targets"/> contains duplicate keys.
+        /// </exception>
         public void Initialize([NotNull] IEnumerable targets, IInjectionContext context)
         {
             if (targets == null)
@@ -141,6 +147,19 @@ namespace Bijectiv.Injections
                 }
 
                 var key = this.TargetKeySelector(target);
+                if (this.TargetCache.ContainsKey(key))
+                {
+                    var currentTarget = this.TargetCache[key];
+                    throw new InvalidOperationException(
+                        string.Format(
+                        "An item with key '{0}' already exists: current '{1}', new '{2}'. The collection is not "
+                        + "suitable as a merge target; to merge into a collection the key of every item in the "
+                        + "collection must be unique.",
+                        key,
+                        currentTarget,
+                        target));
+                }
+
                 this.TargetCache[key] = target;
             }
         }
