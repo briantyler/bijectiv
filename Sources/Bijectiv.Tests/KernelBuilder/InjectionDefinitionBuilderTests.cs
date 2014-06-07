@@ -787,5 +787,53 @@ namespace Bijectiv.Tests.KernelBuilder
             contextMock.VerifyAll();
             Assert.AreEqual(expected, result);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void MergeOnKey_SourceKeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            target.MergeOnKey(null, t => t.Id);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void MergeOnKey_TargetKeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            target.MergeOnKey(s => s.Id, null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MergeOnKey_ValidParameters_RegistersTargetFinder()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            registryMock.Setup(_ => _.Register(typeof(TargetFinderRegistration), It.IsAny<TargetFinderRegistration>()));
+
+            // Act
+            target.MergeOnKey(s => s.Id, t => t.Id);
+
+            // Assert
+            registryMock.VerifyAll();
+        }
     }
 }

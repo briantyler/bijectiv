@@ -429,16 +429,15 @@ namespace Bijectiv.KernelBuilder
         /// <param name="targetKeySelector">
         /// The target key locator.
         /// </param>
-        /// <typeparam name="TMember">
-        /// </typeparam>
         /// <returns>
-        /// The <see cref="IInjectionDefinitionBuilder"/>.
+        /// An object that allows further configuration of the injection.
         /// </returns>
         /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
         /// </exception>
-        public IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey<TMember>(
-            Func<TSource, TMember> sourceKeySelector,
-            Func<TTarget, TMember> targetKeySelector)
+        public IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey(
+            Func<TSource, object> sourceKeySelector,
+            Func<TTarget, object> targetKeySelector)
         {
             if (sourceKeySelector == null)
             {

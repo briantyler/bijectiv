@@ -233,8 +233,25 @@ namespace Bijectiv
         IInjectionDefinitionBuilder<TSource, TTarget> NullSourceCustom(
             [NotNull] Func<IInjectionContext, TTarget> factory);
 
-        IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey<TMember>(
-            [NotNull] Func<TSource, TMember> sourceKeySelector,
-            [NotNull] Func<TTarget, TMember> targetKeySelector);
+        /// <summary>
+        /// Instructs a merge from a collection of <typeparamref name="TSource"/> to a collection of 
+        /// <see cref="TTarget"/> to match source with target on the key returned by 
+        /// <paramref name="sourceKeySelector"/> and <paramref name="targetKeySelector"/> respectively.
+        /// </summary>
+        /// <param name="sourceKeySelector">
+        /// The source key locator.
+        /// </param>
+        /// <param name="targetKeySelector">
+        /// The target key locator.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey(
+            [NotNull] Func<TSource, object> sourceKeySelector,
+            [NotNull] Func<TTarget, object> targetKeySelector);
     }
 }
