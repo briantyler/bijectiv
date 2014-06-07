@@ -72,6 +72,7 @@
     <Compile Include="KernelBuilder\CustomFactoryParametersTests.cs" />
     <Compile Include="KernelBuilder\DefaultFactoryFragmentTests.cs" />
     <Compile Include="KernelBuilder\InheritsFragmentTests.cs" />
+    <Compile Include="KernelBuilder\InjectionKernelTests.cs" />
     <Compile Include="KernelBuilder\InstanceRegistryTests.cs" />
     <Compile Include="KernelBuilder\NameRegexAutoTransformStrategyTests.cs" />
     <Compile Include="KernelBuilder\NullAutoTransformStrategyTests.cs" />
@@ -106,13 +107,13 @@
     <Compile Include="Injections\EnumerableToArrayInjectionTests.cs" />
     <Compile Include="Injections\EnumerableToEnumerableInjectionTests.cs" />
     <Compile Include="Injections\NullTargetFinderTests.cs" />
+    <Compile Include="KernelBuilder\TargetFinderRegistrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spikes.cs" />
     <Compile Include="Stores\CollectionInjectionStoreTests.cs" />
     <Compile Include="Stores\CompositeInjectionStoreTests.cs" />
     <Compile Include="Stores\ConvertibleInjectionStoreTests.cs" />
     <Compile Include="Stores\DelegateInjectionStoreFactoryTests.cs" />
-    <Compile Include="Stores\EnumerableFactoryInstanceFactoryTests.cs" />
     <Compile Include="Stores\EnumerableToArrayInjectionStoreTests.cs" />
     <Compile Include="Stores\IdenticalPrimitiveInjectionStoreTests.cs" />
     <Compile Include="Stores\InstanceInjectionStoreFactoryTests.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Injections\DelegateTransformTests.cs" />
     <Compile Include="Injections\MergeResultTests.cs" />
     <Compile Include="Injections\PassThroughInjectionTests.cs" />
+    <Compile Include="Stores\RegisteringInstanceFactoryTests.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
     <Compile Include="KernelBuilder\EnumerableRegistrationTests.cs" />

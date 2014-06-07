@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionKernel.cs" company="Bijectiv">
+// <copyright file="RegisteringInstanceFactoryTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,26 +23,21 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionKernel type.
+//   Defines the RegisteringInstanceFactoryTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Tests.Stores
 {
-    /// <summary>
-    /// Represents a kernel that provides <see cref="IInjection"/> capabilities.
-    /// </summary>
-    public interface IInjectionKernel
-    {
-        /// <summary>
-        /// Gets the store containing all known <see cref="IInjection"/> instances.
-        /// </summary>
-        IInjectionStore Store { get; }
+    using Bijectiv.Stores;
 
-        /// <summary>
-        /// Gets the registry containing all instances that are required to support the <see cref="IInjection"/> 
-        /// instances known by the <see cref="Store"/>.
-        /// </summary>
-        IInstanceRegistry Registry { get; }
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// This class tests the <see cref="RegisteringInstanceFactory{TRegistration}"/> class.
+    /// </summary>
+    [TestClass]
+    public class RegisteringInstanceFactoryTests
+    {
     }
 }

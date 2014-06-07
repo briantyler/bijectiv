@@ -44,7 +44,7 @@ namespace Bijectiv.Injections
         /// <summary>
         /// The cache of target values.
         /// </summary>
-        private readonly IDictionary<object, object> targetCache;
+        private readonly Dictionary<object, object> targetCache;
 
         /// <summary>
         /// A delegate that selects the key from a source object.
@@ -107,6 +107,14 @@ namespace Bijectiv.Injections
         public Func<object, object> TargetKeySelector
         {
             get { return this.targetKeySelector; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IEqualityComparer"/> that determines whether two keys in the cache are equal.
+        /// </summary>
+        public IEqualityComparer<object> Comparer
+        {
+            get { return this.targetCache.Comparer; }
         }
 
         /// <summary>

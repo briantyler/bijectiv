@@ -39,8 +39,6 @@ namespace Bijectiv
     /// </summary>
     public interface IInstanceRegistry
     {
-        void Register([NotNull] Tuple<Type, object> registration);
-
         /// <summary>
         /// Registers <paramref name="instance"/> as an instance of type <paramref name="instanceType"/>.
         /// </summary>
@@ -58,6 +56,18 @@ namespace Bijectiv
         /// <paramref name="instanceType"/>.
         /// </exception>
         void Register([NotNull] Type instanceType, [NotNull] object instance);
+
+        /// <summary>
+        /// Registers an instance against a type using a <see cref="Tuple"/> containing the registration data.
+        /// </summary>
+        /// <param name="registration">
+        /// A <see cref="Tuple"/> containing the registration data.
+        /// </param>
+        /// <seealso cref="Register(Type, object)"/>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        void Register([NotNull] Tuple<Type, object> registration);
 
         /// <summary>
         /// Resolves all instances of type <typeparamref name="TInstance"/> in the order in which they were

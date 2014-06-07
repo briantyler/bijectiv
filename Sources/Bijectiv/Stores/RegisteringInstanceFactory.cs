@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumerableFactoryInstanceFactory.cs" company="Bijectiv">
+// <copyright file="RegisteringInstanceFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the EnumerableFactoryInstanceFactory type.
+//   Defines the RegisteringInstanceFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,50 +31,75 @@ namespace Bijectiv.Stores
 {
     using System;
 
-    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A <see cref="IInstanceFactory"/> that creates <see cref="IEnumerableFactory"/> instances.
+    /// A <see cref="IInstanceFactory"/> that creates instances that are initialised by registering all instances
+    /// of type <typeparamref name="TRegistration"/> from the <see cref="IInstanceRegistry"/>.
     /// </summary>
-    public class EnumerableFactoryInstanceFactory : IInstanceFactory
+    /// <typeparam name="TRegistration">
+    /// The type of registration to resolve from the instance registry.
+    /// </typeparam>
+    public class RegisteringInstanceFactory<TRegistration> : IInstanceFactory
     {
         /// <summary>
-        /// The delegate that creates the base <see cref="IEnumerableFactory"/> .
+        /// The type with which to identify the instance.
         /// </summary>
-        private readonly Func<IEnumerableFactory> createFactory;
+        private readonly Type instanceType;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="EnumerableFactoryInstanceFactory"/> class.
+        /// The delegate that creates the base instance.
         /// </summary>
-        /// <param name="createFactory">
-        /// The delegate that creates the base <see cref="IEnumerableFactory"/> .
+        private readonly Func<object> createInstance;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="RegisteringInstanceFactory{TRegistration}"/> class.
+        /// </summary>
+        /// <param name="instanceType">
+        /// The type with which to identify the instance.
+        /// </param>
+        /// <param name="createInstance">
+        /// The delegate that creates the base instance.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public EnumerableFactoryInstanceFactory([NotNull] Func<IEnumerableFactory> createFactory)
+        public RegisteringInstanceFactory([NotNull] Type instanceType, [NotNull] Func<object> createInstance)
         {
-            if (createFactory == null)
+            if (instanceType == null)
             {
-                throw new ArgumentNullException("createFactory");
+                throw new ArgumentNullException("instanceType");
             }
 
-            this.createFactory = createFactory;
+            if (createInstance == null)
+            {
+                throw new ArgumentNullException("createInstance");
+            }
+
+            this.createInstance = createInstance;
+            this.instanceType = instanceType;
         }
 
         /// <summary>
-        /// Gets the delegate that creates the base <see cref="IEnumerableFactory"/> .
+        /// Gets the type with which to identify the instance.
         /// </summary>
-        public Func<IEnumerableFactory> CreateFactory
+        public Type InstanceType
         {
-            get { return this.createFactory; }
+            get { return this.instanceType; }
         }
 
         /// <summary>
-        /// Creates a <see cref="IEnumerableFactory"/> from a <see cref="IInstanceRegistry"/>.
+        /// Gets the delegate that creates the base instance.
+        /// </summary>
+        public Func<object> CreateInstance
+        {
+            get { return this.createInstance; }
+        }
+
+        /// <summary>
+        /// Creates an instance from a <see cref="IInstanceRegistry"/> that is identified with a given type.
         /// </summary>
         /// <param name="registry">
         /// The registry from which to create the instance.
@@ -90,11 +115,9 @@ namespace Bijectiv.Stores
                 throw new ArgumentNullException("registry");
             }
 
-            var instance = this.CreateFactory();
-
-            registry.ResolveAll<EnumerableRegistration>().ForEach(instance.Register);
-
-            return new Tuple<Type, object>(typeof(IEnumerableFactory), instance);
+            dynamic instance = this.CreateInstance();
+            registry.ResolveAll<TRegistration>().ForEach(item => instance.Register(item));
+            return new Tuple<Type, object>(this.InstanceType, instance);
         }
     }
 }

@@ -32,8 +32,10 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.InjectionFactory;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Stores;
     using Bijectiv.TestUtilities;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -172,11 +174,21 @@ namespace Bijectiv.Tests
             var index = 0;
             var factories = target.InstanceFactories.Select(item => item()).ToArray();
 
-            Assert.IsInstanceOfType(factories[index], typeof(EnumerableFactoryInstanceFactory));
+            Assert.IsInstanceOfType(factories[index], typeof(RegisteringInstanceFactory<EnumerableRegistration>));
+            Assert.AreEqual(
+               typeof(IEnumerableFactory),
+               ((RegisteringInstanceFactory<EnumerableRegistration>)factories[index]).InstanceType);
             Assert.IsInstanceOfType(
-                ((EnumerableFactoryInstanceFactory)factories[index++]).CreateFactory(), 
-                typeof(EnumerableFactory));
-            Assert.IsInstanceOfType(factories[index++], typeof(TargetFinderStoreInstanceFactory));
+               ((RegisteringInstanceFactory<EnumerableRegistration>)factories[index++]).CreateInstance(),
+               typeof(EnumerableFactory));
+
+            Assert.IsInstanceOfType(factories[index], typeof(RegisteringInstanceFactory<TargetFinderRegistration>));
+            Assert.AreEqual(
+               typeof(ITargetFinderStore),
+               ((RegisteringInstanceFactory<TargetFinderRegistration>)factories[index]).InstanceType);
+            Assert.IsInstanceOfType(
+               ((RegisteringInstanceFactory<TargetFinderRegistration>)factories[index++]).CreateInstance(),
+               typeof(TargetFinderStore));
 
             Assert.AreEqual(index, factories.Length);
         }

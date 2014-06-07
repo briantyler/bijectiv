@@ -51,6 +51,12 @@ namespace Bijectiv.Tests
     [TestClass]
     public class InjectionKernelBuilderExtensionsTests
     {
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            BuildConfigurator.Instance.Reset();
+        }
+
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]

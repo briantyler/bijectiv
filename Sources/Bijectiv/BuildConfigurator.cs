@@ -34,6 +34,7 @@ namespace Bijectiv
     using System.Linq;
 
     using Bijectiv.InjectionFactory;
+    using Bijectiv.KernelBuilder;
     using Bijectiv.Stores;
     using Bijectiv.Utilities;
 
@@ -130,8 +131,10 @@ namespace Bijectiv
             this.InstanceFactories.AddRange(
                 new Func<IInstanceFactory>[]
                 {
-                    () => new EnumerableFactoryInstanceFactory(() => new EnumerableFactory()),
-                    () => new TargetFinderStoreInstanceFactory()
+                    () => new RegisteringInstanceFactory<EnumerableRegistration>(
+                        typeof(IEnumerableFactory), () => new EnumerableFactory()),
+                    () => new RegisteringInstanceFactory<TargetFinderRegistration>(
+                        typeof(ITargetFinderStore), () => new TargetFinderStore())
                 });
         }
 

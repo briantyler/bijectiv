@@ -51,16 +51,6 @@ namespace Bijectiv.KernelBuilder
             get { return this.registrations; }
         }
 
-        public void Register(Tuple<Type, object> registration)
-        {
-            if (registration == null)
-            {
-                throw new ArgumentNullException("registration");
-            }
-
-            this.Register(registration.Item1, registration.Item2);
-        }
-
         /// <summary>
         /// Registers <paramref name="instance"/> as an instance of type <paramref name="instanceType"/>.
         /// </summary>
@@ -77,7 +67,7 @@ namespace Bijectiv.KernelBuilder
         /// Thrown when <paramref name="instance"/> is not assignable to a variable of type
         /// <paramref name="instanceType"/>.
         /// </exception>
-        public void Register(Type instanceType, object instance)
+        public virtual void Register(Type instanceType, object instance)
         {
             if (instanceType == null)
             {
@@ -101,6 +91,26 @@ namespace Bijectiv.KernelBuilder
             }
 
             this.Registrations[instanceType].Add(instance);
+        }
+
+        /// <summary>
+        /// Registers an instance against a type using a <see cref="Tuple"/> containing the registration data.
+        /// </summary>
+        /// <param name="registration">
+        /// A <see cref="Tuple"/> containing the registration data.
+        /// </param>
+        /// <seealso cref="IInstanceRegistry.Register(System.Type,object)"/>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public void Register(Tuple<Type, object> registration)
+        {
+            if (registration == null)
+            {
+                throw new ArgumentNullException("registration");
+            }
+
+            this.Register(registration.Item1, registration.Item2);
         }
 
         /// <summary>

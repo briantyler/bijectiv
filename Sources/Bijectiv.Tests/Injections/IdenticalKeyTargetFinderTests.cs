@@ -53,6 +53,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new IdenticalKeyTargetFinder(null, x => x, Stub.Create<IEqualityComparer<object>>()).Naught();
 
             // Assert
@@ -66,6 +67,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new IdenticalKeyTargetFinder(x => x, null, Stub.Create<IEqualityComparer<object>>()).Naught();
 
             // Assert
@@ -79,6 +81,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new IdenticalKeyTargetFinder(x => x, x => x, null).Naught();
 
             // Assert
@@ -126,6 +129,20 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_ComparerParameter_IsAssignedToComparer()
+        {
+            // Arrange
+            var comparer = Stub.Create<IEqualityComparer<object>>();
+
+            // Act
+            var target = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
+
+            // Assert
+            Assert.AreEqual(comparer, target.Comparer);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ComparerParameter_IsAssignedToTargetCache()
         {
             // Arrange
@@ -147,6 +164,7 @@ namespace Bijectiv.Tests.Injections
             var target = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Initialize(null, Stub.Create<IInjectionContext>());
 
             // Assert

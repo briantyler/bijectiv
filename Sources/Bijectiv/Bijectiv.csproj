@@ -96,7 +96,6 @@
     <Compile Include="Stores\TargetFinderStore.cs" />
     <Compile Include="Stores\TargetCache.cs" />
     <Compile Include="Injections\MergeResult.cs" />
-    <Compile Include="Stores\EnumerableFactoryInstanceFactory.cs" />
     <Compile Include="KernelBuilder\EnumerableRegistration.cs" />
     <Compile Include="Stores\EnumerableFactory.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
@@ -150,7 +149,7 @@
     <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\ReflectionGateway.cs" />
     <Compile Include="Utilities\ReflectionOptions.cs" />
-    <Compile Include="Stores\TargetFinderStoreInstanceFactory.cs" />
+    <Compile Include="Stores\RegisteringInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">

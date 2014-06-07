@@ -420,7 +420,7 @@ namespace Bijectiv.KernelBuilder
 
         /// <summary>
         /// Instructs a merge from a collection of <typeparamref name="TSource"/> to a collection of 
-        /// <see cref="TTarget"/> to match source with target on the key returned by 
+        /// <typeparamref name="TTarget"/> to match source with target on the key returned by 
         /// <paramref name="sourceKeySelector"/> and <paramref name="targetKeySelector"/> respectively.
         /// </summary>
         /// <param name="sourceKeySelector">

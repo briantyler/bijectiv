@@ -30,8 +30,10 @@
 namespace Bijectiv.Tests.KernelBuilder
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
+    using Bijectiv.Injections;
     using Bijectiv.KernelBuilder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -798,6 +800,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.MergeOnKey(null, t => t.Id);
 
             // Assert
@@ -813,6 +816,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.MergeOnKey(s => s.Id, null);
 
             // Assert
@@ -834,6 +838,71 @@ namespace Bijectiv.Tests.KernelBuilder
 
             // Assert
             registryMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MergeOnKey_ValidParameters_TargetFinderRegistrationHasExpectedSourceElementAndTargetElementTypes()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            TargetFinderRegistration registration = null; 
+            registryMock
+                .Setup(_ => _.Register(It.IsAny<Type>(), It.IsAny<object>()))
+                .Callback((Type t, object o) => registration = (TargetFinderRegistration)o);
+
+            // Act
+            target.MergeOnKey(s => s.Id, t => t.Id);
+
+            // Assert
+            Assert.AreEqual(TestClass1.T, registration.SourceElement);
+            Assert.AreEqual(TestClass2.T, registration.TargetElement);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MergeOnKey_ValidParameters_TargetFinderRegistrationHasExpectedFactory()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            TargetFinderRegistration registration = null;
+            registryMock
+                .Setup(_ => _.Register(It.IsAny<Type>(), It.IsAny<object>()))
+                .Callback((Type t, object o) => registration = (TargetFinderRegistration)o);
+
+            // Act
+            target.MergeOnKey(s => s.Id, t => t.Id);
+
+            // Assert
+            var finder = registration.TargetFinderFactory();
+            Assert.IsInstanceOfType(finder, typeof(IdenticalKeyTargetFinder));
+
+            var keyFinder = (IdenticalKeyTargetFinder)finder;
+            Assert.AreEqual("1", keyFinder.SourceKeySelector(new TestClass1 { Id = "1" }));
+            Assert.AreEqual("2", keyFinder.TargetKeySelector(new TestClass2 { Id = "2" }));
+            Assert.AreEqual(EqualityComparer<object>.Default, keyFinder.Comparer);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MergeOnKey_ValidParameters_ReturnsSelf()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            // Act
+            var result = target.MergeOnKey(s => s.Id, t => t.Id);
+
+            // Assert
+            Assert.AreEqual(result, target);
         }
     }
 }

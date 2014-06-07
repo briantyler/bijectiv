@@ -29,6 +29,7 @@
 
 namespace Bijectiv.Tests.KernelBuilder
 {
+    using System;
     using System.Linq;
 
     using Bijectiv.KernelBuilder;
@@ -36,6 +37,8 @@ namespace Bijectiv.Tests.KernelBuilder
     using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="InstanceRegistry"/> class.
@@ -77,6 +80,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new InstanceRegistry();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Register(null, new object());
 
             // Assert
@@ -91,6 +95,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new InstanceRegistry();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Register(typeof(object), null);
 
             // Assert
@@ -174,6 +179,39 @@ namespace Bijectiv.Tests.KernelBuilder
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void RegisterTuple_RegistrationParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new InstanceRegistry();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Register(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterTuple_ValidParameters_DelegatesToNonTuple()
+        {
+            // Arrange
+            var targetMock = new Mock<InstanceRegistry>(MockBehavior.Strict) { CallBase = false };
+            var instanceType = typeof(TestClass1);
+            var instance = new TestClass1();
+
+            targetMock.Setup(_ => _.Register(instanceType, instance));
+
+            // Act
+            targetMock.Object.Register(Tuple.Create<Type, object>(instanceType, instance));
+
+            // Assert
+            targetMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void ResolveAll_InstanceTypeParameterIsNotRegistered_ReturnsEmptyCollection()
         {
             // Arrange
@@ -188,7 +226,7 @@ namespace Bijectiv.Tests.KernelBuilder
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ResolveAll_InstanceTypeParameterIsNotRegistered_ReturnsInstances()
+        public void ResolveAll_InstanceTypeParameterIsRegistered_ReturnsInstances()
         {
             // Arrange
             var target = new InstanceRegistry();
@@ -200,6 +238,36 @@ namespace Bijectiv.Tests.KernelBuilder
 
             // Assert
             registrations.AssertSequenceEqual(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void Resolve_InstanceTypeParameterIsNotRegistered_Throws()
+        {
+            // Arrange
+            var target = new InstanceRegistry();
+
+            // Act
+            target.Resolve<TestClass1>();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Resolve_InstanceTypeParameterIsRegistered_ReturnsLastInstance()
+        {
+            // Arrange
+            var target = new InstanceRegistry();
+            var registrations = new[] { new TestClass1(), new TestClass1(), new TestClass1() };
+            target.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
+
+            // Act
+            var result = target.Resolve<TestClass1>();
+
+            // Assert
+            Assert.AreEqual(registrations.Last(), result);
         }
     }
 }
