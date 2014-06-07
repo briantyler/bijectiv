@@ -30,8 +30,8 @@
 namespace Bijectiv.Tests.Injections
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
@@ -187,16 +187,50 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
-        [InvalidOperationExceptionExpected]
-        public void Initialize_TargetsParameterContainsDuplicateKeys_Throws()
+        public void TryFind_SourceIsNull_ReturnsFalse()
         {
             // Arrange
-            var target = new IdenticalKeyTargetFinder(x => x, t => true, EqualityComparer<object>.Default);
+            var target = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
+            object targetInstance;
 
             // Act
-            target.Initialize(new[] { new TestClass1(), new TestClass1() }, Stub.Create<IInjectionContext>());
+            var result = target.TryFind(null, out targetInstance);
 
             // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryFind_SourceKeyIsNotPresent_ReturnsFalse()
+        {
+            // Arrange
+            var target = new IdenticalKeyTargetFinder(x => x, x => x, EqualityComparer<object>.Default);
+            object targetInstance;
+
+            // Act
+            var result = target.TryFind(new object(), out targetInstance);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void TryFind_SourceKeyIsPresent_ReturnsTrue()
+        {
+            // Arrange
+            var target = new IdenticalKeyTargetFinder(x => 1, x => x, EqualityComparer<object>.Default);
+            var expected = new TestClass1();
+            target.TargetCache[1] = expected;
+            object targetInstance;
+
+            // Act
+            var result = target.TryFind(new object(), out targetInstance);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(expected, targetInstance);
         }
     }
 }

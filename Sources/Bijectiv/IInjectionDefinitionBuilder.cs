@@ -233,8 +233,8 @@ namespace Bijectiv
         IInjectionDefinitionBuilder<TSource, TTarget> NullSourceCustom(
             [NotNull] Func<IInjectionContext, TTarget> factory);
 
-        IInjectionDefinitionBuilder<TSource, TTarget> MergeOnIdenticalKey<TMember>(
-            [NotNull] Func<TSource, TMember> sourceKeyLocator,
-            [NotNull] Func<TTarget, TMember> targetKeyLocator);
+        IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey<TMember>(
+            [NotNull] Func<TSource, TMember> sourceKeySelector,
+            [NotNull] Func<TTarget, TMember> targetKeySelector);
     }
 }

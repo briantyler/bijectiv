@@ -239,7 +239,7 @@ namespace Bijectiv.Tests
             builder
                 .Register<KeyedClass1, KeyedClass1>()
                 .AutoExact()
-                .MergeOnIdenticalKey(s => s.Key, t => t.Key);
+                .MergeOnKey(s => s.Key, t => t.Key);
 
             var kernel = builder.Build();
             var merge = kernel.Store.Resolve<IMerge>(typeof(IEnumerable<KeyedClass1>), typeof(IEnumerable<KeyedClass1>));
@@ -291,7 +291,7 @@ namespace Bijectiv.Tests
             builder
                 .Register<KeyedClass1, KeyedClass1>()
                 .AutoExact()
-                .MergeOnIdenticalKey(s => s.Key, t => t.Key);
+                .MergeOnKey(s => s.Key, t => t.Key);
 
             var kernel = builder.Build();
             var merge = kernel.Store.Resolve<IMerge>(typeof(IEnumerable<KeyedClass1>), typeof(IEnumerable<KeyedClass1>));

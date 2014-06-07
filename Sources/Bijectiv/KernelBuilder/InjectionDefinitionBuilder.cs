@@ -418,24 +418,42 @@ namespace Bijectiv.KernelBuilder
             return this;
         }
 
-        public IInjectionDefinitionBuilder<TSource, TTarget> MergeOnIdenticalKey<TMember>(
-            Func<TSource, TMember> sourceKeyLocator,
-            Func<TTarget, TMember> targetKeyLocator)
+        /// <summary>
+        /// Instructs a merge from a collection of <typeparamref name="TSource"/> to a collection of 
+        /// <see cref="TTarget"/> to match source with target on the key returned by 
+        /// <paramref name="sourceKeySelector"/> and <paramref name="targetKeySelector"/> respectively.
+        /// </summary>
+        /// <param name="sourceKeySelector">
+        /// The source key locator.
+        /// </param>
+        /// <param name="targetKeySelector">
+        /// The target key locator.
+        /// </param>
+        /// <typeparam name="TMember">
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="IInjectionDefinitionBuilder"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// </exception>
+        public IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey<TMember>(
+            Func<TSource, TMember> sourceKeySelector,
+            Func<TTarget, TMember> targetKeySelector)
         {
-            if (sourceKeyLocator == null)
+            if (sourceKeySelector == null)
             {
-                throw new ArgumentNullException("sourceKeyLocator");
+                throw new ArgumentNullException("sourceKeySelector");
             }
 
-            if (targetKeyLocator == null)
+            if (targetKeySelector == null)
             {
-                throw new ArgumentNullException("targetKeyLocator");
+                throw new ArgumentNullException("targetKeySelector");
             }
 
             Func<ITargetFinder> factory = () =>
                 new IdenticalKeyTargetFinder(
-                    s => sourceKeyLocator((TSource)s),
-                    t => targetKeyLocator((TTarget)t),
+                    s => sourceKeySelector((TSource)s),
+                    t => targetKeySelector((TTarget)t),
                     EqualityComparer<object>.Default);
 
             this.Registry.Register(

@@ -147,19 +147,6 @@ namespace Bijectiv.Injections
                 }
 
                 var key = this.TargetKeySelector(target);
-                if (this.TargetCache.ContainsKey(key))
-                {
-                    var currentTarget = this.TargetCache[key];
-                    throw new InvalidOperationException(
-                        string.Format(
-                        "An item with key '{0}' already exists: current '{1}', new '{2}'. The collection is not "
-                        + "suitable as a merge target; to merge into a collection the key of every item in the "
-                        + "collection must be unique.",
-                        key,
-                        currentTarget,
-                        target));
-                }
-
                 this.TargetCache[key] = target;
             }
         }
@@ -179,19 +166,7 @@ namespace Bijectiv.Injections
         public bool TryFind(object source, out object target)
         {
             target = null;
-            if (source == null)
-            {
-                return false;
-            }
-
-            var key = this.SourceKeySelector(source);
-            if (!this.TargetCache.ContainsKey(key))
-            {
-                return false;
-            }
-
-            target = this.TargetCache[key];
-            return true;
+            return source != null && this.TargetCache.TryGetValue(this.SourceKeySelector(source), out target);
         }
     }
 }
