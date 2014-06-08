@@ -52,7 +52,7 @@ namespace Bijectiv.Stores
         /// <summary>
         /// The delegate that creates the base instance.
         /// </summary>
-        private readonly Func<object> createInstance;
+        private readonly Func<object> instanceFactory;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="RegisteringInstanceFactory{TRegistration}"/> class.
@@ -60,25 +60,25 @@ namespace Bijectiv.Stores
         /// <param name="instanceType">
         /// The type with which to identify the instance.
         /// </param>
-        /// <param name="createInstance">
+        /// <param name="instanceFactory">
         /// The delegate that creates the base instance.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public RegisteringInstanceFactory([NotNull] Type instanceType, [NotNull] Func<object> createInstance)
+        public RegisteringInstanceFactory([NotNull] Type instanceType, [NotNull] Func<object> instanceFactory)
         {
             if (instanceType == null)
             {
                 throw new ArgumentNullException("instanceType");
             }
 
-            if (createInstance == null)
+            if (instanceFactory == null)
             {
-                throw new ArgumentNullException("createInstance");
+                throw new ArgumentNullException("instanceFactory");
             }
 
-            this.createInstance = createInstance;
+            this.instanceFactory = instanceFactory;
             this.instanceType = instanceType;
         }
 
@@ -93,9 +93,9 @@ namespace Bijectiv.Stores
         /// <summary>
         /// Gets the delegate that creates the base instance.
         /// </summary>
-        public Func<object> CreateInstance
+        public Func<object> InstanceFactory
         {
-            get { return this.createInstance; }
+            get { return this.instanceFactory; }
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Bijectiv.Stores
                 throw new ArgumentNullException("registry");
             }
 
-            dynamic instance = this.CreateInstance();
+            dynamic instance = this.InstanceFactory();
             registry.ResolveAll<TRegistration>().ForEach(item => instance.Register(item));
             return new Tuple<Type, object>(this.InstanceType, instance);
         }

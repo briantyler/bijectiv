@@ -179,7 +179,7 @@ namespace Bijectiv.Tests
                typeof(IEnumerableFactory),
                ((RegisteringInstanceFactory<EnumerableRegistration>)factories[index]).InstanceType);
             Assert.IsInstanceOfType(
-               ((RegisteringInstanceFactory<EnumerableRegistration>)factories[index++]).CreateInstance(),
+               ((RegisteringInstanceFactory<EnumerableRegistration>)factories[index++]).InstanceFactory(),
                typeof(EnumerableFactory));
 
             Assert.IsInstanceOfType(factories[index], typeof(RegisteringInstanceFactory<TargetFinderRegistration>));
@@ -187,7 +187,7 @@ namespace Bijectiv.Tests
                typeof(ITargetFinderStore),
                ((RegisteringInstanceFactory<TargetFinderRegistration>)factories[index]).InstanceType);
             Assert.IsInstanceOfType(
-               ((RegisteringInstanceFactory<TargetFinderRegistration>)factories[index++]).CreateInstance(),
+               ((RegisteringInstanceFactory<TargetFinderRegistration>)factories[index++]).InstanceFactory(),
                typeof(TargetFinderStore));
 
             Assert.AreEqual(index, factories.Length);
