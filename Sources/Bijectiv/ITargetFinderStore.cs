@@ -46,7 +46,7 @@ namespace Bijectiv
         /// <param name="registration">
         /// The registration.
         /// </param>
-        void Register(TargetFinderRegistration registration);
+        void Register([NotNull] TargetFinderRegistration registration);
 
         /// <summary>
         /// Resolves a <see cref="ITargetFinder"/> that finds the target element for a source element in a collection
@@ -62,6 +62,6 @@ namespace Bijectiv
         /// A <see cref="ITargetFinder"/> that finds the target element for a source element in a collection
         /// of elements of type <paramref name="targetElement"/> or <see langword="null"/> if one does not exist.
         /// </returns>
-        ITargetFinder Resolve([NotNull] Type sourceElement, [NotNull] Type targetElement);
+        ITargetFinder Resolve(Type sourceElement, Type targetElement);
     }
 }

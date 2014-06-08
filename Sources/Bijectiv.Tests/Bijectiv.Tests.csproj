@@ -126,6 +126,7 @@
     <Compile Include="Injections\MergeResultTests.cs" />
     <Compile Include="Injections\PassThroughInjectionTests.cs" />
     <Compile Include="Stores\RegisteringInstanceFactoryTests.cs" />
+    <Compile Include="Stores\TargetFinderStoreTests.cs" />
     <Compile Include="Utilities\CollectionExtensionsTests.cs" />
     <Compile Include="Utilities\EnumerableExtensionsTests.cs" />
     <Compile Include="KernelBuilder\EnumerableRegistrationTests.cs" />
