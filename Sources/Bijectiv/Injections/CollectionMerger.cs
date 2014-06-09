@@ -120,9 +120,11 @@ namespace Bijectiv.Injections
             finder.Initialize(target, context);
 
             target.Clear();
+            var index = 0;
             foreach (var sourceElement in source)
             {
                 object targetElement;
+                var hint = new EnumerableInjectionHint(index++);
                 if (finder.TryFind(sourceElement, out targetElement))
                 {
                     var merger =
@@ -130,7 +132,7 @@ namespace Bijectiv.Injections
                             sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
                             targetElement == null ? typeof(TTargetElement) : targetElement.GetType());
 
-                    var result = merger.Merge(sourceElement, targetElement, context, null);
+                    var result = merger.Merge(sourceElement, targetElement, context, hint);
                     target.Add((TTargetElement)result.Target);
                 }
                 else
@@ -140,7 +142,7 @@ namespace Bijectiv.Injections
                             sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
                             typeof(TTargetElement));
 
-                    target.Add((TTargetElement)transformer.Transform(sourceElement, context, null));
+                    target.Add((TTargetElement)transformer.Transform(sourceElement, context, hint));
                 }
             }
         }
@@ -177,9 +179,11 @@ namespace Bijectiv.Injections
                 typeof(TSourceElement), typeof(TTargetElement));
 
             target.Clear();
+            var index = 0;
             foreach (var sourceElement in source)
             {
-                target.Add((TTargetElement)transformer.Transform(sourceElement, context, null));
+                var hint = new EnumerableInjectionHint(index++);
+                target.Add((TTargetElement)transformer.Transform(sourceElement, context, hint));
             }
         }
     }

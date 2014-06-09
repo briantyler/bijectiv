@@ -154,8 +154,10 @@ namespace Bijectiv.Injections
             }
 
             var result = new List<object>();
+            var index = 0;
             foreach (var item in (IEnumerable)source)
             {
+                var hintVar = new EnumerableInjectionHint(index++);
                 if (item == null)
                 {
                     result.Add(this.TargetElement.GetDefault());
@@ -163,7 +165,7 @@ namespace Bijectiv.Injections
                 else
                 {
                     var injection = context.InjectionStore.Resolve<ITransform>(item.GetType(), this.TargetElement);
-                    result.Add(injection.Transform(item, context, hint));
+                    result.Add(injection.Transform(item, context, hintVar));
                 }
             }
 

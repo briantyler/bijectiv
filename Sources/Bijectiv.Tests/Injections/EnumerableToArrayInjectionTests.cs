@@ -220,15 +220,15 @@ namespace Bijectiv.Tests.Injections
             var repository = new MockRepository(MockBehavior.Strict);
             var target = CreateTarget(typeof(int));
             
-            var transformMock = repository.Create<ITransform>(MockBehavior.Strict);
-            var storeMock = repository.Create<IInjectionStore>(MockBehavior.Strict);
-            var contextMock = repository.Create<IInjectionContext>(MockBehavior.Strict);
+            var transformMock = repository.Create<ITransform>();
+            var storeMock = repository.Create<IInjectionStore>();
+            var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(int))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform("1", contextMock.Object, null)).Returns(1);
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, null)).Returns(2);
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, null)).Returns(3);
+            transformMock.Setup(_ => _.Transform("1", contextMock.Object, It.IsAny<object>())).Returns(1);
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.IsAny<object>())).Returns(2);
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.IsAny<object>())).Returns(3);
 
             // Act
             var result = target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object, null);
@@ -240,21 +240,47 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Transform_TargetIsValueType_ProvidesEnumerableInjectionHint()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+            var target = CreateTarget(typeof(int));
+
+            var transformMock = repository.Create<ITransform>();
+            var storeMock = repository.Create<IInjectionStore>();
+            var contextMock = repository.Create<IInjectionContext>();
+
+            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
+            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(int))).Returns(transformMock.Object);
+
+            transformMock.Setup(_ => _.Transform("1", contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0))).Returns(1);
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1))).Returns(2);
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3))).Returns(3);
+
+            // Act
+            target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object, null);
+
+            // Assert
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Transform_TargetIsReferenceType_ReturnsArray()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var target = CreateTarget(typeof(string));
 
-            var transformMock = repository.Create<ITransform>(MockBehavior.Strict);
-            var storeMock = repository.Create<IInjectionStore>(MockBehavior.Strict);
-            var contextMock = repository.Create<IInjectionContext>(MockBehavior.Strict);
+            var transformMock = repository.Create<ITransform>();
+            var storeMock = repository.Create<IInjectionStore>();
+            var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(string))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(1, contextMock.Object, null)).Returns("1");
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, null)).Returns("2");
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, null)).Returns("3");
+            transformMock.Setup(_ => _.Transform(1, contextMock.Object, It.IsAny<object>())).Returns("1");
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.IsAny<object>())).Returns("2");
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.IsAny<object>())).Returns("3");
 
             // Act
             var result = target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object, null);
@@ -262,6 +288,33 @@ namespace Bijectiv.Tests.Injections
             // Assert
             repository.VerifyAll();
             new[] { "1", "2", null, "3" }.AssertSequenceEqual((string[])result);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_TargetIsReferenceType_ProvidesEnumerableInjectionHint()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+            var target = CreateTarget(typeof(string));
+
+            var transformMock = repository.Create<ITransform>();
+            var storeMock = repository.Create<IInjectionStore>();
+            var contextMock = repository.Create<IInjectionContext>();
+
+            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
+            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(string))).Returns(transformMock.Object);
+
+            transformMock.Setup(_ => _.Transform(1, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0))).Returns("1");
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1))).Returns("2");
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3))).Returns("3");
+
+            // Act
+            target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object, null);
+
+            // Assert
+            repository.VerifyAll();
         }
 
         [TestMethod]

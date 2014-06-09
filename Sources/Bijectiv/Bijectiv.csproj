@@ -51,6 +51,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IInjectionContext.cs" />
+    <Compile Include="Injections\EnumerableInjectionHint.cs" />
     <Compile Include="KernelBuilder\ActivateFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryParameters.cs" />
