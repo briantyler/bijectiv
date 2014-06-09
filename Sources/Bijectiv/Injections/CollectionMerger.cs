@@ -140,7 +140,7 @@ namespace Bijectiv.Injections
                             sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
                             typeof(TTargetElement));
 
-                    target.Add((TTargetElement)transformer.Transform(sourceElement, context));
+                    target.Add((TTargetElement)transformer.Transform(sourceElement, context, null));
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Bijectiv.Injections
             target.Clear();
             foreach (var sourceElement in source)
             {
-                target.Add((TTargetElement)transformer.Transform(sourceElement, context));
+                target.Add((TTargetElement)transformer.Transform(sourceElement, context, null));
             }
         }
     }

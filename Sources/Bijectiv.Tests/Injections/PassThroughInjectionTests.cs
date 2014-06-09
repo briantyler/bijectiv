@@ -152,7 +152,7 @@ namespace Bijectiv.Tests.Injections
             var target = new PassThroughInjection(typeof(object), typeof(object));
 
             // Act
-            var result = target.Transform(null, null);
+            var result = target.Transform(null, null, null);
 
             // Assert
             Assert.IsNull(result);
@@ -166,7 +166,7 @@ namespace Bijectiv.Tests.Injections
             var target = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Transform(7, null);
+            var result = target.Transform(7, null, null);
 
             // Assert
             Assert.AreEqual(7, result);

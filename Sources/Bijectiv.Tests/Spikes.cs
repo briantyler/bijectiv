@@ -56,7 +56,7 @@ namespace Bijectiv.Tests
             var transform = kernel.Store.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Act
-            var result = transform.Transform(new TestClass1(), CreateContext(kernel));
+            var result = transform.Transform(new TestClass1(), CreateContext(kernel), null);
 
             // Assert
             Assert.IsInstanceOfType(result, TestClass2.T);
@@ -92,7 +92,7 @@ namespace Bijectiv.Tests
             var transform = kernel.Store.Resolve<ITransform>(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
 
             // Act
-            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(kernel));
+            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(33, target.PropertyInt);
@@ -144,7 +144,7 @@ namespace Bijectiv.Tests
             var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable<AutoTransformTestClass1>), typeof(AutoTransformTestClass1[]));
 
             // Act
-            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(kernel));
+            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(2, target.Length);
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests
             
             // Act
             var result = (decimal[])transform
-                .Transform(new object[] { "1", 5, null, "19.753", 8.8 }, CreateContext(kernel));
+                .Transform(new object[] { "1", 5, null, "19.753", 8.8 }, CreateContext(kernel), null);
 
             // Assert
             new[] { 1, 5, default(decimal), 19.753m, 8.8m }.AssertSequenceEqual(result);

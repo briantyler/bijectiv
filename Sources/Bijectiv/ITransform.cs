@@ -45,9 +45,12 @@ namespace Bijectiv
         /// <param name="context">
         /// The context in which the injection will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        object Transform(object source, IInjectionContext context); 
+        object Transform(object source, IInjectionContext context, object hint); 
     }
 }

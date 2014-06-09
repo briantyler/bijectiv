@@ -421,7 +421,7 @@ namespace Bijectiv.Tests.InjectionFactory
             injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(injectionStoreMock.Object);
 
             transformMock
-                .Setup(_ => _.Transform(sourceValue, injectionContextMock.Object))
+                .Setup(_ => _.Transform(sourceValue, injectionContextMock.Object, null))
                 .Returns(targetValue);
 
             return injectionContextMock.Object;

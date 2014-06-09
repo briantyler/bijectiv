@@ -95,10 +95,13 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the transformation will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// The original source instance.
         /// </returns>
-        public object Transform(object source, IInjectionContext context)
+        public object Transform(object source, IInjectionContext context, object hint)
         {
             return source;
         }
@@ -121,7 +124,7 @@ namespace Bijectiv.Injections
         /// </returns>
         public IMergeResult Merge(object source, object target, IInjectionContext context)
         {
-            return new MergeResult(PostMergeAction.Replace, this.Transform(source, context));
+            return new MergeResult(PostMergeAction.Replace, this.Transform(source, context, null));
         }
     }
 }

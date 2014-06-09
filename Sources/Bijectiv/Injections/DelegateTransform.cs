@@ -103,10 +103,13 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the transformation will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        public object Transform(object source, [NotNull] IInjectionContext context)
+        public object Transform(object source, [NotNull] IInjectionContext context, object hint)
         {
             if (context == null)
             {

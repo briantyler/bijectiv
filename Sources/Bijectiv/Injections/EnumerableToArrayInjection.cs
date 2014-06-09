@@ -115,7 +115,7 @@ namespace Bijectiv.Injections
         public Type Target { get; private set; }
 
         /// <summary>
-        /// Gets the target type element (i.e. <see cref="T:int[]"/> returns <see cref="int"/>).
+        /// Gets the target type element type.
         /// </summary>
         public Type TargetElement { get; private set; }
 
@@ -135,10 +135,13 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the injection will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// The newly created target instance.
         /// </returns>
-        public virtual object Transform(object source, [NotNull] IInjectionContext context)
+        public virtual object Transform(object source, [NotNull] IInjectionContext context, object hint)
         {
             if (source == null)
             {
@@ -160,7 +163,7 @@ namespace Bijectiv.Injections
                 else
                 {
                     var injection = context.InjectionStore.Resolve<ITransform>(item.GetType(), this.TargetElement);
-                    result.Add(injection.Transform(item, context));
+                    result.Add(injection.Transform(item, context, hint));
                 }
             }
 
@@ -188,7 +191,7 @@ namespace Bijectiv.Injections
         /// </remarks>
         public IMergeResult Merge(object source, object target, IInjectionContext context)
         {
-            return new MergeResult(PostMergeAction.Replace, this.Transform(source, context));
+            return new MergeResult(PostMergeAction.Replace, this.Transform(source, context, null));
         }
 
         /// <summary>

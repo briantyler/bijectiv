@@ -177,7 +177,7 @@ namespace Bijectiv.Tests.Injections
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Transform(Stub.Create<IEnumerable>(), null);
+            target.Transform(Stub.Create<IEnumerable>(), null, null);
 
             // Assert
         }
@@ -212,7 +212,7 @@ namespace Bijectiv.Tests.Injections
                 .Returns(new MergeResult(PostMergeAction.None, expectedResult));
 
             // Act
-            var result = target.Object.Transform(sourceInstance, contextMock.Object);
+            var result = target.Object.Transform(sourceInstance, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();

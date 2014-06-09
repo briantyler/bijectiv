@@ -125,7 +125,8 @@ namespace Bijectiv.InjectionFactory
                     .InjectionStore.Resolve<ITransform>(sourceMemberType, targetMemberType)
                     .Transform(
                         Placeholder.Of<object>("sourceMember"),
-                        Placeholder.Of<IInjectionContext>("context"));
+                        Placeholder.Of<IInjectionContext>("context"), 
+                        null);
         }
 
         /// <summary>
@@ -151,7 +152,8 @@ namespace Bijectiv.InjectionFactory
                         targetMemberType)
                     .Transform(
                         Placeholder.Of<object>("sourceMember"),
-                        Placeholder.Of<IInjectionContext>("context"));
+                        Placeholder.Of<IInjectionContext>("context"), 
+                        null);
         }
 
         /// <summary>

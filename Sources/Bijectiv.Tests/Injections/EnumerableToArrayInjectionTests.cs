@@ -190,7 +190,7 @@ namespace Bijectiv.Tests.Injections
             var target = CreateTarget(typeof(int));
 
             // Act
-            var result = target.Transform(null, Stub.Create<IInjectionContext>());
+            var result = target.Transform(null, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsNull(result);
@@ -206,7 +206,7 @@ namespace Bijectiv.Tests.Injections
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Transform(Enumerable.Empty<object>(), null);
+            var result = target.Transform(Enumerable.Empty<object>(), null, null);
 
             // Assert
             Assert.IsNull(result);
@@ -226,12 +226,12 @@ namespace Bijectiv.Tests.Injections
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(int))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform("1", contextMock.Object)).Returns(1);
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object)).Returns(2);
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object)).Returns(3);
+            transformMock.Setup(_ => _.Transform("1", contextMock.Object, null)).Returns(1);
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, null)).Returns(2);
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, null)).Returns(3);
 
             // Act
-            var result = target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object);
+            var result = target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
@@ -252,12 +252,12 @@ namespace Bijectiv.Tests.Injections
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(string))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(1, contextMock.Object)).Returns("1");
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object)).Returns("2");
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object)).Returns("3");
+            transformMock.Setup(_ => _.Transform(1, contextMock.Object, null)).Returns("1");
+            transformMock.Setup(_ => _.Transform(true, contextMock.Object, null)).Returns("2");
+            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, null)).Returns("3");
 
             // Act
-            var result = target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object);
+            var result = target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
@@ -276,7 +276,7 @@ namespace Bijectiv.Tests.Injections
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context)).Returns(target);
+            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
             targetMock.Object.Merge(source, new int[0], context);
@@ -297,7 +297,7 @@ namespace Bijectiv.Tests.Injections
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context)).Returns(target);
+            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
             var result = targetMock.Object.Merge(source, new int[0], context);
@@ -318,7 +318,7 @@ namespace Bijectiv.Tests.Injections
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context)).Returns(target);
+            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
             var result = targetMock.Object.Merge(source, new int[0], context);

@@ -147,7 +147,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Act
-            target.Transform(Stub.Create<object>(), null);
+            target.Transform(Stub.Create<object>(), null, null);
 
             // Assert
         }
@@ -163,7 +163,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Transform(Stub.Create<object>(), Stub.Create<IInjectionContext>());
+            target.Transform(Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -185,7 +185,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Transform(source, Stub.Create<IInjectionContext>());
+            target.Transform(source, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -207,7 +207,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Transform(Stub.Create<object>(), context);
+            target.Transform(Stub.Create<object>(), context, null);
 
             // Assert
             Assert.IsTrue(called[0]);

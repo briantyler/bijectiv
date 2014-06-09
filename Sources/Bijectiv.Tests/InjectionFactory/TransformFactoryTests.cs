@@ -201,7 +201,7 @@ namespace Bijectiv.Tests.InjectionFactory
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            var result = injection.Transform(sourceInstance, injectionContext);
+            var result = injection.Transform(sourceInstance, injectionContext, null);
 
             // Assert
             repository.VerifyAll();

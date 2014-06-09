@@ -173,9 +173,9 @@ namespace Bijectiv.Tests.Injections
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(typeof(int), typeof(int))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(1, contextMock.Object)).Returns(2);
-            transformMock.Setup(_ => _.Transform(2, contextMock.Object)).Returns(4);
-            transformMock.Setup(_ => _.Transform(3, contextMock.Object)).Returns(6);
+            transformMock.Setup(_ => _.Transform(1, contextMock.Object, null)).Returns(2);
+            transformMock.Setup(_ => _.Transform(2, contextMock.Object, null)).Returns(4);
+            transformMock.Setup(_ => _.Transform(3, contextMock.Object, null)).Returns(6);
 
             var sourceInstance = new[] { 1, 2, 3 };
             var targetInstance = new List<int> { 12, 59, 99, 21 };
@@ -245,13 +245,13 @@ namespace Bijectiv.Tests.Injections
             finderMock.Setup(_ => _.TryFind(sourceInstance[2], out dummy)).Returns(false);
 
             baseTransformMock
-                .Setup(_ => _.Transform(sourceInstance[0], contextMock.Object))
+                .Setup(_ => _.Transform(sourceInstance[0], contextMock.Object, null))
                 .Returns(targetExpected[0]);
             derivedTransformMock
-                .Setup(_ => _.Transform(sourceInstance[1], contextMock.Object))
+                .Setup(_ => _.Transform(sourceInstance[1], contextMock.Object, null))
                 .Returns(targetExpected[1]);
             baseTransformMock
-                .Setup(_ => _.Transform(sourceInstance[2], contextMock.Object))
+                .Setup(_ => _.Transform(sourceInstance[2], contextMock.Object, null))
                 .Returns(targetExpected[2]);
 
             finderMock.Setup(_ => _.TryFind(sourceInstance[3], out targetExpected[3])).Returns(true);
