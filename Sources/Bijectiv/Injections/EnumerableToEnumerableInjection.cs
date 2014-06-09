@@ -93,7 +93,7 @@ namespace Bijectiv.Injections
         public Type Target { get; private set; }
 
         /// <summary>
-        /// Gets the merger that merges items from one collection into another collection..
+        /// Gets the merger that merges items from one collection into another collection.
         /// </summary>
         public ICollectionMerger Merger { get; private set; }
 

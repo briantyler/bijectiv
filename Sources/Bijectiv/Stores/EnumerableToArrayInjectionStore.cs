@@ -84,7 +84,7 @@ namespace Bijectiv.Stores
                 return null;
             }
 
-            return new EnumerableToArrayInjection(source, target) as TInjection;
+            return new EnumerableToArrayInjection(source, target, new CollectionMerger()) as TInjection;
         }
     }
 }

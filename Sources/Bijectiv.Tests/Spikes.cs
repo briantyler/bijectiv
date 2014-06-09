@@ -170,7 +170,12 @@ namespace Bijectiv.Tests
         public void Spike_StringToDecimalArray_Transforms()
         {
             // Arrange
-            var kernel = new InjectionKernelBuilder().Build();
+            var builder = new InjectionKernelBuilder();
+            builder
+                .Register<object, decimal>()
+                .NullSourceDefault();
+
+            var kernel = builder.Build();
 
             var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable), typeof(decimal[]));
             

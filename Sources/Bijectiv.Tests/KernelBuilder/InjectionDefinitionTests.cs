@@ -111,19 +111,6 @@ namespace Bijectiv.Tests.KernelBuilder
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
-        public void CreateInstance_SourceParameterIInterface_Throws()
-        {
-            // Arrange
-
-            // Act
-            new InjectionDefinition(typeof(ITestInterface1), TestClass1.T).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void CreateInstance_SourceParameter_IsAssignedToSourceProperty()
         {
             // Arrange

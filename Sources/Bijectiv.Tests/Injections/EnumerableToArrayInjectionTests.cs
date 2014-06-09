@@ -38,6 +38,7 @@ namespace Bijectiv.Tests.Injections
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,7 +59,7 @@ namespace Bijectiv.Tests.Injections
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new EnumerableToArrayInjection(null, typeof(TestClass1[])).Naught();
+            new EnumerableToArrayInjection(null, typeof(TestClass1[]), Stub.Create<ICollectionMerger>()).Naught();
 
             // Assert
         }
@@ -72,7 +73,21 @@ namespace Bijectiv.Tests.Injections
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new EnumerableToArrayInjection(typeof(IEnumerable), null).Naught();
+            new EnumerableToArrayInjection(typeof(IEnumerable), null, Stub.Create<ICollectionMerger>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_MergerParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]), null).Naught();
 
             // Assert
         }
@@ -85,7 +100,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new EnumerableToArrayInjection(typeof(int), typeof(TestClass1[])).Naught();
+            new EnumerableToArrayInjection(
+                typeof(int), typeof(TestClass1[]), Stub.Create<ICollectionMerger>()).Naught();
 
             // Assert
         }
@@ -98,7 +114,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new EnumerableToArrayInjection(typeof(IEnumerable), typeof(Collection<TestClass1>)).Naught();
+            new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(Collection<TestClass1>), Stub.Create<ICollectionMerger>()).Naught();
 
             // Assert
         }
@@ -111,7 +128,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[,])).Naught();
+            new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(TestClass1[,]), Stub.Create<ICollectionMerger>()).Naught();
 
             // Assert
         }
@@ -123,7 +141,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[])).Naught();
+            new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>()).Naught();
 
             // Assert
         }
@@ -135,7 +154,8 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(typeof(Stack<int>), typeof(TestClass1[]));
+            var target = new EnumerableToArrayInjection(
+                typeof(Stack<int>), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
             Assert.AreEqual(typeof(IEnumerable), target.Source);
@@ -148,10 +168,25 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]));
+            var target = new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
             Assert.AreEqual(typeof(TestClass1[]), target.Target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_MergerParameter_IsAssignedToMergerProperty()
+        {
+            // Arrange
+            var merger = Stub.Create<ICollectionMerger>();
+
+            // Act
+            var target = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]), merger);
+
+            // Assert
+            Assert.AreEqual(merger, target.Merger);
         }
 
         [TestMethod]
@@ -161,10 +196,25 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]));
+            var target = new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
             Assert.AreEqual(typeof(TestClass1), target.TargetElement);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TargetParameterElementType_IsAmplifiedToEnumerableTargetProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
+
+            // Assert
+            Assert.AreEqual(typeof(IEnumerable<TestClass1>), target.EnumerableTarget);
         }
 
         [TestMethod]
@@ -174,8 +224,10 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(int[]));
-            var result = target.ResultFactory(new List<object> { 1, 2, 3 });
+            var target = new EnumerableToArrayInjection(
+                typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>());
+
+            var result = target.ResultFactory(new List<int> { 1, 2, 3 });
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(int[]));
@@ -187,7 +239,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_SourceParameterIsNull_ReturnsNull()
         {
             // Arrange
-            var target = CreateTarget(typeof(int));
+            var target = CreateTarget(typeof(int), Stub.Create<ICollectionMerger>());
 
             // Act
             var result = target.Transform(null, Stub.Create<IInjectionContext>(), null);
@@ -202,7 +254,7 @@ namespace Bijectiv.Tests.Injections
         public void Transform_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget(typeof(int));
+            var target = CreateTarget(typeof(int), Stub.Create<ICollectionMerger>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -214,107 +266,62 @@ namespace Bijectiv.Tests.Injections
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_TargetIsValueType_ReturnsArray()
+        public void Transform_SourceIsGenericEnumerable_ReturnsArray()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget(typeof(int));
+            var mergerMock = repository.Create<ICollectionMerger>();
+            var target = CreateTarget(typeof(int), mergerMock.Object);
             
-            var transformMock = repository.Create<ITransform>();
-            var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
+            var registryMock = repository.Create<IInstanceRegistry>();
+            var factoryMock = repository.Create<IEnumerableFactory>();
 
-            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
-            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(int))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform("1", contextMock.Object, It.IsAny<object>())).Returns(1);
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.IsAny<object>())).Returns(2);
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.IsAny<object>())).Returns(3);
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
+            registryMock.Setup(_ => _.Resolve<IEnumerableFactory>()).Returns(factoryMock.Object);
+
+            var source = new object[] { };
+            var targetEnumerable = new List<int> { 1, 2, 3 };
+            factoryMock.Setup(_ => _.Resolve(typeof(IEnumerable<int>))).Returns(targetEnumerable);
+
+            mergerMock.Setup(_ => _.Merge(source, targetEnumerable, contextMock.Object));
 
             // Act
-            var result = target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object, null);
+            var result = target.Transform(source, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
-            new[] { 1, 2, 0, 3 }.AssertSequenceEqual((int[])result);
+            new[] { 1, 2, 3 }.AssertSequenceEqual((int[])result);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Transform_TargetIsValueType_ProvidesEnumerableInjectionHint()
+        public void Transform_SourceIsEnumerable_ReturnsArray()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget(typeof(int));
+            var mergerMock = repository.Create<ICollectionMerger>();
+            var target = CreateTarget(typeof(int), mergerMock.Object);
 
-            var transformMock = repository.Create<ITransform>();
-            var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
+            var registryMock = repository.Create<IInstanceRegistry>();
+            var factoryMock = repository.Create<IEnumerableFactory>();
 
-            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
-            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(int))).Returns(transformMock.Object);
+            contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
+            registryMock.Setup(_ => _.Resolve<IEnumerableFactory>()).Returns(factoryMock.Object);
 
-            transformMock.Setup(_ => _.Transform("1", contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0))).Returns(1);
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1))).Returns(2);
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3))).Returns(3);
+            var source = Stub.Create<IEnumerable>();
+            var targetEnumerable = new List<int> { 1, 2, 3 };
+            factoryMock.Setup(_ => _.Resolve(typeof(IEnumerable<int>))).Returns(targetEnumerable);
+
+            mergerMock.Setup(_ => _.Merge(source, targetEnumerable, contextMock.Object));
 
             // Act
-            target.Transform(new object[] { "1", true, null, typeof(double) }, contextMock.Object, null);
+            var result = target.Transform(source, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Transform_TargetIsReferenceType_ReturnsArray()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget(typeof(string));
-
-            var transformMock = repository.Create<ITransform>();
-            var storeMock = repository.Create<IInjectionStore>();
-            var contextMock = repository.Create<IInjectionContext>();
-
-            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
-            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(string))).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(1, contextMock.Object, It.IsAny<object>())).Returns("1");
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.IsAny<object>())).Returns("2");
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.IsAny<object>())).Returns("3");
-
-            // Act
-            var result = target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object, null);
-
-            // Assert
-            repository.VerifyAll();
-            new[] { "1", "2", null, "3" }.AssertSequenceEqual((string[])result);
-        }
-
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Transform_TargetIsReferenceType_ProvidesEnumerableInjectionHint()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget(typeof(string));
-
-            var transformMock = repository.Create<ITransform>();
-            var storeMock = repository.Create<IInjectionStore>();
-            var contextMock = repository.Create<IInjectionContext>();
-
-            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
-            storeMock.Setup(_ => _.Resolve<ITransform>(It.IsAny<Type>(), typeof(string))).Returns(transformMock.Object);
-
-            transformMock.Setup(_ => _.Transform(1, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0))).Returns("1");
-            transformMock.Setup(_ => _.Transform(true, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1))).Returns("2");
-            transformMock.Setup(_ => _.Transform(typeof(double), contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3))).Returns("3");
-
-            // Act
-            target.Transform(new object[] { 1, true, null, typeof(double) }, contextMock.Object, null);
-
-            // Assert
-            repository.VerifyAll();
+            new[] { 1, 2, 3 }.AssertSequenceEqual((int[])result);
         }
 
         [TestMethod]
@@ -323,7 +330,8 @@ namespace Bijectiv.Tests.Injections
         {
             // Arrange
             var targetMock = new Mock<EnumerableToArrayInjection>(
-                MockBehavior.Strict, typeof(IEnumerable), typeof(int[])) { CallBase = false };
+                MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>())
+                { CallBase = false };
 
             var source = Stub.Create<IEnumerable>();
             var context = Stub.Create<IInjectionContext>();
@@ -344,7 +352,8 @@ namespace Bijectiv.Tests.Injections
         {
             // Arrange
             var targetMock = new Mock<EnumerableToArrayInjection>(
-                MockBehavior.Strict, typeof(IEnumerable), typeof(int[])) { CallBase = false };
+                MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>()) 
+                { CallBase = false };
 
             var source = Stub.Create<IEnumerable>();
             var context = Stub.Create<IInjectionContext>();
@@ -365,7 +374,8 @@ namespace Bijectiv.Tests.Injections
         {
             // Arrange
             var targetMock = new Mock<EnumerableToArrayInjection>(
-                MockBehavior.Strict, typeof(IEnumerable), typeof(int[])) { CallBase = false };
+                MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>())
+                { CallBase = false };
 
             var source = Stub.Create<IEnumerable>();
             var context = Stub.Create<IInjectionContext>();
@@ -380,9 +390,9 @@ namespace Bijectiv.Tests.Injections
             Assert.AreEqual(target, result.Target);
         }
 
-        private static EnumerableToArrayInjection CreateTarget(Type targetType)
+        private static EnumerableToArrayInjection CreateTarget(Type targetType, ICollectionMerger merger)
         {
-            return new EnumerableToArrayInjection(typeof(IEnumerable), targetType.MakeArrayType());
+            return new EnumerableToArrayInjection(typeof(IEnumerable), targetType.MakeArrayType(), merger);
         }
     }
 }

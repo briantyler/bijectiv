@@ -53,6 +53,9 @@ namespace Bijectiv.Injections
         /// <param name="target">
         /// The target.
         /// </param>
+        /// <param name="merger">
+        /// The merger.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
@@ -65,7 +68,10 @@ namespace Bijectiv.Injections
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="target"/> is a multi-dimensional array.
         /// </exception>
-        public EnumerableToArrayInjection([NotNull] Type source, [NotNull] Type target)
+        public EnumerableToArrayInjection(
+            [NotNull] Type source, 
+            [NotNull] Type target,
+            [CanBeNull] ICollectionMerger merger)
         {
             if (source == null)
             {
@@ -77,6 +83,11 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("target");
             }
 
+            if (merger == null)
+            {
+                throw new ArgumentNullException("merger");
+            }
+
             if (!typeof(IEnumerable).IsAssignableFrom(source))
             {
                 throw new ArgumentException(
@@ -86,7 +97,7 @@ namespace Bijectiv.Injections
 
             if (!target.IsArray)
             {
-                throw new ArgumentException(string.Format("Type '{0}' does is not an array.", target), "target");
+                throw new ArgumentException(string.Format("Type '{0}' is not an array.", target), "target");
             }
 
             if (target.GetArrayRank() != 1)
@@ -97,7 +108,9 @@ namespace Bijectiv.Injections
             }
 
             this.Target = target;
+            this.Merger = merger;
             this.TargetElement = target.GetElementType();
+            this.EnumerableTarget = typeof(IEnumerable<>).MakeGenericType(this.TargetElement);
             this.ResultFactory = this.CreateResultFactory();
         }
 
@@ -120,9 +133,19 @@ namespace Bijectiv.Injections
         public Type TargetElement { get; private set; }
 
         /// <summary>
+        /// Gets the target type enumerable type.
+        /// </summary>
+        public Type EnumerableTarget { get; private set; }
+
+        /// <summary>
+        /// Gets the merger that merges items from one collection into another collection.
+        /// </summary>
+        public ICollectionMerger Merger { get; private set; }
+
+        /// <summary>
         /// Gets a factory that creates the appropriately typed array result.
         /// </summary>
-        public Func<IEnumerable<object>, object> ResultFactory { get; private set; }
+        public Func<object, object> ResultFactory { get; private set; }
 
         /// <summary>
         /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
@@ -153,23 +176,10 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            var result = new List<object>();
-            var index = 0;
-            foreach (var item in (IEnumerable)source)
-            {
-                var hintVar = new EnumerableInjectionHint(index++);
-                if (item == null)
-                {
-                    result.Add(this.TargetElement.GetDefault());
-                }
-                else
-                {
-                    var injection = context.InjectionStore.Resolve<ITransform>(item.GetType(), this.TargetElement);
-                    result.Add(injection.Transform(item, context, hintVar));
-                }
-            }
+            var target = context.InstanceRegistry.Resolve<IEnumerableFactory>().Resolve(this.EnumerableTarget);
+            this.Merger.Merge((dynamic)source, (dynamic)target, context);
 
-            return this.ResultFactory(result);
+            return this.ResultFactory(target);
         }
 
         /// <summary>
@@ -205,19 +215,14 @@ namespace Bijectiv.Injections
         /// <returns>
         /// A factory that creates the appropriately typed array result.
         /// </returns>
-        private Func<IEnumerable<object>, object> CreateResultFactory()
+        private Func<object, object> CreateResultFactory()
         {
-            var itemsParameter = Expression.Parameter(typeof(IEnumerable<object>), "items");
-            var castMethod = typeof(Enumerable).GetMethod("Cast").MakeGenericMethod(this.TargetElement);
+            var itemsParameter = Expression.Parameter(typeof(object), "items");
+            var castToEnumerable = Expression.Convert(itemsParameter, this.EnumerableTarget);
             var toArrayMethod = typeof(Enumerable).GetMethod("ToArray").MakeGenericMethod(this.TargetElement);
+            var body = Expression.Convert(Expression.Call(toArrayMethod, castToEnumerable), typeof(object));
 
-            var body = Expression.Convert(
-                Expression.Call(toArrayMethod, Expression.Call(castMethod, itemsParameter)), 
-                typeof(object));
-
-            return Expression
-                .Lambda<Func<IEnumerable<object>, object>>(body, itemsParameter)
-                .Compile();
+            return Expression.Lambda<Func<object, object>>(body, itemsParameter).Compile();
         }
     }
 }
