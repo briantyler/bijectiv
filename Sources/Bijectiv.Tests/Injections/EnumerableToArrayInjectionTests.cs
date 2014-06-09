@@ -279,7 +279,7 @@ namespace Bijectiv.Tests.Injections
             targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            targetMock.Object.Merge(source, new int[0], context);
+            targetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
             targetMock.VerifyAll();
@@ -300,7 +300,7 @@ namespace Bijectiv.Tests.Injections
             targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            var result = targetMock.Object.Merge(source, new int[0], context);
+            var result = targetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -321,7 +321,7 @@ namespace Bijectiv.Tests.Injections
             targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            var result = targetMock.Object.Merge(source, new int[0], context);
+            var result = targetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
             Assert.AreEqual(target, result.Target);

@@ -149,7 +149,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), null);
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), null, null);
 
             // Assert
         }
@@ -169,7 +169,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>());
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -192,7 +192,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>());
+            target.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -215,7 +215,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), targetInstance, Stub.Create<IInjectionContext>());
+            target.Merge(Stub.Create<object>(), targetInstance, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -238,7 +238,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), context);
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), context, null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -255,7 +255,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            var result = target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>());
+            var result = target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.AreEqual(expected, result);

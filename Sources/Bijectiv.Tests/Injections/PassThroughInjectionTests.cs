@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.Injections
             var target = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Merge(7, 1, null);
+            var result = target.Merge(7, 1, null, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -194,7 +194,7 @@ namespace Bijectiv.Tests.Injections
             var target = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Merge(7, 1, null);
+            var result = target.Merge(7, 1, null, null);
 
             // Assert
             Assert.AreEqual(7, result.Target);

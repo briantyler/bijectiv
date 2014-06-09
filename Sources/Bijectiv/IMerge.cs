@@ -47,9 +47,12 @@ namespace Bijectiv
         /// <param name="context">
         /// The context in which the injection will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// A <see cref="IMergeResult"/> representing the result of the merge.
         /// </returns>
-        IMergeResult Merge(object source, object target, IInjectionContext context);
+        IMergeResult Merge(object source, object target, IInjectionContext context, object hint);
     }
 }

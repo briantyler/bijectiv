@@ -122,7 +122,7 @@ namespace Bijectiv.Injections
             }
 
             var enumerableFactory = context.InstanceRegistry.Resolve<IEnumerableFactory>();
-            return this.Merge(source, enumerableFactory.Resolve(this.Target), context).Target;
+            return this.Merge(source, enumerableFactory.Resolve(this.Target), context, null).Target;
         }
 
         /// <summary>
@@ -138,10 +138,13 @@ namespace Bijectiv.Injections
         /// <param name="context">
         /// The context in which the injection will take place.
         /// </param>
+        /// <param name="hint">
+        /// A hint that can be used to pass additional information to the injection.
+        /// </param>
         /// <returns>
         /// A <see cref="IMergeResult"/> representing the result of the merge.
         /// </returns>
-        public virtual IMergeResult Merge(object source, object target, [NotNull] IInjectionContext context)
+        public virtual IMergeResult Merge(object source, object target, [NotNull] IInjectionContext context, object hint)
         {
             if (context == null)
             {

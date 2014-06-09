@@ -130,7 +130,7 @@ namespace Bijectiv.Injections
                             sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
                             targetElement == null ? typeof(TTargetElement) : targetElement.GetType());
 
-                    var result = merger.Merge(sourceElement, targetElement, context);
+                    var result = merger.Merge(sourceElement, targetElement, context, null);
                     target.Add((TTargetElement)result.Target);
                 }
                 else

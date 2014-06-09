@@ -51,7 +51,8 @@ namespace Bijectiv.InjectionFactory
                         Placeholder.Of<Type>("targetMemberType")).Merge(
                             Placeholder.Of<object>("sourceMember"), 
                             Placeholder.Of<object>("targetMember"),
-                            Placeholder.Of<IInjectionContext>("context")))).Body;
+                            Placeholder.Of<IInjectionContext>("context"), 
+                            null))).Body;
 
         /// <summary>
         /// A <see cref="IMergeResult.Target"/> variable.

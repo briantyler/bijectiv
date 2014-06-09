@@ -257,10 +257,10 @@ namespace Bijectiv.Tests.Injections
             finderMock.Setup(_ => _.TryFind(sourceInstance[3], out targetExpected[3])).Returns(true);
             finderMock.Setup(_ => _.TryFind(sourceInstance[4], out targetExpected[4])).Returns(true);
             baseMergeMock
-                .Setup(_ => _.Merge(sourceInstance[3], targetExpected[3], contextMock.Object))
+                .Setup(_ => _.Merge(sourceInstance[3], targetExpected[3], contextMock.Object, null))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[3]));
             derivedMergeMock
-                .Setup(_ => _.Merge(sourceInstance[4], targetExpected[4], contextMock.Object))
+                .Setup(_ => _.Merge(sourceInstance[4], targetExpected[4], contextMock.Object, null))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
@@ -303,7 +303,7 @@ namespace Bijectiv.Tests.Injections
 
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out targetExpected[0])).Returns(true);
             baseMergeMock
-                .Setup(_ => _.Merge(sourceInstance[0], targetExpected[0], contextMock.Object))
+                .Setup(_ => _.Merge(sourceInstance[0], targetExpected[0], contextMock.Object, null))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[0]));
 
             // Act

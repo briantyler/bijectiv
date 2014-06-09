@@ -213,7 +213,7 @@ namespace Bijectiv.Tests
             var merge = kernel.Store.Resolve<IMerge>(typeof(AutoMergeTestClass2), typeof(AutoMergeTestClass2));
 
             // Act
-            var result = merge.Merge(source, target, CreateContext(kernel));
+            var result = merge.Merge(source, target, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.None, result.Action);
@@ -264,7 +264,7 @@ namespace Bijectiv.Tests
             };
 
             // Act
-            merge.Merge(source, target, CreateContext(kernel));
+            merge.Merge(source, target, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(4, target.Count());
@@ -304,7 +304,7 @@ namespace Bijectiv.Tests
             };
 
             // Act
-            var result = merge.Merge(source, null, CreateContext(kernel));
+            var result = merge.Merge(source, null, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);

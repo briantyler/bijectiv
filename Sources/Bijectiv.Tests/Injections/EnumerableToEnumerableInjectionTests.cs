@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.Injections
             target.CallBase = false;
 
             target
-                .Setup(_ => _.Merge(sourceInstance, targetInstance, contextMock.Object))
+                .Setup(_ => _.Merge(sourceInstance, targetInstance, contextMock.Object, null))
                 .Returns(new MergeResult(PostMergeAction.None, expectedResult));
 
             // Act
@@ -229,7 +229,7 @@ namespace Bijectiv.Tests.Injections
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Merge(Stub.Create<IEnumerable>(), new List<TestClass1>(), null);
+            target.Merge(Stub.Create<IEnumerable>(), new List<TestClass1>(), null, null);
 
             // Assert
         }
@@ -250,7 +250,7 @@ namespace Bijectiv.Tests.Injections
             var target = CreateTarget(mergerMock.Object);
 
             // Act
-            var result = target.Merge(sourceInstance, targetInstance, context);
+            var result = target.Merge(sourceInstance, targetInstance, context, null);
             
             // Assert
             repository.VerifyAll();
@@ -274,7 +274,7 @@ namespace Bijectiv.Tests.Injections
             var target = CreateTarget(mergerMock.Object);
 
             // Act
-            var result = target.Merge(sourceInstance, targetInstance, context);
+            var result = target.Merge(sourceInstance, targetInstance, context, null);
 
             // Assert
             repository.VerifyAll();
@@ -298,7 +298,7 @@ namespace Bijectiv.Tests.Injections
             var target = CreateTarget(mergerMock.Object);
 
             // Act
-            var result = target.Merge(sourceInstance, targetInstance, context);
+            var result = target.Merge(sourceInstance, targetInstance, context, null);
 
             // Assert
             repository.VerifyAll();
@@ -329,7 +329,7 @@ namespace Bijectiv.Tests.Injections
             var target = CreateTarget(mergerMock.Object);
 
             // Act
-            var result = target.Merge(sourceInstance, null, contextMock.Object);
+            var result = target.Merge(sourceInstance, null, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();

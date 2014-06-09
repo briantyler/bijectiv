@@ -209,7 +209,7 @@ namespace Bijectiv.Tests.InjectionFactory
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            var result = injection.Merge(sourceInstance, targetInstance, injectionContext);
+            var result = injection.Merge(sourceInstance, targetInstance, injectionContext, null);
 
             // Assert
             repository.VerifyAll();

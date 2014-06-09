@@ -261,7 +261,7 @@ namespace Bijectiv.Tests.Injections
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Merge("TRUE", false, contextMock.Object);
+            var result = target.Merge("TRUE", false, contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -277,7 +277,7 @@ namespace Bijectiv.Tests.Injections
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Merge("TRUE", false, contextMock.Object);
+            var result = target.Merge("TRUE", false, contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(true, result.Target);
