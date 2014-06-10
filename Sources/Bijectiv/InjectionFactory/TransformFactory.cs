@@ -104,17 +104,20 @@ namespace Bijectiv.InjectionFactory
             }
 
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
-            var injectionContext = Expression.Parameter(typeof(IInjectionContext), "InjectionContext");
+            var injectionContext = Expression.Parameter(typeof(IInjectionContext), "injectionContext");
+            var hint = Expression.Parameter(typeof(object), "hint");
 
             var scaffold = new InjectionScaffold(
-                definitionRegistry, definition, sourceAsObject, injectionContext);
+                definitionRegistry, definition, sourceAsObject, injectionContext)
+                { Hint = hint};
 
             this.Tasks.ForEach(item => item.Execute(scaffold));
 
-            var lambda = Expression.Lambda<Func<object, IInjectionContext, object>>(
+            var lambda = Expression.Lambda<DTransform>(
                 Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
-                injectionContext);
+                injectionContext,
+                hint);
 
             return new DelegateTransform(definition.Source, definition.Target, lambda.Compile());
         }

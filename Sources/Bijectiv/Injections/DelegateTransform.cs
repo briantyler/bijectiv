@@ -56,7 +56,7 @@ namespace Bijectiv.Injections
         public DelegateTransform(
             [NotNull] Type source, 
             [NotNull] Type target,
-            [NotNull] Func<object, IInjectionContext, object> @delegate)
+            [NotNull] DTransform @delegate)
         {
             if (source == null)
             {
@@ -91,7 +91,7 @@ namespace Bijectiv.Injections
         /// <summary>
         /// Gets the delegate that performs the transform.
         /// </summary>
-        public Func<object, IInjectionContext, object> Delegate { get; private set; }
+        public DTransform Delegate { get; private set; }
 
         /// <summary>
         /// Transforms <paramref name="source"/> into an instance of type <seealso cref="Target"/>;  using the 
@@ -116,7 +116,7 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            return this.Delegate(source, context);
+            return this.Delegate(source, context, hint);
         }
     }
 }

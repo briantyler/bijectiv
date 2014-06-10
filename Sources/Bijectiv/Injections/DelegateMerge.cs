@@ -53,10 +53,7 @@ namespace Bijectiv.Injections
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public DelegateMerge(
-            [NotNull] Type source, 
-            [NotNull] Type target,
-            [NotNull] Func<object, object, IInjectionContext, IMergeResult> @delegate)
+        public DelegateMerge([NotNull] Type source, [NotNull] Type target, [NotNull] DMerge @delegate)
         {
             if (source == null)
             {
@@ -91,7 +88,7 @@ namespace Bijectiv.Injections
         /// <summary>
         /// Gets the delegate that performs the transform.
         /// </summary>
-        public Func<object, object, IInjectionContext, IMergeResult> Delegate { get; private set; }
+        public DMerge Delegate { get; private set; }
 
         /// <summary>
         /// Merges <paramref name="source"/> into <paramref name="target"/>; using the transformation rules 
@@ -119,7 +116,7 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("context");
             }
 
-            return this.Delegate(source, target, context);
+            return this.Delegate(source, target, context, hint);
         }
     }
 }

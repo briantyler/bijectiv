@@ -6,13 +6,24 @@
 
     public class InjectionTriggerFragment : InjectionFragment
     {
-        private readonly InjectionTriggerSource source;
+        private readonly InjectionTriggerCause cause;
 
         private readonly IInjectionTrigger trigger;
 
-        public InjectionTriggerFragment([NotNull] Type source, [NotNull] Type target)
+        public InjectionTriggerFragment(
+            [NotNull] Type source, 
+            [NotNull] Type target, 
+            InjectionTriggerCause cause,
+            [NotNull] IInjectionTrigger trigger)
             : base(source, target)
         {
+            if (trigger == null)
+            {
+                throw new ArgumentNullException("trigger");
+            }
+
+            this.cause = cause;
+            this.trigger = trigger;
         }
 
         /// <summary>
@@ -29,6 +40,16 @@
         public override Guid FragmentCategory
         {
             get { return LegendryFragments.Trigger; }
+        }
+
+        public InjectionTriggerCause Cause
+        {
+            get { return this.cause; }
+        }
+
+        public IInjectionTrigger Trigger
+        {
+            get { return this.trigger; }
         }
     }
 }

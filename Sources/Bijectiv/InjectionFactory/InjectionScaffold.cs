@@ -177,6 +177,11 @@ namespace Bijectiv.InjectionFactory
         public virtual Expression Target { get; set; }
 
         /// <summary>
+        /// Gets or sets the hint that has been applied to the injection.
+        /// </summary>
+        public virtual Expression Hint { get; set; }
+
+        /// <summary>
         /// Gets the return label.
         /// </summary>
         public virtual LabelTarget ReturnLabel
