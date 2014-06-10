@@ -51,6 +51,9 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="IInjectionContext.cs" />
+    <Compile Include="IInjectionTrigger.cs" />
+    <Compile Include="IInjectionTriggerParameters.cs" />
+    <Compile Include="Injections\DelegateInjectionTrigger.cs" />
     <Compile Include="Injections\EnumerableInjectionHint.cs" />
     <Compile Include="KernelBuilder\ActivateFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryFragment.cs" />
@@ -59,6 +62,8 @@
     <Compile Include="BuildConfigurator.cs" />
     <Compile Include="KernelBuilder\AutoInjectionOptions.cs" />
     <Compile Include="KernelBuilder\InjectionKernel.cs" />
+    <Compile Include="KernelBuilder\InjectionTriggerFragment.cs" />
+    <Compile Include="KernelBuilder\InjectionTriggerSource.cs" />
     <Compile Include="KernelBuilder\NameRegexAutoInjectionStrategy.cs" />
     <Compile Include="KernelBuilder\NullAutoInjectionStrategy.cs" />
     <Compile Include="KernelBuilder\AutoInjectionFragment.cs" />

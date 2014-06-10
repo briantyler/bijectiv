@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LegendryFragments.cs" company="Bijectiv">
+// <copyright file="IInjectionTriggerParameters.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,45 +23,57 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LegendryFragments type.
+//   Defines the IInjectionTriggerParameters type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.KernelBuilder
+namespace Bijectiv
 {
-    using System;
-
     /// <summary>
-    /// Fragments that are known throught the library.
+    /// The parameters to a <see cref="IInjectionTrigger"/>.
     /// </summary>
-    /// <remarks>
-    /// Back when 8-bit was cool b113c714 == bijectiv.
-    /// </remarks>
-    public static class LegendryFragments
+    public interface IInjectionTriggerParameters
     {
         /// <summary>
-        /// Represents a fragment that describes inheritance.
+        /// Gets the source instance as an object.
         /// </summary>
-        public static readonly Guid Inherits = new Guid("b113c714-FE8C-498B-B371-52E468949A04");
+        object SourceAsObject { get; }
 
         /// <summary>
-        /// Represents a fragment that describes construction.
+        /// Gets the target instance as an object.
         /// </summary>
-        public static readonly Guid Factory = new Guid("b113c714-6576-4D9B-BE31-98E886FC2082");
+        object TargetAsObject { get; }
 
         /// <summary>
-        /// Represents a fragment that describes an auto-injection.
+        /// Gets the context in which the trigger will take place.
         /// </summary>
-        public static readonly Guid AutoInjection = new Guid("b113c714-D396-425B-B0DA-355DA43AD570");
+        IInjectionContext Context { get; }
 
         /// <summary>
-        /// Represents a fragment that determines how to treat a <c>null</c> source.
+        /// Gets the hint that was passed to the <see cref="IInjection"/>.
         /// </summary>
-        public static readonly Guid NullSource = new Guid("b113c714-21C5-428C-B5CA-84372F03102D");
+        object Hint { get; }
+    }
+
+    /// <summary>
+    /// The strongly typed parameters to a <see cref="IInjectionTrigger"/>.
+    /// </summary>
+    /// <typeparam name="TSource">
+    /// The source type.
+    /// </typeparam>
+    /// <typeparam name="TTarget">
+    /// The target type.
+    /// </typeparam>
+    public interface IInjectionTriggerParameters<out TSource, out TTarget> : IInjectionTriggerParameters
+    {
+        /// <summary>
+        /// Gets the source.
+        /// </summary>
+        TSource Source { get; }
 
         /// <summary>
-        /// Represents a fragment that describes an injection trigger.
+        /// Gets the target.
         /// </summary>
-        public static readonly Guid Trigger = new Guid("b113c714-C57A-466E-818F-44E0FE38EE10");
+        TTarget Target { get; }
     }
 }
