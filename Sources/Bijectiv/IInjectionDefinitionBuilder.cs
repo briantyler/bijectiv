@@ -253,5 +253,11 @@ namespace Bijectiv
         IInjectionDefinitionBuilder<TSource, TTarget> MergeOnKey(
             [NotNull] Func<TSource, object> sourceKeySelector,
             [NotNull] Func<TTarget, object> targetKeySelector);
+
+        IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
+            Action<IInjectionTriggerParameters<TSource, TTarget>> action);
+
+        IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
+            Action<int, IInjectionTriggerParameters<TSource, TTarget>> action);
     }
 }

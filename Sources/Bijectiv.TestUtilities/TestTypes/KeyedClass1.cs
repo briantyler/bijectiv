@@ -43,5 +43,10 @@ namespace Bijectiv.TestUtilities.TestTypes
         /// Gets or sets the value.
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index.
+        /// </summary>
+        public int Index { get; set; }
     }
 }

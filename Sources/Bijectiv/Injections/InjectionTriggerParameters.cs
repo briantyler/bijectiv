@@ -1,6 +1,6 @@
 ﻿namespace Bijectiv.Injections
 {
-    public class InjectionTrigerParameters<TSource, TTarget> : IInjectionTriggerParameters<TSource, TTarget>
+    public class InjectionTriggerParameters<TSource, TTarget> : IInjectionTriggerParameters<TSource, TTarget>
     {
         private readonly TSource source;
 
@@ -10,7 +10,7 @@
 
         private readonly object hint;
 
-        public InjectionTrigerParameters(TSource source, TTarget target, IInjectionContext context, object hint)
+        public InjectionTriggerParameters(TSource source, TTarget target, IInjectionContext context, object hint)
         {
             this.source = source;
             this.target = target;

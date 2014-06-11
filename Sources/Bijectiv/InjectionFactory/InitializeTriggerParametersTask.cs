@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Bijectiv.Injections;
     using Bijectiv.KernelBuilder;
 
     public class InitializeTriggerParametersTask : IInjectionTask
@@ -23,7 +24,7 @@
                 return;
             }
 
-            var parametersType = typeof(IInjectionTriggerParameters<,>)
+            var parametersType = typeof(InjectionTriggerParameters<,>)
                 .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
 
             var createParameters = Expression.New(

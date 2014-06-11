@@ -243,7 +243,8 @@ namespace Bijectiv.Tests
             builder
                 .Register<KeyedClass1, KeyedClass1>()
                 .AutoExact()
-                .MergeOnKey(s => s.Key, t => t.Key);
+                .MergeOnKey(s => s.Key, t => t.Key)
+                .OnCollectionItem((i, p) => p.Target.Index = i);
 
             var kernel = builder.Build();
             var merge = kernel.Store.Resolve<IMerge>(typeof(IEnumerable<KeyedClass1>), typeof(IEnumerable<KeyedClass1>));
@@ -276,14 +277,18 @@ namespace Bijectiv.Tests
             Assert.AreEqual(t1, target.ElementAt(0));
             Assert.AreEqual(1, target.ElementAt(0).Key);
             Assert.AreEqual("1s", target.ElementAt(0).Value);
+            Assert.AreEqual(0, target.ElementAt(0).Index);
             Assert.AreEqual(2, target.ElementAt(1).Key);
             Assert.AreEqual("2s", target.ElementAt(1).Value);
+            Assert.AreEqual(1, target.ElementAt(1).Index);
             Assert.AreEqual(t3, target.ElementAt(2));
             Assert.AreEqual(3, target.ElementAt(2).Key);
             Assert.AreEqual("3s", target.ElementAt(2).Value);
+            Assert.AreEqual(2, target.ElementAt(2).Index);
             Assert.AreEqual(t4, target.ElementAt(3));
             Assert.AreEqual(4, target.ElementAt(3).Key);
             Assert.AreEqual("4s", target.ElementAt(3).Value);
+            Assert.AreEqual(3, target.ElementAt(3).Index);
         }
 
         [TestMethod]

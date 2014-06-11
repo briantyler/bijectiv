@@ -2,8 +2,6 @@
 {
     public enum InjectionTriggerCause
     {
-        InjectionStarted,
-
         InjectionEnded
     }
 }

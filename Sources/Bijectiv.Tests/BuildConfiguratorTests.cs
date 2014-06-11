@@ -87,11 +87,14 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeTriggerParametersTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
             Assert.IsInstanceOfType(
                 ((AutoInjectionTask)tasks[index]).Detail, typeof(AutoInjectionTaskTransformDetail));
             Assert.IsNotInstanceOfType(
                 ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
+            Assert.AreEqual(InjectionTriggerCause.InjectionEnded, ((CreateTriggersTask)tasks[index++]).Cause);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
             Assert.AreEqual(index, tasks.Length);
@@ -111,10 +114,13 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMergeVariablesTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(InitializeTriggerParametersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMembersTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
             Assert.IsInstanceOfType(
                 ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
+            Assert.AreEqual(InjectionTriggerCause.InjectionEnded, ((CreateTriggersTask)tasks[index++]).Cause);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnMergeResultTask));
 
             Assert.AreEqual(index, tasks.Length);

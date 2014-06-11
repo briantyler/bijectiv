@@ -111,7 +111,10 @@ namespace Bijectiv.InjectionFactory
 
             var scaffold = new InjectionScaffold(
                 definitionRegistry, definition, sourceAsObject, injectionContext)
-                { TargetAsObject = targetAsObject };
+                {
+                    TargetAsObject = targetAsObject,
+                    Hint = hint
+                };
 
             this.Tasks.ForEach(item => item.Execute(scaffold));
 

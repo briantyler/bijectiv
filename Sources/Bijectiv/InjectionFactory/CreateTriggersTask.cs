@@ -18,6 +18,11 @@
             this.cause = cause;
         }
 
+        public InjectionTriggerCause Cause
+        {
+            get { return this.cause; }
+        }
+
         public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
@@ -28,7 +33,7 @@
             var fragments = scaffold
                 .UnprocessedFragments
                 .OfType<InjectionTriggerFragment>()
-                .Where(candidate => candidate.Cause == this.cause)
+                .Where(candidate => candidate.Cause == this.Cause)
                 .ToArray();
 
             foreach (var fragment in fragments)

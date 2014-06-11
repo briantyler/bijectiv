@@ -59,7 +59,7 @@
     <Compile Include="Injections\DMerge.cs" />
     <Compile Include="Injections\DTransform.cs" />
     <Compile Include="Injections\EnumerableInjectionHint.cs" />
-    <Compile Include="Injections\InjectionTrigerParameters.cs" />
+    <Compile Include="Injections\InjectionTriggerParameters.cs" />
     <Compile Include="KernelBuilder\ActivateFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryFragment.cs" />
     <Compile Include="KernelBuilder\CustomFactoryParameters.cs" />

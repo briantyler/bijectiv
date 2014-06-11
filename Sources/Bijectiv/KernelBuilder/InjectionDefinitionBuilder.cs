@@ -472,5 +472,22 @@ namespace Bijectiv.KernelBuilder
 
             return this;
         }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
+            Action<int, IInjectionTriggerParameters<TSource, TTarget>> action)
+        {
+            Action<IInjectionTriggerParameters<TSource, TTarget>> indexedAction = p =>
+                {
+                    var hint = p.Hint as EnumerableInjectionHint;
+                    if (hint == null)
+                    {
+                        return;
+                    }
+
+                    action(hint.Index, p);
+                };
+
+            return this.OnInjectionEnded(indexedAction);
+        } 
     }
 }
