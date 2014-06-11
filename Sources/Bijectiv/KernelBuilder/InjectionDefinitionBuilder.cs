@@ -461,5 +461,16 @@ namespace Bijectiv.KernelBuilder
 
             return this;
         }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
+            Action<IInjectionTriggerParameters<TSource, TTarget>> action)
+        {
+            var trigger = new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p));
+            var fragment = new InjectionTriggerFragment(
+                typeof(TSource), typeof(TTarget), trigger, InjectionTriggerCause.InjectionEnded);
+            this.Definition.Add(fragment);
+
+            return this;
+        }
     }
 }

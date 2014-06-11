@@ -54,6 +54,7 @@
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionTriggerParameters.cs" />
     <Compile Include="InjectionFactory\CreateTriggersTask.cs" />
+    <Compile Include="InjectionFactory\InitializeTriggerParametersTask.cs" />
     <Compile Include="Injections\DelegateInjectionTrigger.cs" />
     <Compile Include="Injections\DMerge.cs" />
     <Compile Include="Injections\DTransform.cs" />

@@ -13,6 +13,11 @@
     {
         private readonly InjectionTriggerCause cause;
 
+        public CreateTriggersTask(InjectionTriggerCause cause)
+        {
+            this.cause = cause;
+        }
+
         public void Execute([NotNull] InjectionScaffold scaffold)
         {
             if (scaffold == null)
@@ -48,24 +53,13 @@
                 throw new ArgumentNullException("scaffold");
             }
 
-            var parametersType = typeof(IInjectionTriggerParameters<,>)
-                .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
-
-            var createParameters = Expression.New(
-                parametersType.GetConstructors().Single(),
-                scaffold.Source,
-                scaffold.Target,
-                scaffold.InjectionContext,
-                scaffold.Hint);
-
-            var downCastParameters = Expression.Convert(createParameters, typeof(IInjectionTriggerParameters));
-
+            var parameters = scaffold.Variables.First(candidate => candidate.Name == "triggerParameters");
             var trigger = fragment.Trigger;
-            var expression = (Expression)(Expression<Action>)(
-                () => trigger.Pull(Placeholder.Of<IInjectionTriggerParameters>("parameters")));
+            var expression = ((Expression<Action>)(
+                () => trigger.Pull(Placeholder.Of<IInjectionTriggerParameters>("parameters"))))
+                .Body;
 
-            expression = new PlaceholderExpressionVisitor("parameters", downCastParameters).Visit(expression);
-            scaffold.Expressions.Add(((LambdaExpression)expression).Body);
+            scaffold.Expressions.Add(new PlaceholderExpressionVisitor("parameters", parameters).Visit(expression));
         }
     }
 }
