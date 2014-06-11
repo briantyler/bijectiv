@@ -48,7 +48,24 @@
                 throw new ArgumentNullException("scaffold");
             }
 
-            
+            var parametersType = typeof(IInjectionTriggerParameters<,>)
+                .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
+
+            var createParameters = Expression.New(
+                parametersType.GetConstructors().Single(),
+                scaffold.Source,
+                scaffold.Target,
+                scaffold.InjectionContext,
+                scaffold.Hint);
+
+            var downCastParameters = Expression.Convert(createParameters, typeof(IInjectionTriggerParameters));
+
+            var trigger = fragment.Trigger;
+            var expression = (Expression)(Expression<Action>)(
+                () => trigger.Pull(Placeholder.Of<IInjectionTriggerParameters>("parameters")));
+
+            expression = new PlaceholderExpressionVisitor("parameters", downCastParameters).Visit(expression);
+            scaffold.Expressions.Add(((LambdaExpression)expression).Body);
         }
     }
 }
