@@ -13,8 +13,8 @@
         public InjectionTriggerFragment(
             [NotNull] Type source, 
             [NotNull] Type target, 
-            InjectionTriggerCause cause,
-            [NotNull] IInjectionTrigger trigger)
+            [NotNull] IInjectionTrigger trigger,
+            InjectionTriggerCause cause)
             : base(source, target)
         {
             if (trigger == null)

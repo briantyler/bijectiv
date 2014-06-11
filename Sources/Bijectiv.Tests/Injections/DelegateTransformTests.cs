@@ -45,8 +45,8 @@ namespace Bijectiv.Tests.Injections
     [TestClass]
     public class DelegateTransformTests
     {
-        private static readonly Func<object, IInjectionContext, object> Delegate = 
-            (source, context) => Placeholder.Of<TestClass2>();
+        private static readonly DTransform Delegate = 
+            (source, context, hint) => Stub.Create<TestClass2>();
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -158,7 +158,7 @@ namespace Bijectiv.Tests.Injections
         {
             // Arrange
             var called = new[] { false };
-            Func<object, IInjectionContext, object> @delegate = (s, c) => called[0] = true;
+            DTransform @delegate = (s, c, h) => called[0] = true;
 
             var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
 
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
             var called = new[] { false };
             var source = Stub.Create<object>();
-            Func<object, IInjectionContext, object> @delegate = (s, c) =>
+            DTransform @delegate = (s, c, h) =>
             {
                 Assert.AreEqual(source, s);
                 return called[0] = true;
@@ -198,7 +198,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
             var called = new[] { false };
             var context = Stub.Create<IInjectionContext>();
-            Func<object, IInjectionContext, object> @delegate = (s, c) =>
+            DTransform @delegate = (s, c, h) =>
             {
                 Assert.AreEqual(context, c);
                 return called[0] = true;
@@ -211,6 +211,45 @@ namespace Bijectiv.Tests.Injections
 
             // Assert
             Assert.IsTrue(called[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_ValidParameters_PassesHintToDelegate()
+        {
+            // Arrange
+            var called = new[] { false };
+            var hint = new object();
+            DTransform @delegate = (s, c, h) =>
+            {
+                Assert.AreEqual(hint, h);
+                return called[0] = true;
+            };
+
+            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            target.Transform(Stub.Create<object>(), Stub.Create<IInjectionContext>(), hint);
+
+            // Assert
+            Assert.IsTrue(called[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Transform_ValidParameters_ReturnsDelgateResult()
+        {
+            // Arrange
+            var expected = new object();
+            DTransform @delegate = (s, c, h) => expected;
+
+            var target = new DelegateTransform(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            var result = target.Transform(Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+
+            // Assert
+            Assert.AreEqual(expected, result);
         }
     }
 }

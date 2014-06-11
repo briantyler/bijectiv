@@ -44,8 +44,8 @@ namespace Bijectiv.Tests.Injections
     [TestClass]
     public class DelegateMergeTests
     {
-        private static readonly Func<object, object, IInjectionContext, IMergeResult> Delegate =
-            (source, target, context) => Placeholder.Of<IMergeResult>();
+        private static readonly DMerge Delegate =
+            (source, target, context, hint) => Stub.Create<IMergeResult>();
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -160,7 +160,7 @@ namespace Bijectiv.Tests.Injections
         {
             // Arrange
             var called = new[] { false };
-            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            DMerge @delegate = (s, t, c, h) =>
             {
                 called[0] = true;
                 return Stub.Create<IMergeResult>();
@@ -182,7 +182,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
             var called = new[] { false };
             var sourceInstance = Stub.Create<object>();
-            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            DMerge @delegate = (s, t, c, h) =>
             {
                 Assert.AreEqual(sourceInstance, s);
                 called[0] = true;
@@ -205,7 +205,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
             var called = new[] { false };
             var targetInstance = Stub.Create<object>();
-            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            DMerge @delegate = (s, t, c, h) =>
             {
                 Assert.AreEqual(targetInstance, t);
                 called[0] = true;
@@ -228,7 +228,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
             var called = new[] { false };
             var context = Stub.Create<IInjectionContext>();
-            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) =>
+            DMerge @delegate = (s, t, c, h) =>
             {
                 Assert.AreEqual(context, c);
                 called[0] = true;
@@ -244,13 +244,34 @@ namespace Bijectiv.Tests.Injections
             Assert.IsTrue(called[0]);
         }
 
+        public void Merge_ValidParameters_PassesHintToDelegate()
+        {
+            // Arrange
+            var called = new[] { false };
+            var hint = new object();
+            DMerge @delegate = (s, t, c, h) =>
+            {
+                Assert.AreEqual(hint, h);
+                called[0] = true;
+                return Stub.Create<IMergeResult>();
+            };
+
+            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+
+            // Act
+            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), hint);
+
+            // Assert
+            Assert.IsTrue(called[0]);
+        }
+
         [TestMethod]
         [TestCategory("Unit")]
         public void Merge_ValidParameters_ReturnsDelegateResult()
         {
             // Arrange
             var expected = Stub.Create<IMergeResult>();
-            Func<object, object, IInjectionContext, IMergeResult> @delegate = (s, t, c) => expected;
+            DMerge @delegate = (s, t, c, h) => expected;
 
             var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
