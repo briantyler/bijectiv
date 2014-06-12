@@ -484,7 +484,7 @@ namespace Bijectiv.KernelBuilder
 
             var trigger = new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p));
             var fragment = new InjectionTriggerFragment(
-                typeof(TSource), typeof(TTarget), trigger, InjectionTriggerCause.InjectionEnded);
+                typeof(TSource), typeof(TTarget), trigger, TriggeredBy.InjectionEnded);
             this.Definition.Add(fragment);
 
             return this;

@@ -44,27 +44,27 @@ namespace Bijectiv.InjectionFactory
     public class CreateTriggersTask : IInjectionTask
     {
         /// <summary>
-        /// The cause of the trigger.
+        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
         /// </summary>
-        private readonly InjectionTriggerCause cause;
+        private readonly TriggeredBy triggeredBy;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CreateTriggersTask"/> class.
         /// </summary>
-        /// <param name="cause">
-        /// The cause of the trigger.
+        /// <param name="triggeredBy">
+        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
         /// </param>
-        public CreateTriggersTask(InjectionTriggerCause cause)
+        public CreateTriggersTask(TriggeredBy triggeredBy)
         {
-            this.cause = cause;
+            this.triggeredBy = triggeredBy;
         }
 
         /// <summary>
-        /// Gets the cause of the trigger.
+        /// Gets the reason that <see cref="IInjectionTrigger"/> is pulled.
         /// </summary>
-        public InjectionTriggerCause Cause
+        public TriggeredBy TriggeredBy
         {
-            get { return this.cause; }
+            get { return this.triggeredBy; }
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Bijectiv.InjectionFactory
             var fragments = scaffold
                 .UnprocessedFragments
                 .OfType<InjectionTriggerFragment>()
-                .Where(candidate => candidate.Cause == this.Cause)
+                .Where(candidate => candidate.TriggeredBy == this.TriggeredBy)
                 .ToArray();
 
             foreach (var fragment in fragments)

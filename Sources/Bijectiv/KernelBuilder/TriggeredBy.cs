@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionTriggerParameters.cs" company="Bijectiv">
+// <copyright file="TriggeredBy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,57 +23,20 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionTriggerParameters type.
+//   Defines the TriggeredBy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.KernelBuilder
 {
     /// <summary>
-    /// The parameters to a <see cref="IInjectionTrigger"/>.
+    /// Represents the reason that a <see cref="IInjectionTrigger"/> is pulled.
     /// </summary>
-    public interface IInjectionTriggerParameters
+    public enum TriggeredBy
     {
         /// <summary>
-        /// Gets the source instance as an object.
+        /// Triggered by the end of the injection.
         /// </summary>
-        object SourceAsObject { get; }
-
-        /// <summary>
-        /// Gets the target instance as an object.
-        /// </summary>
-        object TargetAsObject { get; }
-
-        /// <summary>
-        /// Gets the context in which the trigger is being pulled.
-        /// </summary>
-        IInjectionContext Context { get; }
-
-        /// <summary>
-        /// Gets the hint that was passed to the <see cref="IInjection"/>.
-        /// </summary>
-        object Hint { get; }
-    }
-
-    /// <summary>
-    /// The strongly typed parameters to a <see cref="IInjectionTrigger"/>.
-    /// </summary>
-    /// <typeparam name="TSource">
-    /// The source type.
-    /// </typeparam>
-    /// <typeparam name="TTarget">
-    /// The target type.
-    /// </typeparam>
-    public interface IInjectionTriggerParameters<out TSource, out TTarget> : IInjectionTriggerParameters
-    {
-        /// <summary>
-        /// Gets the source.
-        /// </summary>
-        TSource Source { get; }
-
-        /// <summary>
-        /// Gets the target.
-        /// </summary>
-        TTarget Target { get; }
+        InjectionEnded
     }
 }

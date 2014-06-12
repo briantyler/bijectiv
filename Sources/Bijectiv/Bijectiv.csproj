@@ -68,7 +68,7 @@
     <Compile Include="KernelBuilder\AutoInjectionOptions.cs" />
     <Compile Include="KernelBuilder\InjectionKernel.cs" />
     <Compile Include="KernelBuilder\InjectionTriggerFragment.cs" />
-    <Compile Include="KernelBuilder\InjectionTriggerCause.cs" />
+    <Compile Include="KernelBuilder\TriggeredBy.cs" />
     <Compile Include="KernelBuilder\NameRegexAutoInjectionStrategy.cs" />
     <Compile Include="KernelBuilder\NullAutoInjectionStrategy.cs" />
     <Compile Include="KernelBuilder\AutoInjectionFragment.cs" />

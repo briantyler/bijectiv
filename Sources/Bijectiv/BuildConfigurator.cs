@@ -31,6 +31,7 @@ namespace Bijectiv
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Bijectiv.InjectionFactory;
@@ -141,6 +142,9 @@ namespace Bijectiv
         /// <summary>
         /// Resets <see cref="TransformTasks"/> to its default configuration.
         /// </summary>
+        [SuppressMessage(
+            "Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity",
+            Justification = "The annonymous methods make this theoretically bad, but in practice it's fine.")]
         private void ResetTransformTasks()
         {
             this.TransformTasks.Clear();
@@ -159,7 +163,7 @@ namespace Bijectiv
                     () => new CacheTargetTask(),
                     () => new InitializeTriggerParametersTask(),
                     () => new AutoInjectionTask(new AutoInjectionTaskTransformDetail()),
-                    () => new CreateTriggersTask(InjectionTriggerCause.InjectionEnded), 
+                    () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnTargetAsObjectTask()
                 });
         }
@@ -178,7 +182,7 @@ namespace Bijectiv
                     () => new InitializeTriggerParametersTask(),
                     () => new InitializeMembersTask(new ReflectionGateway()), 
                     () => new AutoInjectionTask(new AutoInjectionTaskMergeDetail()),
-                    () => new CreateTriggersTask(InjectionTriggerCause.InjectionEnded), 
+                    () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnMergeResultTask()
                 });
         }

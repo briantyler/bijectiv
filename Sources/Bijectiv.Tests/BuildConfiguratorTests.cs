@@ -94,7 +94,7 @@ namespace Bijectiv.Tests
             Assert.IsNotInstanceOfType(
                 ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
-            Assert.AreEqual(InjectionTriggerCause.InjectionEnded, ((CreateTriggersTask)tasks[index++]).Cause);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
             Assert.AreEqual(index, tasks.Length);
@@ -120,7 +120,7 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(
                 ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
-            Assert.AreEqual(InjectionTriggerCause.InjectionEnded, ((CreateTriggersTask)tasks[index++]).Cause);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnMergeResultTask));
 
             Assert.AreEqual(index, tasks.Length);
