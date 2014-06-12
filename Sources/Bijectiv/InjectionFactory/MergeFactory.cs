@@ -108,7 +108,6 @@ namespace Bijectiv.InjectionFactory
             var injectionContext = Expression.Parameter(typeof(IInjectionContext), "InjectionContext");
             var hint = Expression.Parameter(typeof(object), "hint");
 
-
             var scaffold = new InjectionScaffold(
                 definitionRegistry, definition, sourceAsObject, injectionContext)
                 {

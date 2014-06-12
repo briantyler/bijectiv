@@ -462,9 +462,26 @@ namespace Bijectiv.KernelBuilder
             return this;
         }
 
+        /// <summary>
+        /// Registers an action with the injection that will be executed immediately before the injection ends.
+        /// </summary>
+        /// <param name="action">
+        /// The action to execute.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
             Action<IInjectionTriggerParameters<TSource, TTarget>> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
             var trigger = new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p));
             var fragment = new InjectionTriggerFragment(
                 typeof(TSource), typeof(TTarget), trigger, InjectionTriggerCause.InjectionEnded);
@@ -473,9 +490,28 @@ namespace Bijectiv.KernelBuilder
             return this;
         }
 
+        /// <summary>
+        /// Registers an action with the injection that will be executed immediately before the injection ends, 
+        /// whenever the injection target is being injected as a member of a collection.
+        /// </summary>
+        /// <param name="action">
+        /// The action to execute where the <see cref="int"/> parameter is the index of 
+        /// <see cref="IInjectionTriggerParameters{TSource,TTarget}.Target"/> in its parent collection.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
             Action<int, IInjectionTriggerParameters<TSource, TTarget>> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
             Action<IInjectionTriggerParameters<TSource, TTarget>> indexedAction = p =>
                 {
                     var hint = p.Hint as EnumerableInjectionHint;
