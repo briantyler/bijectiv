@@ -60,7 +60,7 @@ namespace Bijectiv.InjectionFactory
             }
 
             return scaffold.ProcessedFragments.All(
-                candidate => candidate.FragmentCategory != LegendryFragments.Factory);
+                candidate => candidate.FragmentCategory != LegendaryFragments.Factory);
         }
 
         /// <summary>

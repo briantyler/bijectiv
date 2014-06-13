@@ -86,7 +86,7 @@ namespace Bijectiv.Utilities
         /// The expression to visit.
         /// </param>
         /// <returns>
-        /// The modified expression, if it or any subexpression was modified; otherwise, returns the original
+        /// The modified expression, if it or any sub-expression was modified; otherwise, returns the original
         /// expression.
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0",

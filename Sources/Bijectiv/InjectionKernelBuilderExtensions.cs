@@ -140,11 +140,11 @@ namespace Bijectiv
         /// <example>
         /// Use the <see cref="Placeholder"/> type to register a generic type:
         ///     <code>
-        /// factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
+        ///     factory.Register&lt;ISet&lt;Placeholder&gt;, HashSet&lt;Placeholder&gt;&gt;();
         ///     </code>
         /// </example>
         /// <remarks>
-        /// It might be possible to constuct parameters that do not behave as expected, but you are very unlikely to 
+        /// It might be possible to construct parameters that do not behave as expected, but you are very unlikely to 
         /// do this by accident.
         /// </remarks>
         public static void RegisterEnumerable<TInterface, TConcrete>([NotNull] this InjectionKernelBuilder @this)

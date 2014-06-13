@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.KernelBuilder
                 typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(LegendryFragments.Inherits, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Inherits, target.FragmentCategory);
         }
     }
 }

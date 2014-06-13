@@ -62,7 +62,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new DefaultFactoryFragment(typeof(object), typeof(object));
 
             // Assert
-            Assert.AreEqual(LegendryFragments.Factory, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Factory, target.FragmentCategory);
         }
 
         [TestMethod]

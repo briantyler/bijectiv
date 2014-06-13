@@ -39,7 +39,7 @@ namespace Bijectiv.KernelBuilder
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A <see cref="IAutoInjectionStrategy"/> that substitues the name of the target member into a regular expression
+    /// A <see cref="IAutoInjectionStrategy"/> that substitutes the name of the target member into a regular expression
     /// and outputs the first source member with a name that is a match, or <c>null</c> otherwise.
     /// </summary>
     public class NameRegexAutoInjectionStrategy : IAutoInjectionStrategy

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LegendryFragments.cs" company="Bijectiv">
+// <copyright file="LegendaryFragments.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LegendryFragments type.
+//   Defines the LegendaryFragments type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,12 +32,12 @@ namespace Bijectiv.KernelBuilder
     using System;
 
     /// <summary>
-    /// Fragments that are known throught the library.
+    /// Fragments that are known throughout the library.
     /// </summary>
     /// <remarks>
     /// Back when 8-bit was cool b113c714 == bijectiv.
     /// </remarks>
-    public static class LegendryFragments
+    public static class LegendaryFragments
     {
         /// <summary>
         /// Represents a fragment that describes inheritance.

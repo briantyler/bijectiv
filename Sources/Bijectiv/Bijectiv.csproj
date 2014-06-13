@@ -132,7 +132,7 @@
     <Compile Include="KernelBuilder\InheritsFragment.cs" />
     <Compile Include="IInjectionDefinitionBuilder.cs" />
     <Compile Include="IInstanceRegistry.cs" />
-    <Compile Include="KernelBuilder\LegendryFragments.cs" />
+    <Compile Include="KernelBuilder\LegendaryFragments.cs" />
     <Compile Include="KernelBuilder\InjectionDefinition.cs" />
     <Compile Include="KernelBuilder\InjectionDefinitionBuilder.cs" />
     <Compile Include="KernelBuilder\InjectionFragment.cs" />

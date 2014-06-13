@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Utilities
             const BindingFlags Expected = BindingFlags.Instance | BindingFlags.Public;
 
             // Act
-            const BindingFlags Actual = ReflectionGateway.InstanceBindingFlags;
+            const BindingFlags Actual = ReflectionGateway.Instance;
 
             // Assert
             Assert.AreEqual(Expected, Actual);
@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.Utilities
             const BindingFlags Expected = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
             // Act
-            const BindingFlags Actual = ReflectionGateway.NonPublicInstanceBindingFlags;
+            const BindingFlags Actual = ReflectionGateway.NonPublicInstance;
 
             // Assert
             Assert.AreEqual(Expected, Actual);
@@ -116,7 +116,7 @@ namespace Bijectiv.Tests.Utilities
         {
             // Arrange
             var typeMock = new Mock<Type>(MockBehavior.Strict);
-            typeMock.Setup(_ => _.GetFields(ReflectionGateway.InstanceBindingFlags)).Returns(new FieldInfo[0]);
+            typeMock.Setup(_ => _.GetFields(ReflectionGateway.Instance)).Returns(new FieldInfo[0]);
 
             var target = new ReflectionGateway();
 
@@ -151,7 +151,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock
-                .Setup(_ => _.GetFields(ReflectionGateway.NonPublicInstanceBindingFlags))
+                .Setup(_ => _.GetFields(ReflectionGateway.NonPublicInstance))
                 .Returns(new FieldInfo[0]);
 
             var target = new ReflectionGateway();
@@ -218,7 +218,7 @@ namespace Bijectiv.Tests.Utilities
         {
             // Arrange
             var typeMock = new Mock<Type>(MockBehavior.Strict);
-            typeMock.Setup(_ => _.GetProperties(ReflectionGateway.InstanceBindingFlags)).Returns(new PropertyInfo[0]);
+            typeMock.Setup(_ => _.GetProperties(ReflectionGateway.Instance)).Returns(new PropertyInfo[0]);
 
             var target = new ReflectionGateway();
 
@@ -235,7 +235,7 @@ namespace Bijectiv.Tests.Utilities
         {
             // Arrange
             var typeMock = new Mock<Type>(MockBehavior.Strict);
-            typeMock.Setup(_ => _.GetProperties(ReflectionGateway.InstanceBindingFlags)).Returns(Properties);
+            typeMock.Setup(_ => _.GetProperties(ReflectionGateway.Instance)).Returns(Properties);
 
             var target = new ReflectionGateway();
 
@@ -253,7 +253,7 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock
-                .Setup(_ => _.GetProperties(ReflectionGateway.NonPublicInstanceBindingFlags))
+                .Setup(_ => _.GetProperties(ReflectionGateway.NonPublicInstance))
                 .Returns(new PropertyInfo[0]);
 
             var target = new ReflectionGateway();

@@ -1070,5 +1070,34 @@ namespace Bijectiv.Tests.KernelBuilder
             Assert.AreEqual(5, index);
             Assert.IsTrue((bool)called);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OnCollectionItem_ValidParameters_IndexedActionNotCalledWhenHintIsNotEnumerableInjection()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+                MockBehavior.Loose,
+                definition,
+                Stub.Create<IInstanceRegistry>()) { CallBase = true };
+
+            Action<IInjectionTriggerParameters<TestClass1, TestClass2>> indexedAction = null;
+            targetMock
+                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionTriggerParameters<TestClass1, TestClass2>>>()))
+                .Callback((Action<IInjectionTriggerParameters<TestClass1, TestClass2>> a) => indexedAction = a);
+
+            object called = false;
+
+            // Act
+            targetMock.Object.OnCollectionItem((i, p) =>
+            {
+                called = true;
+            });
+            indexedAction(new InjectionTriggerParameters<TestClass1, TestClass2>());
+
+            // Assert
+            Assert.IsFalse((bool)called);
+        }
     }
 }

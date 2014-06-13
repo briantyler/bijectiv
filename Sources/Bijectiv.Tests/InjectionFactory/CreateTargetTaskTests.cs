@@ -205,7 +205,7 @@ namespace Bijectiv.Tests.InjectionFactory
             var scaffold = CreateScaffold();
             var target = new CreateTargetTask(expressionFactoryMock.Object);
 
-            var factoryFragment = Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.Factory);
+            var factoryFragment = Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.Factory);
             scaffold.CandidateFragments.Add(factoryFragment);
             scaffold.CandidateFragments.Add(Stub.Fragment<TestClass1, TestClass2>());
 

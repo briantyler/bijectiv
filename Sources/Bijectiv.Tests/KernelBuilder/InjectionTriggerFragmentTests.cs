@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullSourceFragmentTests.cs" company="Bijectiv">
+// <copyright file="InjectionTriggerFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,14 +23,12 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the NullSourceFragmentTests type.
+//   Defines the InjectionTriggerFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Tests.KernelBuilder
 {
-    using System;
-
     using Bijectiv.KernelBuilder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -38,36 +36,21 @@ namespace Bijectiv.Tests.KernelBuilder
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="NullSourceFragment"/> class.
+    /// This class tests the see <see cref="InjectionTriggerFragment"/> tests.
     /// </summary>
     [TestClass]
-    public class NullSourceFragmentTests
+    public class InjectionTriggerFragmentTests
     {
-        private static readonly Func<IInjectionContext, TestClass2> Factory = context => default(TestClass2);
-
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_FactoryParameterIsNull_Throws()
+        public void CreateInstance_TriggerParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new NullSourceFragment(TestClass1.T, TestClass2.T, null).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
-        public void CreateInstance_FactoryParameterHasWrongType_Throws()
-        {
-            // Arrange
-
-            // Act
-            new NullSourceFragment(TestClass2.T, TestClass1.T, Factory).Naught();
+            new InjectionTriggerFragment(TestClass1.T, TestClass2.T, null, TriggeredBy.InjectionEnded).Naught();
 
             // Assert
         }
@@ -79,86 +62,66 @@ namespace Bijectiv.Tests.KernelBuilder
             // Arrange
 
             // Act
-            new NullSourceFragment(TestClass1.T, TestClass2.T, Factory).Naught();
+            new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InheritedProperty_IsFalse()
+        public void CreateInstance_ValidParameters_FragmentCategoryPropertyIsTrigger()
         {
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var target = new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.IsFalse(target.Inherited);
+            Assert.AreEqual(LegendaryFragments.Trigger, target.FragmentCategory);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FactoryReturnTypeIsMoreDerived_InstanceCreated()
+        public void CreateInstance_ValidParameters_InheritedPropertyIsTrue()
         {
             // Arrange
 
             // Act
-            new NullSourceFragment(TestClass1.T, typeof(object), Factory).Naught();
+            var target = new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
 
             // Assert
+            Assert.IsTrue(target.Inherited);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FragmentCategoryProperty_IsNullSource()
+        public void CreateInstance_TriggerParameter_IsAssignedToTriggerProperty()
         {
             // Arrange
+            var trigger = Stub.Create<IInjectionTrigger>();
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var target = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.NullSource, target.FragmentCategory);
+            Assert.AreEqual(trigger, target.Trigger);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_FactoryParameter_IsAssignedToFactoryProperty()
+        public void CreateInstance_TriggeredByParameter_IsAssignedToTriggeredByProperty()
         {
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var target = new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(Factory, target.Factory);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ExactFactory_FactoryTypePropertyIsCalculatedFromTargetParameter()
-        {
-            // Arrange
-
-            // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
-
-            // Assert
-            Assert.AreEqual(typeof(Func<IInjectionContext, TestClass2>), target.FactoryType);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_CovariantFactory_FactoryTypePropertyIsCalculatedFromTargetParameter()
-        {
-            // Arrange
-
-            // Act
-            var target = new NullSourceFragment(TestClass1.T, typeof(object), Factory);
-
-            // Assert
-            Assert.AreEqual(typeof(Func<IInjectionContext, object>), target.FactoryType);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, target.TriggeredBy);
         }
     }
 }

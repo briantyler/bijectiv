@@ -62,7 +62,7 @@ namespace Bijectiv.InjectionFactory
             if (fragment == null)
             {
                 if (scaffold.ProcessedFragments.Any(
-                        candidate => candidate.FragmentCategory == LegendryFragments.NullSource))
+                        candidate => candidate.FragmentCategory == LegendaryFragments.NullSource))
                 {
                     return;
                 }
@@ -88,7 +88,7 @@ namespace Bijectiv.InjectionFactory
             scaffold.Expressions.Add(ifIsNull);
 
             var nullSourceFragments = scaffold.CandidateFragments
-                .Where(candidate => candidate.FragmentCategory == LegendryFragments.NullSource);
+                .Where(candidate => candidate.FragmentCategory == LegendaryFragments.NullSource);
             scaffold.ProcessedFragments.AddRange(nullSourceFragments);
         }
     }

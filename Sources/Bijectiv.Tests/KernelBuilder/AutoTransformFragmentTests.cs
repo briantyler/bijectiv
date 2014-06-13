@@ -93,7 +93,7 @@ namespace Bijectiv.Tests.KernelBuilder
                 TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>());
 
             // Assert
-            Assert.AreEqual(LegendryFragments.AutoInjection, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.AutoInjection, target.FragmentCategory);
         }
 
         [TestMethod]

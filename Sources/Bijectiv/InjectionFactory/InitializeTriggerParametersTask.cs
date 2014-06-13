@@ -58,7 +58,7 @@ namespace Bijectiv.InjectionFactory
             }
 
             var hasTriggers = scaffold.UnprocessedFragments
-                .Any(candidate => candidate.FragmentCategory == LegendryFragments.Trigger);
+                .Any(candidate => candidate.FragmentCategory == LegendaryFragments.Trigger);
 
             if (!hasTriggers)
             {

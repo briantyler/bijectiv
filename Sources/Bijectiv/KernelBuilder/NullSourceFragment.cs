@@ -103,7 +103,7 @@ namespace Bijectiv.KernelBuilder
         /// </summary>
         public override Guid FragmentCategory
         {
-            get { return LegendryFragments.NullSource; }
+            get { return LegendaryFragments.NullSource; }
         }
 
         /// <summary>

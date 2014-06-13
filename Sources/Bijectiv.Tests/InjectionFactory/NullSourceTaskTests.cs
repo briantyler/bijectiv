@@ -82,7 +82,7 @@ namespace Bijectiv.Tests.InjectionFactory
             // Arrange
             var scaffold = CreateScaffold();
             scaffold.ProcessedFragments.Add(
-                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.NullSource));
 
             var target = CreateTarget();
 
@@ -219,9 +219,9 @@ namespace Bijectiv.Tests.InjectionFactory
                     TestClass2.T,
                     new Func<IInjectionContext, TestClass2>(c => expected)));
             scaffold.CandidateFragments.Add(
-                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.NullSource));
             scaffold.CandidateFragments.Add(
-                Stub.Fragment<TestClass1, TestClass2>(false, LegendryFragments.NullSource));
+                Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.NullSource));
 
             // Act
             target.Execute(scaffold);

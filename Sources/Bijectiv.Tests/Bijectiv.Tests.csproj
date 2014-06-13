@@ -76,6 +76,7 @@
     <Compile Include="KernelBuilder\DefaultFactoryFragmentTests.cs" />
     <Compile Include="KernelBuilder\InheritsFragmentTests.cs" />
     <Compile Include="KernelBuilder\InjectionKernelTests.cs" />
+    <Compile Include="KernelBuilder\InjectionTriggerFragmentTests.cs" />
     <Compile Include="KernelBuilder\InstanceRegistryTests.cs" />
     <Compile Include="KernelBuilder\NameRegexAutoTransformStrategyTests.cs" />
     <Compile Include="KernelBuilder\NullAutoTransformStrategyTests.cs" />

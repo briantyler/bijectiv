@@ -73,7 +73,7 @@ namespace Bijectiv.Utilities
         /// Gets a value indicating whether the member can be written to.
         /// </summary>
         /// <param name="this">
-        /// The <see cref="MemberInfo"/> to check for writeability.
+        /// The <see cref="MemberInfo"/> to check for the ability to write.
         /// </param>
         /// <returns>
         /// A value indicating whether the member can be written to.

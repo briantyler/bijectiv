@@ -83,7 +83,7 @@ namespace Bijectiv.KernelBuilder
         /// </summary>
         public override Guid FragmentCategory
         {
-            get { return LegendryFragments.AutoInjection; }
+            get { return LegendaryFragments.AutoInjection; }
         }
 
         /// <summary>

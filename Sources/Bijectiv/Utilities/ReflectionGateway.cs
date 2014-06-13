@@ -42,13 +42,13 @@ namespace Bijectiv.Utilities
         /// <summary>
         /// The flags required to bind to public instance members.
         /// </summary>
-        public const BindingFlags InstanceBindingFlags =
+        public const BindingFlags Instance =
             BindingFlags.Instance | BindingFlags.Public;
 
         /// <summary>
         /// The flags required to bind to public or private instance members.
         /// </summary>
-        public const BindingFlags NonPublicInstanceBindingFlags =
+        public const BindingFlags NonPublicInstance =
             BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace Bijectiv.Utilities
             }
 
             var bindingFlags = options.HasFlag(ReflectionOptions.IncludeNonPublic) 
-                ? NonPublicInstanceBindingFlags 
-                : InstanceBindingFlags;
+                ? NonPublicInstance 
+                : Instance;
 
             return type
                 .GetFields(bindingFlags)
@@ -99,8 +99,8 @@ namespace Bijectiv.Utilities
             }
 
             var bindingFlags = options.HasFlag(ReflectionOptions.IncludeNonPublic)
-                ? NonPublicInstanceBindingFlags
-                : InstanceBindingFlags;
+                ? NonPublicInstance
+                : Instance;
 
             return type
                 .GetProperties(bindingFlags)

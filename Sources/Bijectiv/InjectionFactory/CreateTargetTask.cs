@@ -103,7 +103,7 @@ namespace Bijectiv.InjectionFactory
             scaffold.Expressions.Add(assignTargetAsObject);
 
             var factoryFragments = scaffold.CandidateFragments
-                .Where(candidate => candidate.FragmentCategory == LegendryFragments.Factory);
+                .Where(candidate => candidate.FragmentCategory == LegendaryFragments.Factory);
             scaffold.ProcessedFragments.AddRange(factoryFragments);
         }
     }

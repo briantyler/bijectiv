@@ -95,7 +95,7 @@ namespace Bijectiv.KernelBuilder
         /// </summary>
         public override Guid FragmentCategory
         {
-            get { return LegendryFragments.Trigger; }
+            get { return LegendaryFragments.Trigger; }
         }
 
         /// <summary>

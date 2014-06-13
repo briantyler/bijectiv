@@ -62,7 +62,7 @@ namespace Bijectiv.InjectionFactory
 
             return scaffold
                 .UnprocessedFragments
-                .FirstOrDefault(candidate => candidate.FragmentCategory == LegendryFragments.Factory)
+                .FirstOrDefault(candidate => candidate.FragmentCategory == LegendaryFragments.Factory)
                 is ActivateFragment;
         }
 
