@@ -39,6 +39,7 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// <typeparam name="T">
     /// Some type.
     /// </typeparam>
+    // ReSharper disable once UnusedTypeParameter
     public class GenericPlaceholderCollection<T> : Collection<Placeholder>, IPlaceholderEnumerable
     {
     }

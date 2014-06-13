@@ -40,6 +40,7 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// <typeparam name="T2">
     /// Some other type.
     /// </typeparam>
+    // ReSharper disable once UnusedTypeParameter
     public interface ICrazyPlaceholderEnumerable<T1, out T2> : IEnumerable<T2>
     {
     }

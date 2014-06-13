@@ -42,7 +42,9 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// <typeparam name="T2">
     /// Some other type.
     /// </typeparam>
+    // ReSharper disable UnusedTypeParameter
     public class NonMonadicPlaceholderCollection<T1, T2> : Collection<Placeholder>
+        // ReSharper restore UnusedTypeParameter
     {
     }
 }

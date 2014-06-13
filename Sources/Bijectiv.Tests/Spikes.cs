@@ -254,7 +254,7 @@ namespace Bijectiv.Tests
                 new KeyedClass1 { Key = 1, Value = "1s" },
                 new KeyedClass1 { Key = 2, Value = "2s" },
                 new KeyedClass1 { Key = 3, Value = "3s" },
-                new KeyedClass1 { Key = 4, Value = "4s" },
+                new KeyedClass1 { Key = 4, Value = "4s" }
             };
 
             var t1 = new KeyedClass1 { Key = 1, Value = "1t" };
@@ -310,7 +310,7 @@ namespace Bijectiv.Tests
                 new KeyedClass1 { Key = 1, Value = "1s" },
                 new KeyedClass1 { Key = 2, Value = "2s" },
                 new KeyedClass1 { Key = 3, Value = "3s" },
-                new KeyedClass1 { Key = 4, Value = "4s" },
+                new KeyedClass1 { Key = 4, Value = "4s" }
             };
 
             // Act
@@ -318,7 +318,7 @@ namespace Bijectiv.Tests
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
-            var target = (IEnumerable<KeyedClass1>)result.Target;
+            var target = ((IEnumerable<KeyedClass1>)result.Target).ToArray();
             Assert.AreEqual(4, target.Count());
             Assert.AreEqual(1, target.ElementAt(0).Key);
             Assert.AreEqual("1s", target.ElementAt(0).Value);

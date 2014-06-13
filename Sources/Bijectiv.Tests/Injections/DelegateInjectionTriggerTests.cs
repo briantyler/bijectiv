@@ -50,6 +50,7 @@ namespace Bijectiv.Tests.Injections
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new DelegateInjectionTrigger(null).Naught();
 
             // Assert
@@ -90,6 +91,7 @@ namespace Bijectiv.Tests.Injections
             var target = new DelegateInjectionTrigger(p => p.Naught());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Pull(null);
 
             // Assert

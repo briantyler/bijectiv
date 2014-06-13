@@ -30,12 +30,9 @@
 // ReSharper disable AssignNullToNotNullAttribute
 namespace Bijectiv.Tests.Injections
 {
-    using System;
-
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
-    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -29,12 +29,9 @@
 
 namespace Bijectiv.Tests.Injections
 {
-    using System;
-
     using Bijectiv.Injections;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
-    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -244,6 +241,8 @@ namespace Bijectiv.Tests.Injections
             Assert.IsTrue(called[0]);
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Merge_ValidParameters_PassesHintToDelegate()
         {
             // Arrange
