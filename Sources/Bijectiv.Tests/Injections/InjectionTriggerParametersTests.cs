@@ -43,6 +43,18 @@ namespace Bijectiv.Tests.Injections
     {
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            new InjectionTriggerParameters<TestClass1, TestClass2>().Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_AnyParameters_InstanceCreated()
         {
             // Arrange

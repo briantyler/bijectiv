@@ -916,6 +916,7 @@ namespace Bijectiv.Tests.KernelBuilder
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.RegisterTrigger(null, TriggeredBy.InjectionEnded);
 
             // Assert
@@ -937,6 +938,137 @@ namespace Bijectiv.Tests.KernelBuilder
             // Assert
             Assert.AreEqual(1, definition.Count());
             Assert.IsInstanceOfType(definition.Single(), typeof(InjectionTriggerFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterTrigger_ValidParameters_AssignsPropertiesToFragment()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var trigger = Stub.Create<IInjectionTrigger>();
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            // Act
+            target.RegisterTrigger(trigger, TriggeredBy.InjectionEnded);
+
+            // Assert
+            var fragment = (InjectionTriggerFragment)definition.Single();
+            Assert.AreEqual(TestClass1.T, fragment.Source);
+            Assert.AreEqual(TestClass2.T, fragment.Target);
+            Assert.AreEqual(trigger, fragment.Trigger);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, fragment.TriggeredBy);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void OnInjectionEnded_ActionParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(
+                definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.OnInjectionEnded(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OnInjectionEnded_ValidParameters_RegisteredTriggerWrapsAction()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+                MockBehavior.Loose,
+                definition,
+                Stub.Create<IInstanceRegistry>()) { CallBase = true };
+
+            IInjectionTrigger trigger = null;
+            targetMock
+                .Setup(_ => _.RegisterTrigger(It.IsAny<IInjectionTrigger>(), TriggeredBy.InjectionEnded))
+                .Callback((IInjectionTrigger t, TriggeredBy b) => trigger = t);
+
+            object called = false;
+
+            // Act
+            targetMock.Object.OnInjectionEnded(p => called = true);
+            trigger.Pull(new InjectionTriggerParameters<TestClass1, TestClass2>());
+
+            // Assert
+            Assert.IsTrue((bool)called);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OnInjectionEnded_ValidParameters_ReturnsSelf()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(
+                definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            var result = target.OnInjectionEnded(p => p.Naught());
+
+            // Assert
+            Assert.AreEqual(result, target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void OnCollectionItem_ActionParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(
+                definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.OnCollectionItem(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void OnCollectionItem_ValidParameters_OnInjectionEndedWrapsIndexedAction()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+                MockBehavior.Loose,
+                definition,
+                Stub.Create<IInstanceRegistry>()) { CallBase = true };
+
+            Action<IInjectionTriggerParameters<TestClass1, TestClass2>> indexedAction = null;
+            targetMock
+                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionTriggerParameters<TestClass1, TestClass2>>>()))
+                .Callback((Action<IInjectionTriggerParameters<TestClass1, TestClass2>> a) => indexedAction = a);
+
+            object index = 0;
+            object called = false;
+
+            // Act
+            targetMock.Object.OnCollectionItem((i, p) =>
+                {
+                    index = i;
+                    called = true;
+                });
+            indexedAction(
+                new InjectionTriggerParameters<TestClass1, TestClass2>(
+                    null, null, null, new EnumerableInjectionHint(5)));
+
+            // Assert
+            Assert.AreEqual(5, index);
+            Assert.IsTrue((bool)called);
         }
     }
 }

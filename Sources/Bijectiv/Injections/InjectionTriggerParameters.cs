@@ -84,6 +84,13 @@ namespace Bijectiv.Injections
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="InjectionTriggerParameters{TSource,TTarget}"/> class.
+        /// </summary>
+        internal InjectionTriggerParameters()
+        {
+        }
+
+        /// <summary>
         /// Gets the source instance as an object.
         /// </summary>
         public object SourceAsObject
