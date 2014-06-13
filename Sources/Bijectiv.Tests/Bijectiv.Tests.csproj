@@ -69,6 +69,7 @@
     <Compile Include="Injections\DelegateInjectionTriggerTests.cs" />
     <Compile Include="Injections\EnumerableInjectionHintTests.cs" />
     <Compile Include="Injections\IdenticalKeyTargetFinderTests.cs" />
+    <Compile Include="Injections\InjectionTriggerParametersTests.cs" />
     <Compile Include="KernelBuilder\ActivateFragmentTests.cs" />
     <Compile Include="KernelBuilder\CustomFactoryFragmentTests.cs" />
     <Compile Include="KernelBuilder\CustomFactoryParametersTests.cs" />
