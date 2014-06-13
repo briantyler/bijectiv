@@ -63,6 +63,14 @@ namespace Bijectiv.Injections
         }
 
         /// <summary>
+        /// Gets the trigger action.
+        /// </summary>
+        public Action<IInjectionTriggerParameters> Trigger
+        {
+            get { return this.trigger; }
+        }
+
+        /// <summary>
         /// Pulls the trigger.
         /// </summary>
         /// <param name="parameters">
@@ -75,7 +83,7 @@ namespace Bijectiv.Injections
                 throw new ArgumentNullException("parameters");
             }
 
-            this.trigger(parameters);
+            this.Trigger(parameters);
         }
     }
 }
