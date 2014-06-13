@@ -904,5 +904,39 @@ namespace Bijectiv.Tests.KernelBuilder
             // Assert
             Assert.AreEqual(result, target);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void RegisterTrigger_TriggerParameterIsNull_Throws()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            // Act
+            target.RegisterTrigger(null, TriggeredBy.InjectionEnded);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void RegisterTrigger_ValidParameters_AddsInjectionTriggerFragment()
+        {
+            // Arrange
+            var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var trigger = Stub.Create<IInjectionTrigger>();
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
+
+            // Act
+            target.RegisterTrigger(trigger, TriggeredBy.InjectionEnded);
+
+            // Assert
+            Assert.AreEqual(1, definition.Count());
+            Assert.IsInstanceOfType(definition.Single(), typeof(InjectionTriggerFragment));
+        }
     }
 }

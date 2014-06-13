@@ -463,6 +463,34 @@ namespace Bijectiv.KernelBuilder
         }
 
         /// <summary>
+        /// Registers a <see cref="IInjectionTrigger"/> with the <see cref="IInjection"/>.
+        /// </summary>
+        /// <param name="trigger">
+        /// The trigger.
+        /// </param>
+        /// <param name="triggeredBy">
+        /// The reason that a <see cref="IInjectionTrigger"/> is pulled.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> RegisterTrigger(
+            IInjectionTrigger trigger, 
+            TriggeredBy triggeredBy)
+        {
+            if (trigger == null)
+            {
+                throw new ArgumentNullException("trigger");
+            }
+
+            this.Definition.Add(new InjectionTriggerFragment(typeof(TSource), typeof(TTarget), trigger, triggeredBy));
+            return this;
+        }
+
+        /// <summary>
         /// Registers an action with the injection that will be executed immediately before the injection ends.
         /// </summary>
         /// <param name="action">
@@ -474,7 +502,7 @@ namespace Bijectiv.KernelBuilder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
             Action<IInjectionTriggerParameters<TSource, TTarget>> action)
         {
             if (action == null)
@@ -482,12 +510,9 @@ namespace Bijectiv.KernelBuilder
                 throw new ArgumentNullException("action");
             }
 
-            var trigger = new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p));
-            var fragment = new InjectionTriggerFragment(
-                typeof(TSource), typeof(TTarget), trigger, TriggeredBy.InjectionEnded);
-            this.Definition.Add(fragment);
-
-            return this;
+            return this.RegisterTrigger(
+                new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p)), 
+                TriggeredBy.InjectionEnded);
         }
 
         /// <summary>
@@ -504,7 +529,7 @@ namespace Bijectiv.KernelBuilder
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
             Action<int, IInjectionTriggerParameters<TSource, TTarget>> action)
         {
             if (action == null)
