@@ -35,8 +35,13 @@ namespace Bijectiv.KernelBuilder
     public enum TriggeredBy
     {
         /// <summary>
+        /// Triggered by nothing; the trigger is never pulled.
+        /// </summary>
+        Nothing,
+
+        /// <summary>
         /// Triggered by the end of the injection.
         /// </summary>
-        InjectionEnded
+        InjectionEnded,
     }
 }

@@ -85,5 +85,29 @@ namespace Bijectiv.TestUtilities
 
             return fragmentStub.Object;
         }
+
+        /// <summary>
+        /// Creates a <see cref="InjectionFragment"/>.
+        /// </summary>
+        /// <param name="category">
+        /// The fragment category.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The fragment source type.
+        /// </typeparam>
+        /// <typeparam name="TTarget">
+        /// The fragment target type.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="InjectionFragment"/>.
+        /// </returns>
+        public static InjectionFragment Fragment<TSource, TTarget>(Guid category)
+        {
+            var fragmentStub = new Mock<InjectionFragment>(MockBehavior.Loose, typeof(TSource), typeof(TTarget));
+            fragmentStub.Setup(_ => _.Inherited).Returns(true);
+            fragmentStub.Setup(_ => _.FragmentCategory).Returns(category);
+
+            return fragmentStub.Object;
+        }
     }
 }

@@ -83,16 +83,11 @@ namespace Bijectiv.InjectionFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var fragments = scaffold
+            scaffold
                 .UnprocessedFragments
                 .OfType<InjectionTriggerFragment>()
                 .Where(candidate => candidate.TriggeredBy == this.TriggeredBy)
-                .ToArray();
-
-            foreach (var fragment in fragments)
-            {
-                this.ProcessFragment(fragment, scaffold);
-            }
+                .ForEach(fragment => this.ProcessFragment(fragment, scaffold));
         }
 
         /// <summary>
