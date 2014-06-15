@@ -31,7 +31,7 @@ namespace Bijectiv.KernelBuilder
 {
     using System;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Represents an inheritance relationship between injections.

@@ -33,7 +33,7 @@ namespace Bijectiv.KernelBuilder
     using System.Collections;
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// An definition that completely describes an injection.

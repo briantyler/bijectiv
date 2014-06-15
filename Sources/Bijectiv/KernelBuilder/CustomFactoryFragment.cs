@@ -31,7 +31,7 @@ namespace Bijectiv.KernelBuilder
 {
     using System;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Specifies that the <see cref="InjectionFragment.Target"/> should be created by a factory method.

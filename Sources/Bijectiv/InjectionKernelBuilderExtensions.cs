@@ -36,8 +36,6 @@ namespace Bijectiv
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Extensions to the <see cref="InjectionKernelBuilder"/> class.
     /// </summary>

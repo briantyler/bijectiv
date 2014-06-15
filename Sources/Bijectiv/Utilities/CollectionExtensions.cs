@@ -32,8 +32,6 @@ namespace Bijectiv.Utilities
     using System;
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Represents extensions to types that implement <see cref="ICollection{T}"/>.
     /// </summary>

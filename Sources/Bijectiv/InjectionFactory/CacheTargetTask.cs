@@ -34,8 +34,6 @@ namespace Bijectiv.InjectionFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A task that caches a target instance.
     /// </summary>

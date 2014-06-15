@@ -34,8 +34,6 @@ namespace Bijectiv.TestUtilities.TestTypes
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A test class with a field.
     /// </summary>

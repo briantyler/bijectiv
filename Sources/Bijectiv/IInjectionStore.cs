@@ -31,7 +31,7 @@ namespace Bijectiv
 {
     using System;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Represents a store that holds <see cref="IInjection"/> instances.

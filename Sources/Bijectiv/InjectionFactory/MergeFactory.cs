@@ -33,11 +33,9 @@ namespace Bijectiv.InjectionFactory
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
-    using Bijectiv.Injections;
+    using Bijectiv.Kernel;
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
 
     /// <summary>
     /// A factory that creates <see cref="IMerge"/> instances.

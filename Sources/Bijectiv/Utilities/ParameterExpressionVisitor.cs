@@ -33,8 +33,6 @@ namespace Bijectiv.Utilities
     using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// An expression visitor that substitutes an <see cref="Expression"/> for every specific 
     /// <see cref="ParameterExpression"/> instance it finds.

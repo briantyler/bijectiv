@@ -35,8 +35,6 @@ namespace Bijectiv.KernelBuilder
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Represents a registration for a <see cref="IEnumerableFactory"/>.
     /// </summary>

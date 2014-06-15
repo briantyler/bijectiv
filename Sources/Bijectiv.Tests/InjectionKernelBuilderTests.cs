@@ -33,7 +33,7 @@ namespace Bijectiv.Tests
     using System;
     using System.Linq;
 
-    using Bijectiv.Stores;
+    using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
     using Bijectiv.Utilities;
 

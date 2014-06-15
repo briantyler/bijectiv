@@ -4,7 +4,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
 
 #pragma warning disable 1591
 // ReSharper disable UnusedMember.Global
@@ -16,8 +15,10 @@ using System;
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 
-namespace JetBrains.Annotations
+namespace Bijectiv.Utilities
 {
+    using System;
+
     /// <summary>
     /// Indicates that the value of the marked element could be <c>null</c> sometimes,
     /// so the check for <c>null</c> is necessary before its usage
@@ -71,7 +72,7 @@ namespace JetBrains.Annotations
         /// </param>
         public StringFormatMethodAttribute(string formatParameterName)
         {
-            FormatParameterName = formatParameterName;
+            this.FormatParameterName = formatParameterName;
         }
 
         public string FormatParameterName { get; private set; }
@@ -106,7 +107,7 @@ namespace JetBrains.Annotations
         public LocalizationRequiredAttribute() : this(true) { }
         public LocalizationRequiredAttribute(bool required)
         {
-            Required = required;
+            this.Required = required;
         }
 
         public bool Required { get; private set; }
@@ -152,7 +153,7 @@ namespace JetBrains.Annotations
     {
         public BaseTypeRequiredAttribute([NotNull] Type baseType)
         {
-            BaseType = baseType;
+            this.BaseType = baseType;
         }
 
         [NotNull]
@@ -179,8 +180,8 @@ namespace JetBrains.Annotations
         public UsedImplicitlyAttribute(
           ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
         public ImplicitUseKindFlags UseKindFlags { get; private set; }
@@ -207,8 +208,8 @@ namespace JetBrains.Annotations
         public MeansImplicitUseAttribute(
           ImplicitUseKindFlags useKindFlags, ImplicitUseTargetFlags targetFlags)
         {
-            UseKindFlags = useKindFlags;
-            TargetFlags = targetFlags;
+            this.UseKindFlags = useKindFlags;
+            this.TargetFlags = targetFlags;
         }
 
         [UsedImplicitly]
@@ -260,7 +261,7 @@ namespace JetBrains.Annotations
         public PublicAPIAttribute() { }
         public PublicAPIAttribute([NotNull] string comment)
         {
-            Comment = comment;
+            this.Comment = comment;
         }
 
         [NotNull]

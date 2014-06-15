@@ -29,7 +29,7 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// A test class with more than one constructor.

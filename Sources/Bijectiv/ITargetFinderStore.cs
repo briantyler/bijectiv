@@ -32,8 +32,7 @@ namespace Bijectiv
     using System;
 
     using Bijectiv.KernelBuilder;
-
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Represents a store that holds <see cref="ITargetFinder"/> instances.

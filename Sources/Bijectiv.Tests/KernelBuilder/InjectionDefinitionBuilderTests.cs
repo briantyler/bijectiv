@@ -33,7 +33,7 @@ namespace Bijectiv.Tests.KernelBuilder
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bijectiv.Injections;
+    using Bijectiv.Kernel;
     using Bijectiv.KernelBuilder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;

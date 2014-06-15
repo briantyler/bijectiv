@@ -36,7 +36,7 @@ namespace Bijectiv.KernelBuilder
     using System.Reflection;
     using System.Text.RegularExpressions;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// A <see cref="IAutoInjectionStrategy"/> that substitutes the name of the target member into a regular expression

@@ -36,8 +36,6 @@ namespace Bijectiv.InjectionFactory
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A task that creates all triggers with a given cause.
     /// </summary>

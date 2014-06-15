@@ -34,8 +34,7 @@ namespace Bijectiv.InjectionFactory
     using System.Linq.Expressions;
 
     using Bijectiv.KernelBuilder;
-
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// An expression factory that creates an expression that creates a target by activation.

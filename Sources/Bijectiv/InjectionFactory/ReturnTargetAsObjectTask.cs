@@ -32,7 +32,7 @@ namespace Bijectiv.InjectionFactory
     using System;
     using System.Linq.Expressions;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// A task that returns the target as an object.

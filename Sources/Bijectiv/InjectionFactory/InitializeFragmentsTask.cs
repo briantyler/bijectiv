@@ -35,8 +35,6 @@ namespace Bijectiv.InjectionFactory
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// The task that initializes the scaffold fragments.
     /// </summary>

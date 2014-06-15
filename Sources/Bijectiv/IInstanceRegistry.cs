@@ -32,7 +32,7 @@ namespace Bijectiv
     using System;
     using System.Collections.Generic;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Represents a registry that contains instances.

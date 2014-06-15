@@ -36,8 +36,6 @@ namespace Bijectiv.InjectionFactory
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Represents a task that processes <see cref="NullSourceFragment"/> fragments.
     /// </summary>

@@ -34,8 +34,6 @@ namespace Bijectiv.InjectionFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A task that tries to get the target instance from the cache and jumps to the exit if successful.
     /// </summary>

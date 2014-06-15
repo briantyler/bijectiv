@@ -33,7 +33,7 @@ namespace Bijectiv.InjectionFactory
     using System.Linq;
     using System.Linq.Expressions;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// The task that initializes the scaffold variables for a <see cref="ITransform"/>.

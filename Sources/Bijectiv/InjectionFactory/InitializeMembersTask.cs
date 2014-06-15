@@ -33,8 +33,6 @@ namespace Bijectiv.InjectionFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// The task that initializes the scaffold members.
     /// </summary>

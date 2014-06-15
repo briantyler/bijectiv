@@ -32,8 +32,7 @@ namespace Bijectiv
     using System;
 
     using Bijectiv.KernelBuilder;
-
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// Represents a builder of <see cref="InjectionDefinition"/> instances.

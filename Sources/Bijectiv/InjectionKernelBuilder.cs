@@ -32,11 +32,9 @@ namespace Bijectiv
     using System;
     using System.Collections.Generic;
 
+    using Bijectiv.Kernel;
     using Bijectiv.KernelBuilder;
-    using Bijectiv.Stores;
     using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a fine grained factory that can be used to incrementally build a <see cref="IInjectionKernel"/>.

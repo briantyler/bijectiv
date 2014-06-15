@@ -37,8 +37,6 @@ namespace Bijectiv.InjectionFactory
     using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// An expression factory that creates an expression that creates a target by resolving from the 
     /// <see cref="IInjectionContext"/>.

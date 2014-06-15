@@ -31,7 +31,7 @@ namespace Bijectiv.KernelBuilder
 {
     using System;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// A kernel that provides <see cref="IInjection"/> capabilities.

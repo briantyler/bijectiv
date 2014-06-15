@@ -35,7 +35,7 @@ namespace Bijectiv.InjectionFactory
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using JetBrains.Annotations;
+    using Bijectiv.Utilities;
 
     /// <summary>
     /// The <see cref="AutoInjectionTask"/> implementation detail.
