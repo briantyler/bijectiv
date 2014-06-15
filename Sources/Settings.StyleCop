@@ -5,6 +5,7 @@
       <Value>callback</Value>
       <Value>func</Value>
       <Value>int</Value>
+      <Value>bijectiv</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Analyzers>

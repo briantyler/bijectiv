@@ -63,5 +63,10 @@ namespace Bijectiv.Configuration
         /// Represents a fragment that describes an injection trigger.
         /// </summary>
         public static readonly Guid Trigger = new Guid("b113c714-C57A-466E-818F-44E0FE38EE10");
+
+        /// <summary>
+        /// Represents a fragment that describes a member injection.
+        /// </summary>
+        public static readonly Guid Member = new Guid("b113c714-29B7-41F8-98E5-D45649ECFC75");
     }
 }

@@ -50,6 +50,8 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\MemberFragment.cs" />
+    <Compile Include="Configuration\MemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionTriggerParameters.cs" />

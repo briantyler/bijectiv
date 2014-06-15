@@ -129,13 +129,16 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Adds the fragment to the definition.
+        /// Adds a fragment to the definition.
         /// </summary>
         /// <param name="fragment">
-        /// The fragment.
+        /// The fragment to add.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either the target or source of the fragment does not match that of the definition.
         /// </exception>
         public void Add([NotNull] InjectionFragment fragment)
         {
