@@ -34,7 +34,7 @@ namespace Bijectiv.InjectionFactory
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
     /// <summary>

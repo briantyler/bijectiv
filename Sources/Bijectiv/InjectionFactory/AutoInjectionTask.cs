@@ -32,7 +32,7 @@ namespace Bijectiv.InjectionFactory
     using System;
     using System.Linq;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
     /// <summary>

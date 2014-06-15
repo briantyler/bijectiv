@@ -32,8 +32,8 @@ namespace Bijectiv
     using System;
     using System.Collections.Generic;
 
+    using Bijectiv.Configuration;
     using Bijectiv.Kernel;
-    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     /// <summary>

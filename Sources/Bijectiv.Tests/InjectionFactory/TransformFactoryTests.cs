@@ -33,9 +33,9 @@ namespace Bijectiv.Tests.InjectionFactory
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
+    using Bijectiv.Configuration;
     using Bijectiv.InjectionFactory;
     using Bijectiv.Kernel;
-    using Bijectiv.KernelBuilder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;

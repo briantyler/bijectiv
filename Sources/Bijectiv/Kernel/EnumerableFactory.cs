@@ -33,7 +33,7 @@ namespace Bijectiv.Kernel
     using System.Collections;
     using System.Collections.Generic;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
     /// <summary>

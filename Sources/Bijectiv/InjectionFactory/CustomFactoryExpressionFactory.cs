@@ -33,7 +33,7 @@ namespace Bijectiv.InjectionFactory
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
 
     /// <summary>
     /// An expression factory that creates an expression that creates a target by invoking a delegate with

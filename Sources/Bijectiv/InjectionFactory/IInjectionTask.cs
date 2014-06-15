@@ -29,7 +29,7 @@
 
 namespace Bijectiv.InjectionFactory
 {
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
 
     /// <summary>
     /// Represents a task that produces a <see cref="IInjection"/> from a <see cref="InjectionDefinition"/>.

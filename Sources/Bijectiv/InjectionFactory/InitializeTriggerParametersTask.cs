@@ -33,8 +33,8 @@ namespace Bijectiv.InjectionFactory
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Bijectiv.Configuration;
     using Bijectiv.Kernel;
-    using Bijectiv.KernelBuilder;
 
     /// <summary>
     /// A task that initializes a trigger parameters variable if any triggers exist.

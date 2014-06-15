@@ -33,8 +33,8 @@ namespace Bijectiv.Tests.Kernel
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Bijectiv.Configuration;
     using Bijectiv.Kernel;
-    using Bijectiv.KernelBuilder;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;

@@ -31,7 +31,7 @@ namespace Bijectiv.TestUtilities
 {
     using System;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
 
     using Moq;
 

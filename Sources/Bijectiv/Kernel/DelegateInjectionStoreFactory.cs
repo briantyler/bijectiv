@@ -31,8 +31,8 @@ namespace Bijectiv.Kernel
 {
     using System;
 
+    using Bijectiv.Configuration;
     using Bijectiv.InjectionFactory;
-    using Bijectiv.KernelBuilder;
     using Bijectiv.Utilities;
 
     /// <summary>

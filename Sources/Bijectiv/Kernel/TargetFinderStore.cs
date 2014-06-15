@@ -32,7 +32,7 @@ namespace Bijectiv.Kernel
     using System;
     using System.Collections.Generic;
 
-    using Bijectiv.KernelBuilder;
+    using Bijectiv.Configuration;
 
     /// <summary>
     /// A store that holds <see cref="ITargetFinder"/> instances.
