@@ -53,8 +53,8 @@
     <Compile Include="IInjectionContext.cs" />
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionTriggerParameters.cs" />
-    <Compile Include="InjectionFactory\CreateTriggersTask.cs" />
-    <Compile Include="InjectionFactory\InitializeTriggerParametersTask.cs" />
+    <Compile Include="KernelFactory\CreateTriggersTask.cs" />
+    <Compile Include="KernelFactory\InitializeTriggerParametersTask.cs" />
     <Compile Include="Kernel\DelegateInjectionTrigger.cs" />
     <Compile Include="Kernel\DMerge.cs" />
     <Compile Include="Kernel\DTransform.cs" />
@@ -74,18 +74,18 @@
     <Compile Include="Configuration\AutoInjectionFragment.cs" />
     <Compile Include="Configuration\NullSourceFragment.cs" />
     <Compile Include="Configuration\TargetFinderRegistration.cs" />
-    <Compile Include="InjectionFactory\AutoInjectionTaskDetail.cs" />
-    <Compile Include="InjectionFactory\AutoInjectionTask.cs" />
-    <Compile Include="InjectionFactory\AutoInjectionTaskMergeDetail.cs" />
-    <Compile Include="InjectionFactory\AutoInjectionTaskTransformDetail.cs" />
-    <Compile Include="InjectionFactory\CacheTargetTask.cs" />
-    <Compile Include="InjectionFactory\FallbackFactoryExpressionFactory.cs" />
-    <Compile Include="InjectionFactory\InitializeMembersTask.cs" />
-    <Compile Include="InjectionFactory\InitializeMergeVariablesTask.cs" />
-    <Compile Include="InjectionFactory\MergeFactory.cs" />
-    <Compile Include="InjectionFactory\NullSourceTask.cs" />
-    <Compile Include="InjectionFactory\ReturnMergeResultTask.cs" />
-    <Compile Include="InjectionFactory\TryGetTargetFromCacheTask.cs" />
+    <Compile Include="KernelFactory\AutoInjectionTaskDetail.cs" />
+    <Compile Include="KernelFactory\AutoInjectionTask.cs" />
+    <Compile Include="KernelFactory\AutoInjectionTaskMergeDetail.cs" />
+    <Compile Include="KernelFactory\AutoInjectionTaskTransformDetail.cs" />
+    <Compile Include="KernelFactory\CacheTargetTask.cs" />
+    <Compile Include="KernelFactory\FallbackFactoryExpressionFactory.cs" />
+    <Compile Include="KernelFactory\InitializeMembersTask.cs" />
+    <Compile Include="KernelFactory\InitializeMergeVariablesTask.cs" />
+    <Compile Include="KernelFactory\MergeFactory.cs" />
+    <Compile Include="KernelFactory\NullSourceTask.cs" />
+    <Compile Include="KernelFactory\ReturnMergeResultTask.cs" />
+    <Compile Include="KernelFactory\TryGetTargetFromCacheTask.cs" />
     <Compile Include="IAutoInjectionStrategy.cs" />
     <Compile Include="IInjectionKernel.cs" />
     <Compile Include="IMergeResult.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Kernel\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />
     <Compile Include="Kernel\EnumerableToEnumerableInjectionStore.cs" />
-    <Compile Include="Kernel\IInstanceFactory.cs" />
+    <Compile Include="KernelFactory\IInstanceFactory.cs" />
     <Compile Include="Kernel\TargetFinderStore.cs" />
     <Compile Include="Kernel\TargetCache.cs" />
     <Compile Include="Kernel\MergeResult.cs" />
@@ -114,21 +114,21 @@
     <Compile Include="Utilities\JetBrains.Annotations.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Kernel\DelegateInjectionStoreFactory.cs" />
-    <Compile Include="Kernel\InstanceInjectionStoreFactory.cs" />
-    <Compile Include="Kernel\IInjectionStoreFactory.cs" />
+    <Compile Include="KernelFactory\DelegateInjectionStoreFactory.cs" />
+    <Compile Include="KernelFactory\InstanceInjectionStoreFactory.cs" />
+    <Compile Include="KernelFactory\IInjectionStoreFactory.cs" />
     <Compile Include="Configuration\InstanceRegistry.cs" />
-    <Compile Include="InjectionFactory\ActivateTargetExpressionFactory.cs" />
-    <Compile Include="InjectionFactory\CreateTargetTask.cs" />
-    <Compile Include="InjectionFactory\CustomFactoryExpressionFactory.cs" />
-    <Compile Include="InjectionFactory\DefaultFactoryExpressionFactory.cs" />
-    <Compile Include="InjectionFactory\ISelectiveExpressionFactory.cs" />
-    <Compile Include="InjectionFactory\InitializeFragmentsTask.cs" />
-    <Compile Include="InjectionFactory\InitializeTransformVariablesTask.cs" />
-    <Compile Include="InjectionFactory\IInjectionFactory.cs" />
-    <Compile Include="InjectionFactory\ReturnTargetAsObjectTask.cs" />
-    <Compile Include="InjectionFactory\IInjectionTask.cs" />
-    <Compile Include="InjectionFactory\TransformFactory.cs" />
+    <Compile Include="KernelFactory\ActivateTargetExpressionFactory.cs" />
+    <Compile Include="KernelFactory\CreateTargetTask.cs" />
+    <Compile Include="KernelFactory\CustomFactoryExpressionFactory.cs" />
+    <Compile Include="KernelFactory\DefaultFactoryExpressionFactory.cs" />
+    <Compile Include="KernelFactory\ISelectiveExpressionFactory.cs" />
+    <Compile Include="KernelFactory\InitializeFragmentsTask.cs" />
+    <Compile Include="KernelFactory\InitializeTransformVariablesTask.cs" />
+    <Compile Include="KernelFactory\IInjectionFactory.cs" />
+    <Compile Include="KernelFactory\ReturnTargetAsObjectTask.cs" />
+    <Compile Include="KernelFactory\IInjectionTask.cs" />
+    <Compile Include="KernelFactory\TransformFactory.cs" />
     <Compile Include="Configuration\InheritsFragment.cs" />
     <Compile Include="IInjectionDefinitionBuilder.cs" />
     <Compile Include="IInstanceRegistry.cs" />
@@ -136,7 +136,7 @@
     <Compile Include="Configuration\InjectionDefinition.cs" />
     <Compile Include="Configuration\InjectionDefinitionBuilder.cs" />
     <Compile Include="Configuration\InjectionFragment.cs" />
-    <Compile Include="InjectionFactory\InjectionScaffold.cs" />
+    <Compile Include="KernelFactory\InjectionScaffold.cs" />
     <Compile Include="Kernel\CompositeInjectionStore.cs" />
     <Compile Include="Kernel\ConvertibleInjectionStore.cs" />
     <Compile Include="Kernel\CollectionInjectionStore.cs" />
@@ -160,7 +160,7 @@
     <Compile Include="Utilities\ReflectionExtensions.cs" />
     <Compile Include="Utilities\ReflectionGateway.cs" />
     <Compile Include="Utilities\ReflectionOptions.cs" />
-    <Compile Include="Kernel\RegisteringInstanceFactory.cs" />
+    <Compile Include="KernelFactory\RegisteringInstanceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.build\Bijectiv.snk">

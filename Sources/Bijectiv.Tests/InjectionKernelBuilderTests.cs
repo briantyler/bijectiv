@@ -34,6 +34,7 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Kernel;
+    using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.Utilities;
 

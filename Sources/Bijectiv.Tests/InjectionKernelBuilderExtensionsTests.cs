@@ -37,6 +37,7 @@ namespace Bijectiv.Tests
 
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
+    using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;

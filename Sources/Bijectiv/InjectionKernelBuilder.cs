@@ -34,6 +34,7 @@ namespace Bijectiv
 
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
+    using Bijectiv.KernelFactory;
     using Bijectiv.Utilities;
 
     /// <summary>

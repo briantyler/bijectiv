@@ -35,8 +35,8 @@ namespace Bijectiv
     using System.Linq;
 
     using Bijectiv.Configuration;
-    using Bijectiv.InjectionFactory;
     using Bijectiv.Kernel;
+    using Bijectiv.KernelFactory;
     using Bijectiv.Utilities;
 
     /// <summary>
