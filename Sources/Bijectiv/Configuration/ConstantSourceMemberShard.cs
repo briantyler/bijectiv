@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LegendaryShards.cs" company="Bijectiv">
+// <copyright file="ConstantSourceMemberShard.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,30 +23,39 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LegendaryShards type.
+//   Defines the ConstantSourceMemberShard type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Reflection;
 
-    /// <summary>
-    /// Shards that are known throughout the library.
-    /// </summary>
-    /// <remarks>
-    /// Back when 8-bit was cool b113c714 == bijectiv.
-    /// </remarks>
-    public static class LegendaryShards
+    using JetBrains.Annotations;
+
+    public class ConstantSourceMemberShard : MemberShard
     {
-        /// <summary>
-        /// Represents a member shard that creates a condition on the member.
-        /// </summary>
-        public static readonly Guid Condition = new Guid("b113c714-90BC-4586-98FA-90CF177CCA94");
+        private readonly object value;
 
-        /// <summary>
-        /// Represents a member shard that provides the source for a member.
-        /// </summary>
-        public static readonly Guid Source = new Guid("b113c714-8704-44C8-A8E6-4C56524AC9B1");
+        public ConstantSourceMemberShard(
+            [NotNull] Type source, 
+            [NotNull] Type target, 
+            [NotNull] MemberInfo member, 
+            object value)
+            : base(source, target, member)
+        {
+            this.value = value;
+        }
+
+        public override Guid ShardCategory
+        {
+            get { return LegendaryShards.Source; }
+        }
+
+        public object Value
+        {
+            get { return this.value; }
+        }
     }
 }

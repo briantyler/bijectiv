@@ -7,9 +7,18 @@
 
     public class PredicateMemberShard : MemberShard
     {
-        public PredicateMemberShard([NotNull] Type source, [NotNull] Type target, [NotNull] MemberInfo member, Func<IInjectionParameters, bool> predicate)
+        public PredicateMemberShard(
+            [NotNull] Type source, 
+            [NotNull] Type target, 
+            [NotNull] MemberInfo member,
+            [NotNull] Func<IInjectionParameters, bool> predicate)
             : base(source, target, member)
         {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
             this.Predicate = predicate;
         }
 
