@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionTriggerParameters.cs" company="Bijectiv">
+// <copyright file="InjectionParameters.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,14 +23,14 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionTriggerParameters type.
+//   Defines the InjectionParameters type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Kernel
 {
     /// <summary>
-    /// The parameters to a <see cref="IInjectionTrigger"/>.
+    /// Standard strongly parameters to an operation that happens as part of a <see cref="IInjection"/>.
     /// </summary>
     /// <typeparam name="TSource">
     /// The source type.
@@ -38,7 +38,7 @@ namespace Bijectiv.Kernel
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public class InjectionTriggerParameters<TSource, TTarget> : IInjectionTriggerParameters<TSource, TTarget>
+    public class InjectionParameters<TSource, TTarget> : IInjectionParameters<TSource, TTarget>
     {
         /// <summary>
         /// The source type.
@@ -51,7 +51,7 @@ namespace Bijectiv.Kernel
         private readonly TTarget target;
 
         /// <summary>
-        /// The context in which the trigger is being pulled.
+        /// The context in which the operation occurs.
         /// </summary>
         private readonly IInjectionContext context;
 
@@ -61,7 +61,7 @@ namespace Bijectiv.Kernel
         private readonly object hint;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="InjectionTriggerParameters{TSource,TTarget}"/> class.
+        /// Initialises a new instance of the <see cref="InjectionParameters{TSource,TTarget}"/> class.
         /// </summary>
         /// <param name="source">
         /// The source instance.
@@ -70,12 +70,12 @@ namespace Bijectiv.Kernel
         /// The target instance.
         /// </param>
         /// <param name="context">
-        /// The context in which the trigger is being pulled.
+        /// The context in which the operation occurs.
         /// </param>
         /// <param name="hint">
         /// The hint that was passed to the <see cref="IInjection"/>.
         /// </param>
-        public InjectionTriggerParameters(TSource source, TTarget target, IInjectionContext context, object hint)
+        public InjectionParameters(TSource source, TTarget target, IInjectionContext context, object hint)
         {
             this.source = source;
             this.target = target;
@@ -84,9 +84,9 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="InjectionTriggerParameters{TSource,TTarget}"/> class.
+        /// Initialises a new instance of the <see cref="InjectionParameters{TSource,TTarget}"/> class.
         /// </summary>
-        internal InjectionTriggerParameters()
+        internal InjectionParameters()
         {
         }
 
@@ -107,7 +107,7 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Gets the context in which the trigger is being pulled.
+        /// Gets the context in which the operation occurs.
         /// </summary>
         public IInjectionContext Context
         {

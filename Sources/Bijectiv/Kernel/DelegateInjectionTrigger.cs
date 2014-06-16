@@ -41,7 +41,7 @@ namespace Bijectiv.Kernel
         /// <summary>
         /// The trigger action.
         /// </summary>
-        private readonly Action<IInjectionTriggerParameters> trigger;
+        private readonly Action<IInjectionParameters> trigger;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="DelegateInjectionTrigger"/> class.
@@ -52,7 +52,7 @@ namespace Bijectiv.Kernel
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public DelegateInjectionTrigger([NotNull] Action<IInjectionTriggerParameters> trigger)
+        public DelegateInjectionTrigger([NotNull] Action<IInjectionParameters> trigger)
         {
             if (trigger == null)
             {
@@ -65,7 +65,7 @@ namespace Bijectiv.Kernel
         /// <summary>
         /// Gets the trigger action.
         /// </summary>
-        public Action<IInjectionTriggerParameters> Trigger
+        public Action<IInjectionParameters> Trigger
         {
             get { return this.trigger; }
         }
@@ -76,7 +76,7 @@ namespace Bijectiv.Kernel
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        public virtual void Pull([NotNull] IInjectionTriggerParameters parameters)
+        public virtual void Pull([NotNull] IInjectionParameters parameters)
         {
             if (parameters == null)
             {

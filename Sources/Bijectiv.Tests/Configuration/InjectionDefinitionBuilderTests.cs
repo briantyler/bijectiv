@@ -998,7 +998,7 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             targetMock.Object.OnInjectionEnded(p => called = true);
-            trigger.Pull(new InjectionTriggerParameters<TestClass1, TestClass2>());
+            trigger.Pull(new InjectionParameters<TestClass1, TestClass2>());
 
             // Assert
             Assert.IsTrue((bool)called);
@@ -1048,10 +1048,10 @@ namespace Bijectiv.Tests.Configuration
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
 
-            Action<IInjectionTriggerParameters<TestClass1, TestClass2>> indexedAction = null;
+            Action<IInjectionParameters<TestClass1, TestClass2>> indexedAction = null;
             targetMock
-                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionTriggerParameters<TestClass1, TestClass2>>>()))
-                .Callback((Action<IInjectionTriggerParameters<TestClass1, TestClass2>> a) => indexedAction = a);
+                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionParameters<TestClass1, TestClass2>>>()))
+                .Callback((Action<IInjectionParameters<TestClass1, TestClass2>> a) => indexedAction = a);
 
             object index = 0;
             object called = false;
@@ -1063,7 +1063,7 @@ namespace Bijectiv.Tests.Configuration
                     called = true;
                 });
             indexedAction(
-                new InjectionTriggerParameters<TestClass1, TestClass2>(
+                new InjectionParameters<TestClass1, TestClass2>(
                     null, null, null, new EnumerableInjectionHint(5)));
 
             // Assert
@@ -1082,10 +1082,10 @@ namespace Bijectiv.Tests.Configuration
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
 
-            Action<IInjectionTriggerParameters<TestClass1, TestClass2>> indexedAction = null;
+            Action<IInjectionParameters<TestClass1, TestClass2>> indexedAction = null;
             targetMock
-                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionTriggerParameters<TestClass1, TestClass2>>>()))
-                .Callback((Action<IInjectionTriggerParameters<TestClass1, TestClass2>> a) => indexedAction = a);
+                .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionParameters<TestClass1, TestClass2>>>()))
+                .Callback((Action<IInjectionParameters<TestClass1, TestClass2>> a) => indexedAction = a);
 
             object called = false;
 
@@ -1094,7 +1094,7 @@ namespace Bijectiv.Tests.Configuration
             {
                 called = true;
             });
-            indexedAction(new InjectionTriggerParameters<TestClass1, TestClass2>());
+            indexedAction(new InjectionParameters<TestClass1, TestClass2>());
 
             // Assert
             Assert.IsFalse((bool)called);

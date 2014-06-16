@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffoldMock = new Mock<InjectionScaffold>();
             scaffoldMock
                 .SetupGet(_ => _.Variables)
-                .Returns(new[] { Expression.Variable(typeof(IInjectionTriggerParameters), "triggerParameters") });
+                .Returns(new[] { Expression.Variable(typeof(IInjectionParameters), "triggerParameters") });
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(new List<Expression>());
             
             var processedFragments = new HashSet<InjectionFragment>();
@@ -205,14 +205,14 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             var scaffoldMock = new Mock<InjectionScaffold>();
-            var variable = Expression.Variable(typeof(IInjectionTriggerParameters), "triggerParameters");
+            var variable = Expression.Variable(typeof(IInjectionParameters), "triggerParameters");
             var expressions = new List<Expression>();
             
             scaffoldMock.SetupGet(_ => _.Variables).Returns(new[] { variable });
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
             scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
 
-            var parameters = Stub.Create<IInjectionTriggerParameters>();
+            var parameters = Stub.Create<IInjectionParameters>();
             expressions.Add(Expression.Assign(variable, Expression.Constant(parameters)));
 
             // Act

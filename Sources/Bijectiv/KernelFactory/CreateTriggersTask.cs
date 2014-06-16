@@ -117,7 +117,7 @@ namespace Bijectiv.KernelFactory
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "triggerParameters");
             var trigger = fragment.Trigger;
             var expression = ((Expression<Action>)(
-                () => trigger.Pull(Placeholder.Of<IInjectionTriggerParameters>("parameters"))))
+                () => trigger.Pull(Placeholder.Of<IInjectionParameters>("parameters"))))
                 .Body;
 
             scaffold.Expressions.Add(new PlaceholderExpressionVisitor("parameters", parameters).Visit(expression));

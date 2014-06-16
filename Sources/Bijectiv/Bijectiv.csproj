@@ -50,18 +50,21 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\CondidtionMemberShard.cs" />
+    <Compile Include="Configuration\LegendaryShards.cs" />
     <Compile Include="Configuration\MemberFragment.cs" />
     <Compile Include="Configuration\MemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
     <Compile Include="IInjectionTrigger.cs" />
-    <Compile Include="IInjectionTriggerParameters.cs" />
+    <Compile Include="IInjectionParameters.cs" />
+    <Compile Include="IMemberInjectionDefintionBuilder.cs" />
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
-    <Compile Include="KernelFactory\InitializeTriggerParametersTask.cs" />
+    <Compile Include="KernelFactory\InitializeInjectionParametersTask.cs" />
     <Compile Include="Kernel\DelegateInjectionTrigger.cs" />
     <Compile Include="Kernel\DMerge.cs" />
     <Compile Include="Kernel\DTransform.cs" />
     <Compile Include="Kernel\EnumerableInjectionHint.cs" />
-    <Compile Include="Kernel\InjectionTriggerParameters.cs" />
+    <Compile Include="Kernel\InjectionParameters.cs" />
     <Compile Include="Configuration\ActivateFragment.cs" />
     <Compile Include="Configuration\CustomFactoryFragment.cs" />
     <Compile Include="Configuration\CustomFactoryParameters.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Kernel\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="ITargetFinder.cs" />
+    <Compile Include="Configuration\MemberInjectionDefintionBuilder.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Kernel\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />

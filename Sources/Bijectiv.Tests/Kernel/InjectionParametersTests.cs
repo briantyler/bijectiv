@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionTriggerParametersTests.cs" company="Bijectiv">
+// <copyright file="InjectionParametersTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionTriggerParametersTests type.
+//   Defines the InjectionParametersTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,10 +36,10 @@ namespace Bijectiv.Tests.Kernel
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="InjectionTriggerParameters{TSource,TTarget}"/> class.
+    /// This class tests the <see cref="InjectionParameters{TSource,TTarget}"/> class.
     /// </summary>
     [TestClass]
-    public class InjectionTriggerParametersTests
+    public class InjectionParametersTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -48,7 +48,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            new InjectionTriggerParameters<TestClass1, TestClass2>().Naught();
+            new InjectionParameters<TestClass1, TestClass2>().Naught();
 
             // Assert
         }
@@ -60,7 +60,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            new InjectionTriggerParameters<TestClass1, TestClass2>(null, null, null, null).Naught();
+            new InjectionParameters<TestClass1, TestClass2>(null, null, null, null).Naught();
 
             // Assert
         }
@@ -73,7 +73,7 @@ namespace Bijectiv.Tests.Kernel
             var sourceInstance = new TestClass1();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
+            var target = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
 
             // Assert
             Assert.AreEqual(sourceInstance, target.Source);
@@ -87,7 +87,7 @@ namespace Bijectiv.Tests.Kernel
             var sourceInstance = new TestClass1();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
+            var target = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
 
             // Assert
             Assert.AreEqual(sourceInstance, target.SourceAsObject);
@@ -101,7 +101,7 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new TestClass2();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
+            var target = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
 
             // Assert
             Assert.AreEqual(targetInstance, target.Target);
@@ -115,7 +115,7 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new TestClass2();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
+            var target = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
 
             // Assert
             Assert.AreEqual(targetInstance, target.TargetAsObject);
@@ -129,7 +129,7 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(null, null, context, null);
+            var target = new InjectionParameters<TestClass1, TestClass2>(null, null, context, null);
 
             // Assert
             Assert.AreEqual(context, target.Context);
@@ -143,7 +143,7 @@ namespace Bijectiv.Tests.Kernel
             var hint = new object();
 
             // Act
-            var target = new InjectionTriggerParameters<TestClass1, TestClass2>(null, null, null, hint);
+            var target = new InjectionParameters<TestClass1, TestClass2>(null, null, null, hint);
 
             // Assert
             Assert.AreEqual(hint, target.Hint);

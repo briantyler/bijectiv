@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionTriggerParameters.cs" company="Bijectiv">
+// <copyright file="IInjectionParameters.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,16 +23,16 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionTriggerParameters type.
+//   Defines the IInjectionParameters type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
     /// <summary>
-    /// The parameters to a <see cref="IInjectionTrigger"/>.
+    /// Standard weakly typed parameters to an operation that happens as part of a <see cref="IInjection"/>.
     /// </summary>
-    public interface IInjectionTriggerParameters
+    public interface IInjectionParameters
     {
         /// <summary>
         /// Gets the source instance as an object.
@@ -45,7 +45,7 @@ namespace Bijectiv
         object TargetAsObject { get; }
 
         /// <summary>
-        /// Gets the context in which the trigger is being pulled.
+        /// Gets the context in which the operation occurs.
         /// </summary>
         IInjectionContext Context { get; }
 
@@ -56,7 +56,7 @@ namespace Bijectiv
     }
 
     /// <summary>
-    /// The strongly typed parameters to a <see cref="IInjectionTrigger"/>.
+    /// Standard strongly typed parameters to an operation that happens as part of a <see cref="IInjection"/>.
     /// </summary>
     /// <typeparam name="TSource">
     /// The source type.
@@ -64,7 +64,7 @@ namespace Bijectiv
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public interface IInjectionTriggerParameters<out TSource, out TTarget> : IInjectionTriggerParameters
+    public interface IInjectionParameters<out TSource, out TTarget> : IInjectionParameters
     {
         /// <summary>
         /// Gets the source.

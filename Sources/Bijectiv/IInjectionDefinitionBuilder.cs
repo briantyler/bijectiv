@@ -285,7 +285,7 @@ namespace Bijectiv
         /// Thrown when any parameter is null.
         /// </exception>
         IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
-            [NotNull] Action<IInjectionTriggerParameters<TSource, TTarget>> action);
+            [NotNull] Action<IInjectionParameters<TSource, TTarget>> action);
 
         /// <summary>
         /// Registers an action with the injection that will be executed immediately before the injection ends, 
@@ -293,7 +293,7 @@ namespace Bijectiv
         /// </summary>
         /// <param name="action">
         /// The action to execute where the <see cref="int"/> parameter is the index of 
-        /// <see cref="IInjectionTriggerParameters{TSource,TTarget}.Target"/> in its parent collection.
+        /// <see cref="IInjectionParameters{TSource,TTarget}.Target"/> in its parent collection.
         /// </param>
         /// <returns>
         /// An object that allows further configuration of the injection.
@@ -302,6 +302,6 @@ namespace Bijectiv
         /// Thrown when any parameter is null.
         /// </exception>
         IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
-            [NotNull] Action<int, IInjectionTriggerParameters<TSource, TTarget>> action);
+            [NotNull] Action<int, IInjectionParameters<TSource, TTarget>> action);
     }
 }

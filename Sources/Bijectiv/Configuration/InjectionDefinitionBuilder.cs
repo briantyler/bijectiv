@@ -31,6 +31,7 @@ namespace Bijectiv.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
 
     using Bijectiv.Kernel;
     using Bijectiv.Utilities;
@@ -106,7 +107,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the definition being built.
         /// </summary>
-        protected internal InjectionDefinition Definition
+        public virtual InjectionDefinition Definition
         {
             get { return this.definition; }
         }
@@ -114,7 +115,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the instance registry to which <see cref="definition"/> belongs.
         /// </summary>
-        protected internal IInstanceRegistry Registry
+        public virtual IInstanceRegistry Registry
         {
             get { return this.registry; }
         }
@@ -502,7 +503,7 @@ namespace Bijectiv.Configuration
         /// Thrown when any parameter is null.
         /// </exception>
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> OnInjectionEnded(
-            Action<IInjectionTriggerParameters<TSource, TTarget>> action)
+            Action<IInjectionParameters<TSource, TTarget>> action)
         {
             if (action == null)
             {
@@ -510,7 +511,7 @@ namespace Bijectiv.Configuration
             }
 
             return this.RegisterTrigger(
-                new DelegateInjectionTrigger(p => action((IInjectionTriggerParameters<TSource, TTarget>)p)), 
+                new DelegateInjectionTrigger(p => action((IInjectionParameters<TSource, TTarget>)p)), 
                 TriggeredBy.InjectionEnded);
         }
 
@@ -520,7 +521,7 @@ namespace Bijectiv.Configuration
         /// </summary>
         /// <param name="action">
         /// The action to execute where the <see cref="int"/> parameter is the index of 
-        /// <see cref="IInjectionTriggerParameters{TSource,TTarget}.Target"/> in its parent collection.
+        /// <see cref="IInjectionParameters{TSource,TTarget}.Target"/> in its parent collection.
         /// </param>
         /// <returns>
         /// An object that allows further configuration of the injection.
@@ -529,14 +530,14 @@ namespace Bijectiv.Configuration
         /// Thrown when any parameter is null.
         /// </exception>
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
-            Action<int, IInjectionTriggerParameters<TSource, TTarget>> action)
+            Action<int, IInjectionParameters<TSource, TTarget>> action)
         {
             if (action == null)
             {
                 throw new ArgumentNullException("action");
             }
 
-            Action<IInjectionTriggerParameters<TSource, TTarget>> indexedAction = p =>
+            Action<IInjectionParameters<TSource, TTarget>> indexedAction = p =>
                 {
                     var hint = p.Hint as EnumerableInjectionHint;
                     if (hint == null)
@@ -548,6 +549,12 @@ namespace Bijectiv.Configuration
                 };
 
             return this.OnInjectionEnded(indexedAction);
-        } 
+        }
+
+        public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
+            Expression<Func<TTarget, TMember>> member)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

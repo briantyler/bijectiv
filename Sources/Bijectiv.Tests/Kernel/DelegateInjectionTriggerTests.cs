@@ -73,7 +73,7 @@ namespace Bijectiv.Tests.Kernel
         public void CreateInstance_TriggerParameter_IsAssignedToTriggerProperty()
         {
             // Arrange
-            Action<IInjectionTriggerParameters> trigger = p => p.Naught();
+            Action<IInjectionParameters> trigger = p => p.Naught();
 
             // Act
             var target = new DelegateInjectionTrigger(trigger);
@@ -103,7 +103,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             object called = false;
-            var parameters = Stub.Create<IInjectionTriggerParameters>();
+            var parameters = Stub.Create<IInjectionParameters>();
             var target = new DelegateInjectionTrigger(
                 p =>
                     {

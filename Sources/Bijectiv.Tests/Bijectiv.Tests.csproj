@@ -80,7 +80,7 @@
     <Compile Include="KernelFactory\InitializeMembersTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeMergeVariablesTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeTransformVariablesTaskTests.cs" />
-    <Compile Include="KernelFactory\InitializeTriggerParametersTaskTests.cs" />
+    <Compile Include="KernelFactory\InitializeInjectionParametersTaskTests.cs" />
     <Compile Include="KernelFactory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="KernelFactory\InjectionScaffoldTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="Kernel\DelegateInjectionTriggerTests.cs" />
     <Compile Include="Kernel\EnumerableInjectionHintTests.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinderTests.cs" />
-    <Compile Include="Kernel\InjectionTriggerParametersTests.cs" />
+    <Compile Include="Kernel\InjectionParametersTests.cs" />
     <Compile Include="Configuration\ActivateFragmentTests.cs" />
     <Compile Include="Configuration\CustomFactoryFragmentTests.cs" />
     <Compile Include="Configuration\CustomFactoryParametersTests.cs" />

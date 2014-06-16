@@ -1,7 +1,9 @@
 ﻿namespace Bijectiv.Configuration
 {
-    public class MemberShard
+    using System;
+
+    public abstract class MemberShard
     {
-        
+        public abstract Guid ShardCategory { get; }
     }
 }

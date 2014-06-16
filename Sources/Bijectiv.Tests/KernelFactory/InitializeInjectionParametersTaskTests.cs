@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeTriggerParametersTaskTests.cs" company="Bijectiv">
+// <copyright file="InitializeInjectionParametersTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeTriggerParametersTaskTests type.
+//   Defines the InitializeInjectionParametersTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,10 +44,10 @@ namespace Bijectiv.Tests.KernelFactory
     using Moq;
 
     /// <summary>
-    /// This class tests the <see cref="InitializeTriggerParametersTask"/> class.
+    /// This class tests the <see cref="InitializeInjectionParametersTask"/> class.
     /// </summary>
     [TestClass]
-    public class InitializeTriggerParametersTaskTests
+    public class InitializeInjectionParametersTaskTests
     {
         private readonly TestClass1 sourceInstance = new TestClass1();
 
@@ -68,7 +68,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            new InitializeTriggerParametersTask().Naught();
+            new InitializeInjectionParametersTask().Naught();
 
             // Assert
         }
@@ -79,7 +79,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(null);
@@ -89,27 +89,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsNoUnprocessedTriggerFragments_DoesNothing()
-        {
-            // Arrange
-            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
-            scaffoldMock.SetupGet(_ => _.UnprocessedFragments).Returns(Enumerable.Empty<InjectionFragment>());
-
-            var target = new InitializeTriggerParametersTask();
-            
-            // Act
-            target.Execute(scaffoldMock.Object);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_CreatesTriggerParametersVariable()
+        public void Execute_ValidParameters_CreatesTriggerParametersVariable()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -120,11 +104,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_ParametersAreStronglyTyped()
+        public void Execute_ValidParameters_ParametersAreStronglyTyped()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -132,16 +116,16 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
             Assert.IsInstanceOfType(
                 this.RetrieveParameters(),
-                typeof(IInjectionTriggerParameters<TestClass1, TestClass2>));
+                typeof(IInjectionParameters<TestClass1, TestClass2>));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_AssignsParametersSource()
+        public void Execute_ValidParameters_AssignsParametersSource()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -152,11 +136,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_AssignsParametersTarget()
+        public void Execute_ValidParameters_AssignsParametersTarget()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -167,11 +151,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_AssignsParametersContext()
+        public void Execute_ValidParameters_AssignsParametersContext()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -182,11 +166,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ScaffoldContainsUnprocessedTriggerFragments_AssignsParametersHint()
+        public void Execute_ValidParameters_AssignsParametersHint()
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeTriggerParametersTask();
+            var target = new InitializeInjectionParametersTask();
 
             // Act
             target.Execute(scaffold);
@@ -198,10 +182,6 @@ namespace Bijectiv.Tests.KernelFactory
         private InjectionScaffold CreateScaffold()
         {
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
-            scaffoldMock
-                .SetupGet(_ => _.UnprocessedFragments)
-                .Returns(new[] { Stub.Fragment<TestClass1, TestClass2>(true, LegendaryFragments.Trigger) });
-
             scaffoldMock.SetupGet(_ => _.Definition).Returns(new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(this.sourceInstance));
@@ -215,11 +195,11 @@ namespace Bijectiv.Tests.KernelFactory
             return scaffoldMock.Object;
         }
         
-        private IInjectionTriggerParameters RetrieveParameters()
+        private IInjectionParameters RetrieveParameters()
         {
             this.expressions.Add(this.variables.Single());
             return Expression
-                .Lambda<Func<IInjectionTriggerParameters>>(Expression.Block(this.variables, this.expressions))
+                .Lambda<Func<IInjectionParameters>>(Expression.Block(this.variables, this.expressions))
                 .Compile()();
         }
     }

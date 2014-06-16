@@ -40,6 +40,6 @@ namespace Bijectiv
         /// <param name="parameters">
         /// The parameters.
         /// </param>
-        void Pull(IInjectionTriggerParameters parameters);
+        void Pull(IInjectionParameters parameters);
     }
 }

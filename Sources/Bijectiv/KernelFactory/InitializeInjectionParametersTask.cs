@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializeTriggerParametersTask.cs" company="Bijectiv">
+// <copyright file="InitializeInjectionParametersTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InitializeTriggerParametersTask type.
+//   Defines the InitializeInjectionParametersTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,13 +33,12 @@ namespace Bijectiv.KernelFactory
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Bijectiv.Configuration;
     using Bijectiv.Kernel;
 
     /// <summary>
     /// A task that initializes a trigger parameters variable if any triggers exist.
     /// </summary>
-    public class InitializeTriggerParametersTask : IInjectionTask
+    public class InitializeInjectionParametersTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -57,15 +56,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var hasTriggers = scaffold.UnprocessedFragments
-                .Any(candidate => candidate.FragmentCategory == LegendaryFragments.Trigger);
-
-            if (!hasTriggers)
-            {
-                return;
-            }
-
-            var parametersType = typeof(InjectionTriggerParameters<,>)
+            var parametersType = typeof(InjectionParameters<,>)
                 .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
 
             var createParameters = Expression.New(
@@ -75,8 +66,8 @@ namespace Bijectiv.KernelFactory
                 scaffold.InjectionContext,
                 scaffold.Hint);
 
-            var downCastParameters = Expression.Convert(createParameters, typeof(IInjectionTriggerParameters));
-            var parametersVariable = Expression.Variable(typeof(IInjectionTriggerParameters), "triggerParameters");
+            var downCastParameters = Expression.Convert(createParameters, typeof(IInjectionParameters));
+            var parametersVariable = Expression.Variable(typeof(IInjectionParameters), "injectionParameters");
 
             scaffold.Variables.Add(parametersVariable);
             scaffold.Expressions.Add(Expression.Assign(parametersVariable, downCastParameters));
