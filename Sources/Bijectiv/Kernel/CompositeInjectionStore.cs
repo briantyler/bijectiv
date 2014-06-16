@@ -33,7 +33,7 @@ namespace Bijectiv.Kernel
     using System.Collections;
     using System.Collections.Generic;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A store that resolves <see cref="IInjection"/> from other <see cref="IInjectionStore"/>s.

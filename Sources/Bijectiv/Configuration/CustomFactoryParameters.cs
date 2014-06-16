@@ -31,7 +31,7 @@ namespace Bijectiv.Configuration
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents the parameters to a custom factory method.

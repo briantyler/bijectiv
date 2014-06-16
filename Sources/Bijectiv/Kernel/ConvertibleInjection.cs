@@ -32,7 +32,7 @@ namespace Bijectiv.Kernel
     using System;
     using System.Globalization;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a transform from an instance of type <see cref="IConvertible"/> to one of the primitive types.

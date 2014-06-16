@@ -35,7 +35,7 @@ namespace Bijectiv.KernelFactory
     using System.Reflection;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// An expression factory that creates an expression that creates a target by resolving from the 

@@ -35,7 +35,7 @@ namespace Bijectiv
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a fine grained factory that can be used to incrementally build a <see cref="IInjectionKernel"/>.

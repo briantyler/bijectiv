@@ -34,7 +34,7 @@ namespace Bijectiv.KernelFactory
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A task that creates all triggers with a given cause.
@@ -114,7 +114,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var parameters = scaffold.Variables.First(candidate => candidate.Name == "triggerParameters");
+            var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
             var trigger = fragment.Trigger;
             var expression = ((Expression<Action>)(
                 () => trigger.Pull(Placeholder.Of<IInjectionParameters>("parameters"))))

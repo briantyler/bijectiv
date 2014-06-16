@@ -89,7 +89,23 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ValidParameters_CreatesTriggerParametersVariable()
+        public void Execute_ValidParameters_InitializesInjectionParametersVariable()
+        {
+            // Arrange
+            var scaffold = this.CreateScaffold();
+            var target = new InitializeInjectionParametersTask();
+
+            // Act
+            target.Execute(scaffold);
+
+            // Assert
+            Assert.AreEqual(1, scaffold.Variables.Count());
+            Assert.IsTrue(scaffold.Variables.All(candidate => candidate.Name == "injectionParameters"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_ValidParameters_CreatesInjectionParametersVariable()
         {
             // Arrange
             var scaffold = this.CreateScaffold();

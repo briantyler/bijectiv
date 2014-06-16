@@ -31,7 +31,7 @@ namespace Bijectiv.Configuration
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Specifies that the <see cref="InjectionFragment.Target"/> should be created by a factory method.

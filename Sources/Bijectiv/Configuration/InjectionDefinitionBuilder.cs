@@ -34,7 +34,7 @@ namespace Bijectiv.Configuration
     using System.Linq.Expressions;
 
     using Bijectiv.Kernel;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A builder of <see cref="InjectionDefinition"/> instances.

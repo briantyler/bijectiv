@@ -31,7 +31,7 @@ namespace Bijectiv.Configuration
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents an instruction that determines how to treat a <c>null</c> source.

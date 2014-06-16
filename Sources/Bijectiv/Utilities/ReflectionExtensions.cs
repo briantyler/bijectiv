@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace JetBrains.Annotations
 {
     using System;
     using System.Linq.Expressions;

@@ -31,7 +31,7 @@ namespace Bijectiv.Kernel
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="ITransform"/> that performs its transformation via a delegate.

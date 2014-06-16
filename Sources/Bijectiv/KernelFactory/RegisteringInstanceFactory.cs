@@ -31,7 +31,7 @@ namespace Bijectiv.KernelFactory
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A <see cref="IInstanceFactory"/> that creates instances that are initialised by registering all instances

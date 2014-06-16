@@ -33,7 +33,7 @@ namespace Bijectiv.Kernel
     using System.Collections;
     using System.Collections.Generic;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A <see cref="ITargetFinder"/> that matches a source and target where the keys are identical 

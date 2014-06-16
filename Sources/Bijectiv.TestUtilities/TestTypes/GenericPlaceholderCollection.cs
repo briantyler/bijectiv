@@ -31,7 +31,7 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using System.Collections.ObjectModel;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A generic type masquerading as a generic collection.

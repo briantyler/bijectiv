@@ -31,7 +31,7 @@ namespace Bijectiv.Kernel
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a transform that returns its original source as target.

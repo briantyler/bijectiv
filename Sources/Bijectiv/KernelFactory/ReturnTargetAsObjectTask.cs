@@ -32,7 +32,7 @@ namespace Bijectiv.KernelFactory
     using System;
     using System.Linq.Expressions;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A task that returns the target as an object.

@@ -31,7 +31,7 @@ namespace Bijectiv.Configuration
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Specifies that a <see cref="IInjectionTrigger"/> is pulled when <see cref="TriggeredBy"/> occurs.

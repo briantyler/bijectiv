@@ -50,7 +50,7 @@
     <Compile Include="..\.build\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Configuration\CondidtionMemberShard.cs" />
+    <Compile Include="Configuration\PredicateMemberShard.cs" />
     <Compile Include="Configuration\LegendaryShards.cs" />
     <Compile Include="Configuration\MemberFragment.cs" />
     <Compile Include="Configuration\MemberShard.cs" />

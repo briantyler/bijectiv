@@ -36,7 +36,7 @@ namespace Bijectiv.KernelFactory
     using System.Reflection;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="InjectionDefinition"/> as it is being worked into a <see cref="IInjection"/>.

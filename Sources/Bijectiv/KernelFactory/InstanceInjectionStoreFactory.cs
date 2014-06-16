@@ -31,7 +31,7 @@ namespace Bijectiv.KernelFactory
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A <see cref="IInjectionStoreFactory"/> that creates a <see cref="IInjectionStore"/> by returning a

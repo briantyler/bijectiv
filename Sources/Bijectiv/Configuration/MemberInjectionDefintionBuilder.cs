@@ -3,7 +3,8 @@
     using System;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+
+    using JetBrains.Annotations;
 
     public class MemberInjectionDefintionBuilder<TSource, TTarget, TMember> 
         : IMemberInjectionDefintionBuilder<TSource, TTarget, TMember>
@@ -32,8 +33,10 @@
 
         public IInjectionDefinitionBuilder<TSource, TTarget> Ignore()
         {
-            this.fragment.Add(new CondidtionMemberShard());
-            return this.builder;
+            //this.fragment.Add(new PredicateMemberShard());
+            throw new NotImplementedException();
+
+
         }
     }
 }

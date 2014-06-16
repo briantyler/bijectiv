@@ -31,7 +31,7 @@ namespace Bijectiv.Kernel
 {
     using System;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="IInjectionTrigger"/> that performs its trigger action via a delegate.

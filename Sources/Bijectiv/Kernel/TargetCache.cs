@@ -33,7 +33,7 @@ namespace Bijectiv.Kernel
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a target instance cache.

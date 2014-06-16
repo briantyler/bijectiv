@@ -33,7 +33,7 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A <see cref="IInjectionStoreFactory"/> that creates a <see cref="IInjectionStore"/> by using a 

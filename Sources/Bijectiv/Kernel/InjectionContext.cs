@@ -32,7 +32,7 @@ namespace Bijectiv.Kernel
     using System;
     using System.Globalization;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents the context in which a <see cref="IInjection"/> is happening.

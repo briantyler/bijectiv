@@ -31,7 +31,7 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     using System.Collections.Generic;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a collection of placeholders.

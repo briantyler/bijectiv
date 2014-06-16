@@ -37,7 +37,7 @@ namespace Bijectiv.Tests.Kernel
     using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

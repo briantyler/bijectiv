@@ -15,7 +15,7 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 
-namespace Bijectiv.Utilities
+namespace JetBrains.Annotations
 {
     using System;
 

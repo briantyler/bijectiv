@@ -34,7 +34,7 @@ namespace Bijectiv.Kernel
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A store that contains a collection of <see cref="IInjection"/> instances that are keyed by their source and

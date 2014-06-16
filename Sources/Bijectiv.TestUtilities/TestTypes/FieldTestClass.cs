@@ -32,7 +32,7 @@ namespace Bijectiv.TestUtilities.TestTypes
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A test class with a field.

@@ -34,7 +34,7 @@ namespace Bijectiv.Configuration
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents an instruction that determines how a member will be injected.

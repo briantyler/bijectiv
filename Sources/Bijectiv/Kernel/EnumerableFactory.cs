@@ -34,7 +34,7 @@ namespace Bijectiv.Kernel
     using System.Collections.Generic;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A factory that creates <see cref="IEnumerable"/> instances.

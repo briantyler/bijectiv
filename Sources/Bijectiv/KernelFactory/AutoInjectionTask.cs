@@ -33,7 +33,7 @@ namespace Bijectiv.KernelFactory
     using System.Linq;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a task that processes <see cref="AutoInjectionFragment"/> fragments.

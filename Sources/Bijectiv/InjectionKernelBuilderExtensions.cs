@@ -34,7 +34,7 @@ namespace Bijectiv
     using System.Linq;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Extensions to the <see cref="InjectionKernelBuilder"/> class.

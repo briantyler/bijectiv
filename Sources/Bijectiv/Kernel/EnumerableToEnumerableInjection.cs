@@ -32,7 +32,7 @@ namespace Bijectiv.Kernel
     using System;
     using System.Collections;
 
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a <see cref="IInjection"/> that injects an <see cref="IEnumerable"/> instance into an 

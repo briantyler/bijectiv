@@ -32,7 +32,7 @@ namespace Bijectiv.KernelFactory
     using System;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a factory that creates <typeparamref name="TInjection"/> instances from a 
