@@ -32,6 +32,8 @@ namespace Bijectiv.Kernel
     using System;
     using System.Globalization;
 
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

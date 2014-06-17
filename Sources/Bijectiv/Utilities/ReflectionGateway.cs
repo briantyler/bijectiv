@@ -27,7 +27,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace JetBrains.Annotations
+namespace Bijectiv.Utilities
 {
     using System;
     using System.Collections.Generic;

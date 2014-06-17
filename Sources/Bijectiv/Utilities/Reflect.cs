@@ -27,13 +27,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace JetBrains.Annotations
+namespace Bijectiv.Utilities
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// A collection of utility methods that perform reflection via expressions.

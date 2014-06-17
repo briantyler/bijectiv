@@ -33,7 +33,7 @@
         }
 
         public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> Condidtion(
-            [NotNull] Func<IInjectionParameters<TSource, TTarget>, bool> predicate)
+            Func<IInjectionParameters<TSource, TTarget>, bool> predicate)
         {
             if (predicate == null)
             {

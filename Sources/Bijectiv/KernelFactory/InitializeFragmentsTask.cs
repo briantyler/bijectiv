@@ -33,6 +33,8 @@ namespace Bijectiv.KernelFactory
     using System.Linq;
 
     using Bijectiv.Configuration;
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

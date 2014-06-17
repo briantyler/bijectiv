@@ -31,6 +31,8 @@ namespace Bijectiv.KernelFactory
 {
     using System;
 
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

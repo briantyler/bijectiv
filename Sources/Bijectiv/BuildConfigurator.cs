@@ -37,6 +37,8 @@ namespace Bijectiv
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

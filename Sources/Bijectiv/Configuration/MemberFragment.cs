@@ -32,6 +32,7 @@ namespace Bijectiv.Configuration
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using JetBrains.Annotations;
@@ -50,6 +51,8 @@ namespace Bijectiv.Configuration
         /// The member on the target to inject into.
         /// </summary>
         private readonly MemberInfo member;
+
+        private readonly ISet<MemberShard> processedShards = new HashSet<MemberShard>();
 
         /// <summary>
         /// Initialises a new instance of the <see cref="MemberFragment"/> class.
@@ -91,6 +94,16 @@ namespace Bijectiv.Configuration
         public override Guid FragmentCategory
         {
             get { return LegendaryFragments.Member; }
+        }
+
+        public virtual IEnumerable<MemberShard> UnprocessedShards
+        {
+            get { return this.Reverse().Where(candidate => !this.ProcessedShards.Contains(candidate)).ToArray(); }
+        }
+
+        public virtual ISet<MemberShard> ProcessedShards
+        {
+            get { return this.processedShards; }
         }
 
         /// <summary>

@@ -43,6 +43,8 @@ namespace Bijectiv.KernelFactory
     /// </summary>
     public class InjectionScaffold
     {
+        private readonly List<LabelTarget> labels = new List<LabelTarget>(); 
+
         /// <summary>
         /// The temporary variables that are required by the <see cref="IInjection"/>.
         /// </summary>
@@ -252,6 +254,11 @@ namespace Bijectiv.KernelFactory
                     .Where(candidate => !this.ProcessedTargetMembers.Contains(candidate))
                     .ToArray();
             }
+        }
+
+        public List<LabelTarget> Labels
+        {
+            get { return this.labels; }
         }
 
         /// <summary>

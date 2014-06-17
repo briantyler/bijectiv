@@ -33,6 +33,8 @@ namespace Bijectiv.Configuration
     using System.Collections.Generic;
     using System.Linq;
 
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

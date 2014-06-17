@@ -34,6 +34,8 @@ namespace Bijectiv.Configuration
     using System.Linq.Expressions;
 
     using Bijectiv.Kernel;
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>
@@ -552,7 +554,7 @@ namespace Bijectiv.Configuration
         }
 
         public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
-            [NotNull] Expression<Func<TTarget, TMember>> member)
+           Expression<Func<TTarget, TMember>> member)
         {
             if (member == null)
             {

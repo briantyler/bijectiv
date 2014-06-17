@@ -27,11 +27,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace JetBrains.Annotations
+namespace Bijectiv.Utilities
 {
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents extensions to reflection types.

@@ -35,6 +35,8 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Configuration;
     using Bijectiv.Kernel;
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

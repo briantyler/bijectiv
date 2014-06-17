@@ -35,6 +35,8 @@ namespace Bijectiv.Kernel
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Bijectiv.Utilities;
+
     using JetBrains.Annotations;
 
     /// <summary>

@@ -29,7 +29,11 @@
 
 namespace Bijectiv.KernelFactory
 {
+    using System;
+
     using Bijectiv.Configuration;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a task that produces a <see cref="IInjection"/> from a <see cref="InjectionDefinition"/>.
@@ -42,6 +46,9 @@ namespace Bijectiv.KernelFactory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
-        void Execute(InjectionScaffold scaffold);
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        void Execute([NotNull] InjectionScaffold scaffold);
     }
 }

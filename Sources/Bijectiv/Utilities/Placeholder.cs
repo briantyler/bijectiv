@@ -27,9 +27,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace JetBrains.Annotations
+namespace Bijectiv.Utilities
 {
     using System.Diagnostics.CodeAnalysis;
+
+    using JetBrains.Annotations;
 
     /// <summary>
     /// Represents a type placeholder in an expression or 'any old type' in a generic.
