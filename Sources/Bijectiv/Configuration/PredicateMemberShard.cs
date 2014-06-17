@@ -11,7 +11,7 @@
             [NotNull] Type source, 
             [NotNull] Type target, 
             [NotNull] MemberInfo member,
-            [NotNull] Func<IInjectionParameters, bool> predicate)
+            [NotNull] object predicate)
             : base(source, target, member)
         {
             if (predicate == null)
@@ -19,6 +19,8 @@
                 throw new ArgumentNullException("predicate");
             }
 
+            //// TODO: assert predicate has the correct signature (either weak or strong).
+            
             this.Predicate = predicate;
         }
 
@@ -27,6 +29,6 @@
             get { return LegendaryShards.Condition; }
         }
 
-        public Func<IInjectionParameters, bool> Predicate { get; private set; }
+        public object Predicate { get; private set; }
     }
 }

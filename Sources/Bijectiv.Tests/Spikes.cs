@@ -68,7 +68,9 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var builder = new InjectionKernelBuilder();
-            builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
+            builder
+                .Register<AutoTransformTestClass1, AutoTransformTestClass1>()
+                .AutoExact();
 
             var @sealed = new SealedClass1();
             builder

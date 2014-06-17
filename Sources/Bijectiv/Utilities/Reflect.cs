@@ -239,7 +239,7 @@ namespace JetBrains.Annotations
             {
                 throw new ArgumentException(
                     "The expression does not describe member access. Call as: "
-                    + "Reflect<SomeClass>.Field(_ => _.SimeField).",
+                    + "Reflect<SomeClass>.Field(_ => _.SomeField).",
                     "expression");
             }
 
@@ -253,6 +253,25 @@ namespace JetBrains.Annotations
             }
 
             return field;
+        }
+
+        public static MemberInfo FieldOrProperty<TMember>([NotNull] Expression<Func<T, TMember>> expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException("expression");
+            }
+
+            var member = expression.Body as MemberExpression;
+            if (member == null)
+            {
+                throw new ArgumentException(
+                    "The expression does not describe member access. Call as: "
+                    + "Reflect<SomeClass>.FieldOrProperty(_ => _.SomeFieldOrProperty).",
+                    "expression");
+            }
+
+            return member.Member;
         }
     }
 }

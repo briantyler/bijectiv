@@ -30,6 +30,7 @@
 namespace Bijectiv
 {
     using System;
+    using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
     using JetBrains.Annotations;
@@ -303,5 +304,8 @@ namespace Bijectiv
         /// </exception>
         IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
             [NotNull] Action<int, IInjectionParameters<TSource, TTarget>> action);
+
+        IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
+            [NotNull] Expression<Func<TTarget, TMember>> member);
     }
 }

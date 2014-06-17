@@ -552,9 +552,18 @@ namespace Bijectiv.Configuration
         }
 
         public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
-            Expression<Func<TTarget, TMember>> member)
+            [NotNull] Expression<Func<TTarget, TMember>> member)
         {
-            throw new NotImplementedException();
+            if (member == null)
+            {
+                throw new ArgumentNullException("member");
+            }
+
+            var memberInfo = Reflect<TTarget>.FieldOrProperty(member);
+            var fragment = new MemberFragment(typeof(TSource), typeof(TTarget), memberInfo);
+            this.Definition.Add(fragment);
+
+            return new MemberInjectionDefintionBuilder<TSource, TTarget, TMember>(this, fragment);
         }
     }
 }

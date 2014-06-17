@@ -1,6 +1,7 @@
 ﻿namespace Bijectiv
 {
     using System;
+    using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
 
@@ -31,12 +32,81 @@
             this.fragment = fragment;
         }
 
+        public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> Condidtion(
+            [NotNull] Func<IInjectionParameters<TSource, TTarget>, bool> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            this.fragment.Add(
+                new PredicateMemberShard(
+                    typeof(TSource), 
+                    typeof(TTarget), 
+                    this.fragment.Member,
+                    predicate));
+
+            return this;
+        }
+
         public IInjectionDefinitionBuilder<TSource, TTarget> Ignore()
         {
-            //this.fragment.Add(new PredicateMemberShard());
-            throw new NotImplementedException();
+            this.Condidtion(p => false);
+            return this.builder;
+        }
 
+        public IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value)
+        {
+            this.fragment.Add(
+                new ConstantSourceMemberShard(
+                    typeof(TSource), 
+                    typeof(TTarget), 
+                    this.fragment.Member,
+                    value));
 
+            return this.builder;
+        }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> InjectSource<TResult>(
+            Expression<Func<TSource, TResult>> expression)
+        {
+            this.fragment.Add(
+                new ExpressionSourceMemberShard(
+                    typeof(TSource),
+                    typeof(TTarget),
+                    this.fragment.Member,
+                    expression));
+
+            return this.builder;
+        }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
+            Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate)
+        {
+            this.fragment.Add(
+                new DelegateSourceMemberShard(
+                    typeof(TSource),
+                    typeof(TTarget),
+                    this.fragment.Member,
+                    @delegate,
+                    false));
+
+            return this.builder;
+        }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
+            Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate)
+        {
+            this.fragment.Add(
+                new DelegateSourceMemberShard(
+                    typeof(TSource),
+                    typeof(TTarget),
+                    this.fragment.Member,
+                    @delegate,
+                    true));
+
+            return this.builder;
         }
     }
 }

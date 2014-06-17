@@ -51,6 +51,8 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("expression");
             }
 
+            //// TODO: Assert that expression is a lambda that takes `source` and returns anything.
+
             this.expression = expression;
         }
 
