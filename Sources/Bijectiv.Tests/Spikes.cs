@@ -332,6 +332,53 @@ namespace Bijectiv.Tests
             Assert.AreEqual("4s", target.ElementAt(3).Value);
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        public void Spike_AutoTransformWithExplicitMemberTransforms_Transforms()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            var @sealed = new SealedClass1();
+
+            builder
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
+                .AutoExact()
+                .TargetMember(t => t.FieldInt).Ignore()
+                .TargetMember(t => t.PropertyInt).Condidtion(p => p.Source.PropertyInt == 33).InjectValue("123")
+                .TargetMember(t => t.PropertySealed).InjectValue("sealed");
+
+            builder
+                .Register<string, SealedClass1>()
+                .CustomFactory(ctx => @sealed);
+
+            builder.Register<DerivedTestClass1, BaseTestClass1>();
+
+            var @base = new DerivedTestClass1();
+            var source = new AutoInjectionTestClass1
+            {
+                PropertyInt = 33,
+                FieldInt = 17,
+                PropertySealed = null,
+                FieldBase = @base,
+                PropertyBase = @base,
+            };
+
+            var kernel = builder.Build();
+
+            var transform = kernel.Store.Resolve<ITransform>(typeof(AutoInjectionTestClass1), typeof(AutoInjectionTestClass1));
+
+            // Act
+            var target = (AutoInjectionTestClass1)transform.Transform(source, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(123, target.PropertyInt);
+            Assert.AreEqual(default(int), target.FieldInt);
+            Assert.AreEqual(@sealed, target.PropertySealed);
+            Assert.IsNotNull(target.PropertyBase);
+            Assert.IsNotNull(target.FieldBase);
+            Assert.AreSame(target.PropertyBase, target.FieldBase);
+        }
+
         private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(

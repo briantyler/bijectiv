@@ -42,7 +42,8 @@
         public virtual void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, PredicateMemberShard shard)
         {
             var labelName = this.labelNameFactory(fragment);
-            var label = scaffold.Labels.First(candidate => candidate.Name == labelName);
+            var label = Expression.Label(labelName);
+            scaffold.Labels.Add(label);
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
 
             var delegateType = shard.Predicate.GetType();

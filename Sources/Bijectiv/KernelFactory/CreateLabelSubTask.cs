@@ -1,6 +1,7 @@
 ﻿namespace Bijectiv.KernelFactory
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
@@ -28,9 +29,16 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var label = Expression.Label(this.nameFactory(fragment));
+            var labelName = this.nameFactory(fragment);
             
-            scaffold.Labels.Add(label);
+            // TODO: this is very wrong, but I want to get an end-to-end transform.
+            var label = scaffold.Labels.FirstOrDefault(candidate => candidate.Name == labelName);
+
+            if (label == null)
+            {
+                return;
+            }
+
             scaffold.Expressions.Add(Expression.Label(label));
         }
     }

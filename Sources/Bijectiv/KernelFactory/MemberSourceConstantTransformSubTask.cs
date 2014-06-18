@@ -7,8 +7,6 @@
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     public class MemberSourceConstantTransformSubTask : IInjectionSubTask<MemberFragment>
     {
         public void Execute(InjectionScaffold scaffold, MemberFragment fragment)
@@ -29,12 +27,13 @@
                 return;
             }
 
-            var transform = CreateExpressionTemplate(shard.Value, fragment.Member.GetReturnType()).Body;
-            transform = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(transform);
-
-            Expression.Assign(
+            var expression = CreateExpressionTemplate(shard.Value, fragment.Member.GetReturnType()).Body;
+            expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(expression);
+            expression = Expression.Assign(
                 fragment.Member.GetAccessExpression(scaffold.Target),
-                Expression.Convert(transform, fragment.Member.GetReturnType()));
+                Expression.Convert(expression, fragment.Member.GetReturnType()));
+
+            scaffold.Expressions.Add(expression);
         }
 
         private static Expression<Action> CreateExpressionTemplate(object value, Type targetMemberType)

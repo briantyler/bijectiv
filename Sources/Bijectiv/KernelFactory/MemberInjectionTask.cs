@@ -39,7 +39,7 @@
 
             //// TODO: Ensure that duplicates are ignored.
             fragments
-                .Where(candidate => !scaffold.UnprocessedTargetMembers.Contains(candidate.Member))
+                .Where(candidate => scaffold.UnprocessedTargetMembers.Contains(candidate.Member))
                 .ForEach(item => this.ProcessFragment(scaffold, item));
 
             scaffold.ProcessedFragments.AddRange(fragments);

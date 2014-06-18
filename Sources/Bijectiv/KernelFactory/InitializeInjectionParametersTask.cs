@@ -69,7 +69,7 @@ namespace Bijectiv.KernelFactory
             var parametersType = typeof(IInjectionParameters<,>)
                 .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
 
-            var parametersVariable = Expression.Variable(parametersType, "injectionParameter");
+            var parametersVariable = Expression.Variable(parametersType, "injectionParameters");
             var downCastParameters = Expression.Convert(createParameters, parametersType);
 
             var parametersAsWeakVariable = Expression.Variable(typeof(IInjectionParameters), "injectionParametersAsWeak");

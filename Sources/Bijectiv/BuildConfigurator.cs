@@ -59,6 +59,7 @@ namespace Bijectiv
             this.StoreFactories = new List<Func<IInjectionStoreFactory>>();
             this.InstanceFactories = new List<Func<IInstanceFactory>>();
             this.TransformTasks = new List<Func<IInjectionTask>>();
+            this.MemberTransformTasks = new List<Func<IInjectionSubTask<MemberFragment>>>();
             this.MergeTasks = new List<Func<IInjectionTask>>();
 
             this.Reset();
@@ -87,6 +88,8 @@ namespace Bijectiv
         /// <see cref="ITransform"/> instances.
         /// </summary>
         public IList<Func<IInjectionTask>> TransformTasks { get; private set; }
+
+        public IList<Func<IInjectionSubTask<MemberFragment>>> MemberTransformTasks { get; private set; }
 
         /// <summary>
         /// Gets the default sequence of <see cref="IInjectionTask"/> instances used for constructing 
@@ -149,6 +152,15 @@ namespace Bijectiv
             Justification = "The annonymous methods make this theoretically bad, but in practice it's fine.")]
         private void ResetTransformTasks()
         {
+            this.MemberTransformTasks.Clear();
+            this.MemberTransformTasks.AddRange(
+                new Func<IInjectionSubTask<MemberFragment>>[]
+                {
+                    () => new MemberConditionSubTask(f => f.Member.Name),
+                    () => new MemberSourceConstantTransformSubTask(), 
+                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name), 
+                });
+
             this.TransformTasks.Clear();
             this.TransformTasks.AddRange(
                 new Func<IInjectionTask>[]
@@ -164,6 +176,7 @@ namespace Bijectiv
                     () => new CreateTargetTask(new FallbackFactoryExpressionFactory()), 
                     () => new CacheTargetTask(),
                     () => new InitializeInjectionParametersTask(),
+                    () => new MemberInjectionTask(this.MemberTransformTasks.Select(item => item()).ToArray()), 
                     () => new AutoInjectionTask(new AutoInjectionTaskTransformDetail()),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnTargetAsObjectTask()
