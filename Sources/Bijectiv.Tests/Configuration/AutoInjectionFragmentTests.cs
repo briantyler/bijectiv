@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformFragmentTests.cs" company="Bijectiv">
+// <copyright file="AutoInjectionFragmentTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformFragmentTests type.
+//   Defines the AutoInjectionFragmentTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ namespace Bijectiv.Tests.Configuration
     /// This class test the <see cref="AutoInjectionFragment"/> class.
     /// </summary>
     [TestClass]
-    public class AutoTransformFragmentTests
+    public class AutoInjectionFragmentTests
     {
         [TestMethod]
         [TestCategory("Unit")]

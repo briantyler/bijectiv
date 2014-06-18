@@ -69,7 +69,7 @@ namespace Bijectiv.Tests
             // Arrange
             var builder = new InjectionKernelBuilder();
             builder
-                .Register<AutoTransformTestClass1, AutoTransformTestClass1>()
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
                 .AutoExact();
 
             var @sealed = new SealedClass1();
@@ -80,7 +80,7 @@ namespace Bijectiv.Tests
             builder.Register<DerivedTestClass1, BaseTestClass1>();
 
             var @base = new DerivedTestClass1();
-            var source = new AutoTransformTestClass1
+            var source = new AutoInjectionTestClass1
             {
                 PropertyInt = 33,
                 FieldInt = 17,
@@ -91,10 +91,10 @@ namespace Bijectiv.Tests
 
             var kernel = builder.Build();
 
-            var transform = kernel.Store.Resolve<ITransform>(typeof(AutoTransformTestClass1), typeof(AutoTransformTestClass1));
+            var transform = kernel.Store.Resolve<ITransform>(typeof(AutoInjectionTestClass1), typeof(AutoInjectionTestClass1));
 
             // Act
-            var target = (AutoTransformTestClass1)transform.Transform(source, CreateContext(kernel), null);
+            var target = (AutoInjectionTestClass1)transform.Transform(source, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(33, target.PropertyInt);
@@ -111,7 +111,7 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var builder = new InjectionKernelBuilder();
-            builder.Register<AutoTransformTestClass1, AutoTransformTestClass1>().AutoExact();
+            builder.Register<AutoInjectionTestClass1, AutoInjectionTestClass1>().AutoExact();
 
             var @sealed = new SealedClass1();
             builder
@@ -123,7 +123,7 @@ namespace Bijectiv.Tests
 
             var @base1 = new BaseTestClass1();
             var @base2 = new DerivedTestClass1();
-            var source1 = new AutoTransformTestClass1
+            var source1 = new AutoInjectionTestClass1
             {
                 PropertyInt = 33,
                 FieldInt = 17,
@@ -132,7 +132,7 @@ namespace Bijectiv.Tests
                 PropertyBase = @base2,
             };
 
-            var source2 = new AutoTransformTestClass1
+            var source2 = new AutoInjectionTestClass1
             {
                 PropertyInt = 12,
                 FieldInt = 82,
@@ -143,10 +143,10 @@ namespace Bijectiv.Tests
 
             var kernel = builder.Build();
 
-            var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable<AutoTransformTestClass1>), typeof(AutoTransformTestClass1[]));
+            var transform = kernel.Store.Resolve<ITransform>(typeof(IEnumerable<AutoInjectionTestClass1>), typeof(AutoInjectionTestClass1[]));
 
             // Act
-            var target = (AutoTransformTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(kernel), null);
+            var target = (AutoInjectionTestClass1[])transform.Transform(new[] { source1, source2 }, CreateContext(kernel), null);
 
             // Assert
             Assert.AreEqual(2, target.Length);

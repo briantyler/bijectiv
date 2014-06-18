@@ -126,11 +126,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
@@ -155,11 +155,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { FieldInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { FieldInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
@@ -184,11 +184,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldInt);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
@@ -213,11 +213,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { FieldInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { FieldInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldInt);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(int), SourceInt, ExpectedInt);
@@ -242,11 +242,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
@@ -271,11 +271,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { FieldBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { FieldBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
@@ -300,11 +300,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
@@ -329,11 +329,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { FieldBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { FieldBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(DerivedTestClass1), typeof(BaseTestClass1), SourceBase, ExpectedBase);
@@ -358,11 +358,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertySealed = SourceSealed };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertySealed = SourceSealed };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(SealedClass1), typeof(SealedClass1), SourceSealed, ExpectedSealed);
@@ -387,11 +387,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1();
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1();
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
 
             var injectionContext = CreateInjectionContext(
                 repository, typeof(int), typeof(BaseTestClass1), SourceInt, ExpectedBase);
@@ -432,8 +432,8 @@ namespace Bijectiv.Tests.KernelFactory
         private static InjectionScaffold CreateScaffold(
             MockRepository repository,
             IInjectionContext injectionContext,
-            AutoTransformTestClass1 sourceInstance,
-            AutoTransformTestClass1 targetInstance)
+            AutoInjectionTestClass1 sourceInstance,
+            AutoInjectionTestClass1 targetInstance)
         {
             var scaffoldMock = repository.Create<InjectionScaffold>();
 

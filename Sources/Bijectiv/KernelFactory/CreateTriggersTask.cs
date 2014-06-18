@@ -76,7 +76,7 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -116,7 +116,9 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
+            //// TODO: rework to use the strong version.
+
+            var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParametersAsWeak");
             var trigger = fragment.Trigger;
             var expression = ((Expression<Action>)(
                 () => trigger.Pull(Placeholder.Of<IInjectionParameters>("parameters"))))

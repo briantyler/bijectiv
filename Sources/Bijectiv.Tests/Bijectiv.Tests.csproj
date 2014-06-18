@@ -103,7 +103,7 @@
     <Compile Include="Configuration\InstanceRegistryTests.cs" />
     <Compile Include="Configuration\NameRegexAutoTransformStrategyTests.cs" />
     <Compile Include="Configuration\NullAutoTransformStrategyTests.cs" />
-    <Compile Include="Configuration\AutoTransformFragmentTests.cs" />
+    <Compile Include="Configuration\AutoInjectionFragmentTests.cs" />
     <Compile Include="Configuration\NullSourceFragmentTests.cs" />
     <Compile Include="Configuration\InjectionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\InjectionDefinitionTests.cs" />

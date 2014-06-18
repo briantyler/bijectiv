@@ -9,16 +9,11 @@
 
     public class CreateLabelSubTask<TFragment> : IInjectionSubTask<TFragment> where TFragment : InjectionFragment
     {
-        private readonly string name;
+        private readonly Func<TFragment, string> nameFactory;
 
-        public CreateLabelSubTask([NotNull] string name)
+        public CreateLabelSubTask(Func<TFragment, string> nameFactory)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-
-            this.name = name;
+            this.nameFactory = nameFactory;
         }
 
         public void Execute(InjectionScaffold scaffold, TFragment fragment)
@@ -33,7 +28,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var label = Expression.Label(this.name);
+            var label = Expression.Label(this.nameFactory(fragment));
             
             scaffold.Labels.Add(label);
             scaffold.Expressions.Add(Expression.Label(label));

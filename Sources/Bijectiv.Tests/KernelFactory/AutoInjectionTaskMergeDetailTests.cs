@@ -127,11 +127,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1 { PropertyInt = 123 };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = 123 };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
 
             var injectionContext = CreateInjectionContext(
                 repository, 
@@ -141,7 +141,7 @@ namespace Bijectiv.Tests.KernelFactory
                 123, 
                 new MergeResult(PostMergeAction.Replace, ExpectedInt));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -152,7 +152,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(ExpectedInt, targetInstance.PropertyInt);
 
@@ -166,11 +166,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new AutoTransformTestClass1 { PropertyInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1 { PropertyInt = ExpectedInt };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = ExpectedInt };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyInt);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.KernelFactory
                 ExpectedInt,
                 new MergeResult(PostMergeAction.None, 123));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -191,7 +191,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(ExpectedInt, targetInstance.PropertyInt);
 
@@ -206,11 +206,11 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var targetMemberInstance = new SealedClass1();
-            var sourceInstance = new AutoTransformTestClass1 { PropertySealed = SourceSealed };
-            var targetInstance = new AutoTransformTestClass1 { PropertySealed = targetMemberInstance };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertySealed = SourceSealed };
+            var targetInstance = new AutoInjectionTestClass1 { PropertySealed = targetMemberInstance };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -220,7 +220,7 @@ namespace Bijectiv.Tests.KernelFactory
                 targetMemberInstance,
                 new MergeResult(PostMergeAction.Replace, ExpectedSealed));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -231,7 +231,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(ExpectedSealed, targetInstance.PropertySealed);
 
@@ -246,11 +246,11 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var targetMemberInstance = new SealedClass1();
-            var sourceInstance = new AutoTransformTestClass1 { PropertySealed = SourceSealed };
-            var targetInstance = new AutoTransformTestClass1 { PropertySealed = targetMemberInstance };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertySealed = SourceSealed };
+            var targetInstance = new AutoInjectionTestClass1 { PropertySealed = targetMemberInstance };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertySealed);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -260,7 +260,7 @@ namespace Bijectiv.Tests.KernelFactory
                 targetMemberInstance,
                 new MergeResult(PostMergeAction.None, ExpectedSealed));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -271,7 +271,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(targetMemberInstance, targetInstance.PropertySealed);
 
@@ -286,11 +286,11 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var targetMemberInstance = new DerivedTestClass1();
-            var sourceInstance = new AutoTransformTestClass1 { PropertyBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1 { PropertyBase = targetMemberInstance };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = targetMemberInstance };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -300,7 +300,7 @@ namespace Bijectiv.Tests.KernelFactory
                 targetMemberInstance,
                 new MergeResult(PostMergeAction.Replace, ExpectedBase));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -311,7 +311,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(ExpectedBase, targetInstance.PropertyBase);
 
@@ -326,11 +326,11 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var targetMemberInstance = new DerivedTestClass1();
-            var sourceInstance = new AutoTransformTestClass1 { PropertyBase = SourceBase };
-            var targetInstance = new AutoTransformTestClass1 { PropertyBase = targetMemberInstance };
+            var sourceInstance = new AutoInjectionTestClass1 { PropertyBase = SourceBase };
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = targetMemberInstance };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Property(_ => _.PropertyBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -340,7 +340,7 @@ namespace Bijectiv.Tests.KernelFactory
                 targetMemberInstance,
                 new MergeResult(PostMergeAction.None, ExpectedBase));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -351,7 +351,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(targetMemberInstance, targetInstance.PropertyBase);
 
@@ -366,11 +366,11 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var targetMemberInstance = new DerivedTestClass1();
-            var sourceInstance = new AutoTransformTestClass1 { FieldInt = SourceInt };
-            var targetInstance = new AutoTransformTestClass1 { FieldBase = targetMemberInstance };
+            var sourceInstance = new AutoInjectionTestClass1 { FieldInt = SourceInt };
+            var targetInstance = new AutoInjectionTestClass1 { FieldBase = targetMemberInstance };
 
-            var sourceMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldInt);
-            var targetMember = (MemberInfo)Reflect<AutoTransformTestClass1>.Field(_ => _.FieldBase);
+            var sourceMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldInt);
+            var targetMember = (MemberInfo)Reflect<AutoInjectionTestClass1>.Field(_ => _.FieldBase);
 
             var injectionContext = CreateInjectionContext(
                 repository,
@@ -380,7 +380,7 @@ namespace Bijectiv.Tests.KernelFactory
                 targetMemberInstance,
                 new MergeResult(PostMergeAction.Replace, ExpectedBase));
 
-            var targetInstanceParameter = Expression.Parameter(typeof(AutoTransformTestClass1));
+            var targetInstanceParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
             var scaffold = CreateScaffold(
                 repository, injectionContext, sourceInstance, targetInstanceParameter);
 
@@ -391,7 +391,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Expression
-                .Lambda<Action<AutoTransformTestClass1>>(result, targetInstanceParameter)
+                .Lambda<Action<AutoInjectionTestClass1>>(result, targetInstanceParameter)
                 .Compile()(targetInstance);
             Assert.AreEqual(ExpectedBase, targetInstance.FieldBase);
 
@@ -401,7 +401,7 @@ namespace Bijectiv.Tests.KernelFactory
         private static InjectionScaffold CreateScaffold(
             MockRepository repository,
             IInjectionContext injectionContext,
-            AutoTransformTestClass1 sourceInstance,
+            AutoInjectionTestClass1 sourceInstance,
             ParameterExpression targetInstanceParameter)
         {
             var scaffoldMock = repository.Create<InjectionScaffold>();

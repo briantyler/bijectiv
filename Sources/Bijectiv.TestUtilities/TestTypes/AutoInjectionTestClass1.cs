@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoTransformTestClass1.cs" company="Bijectiv">
+// <copyright file="AutoInjectionTestClass1.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the AutoTransformTestClass1 type.
+//   Defines the AutoInjectionTestClass1 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// <summary>
     /// The first auto transform test class.
     /// </summary>
-    public class AutoTransformTestClass1
+    public class AutoInjectionTestClass1
     {
         /// <summary>
         /// An <see cref="int"/> field.

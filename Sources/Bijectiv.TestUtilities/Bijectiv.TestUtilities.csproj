@@ -64,7 +64,7 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestTypes\AutoMergeTestClass1.cs" />
     <Compile Include="TestTypes\AutoMergeTestClass2.cs" />
-    <Compile Include="TestTypes\AutoTransformTestClass1.cs" />
+    <Compile Include="TestTypes\AutoInjectionTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass2.cs" />
     <Compile Include="TestTypes\EquatableCollection.cs">

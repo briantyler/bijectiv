@@ -35,8 +35,6 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// The <see cref="ITransform"/> specific <see cref="AutoInjectionTask"/> implementation detail.
     /// </summary>
