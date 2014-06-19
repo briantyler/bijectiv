@@ -80,6 +80,22 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("member");
             }
 
+            if (member.DeclaringType == null)
+            {
+                throw new ArgumentException(string.Format("Member '{0}' has no declaring type", member), "member");
+            }
+
+            if (!member.DeclaringType.IsAssignableFrom(target))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Declaring type '{0}' of member '{1}' is not assignable from target '{2}'", 
+                        member.DeclaringType,
+                        member,
+                        target), 
+                    "member");
+            }
+
             this.member = member;
         }
 
@@ -137,6 +153,27 @@ namespace Bijectiv.Configuration
             if (shard == null)
             {
                 throw new ArgumentNullException("shard");
+            }
+
+            if (shard.Source != this.Source)
+            {
+                throw new ArgumentException(
+                    string.Format("Shard Source '{0}' != Fragment Source '{1}'", shard.Source, this.Source),
+                    "shard");
+            }
+
+            if (shard.Target != this.Target)
+            {
+                throw new ArgumentException(
+                    string.Format("Shard Target '{0}' != Fragment Target '{1}'", shard.Target, this.Target),
+                    "shard");
+            }
+
+            if (shard.Member != this.Member)
+            {
+                throw new ArgumentException(
+                    string.Format("Shard Member '{0}' != Fragment Member '{1}'", shard.Member, this.Member),
+                    "shard");
             }
 
             this.shards.Add(shard);

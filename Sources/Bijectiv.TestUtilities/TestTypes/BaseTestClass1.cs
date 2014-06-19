@@ -40,5 +40,10 @@ namespace Bijectiv.TestUtilities.TestTypes
         /// The type of the class.
         /// </summary>
         public static readonly Type T = typeof(BaseTestClass1);
+
+        /// <summary>
+        /// Gets or sets the ID.
+        /// </summary>
+        public string Id { get; set; }
     }
 }

@@ -29,11 +29,18 @@
 
 namespace Bijectiv.TestUtilities.TestTypes
 {
+    using System;
+
     /// <summary>
     /// The first auto transform test class.
     /// </summary>
     public class AutoInjectionTestClass1
     {
+        /// <summary>
+        /// The type of the class.
+        /// </summary>
+        public static readonly Type T = typeof(AutoInjectionTestClass1);
+
         /// <summary>
         /// An <see cref="int"/> field.
         /// </summary>
