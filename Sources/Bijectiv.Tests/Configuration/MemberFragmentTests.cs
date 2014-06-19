@@ -48,11 +48,13 @@ namespace Bijectiv.Tests.Configuration
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
         public void CreateInstance_MemberParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new MemberFragment(TestClass1.T, TestClass2.T, null).Naught();
 
             // Assert

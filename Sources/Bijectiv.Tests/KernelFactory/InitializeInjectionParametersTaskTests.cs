@@ -99,8 +99,9 @@ namespace Bijectiv.Tests.KernelFactory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(1, scaffold.Variables.Count());
-            Assert.IsTrue(scaffold.Variables.All(candidate => candidate.Name == "injectionParameters"));
+            Assert.AreEqual(2, scaffold.Variables.Count());
+            Assert.IsNotNull(scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "injectionParameters"));
+            Assert.IsNotNull(scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "injectionParametersAsWeak"));
         }
 
         [TestMethod]
@@ -213,7 +214,7 @@ namespace Bijectiv.Tests.KernelFactory
         
         private IInjectionParameters RetrieveParameters()
         {
-            this.expressions.Add(this.variables.Single());
+            this.expressions.Add(this.variables.Single(candidate => candidate.Name == "injectionParametersAsWeak"));
             return Expression
                 .Lambda<Func<IInjectionParameters>>(Expression.Block(this.variables, this.expressions))
                 .Compile()();

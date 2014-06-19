@@ -90,6 +90,7 @@ namespace Bijectiv.Tests
                 ((CreateTargetTask)tasks[index++]).ExpressionFactory, typeof(FallbackFactoryExpressionFactory));
             Assert.IsInstanceOfType(tasks[index++], typeof(CacheTargetTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeInjectionParametersTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberInjectionTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
             Assert.IsInstanceOfType(
                 ((AutoInjectionTask)tasks[index]).Detail, typeof(AutoInjectionTaskTransformDetail));
