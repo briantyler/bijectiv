@@ -52,7 +52,7 @@
     </Compile>
     <Compile Include="Configuration\DelegateSourceMemberShard.cs" />
     <Compile Include="Configuration\ExpressionSourceMemberShard.cs" />
-    <Compile Include="Configuration\PredicateMemberShard.cs" />
+    <Compile Include="Configuration\PredicateConditionMemberShard.cs" />
     <Compile Include="Configuration\LegendaryShards.cs" />
     <Compile Include="Configuration\MemberFragment.cs" />
     <Compile Include="Configuration\MemberShard.cs" />

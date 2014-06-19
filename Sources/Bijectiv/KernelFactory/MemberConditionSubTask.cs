@@ -28,7 +28,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var shards = fragment.UnprocessedShards.OfType<PredicateMemberShard>().ToArray();
+            var shards = fragment.UnprocessedShards.OfType<PredicateConditionMemberShard>().ToArray();
 
             var shard = shards.FirstOrDefault();
             if (shard != null)
@@ -39,11 +39,9 @@
             fragment.ProcessedShards.AddRange(shards);
         }
 
-        public virtual void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, PredicateMemberShard shard)
+        public virtual void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, PredicateConditionMemberShard shard)
         {
-            var labelName = this.labelNameFactory(fragment);
-            var label = Expression.Label(labelName);
-            scaffold.Labels.Add(label);
+            var label = scaffold.GetOrAddLabel(this.labelNameFactory(fragment));
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
 
             var delegateType = shard.Predicate.GetType();

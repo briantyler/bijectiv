@@ -52,6 +52,9 @@ namespace Bijectiv.Configuration
         /// </summary>
         private readonly MemberInfo member;
 
+        /// <summary>
+        /// The shards processed that have already been processed.
+        /// </summary>
         private readonly ISet<MemberShard> processedShards = new HashSet<MemberShard>();
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace Bijectiv.Configuration
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public MemberFragment(Type source, Type target, MemberInfo member)
+        public MemberFragment([NotNull] Type source, [NotNull] Type target, [NotNull] MemberInfo member)
             : base(source, target)
         {
             if (member == null)
@@ -96,22 +99,28 @@ namespace Bijectiv.Configuration
             get { return LegendaryFragments.Member; }
         }
 
-        public virtual IEnumerable<MemberShard> UnprocessedShards
-        {
-            get { return this.Reverse().Where(candidate => !this.ProcessedShards.Contains(candidate)).ToArray(); }
-        }
-
-        public virtual ISet<MemberShard> ProcessedShards
-        {
-            get { return this.processedShards; }
-        }
-
         /// <summary>
         /// Gets the member on the target type to inject into.
         /// </summary>
         public MemberInfo Member
         {
             get { return this.member; }
+        }
+
+        /// <summary>
+        /// Gets the shards that have not been processed.
+        /// </summary>
+        public virtual IEnumerable<MemberShard> UnprocessedShards
+        {
+            get { return this.Reverse().Where(candidate => !this.ProcessedShards.Contains(candidate)).ToArray(); }
+        }
+
+        /// <summary>
+        /// Gets the shards processed that have already been processed.
+        /// </summary>
+        public virtual ISet<MemberShard> ProcessedShards
+        {
+            get { return this.processedShards; }
         }
 
         /// <summary>

@@ -41,7 +41,7 @@
             }
 
             this.fragment.Add(
-                new PredicateMemberShard(
+                new PredicateConditionMemberShard(
                     typeof(TSource), 
                     typeof(TTarget), 
                     this.fragment.Member,

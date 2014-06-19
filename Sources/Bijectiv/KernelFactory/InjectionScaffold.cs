@@ -43,7 +43,10 @@ namespace Bijectiv.KernelFactory
     /// </summary>
     public class InjectionScaffold
     {
-        private readonly List<LabelTarget> labels = new List<LabelTarget>(); 
+        /// <summary>
+        /// The labels that are required by the <see cref="IInjection"/>.
+        /// </summary>
+        private readonly Dictionary<string, LabelTarget> labels = new Dictionary<string, LabelTarget>();
 
         /// <summary>
         /// The temporary variables that are required by the <see cref="IInjection"/>.
@@ -256,7 +259,10 @@ namespace Bijectiv.KernelFactory
             }
         }
 
-        public List<LabelTarget> Labels
+        /// <summary>
+        /// Gets the labels that are required by the <see cref="IInjection"/>.
+        /// </summary>
+        public IDictionary<string, LabelTarget> Labels
         {
             get { return this.labels; }
         }
@@ -275,6 +281,21 @@ namespace Bijectiv.KernelFactory
         public virtual IList<Expression> Expressions
         {
             get { return this.expressions; }
+        }
+
+        public virtual LabelTarget GetOrAddLabel([NotNull] string name)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            if (!this.Labels.ContainsKey(name))
+            {
+                this.Labels.Add(name, Expression.Label(name));
+            }
+
+            return this.Labels[name];
         }
     }
 }

@@ -10,11 +10,11 @@
 
     public class CreateLabelSubTask<TFragment> : IInjectionSubTask<TFragment> where TFragment : InjectionFragment
     {
-        private readonly Func<TFragment, string> nameFactory;
+        private readonly Func<TFragment, string> labelNameFactory;
 
-        public CreateLabelSubTask(Func<TFragment, string> nameFactory)
+        public CreateLabelSubTask(Func<TFragment, string> labelNameFactory)
         {
-            this.nameFactory = nameFactory;
+            this.labelNameFactory = labelNameFactory;
         }
 
         public void Execute(InjectionScaffold scaffold, TFragment fragment)
@@ -29,16 +29,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var labelName = this.nameFactory(fragment);
-            
-            // TODO: this is very wrong, but I want to get an end-to-end transform.
-            var label = scaffold.Labels.FirstOrDefault(candidate => candidate.Name == labelName);
-
-            if (label == null)
-            {
-                return;
-            }
-
+            var label = scaffold.GetOrAddLabel(this.labelNameFactory(fragment));
             scaffold.Expressions.Add(Expression.Label(label));
         }
     }

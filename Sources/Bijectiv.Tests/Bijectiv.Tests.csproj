@@ -66,6 +66,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BuildConfiguratorTests.cs" />
+    <Compile Include="Configuration\MemberFragmentTests.cs" />
+    <Compile Include="Configuration\PredicateConditionMemberShardTests.cs" />
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskMergeDetailTests.cs" />
