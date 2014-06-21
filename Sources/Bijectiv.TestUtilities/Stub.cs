@@ -30,6 +30,7 @@
 namespace Bijectiv.TestUtilities
 {
     using System;
+    using System.Reflection;
 
     using Bijectiv.Configuration;
 
@@ -55,7 +56,14 @@ namespace Bijectiv.TestUtilities
         public static T Create<T>(params object[] args)
             where T : class
         {
-            return new Mock<T>(args) { CallBase = true }.Object;
+            try
+            {
+                return new Mock<T>(args) { CallBase = true }.Object;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -83,7 +91,14 @@ namespace Bijectiv.TestUtilities
             fragmentStub.Setup(_ => _.Inherited).Returns(inherited);
             fragmentStub.Setup(_ => _.FragmentCategory).Returns(category);
 
-            return fragmentStub.Object;
+            try
+            {
+                return fragmentStub.Object;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -107,7 +122,14 @@ namespace Bijectiv.TestUtilities
             fragmentStub.Setup(_ => _.Inherited).Returns(true);
             fragmentStub.Setup(_ => _.FragmentCategory).Returns(category);
 
-            return fragmentStub.Object;
+            try
+            {
+                return fragmentStub.Object;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
         }
     }
 }

@@ -39,11 +39,7 @@ namespace Bijectiv.Configuration
     /// </summary>
     public class PredicateConditionMemberShard : MemberShard
     {
-        /// <summary>
-        /// The calculated predicate type; this being the type calculated from the <see cref="MemberShard.Source"/> and
-        /// <see cref="MemberShard.Target"/> types.
-        /// </summary>
-        private readonly Type predicateType;
+        private readonly Type parametersType;
 
         /// <summary>
         /// The predicate.
@@ -83,18 +79,40 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("predicate");
             }
 
-            var parametersType = typeof(IInjectionParameters<,>).MakeGenericType(source, target);
-            this.predicateType = typeof(Func<,>).MakeGenericType(parametersType, typeof(bool));
-            if (!this.PredicateType.IsInstanceOfType(predicate))
+            var predicateType = predicate.GetType();
+            if (!predicateType.IsGenericType)
+            {
+                throw new ArgumentException(
+                    string.Format("Predicate '{0}' is not a generic type.", predicateType),
+                    "predicate");
+            }
+
+            var genericType = predicate.GetType().GetGenericTypeDefinition();
+            if (genericType != typeof(Func<,>))
+            {
+                throw new ArgumentException(
+                    string.Format("Predicate '{0}' definition is not Func<,>.", predicateType),
+                    "predicate");
+            }
+
+            var genericArguments = genericType.GetGenericArguments();
+            if (genericArguments[1] != typeof(bool))
+            {
+                throw new ArgumentException(
+                    string.Format("Predicate '{0}' definition is not Func<, bool>.", predicateType),
+                    "predicate");
+            }
+
+            var maximalParametersType = typeof(IInjectionParameters<,>).MakeGenericType(source, target);
+            if (!genericArguments[0].IsAssignableFrom(maximalParametersType))
             {
                 throw new ArgumentException(
                     string.Format(
-                        "The predicate's type '{0}' is not an instance of the expected type '{1}'",
-                        predicate.GetType(),
-                        this.PredicateType));
-
-                // Consider also the possibility that the parameters are weakly typed; functionally this has less
-                // importance, so can wait for a later version.
+                        "The parameter '{0}' to predicate '{1}' is not assignable from '{2}'.", 
+                        genericArguments[0],
+                        predicateType,
+                        maximalParametersType),
+                    "predicate");
             }
 
             this.predicate = predicate;
@@ -116,13 +134,9 @@ namespace Bijectiv.Configuration
             get { return this.predicate; }
         }
 
-        /// <summary>
-        /// Gets the calculated predicate type; this being the type calculated from the 
-        /// <see cref="MemberShard.Source"/> and <see cref="MemberShard.Target"/> types.
-        /// </summary>
-        public Type PredicateType
+        public Type ParametersType
         {
-            get { return this.predicateType; }
+            get { return this.parametersType; }
         }
     }
 }

@@ -86,8 +86,22 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("member");
             }
 
-            //// TODO: Add some validation around member and target: member must be part of target.
+            if (member.DeclaringType == null)
+            {
+                throw new ArgumentException(string.Format("Member '{0}' has no declaring type", member), "member");
+            }
 
+            if (!member.DeclaringType.IsAssignableFrom(target))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Declaring type '{0}' of member '{1}' is not assignable from target '{2}'",
+                        member.DeclaringType,
+                        member,
+                        target),
+                    "member");
+            }
+            
             this.source = source;
             this.target = target;
             this.member = member;

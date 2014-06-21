@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PredicateConditionMemberShardTests.cs" company="Bijectiv">
+// <copyright file="MemberShardTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,13 +23,12 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the PredicateConditionMemberShardTests type.
+//   Defines the MemberShardTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Tests.Configuration
 {
-    using System;
     using System.Reflection;
 
     using Bijectiv.Configuration;
@@ -40,24 +39,48 @@ namespace Bijectiv.Tests.Configuration
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="PredicateConditionMemberShard"/> class.
+    /// This class tests the <see cref="MemberShard"/> class.
     /// </summary>
     [TestClass]
-    public class PredicateConditionMemberShardTests
+    public class MemberShardTests
     {
         private static readonly MemberInfo Member = Reflect<TestClass2>.FieldOrProperty(_ => _.Id);
 
-        private static readonly Func<IInjectionParameters<TestClass1, TestClass2>, bool> Predicate = p => true;
-            
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_PredicateParameterIsNull_Throws()
+        public void CreateInstance_SourceParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
+            Stub.Create<MemberShard>(null, TestClass2.T, Member);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_TargetParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Stub.Create<MemberShard>(TestClass1.T, null, Member);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_MemberParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, null);
 
             // Assert
         }
@@ -65,12 +88,26 @@ namespace Bijectiv.Tests.Configuration
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentExceptionExpected]
-        public void CreateInstance_PredicateParameterIsNotOfCorrectType_Throws()
+        public void CreateInstance_MemberParameterHasNoDeclaringType_Throws()
         {
             // Arrange
 
             // Act
-            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, new object()).Naught();
+            Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Stub.Create<MemberInfo>());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_MemberParameterDeclaringTypeIsNotAssignableFromTarget_Throws()
+        {
+            // Arrange
+            var member = Reflect<TestClass1>.FieldOrProperty(_ => _.Id);
+
+            // Act
+            Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, member);
 
             // Assert
         }
@@ -82,50 +119,61 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate).Naught();
-
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_PredicateParameterHasCorrectType_InstanceCreated()
-        {
-            // Arrange
-            var member = Reflect<BaseTestClass2>.FieldOrProperty(_ => _.Id);
-            Func<IInjectionParameters<BaseTestClass1, BaseTestClass2>, bool> predicate = p => true;
-
-            // Act
-            new PredicateConditionMemberShard(DerivedTestClass1.T, DerivedTestClass2.T, member, predicate).Naught();
+            Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_PredicateParameterIsAssignedToPredicateProperty()
+        public void CreateInstance_MemberParameterDeclaringTypeIsBaseOfTarget_InstanceCreated()
         {
             // Arrange
+            var member = Reflect<BaseTestClass1>.FieldOrProperty(_ => _.Id);
 
             // Act
-            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
-            
+            Stub.Create<MemberShard>(TestClass1.T, DerivedTestClass1.T, member);
+
             // Assert
-            Assert.AreEqual(Predicate, target.Predicate);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_ShardCategoryPropertyIsCondidtion()
+        public void CreateInstance_ValidParameters_SourceParameterIsAssignedToSourceProperty()
         {
             // Arrange
 
             // Act
-            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
+            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);          
 
             // Assert
-            Assert.AreEqual(LegendaryShards.Condition, target.ShardCategory);
+            Assert.AreEqual(TestClass1.T, target.Source);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_TargetParameterIsAssignedToTargetProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
+
+            // Assert
+            Assert.AreEqual(TestClass2.T, target.Target);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_MemberParameterIsAssignedToMemberProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
+
+            // Assert
+            Assert.AreEqual(Member, target.Member);
         }
     }
 }
