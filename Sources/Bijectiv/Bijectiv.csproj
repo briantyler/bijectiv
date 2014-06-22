@@ -56,11 +56,11 @@
     <Compile Include="Configuration\LegendaryShards.cs" />
     <Compile Include="Configuration\MemberFragment.cs" />
     <Compile Include="Configuration\MemberShard.cs" />
-    <Compile Include="Configuration\ConstantSourceMemberShard.cs" />
+    <Compile Include="Configuration\ValueSourceMemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionParameters.cs" />
-    <Compile Include="IMemberInjectionDefintionBuilder.cs" />
+    <Compile Include="IMemberFragmentBuilder.cs" />
     <Compile Include="KernelFactory\CreateLabelSubTask.cs" />
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
     <Compile Include="KernelFactory\IInjectionSubTask.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Kernel\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="ITargetFinder.cs" />
-    <Compile Include="Configuration\MemberInjectionDefintionBuilder.cs" />
+    <Compile Include="Configuration\MemberFragmentBuilder.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Kernel\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />

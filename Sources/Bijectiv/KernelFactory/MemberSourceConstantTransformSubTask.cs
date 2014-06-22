@@ -21,7 +21,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var shard = fragment.UnprocessedShards.OfType<ConstantSourceMemberShard>().FirstOrDefault();
+            var shard = fragment.UnprocessedShards.OfType<ValueSourceMemberShard>().FirstOrDefault();
             if (shard == null)
             {
                 return;

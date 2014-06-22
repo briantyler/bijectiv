@@ -57,6 +57,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
 
             // Assert
@@ -77,6 +78,62 @@ namespace Bijectiv.Tests.Configuration
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_PredicateParameterIsNotGeneric_Throws()
+        {
+            // Arrange
+
+            // Act
+            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, new Action(() => 1.Naught())).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_PredicateParameterHasWrongFuncType_Throws()
+        {
+            // Arrange
+            Func<bool> predicate = () => true;
+
+            // Act
+            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, predicate).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_PredicateParameterHasWrongResultType_Throws()
+        {
+            // Arrange
+            Func<IInjectionParameters<TestClass1, TestClass2>, int> predicate = p => 1;
+
+            // Act
+            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, predicate).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_PredicateParameterHasMoreDerivedParameters_Throws()
+        {
+            // Arrange
+            var member = Reflect<BaseTestClass2>.FieldOrProperty(_ => _.Id);
+            Func<IInjectionParameters<DerivedTestClass1, DerivedTestClass2>, bool> predicate = p => true;
+
+            // Act
+            new PredicateConditionMemberShard(BaseTestClass1.T, BaseTestClass2.T, member, predicate).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
@@ -84,17 +141,30 @@ namespace Bijectiv.Tests.Configuration
             // Act
             new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate).Naught();
 
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_PredicateParameterHasBaseParameters_InstanceCreated()
+        {
+            // Arrange
+            var member = Reflect<BaseTestClass2>.FieldOrProperty(_ => _.Id);
+            Func<IInjectionParameters<BaseTestClass1, BaseTestClass2>, bool> predicate = p => true;
+
+            // Act
+            new PredicateConditionMemberShard(DerivedTestClass1.T, DerivedTestClass2.T, member, predicate).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_PredicateParameterHasCorrectType_InstanceCreated()
+        public void CreateInstance_PredicateParameterHasPathalogicallyBaseParameters_InstanceCreated()
         {
             // Arrange
             var member = Reflect<BaseTestClass2>.FieldOrProperty(_ => _.Id);
-            Func<IInjectionParameters<BaseTestClass1, BaseTestClass2>, bool> predicate = p => true;
+            Func<object, bool> predicate = p => true;
 
             // Act
             new PredicateConditionMemberShard(DerivedTestClass1.T, DerivedTestClass2.T, member, predicate).Naught();
@@ -126,6 +196,39 @@ namespace Bijectiv.Tests.Configuration
 
             // Assert
             Assert.AreEqual(LegendaryShards.Condition, target.ShardCategory);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_AssignsPredicateParameterType()
+        {
+            // Arrange
+
+            // Act
+            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
+
+            // Assert
+            Assert.AreEqual(
+                typeof(IInjectionParameters<TestClass1, TestClass2>),
+                target.PredicateParameterType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_PredicateParameterHasBaseParameters_AssignsPredicateParameterType()
+        {
+            // Arrange
+            var member = Reflect<BaseTestClass2>.FieldOrProperty(_ => _.Id);
+            Func<IInjectionParameters<BaseTestClass1, BaseTestClass2>, bool> predicate = p => true;
+
+            // Act
+            var target = new PredicateConditionMemberShard(
+                DerivedTestClass1.T, DerivedTestClass2.T, member, predicate);
+
+            // Assert
+            Assert.AreEqual(
+                typeof(IInjectionParameters<BaseTestClass1, BaseTestClass2>), 
+                target.PredicateParameterType);
         }
     }
 }

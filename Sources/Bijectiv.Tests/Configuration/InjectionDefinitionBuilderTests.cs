@@ -37,6 +37,7 @@ namespace Bijectiv.Tests.Configuration
     using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -1098,6 +1099,72 @@ namespace Bijectiv.Tests.Configuration
 
             // Assert
             Assert.IsFalse((bool)called);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void InjectMember_MemberParameterIsNull_Throws()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(
+                definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.InjectMember<string>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectMember_ValidParameters_AddsMemberFragmentToDefinition()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            target.InjectMember(t => t.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(definition.Single(), typeof(MemberFragment));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectMember_ValidParameters_AddedMemberFragmentHasExpectedProperties()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            target.InjectMember(t => t.Id);
+
+            // Assert
+            var fragment = (MemberFragment)definition.Single();
+            Assert.AreEqual(TestClass1.T, fragment.Source);
+            Assert.AreEqual(TestClass2.T, fragment.Target);
+            Assert.AreEqual(Reflect<TestClass2>.Property(_ => _.Id), fragment.Member);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectMember_ValidParameters_ReturnsExpectedMemberDefinitionBuilder()
+        {
+            // Arrange
+            var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, Stub.Create<IInstanceRegistry>());
+
+            // Act
+            dynamic result = target.InjectMember(t => t.Id);
+
+            // Assert
+            Assert.AreEqual(target, result.Builder);
+            Assert.AreEqual(definition.Single(), result.Fragment);
         }
     }
 }

@@ -39,7 +39,10 @@ namespace Bijectiv.Configuration
     /// </summary>
     public class PredicateConditionMemberShard : MemberShard
     {
-        private readonly Type parametersType;
+        /// <summary>
+        /// The type of the predicate's parameter.
+        /// </summary>
+        private readonly Type predicateParameterType;
 
         /// <summary>
         /// The predicate.
@@ -95,7 +98,7 @@ namespace Bijectiv.Configuration
                     "predicate");
             }
 
-            var genericArguments = genericType.GetGenericArguments();
+            var genericArguments = predicateType.GetGenericArguments();
             if (genericArguments[1] != typeof(bool))
             {
                 throw new ArgumentException(
@@ -115,6 +118,7 @@ namespace Bijectiv.Configuration
                     "predicate");
             }
 
+            this.predicateParameterType = genericArguments[0];
             this.predicate = predicate;
         }
 
@@ -134,9 +138,12 @@ namespace Bijectiv.Configuration
             get { return this.predicate; }
         }
 
-        public Type ParametersType
+        /// <summary>
+        /// Gets the type of the predicate parameter.
+        /// </summary>
+        public Type PredicateParameterType
         {
-            get { return this.parametersType; }
+            get { return this.predicateParameterType; }
         }
     }
 }

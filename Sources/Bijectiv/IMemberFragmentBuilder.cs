@@ -5,9 +5,9 @@
 
     using JetBrains.Annotations;
 
-    public interface IMemberInjectionDefintionBuilder<TSource, TTarget, TMember>
+    public interface IMemberFragmentBuilder<TSource, TTarget, TMember>
     {
-        IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> Condidtion(
+        IMemberFragmentBuilder<TSource, TTarget, TMember> Condidtion(
             [NotNull] Func<IInjectionParameters<TSource, TTarget>, bool> predicate);
 
         IInjectionDefinitionBuilder<TSource, TTarget> Ignore();

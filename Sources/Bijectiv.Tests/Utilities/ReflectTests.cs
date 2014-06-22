@@ -314,5 +314,59 @@ namespace Bijectiv.Tests.Utilities
             Assert.AreEqual("Field", field.Name);
             Assert.AreEqual(typeof(int), field.FieldType);
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void FieldOrProperty_ExpressionParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<TestClass1>.FieldOrProperty<TestClass1>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void FieldOrProperty_ExpressionParameterIsNotFieldOrProperty_Throws()
+        {
+            // Arrange
+
+            // Act
+            Reflect<TestClass1>.FieldOrProperty(_ => _.ToString());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void FieldOrProperty_ExpressionParameterIsField_ReturnsField()
+        {
+            // Arrange
+            var expected = Reflect<FieldTestClass>.Field(_ => _.Field);
+
+            // Act
+            var field = Reflect<FieldTestClass>.FieldOrProperty(_ => _.Field);
+
+            // Assert
+            Assert.AreEqual(expected, field);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void FieldOrProperty_ExpressionParameterIsProperty_ReturnsProperty()
+        {
+            // Arrange
+            var expected = Reflect<PropertyTestClass>.Property(_ => _.Property);
+
+            // Act
+            var property = Reflect<PropertyTestClass>.FieldOrProperty(_ => _.Property);
+
+            // Assert
+            Assert.AreEqual(expected, property);
+        }
     }
 }

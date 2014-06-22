@@ -69,6 +69,7 @@
     <Compile Include="Configuration\MemberFragmentTests.cs" />
     <Compile Include="Configuration\MemberShardTests.cs" />
     <Compile Include="Configuration\PredicateConditionMemberShardTests.cs" />
+    <Compile Include="Configuration\ValueSourceMemberShardTests.cs" />
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskMergeDetailTests.cs" />

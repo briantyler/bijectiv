@@ -305,7 +305,22 @@ namespace Bijectiv
         IInjectionDefinitionBuilder<TSource, TTarget> OnCollectionItem(
             [NotNull] Action<int, IInjectionParameters<TSource, TTarget>> action);
 
-        IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
+        /// <summary>
+        /// Registers an injection for a target member.
+        /// </summary>
+        /// <param name="member">
+        /// The target member for which to register an injection.
+        /// </param>
+        /// <typeparam name="TMember">
+        /// The type of the target member.
+        /// </typeparam>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        IMemberFragmentBuilder<TSource, TTarget, TMember> InjectMember<TMember>(
             [NotNull] Expression<Func<TTarget, TMember>> member);
     }
 }

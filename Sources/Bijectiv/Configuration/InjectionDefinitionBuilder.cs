@@ -553,7 +553,22 @@ namespace Bijectiv.Configuration
             return this.OnInjectionEnded(indexedAction);
         }
 
-        public IMemberInjectionDefintionBuilder<TSource, TTarget, TMember> TargetMember<TMember>(
+        /// <summary>
+        /// Registers an injection for a target member.
+        /// </summary>
+        /// <param name="member">
+        /// The target member for which to register an injection.
+        /// </param>
+        /// <typeparam name="TMember">
+        /// The type of the target member.
+        /// </typeparam>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public IMemberFragmentBuilder<TSource, TTarget, TMember> InjectMember<TMember>(
            Expression<Func<TTarget, TMember>> member)
         {
             if (member == null)
@@ -565,7 +580,7 @@ namespace Bijectiv.Configuration
             var fragment = new MemberFragment(typeof(TSource), typeof(TTarget), memberInfo);
             this.Definition.Add(fragment);
 
-            return new MemberInjectionDefintionBuilder<TSource, TTarget, TMember>(this, fragment);
+            return new MemberFragmentBuilder<TSource, TTarget, TMember>(this, fragment);
         }
     }
 }

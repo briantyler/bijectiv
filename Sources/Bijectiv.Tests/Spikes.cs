@@ -343,9 +343,9 @@ namespace Bijectiv.Tests
             builder
                 .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
                 .AutoExact()
-                .TargetMember(t => t.FieldInt).Ignore()
-                .TargetMember(t => t.PropertyInt).Condidtion(p => p.Source.PropertyInt == 33).InjectValue("123")
-                .TargetMember(t => t.PropertySealed).InjectValue("sealed");
+                .InjectMember(t => t.FieldInt).Ignore()
+                .InjectMember(t => t.PropertyInt).Condidtion(p => p.Source.PropertyInt == 33).InjectValue("123")
+                .InjectMember(t => t.PropertySealed).InjectValue("sealed");
 
             builder
                 .Register<string, SealedClass1>()

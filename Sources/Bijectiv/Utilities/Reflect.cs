@@ -257,6 +257,24 @@ namespace Bijectiv.Utilities
             return field;
         }
 
+        /// <summary>
+        /// Gets a <see cref="FieldInfo"/> or <see cref="PropertyInfo"/> from a field or property expression.
+        /// </summary>
+        /// <typeparam name="TMember">
+        /// The member type (should be inferred from the expression).
+        /// </typeparam>
+        /// <param name="expression">
+        /// An expression of the form: _ => _.SomeFieldOrProperty.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FieldInfo"/> or <see cref="PropertyInfo"/> matching the method in the expression.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the expression does not describe a field or property.
+        /// </exception>
         public static MemberInfo FieldOrProperty<TMember>([NotNull] Expression<Func<T, TMember>> expression)
         {
             if (expression == null)

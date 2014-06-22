@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConstantSourceMemberShard.cs" company="Bijectiv">
+// <copyright file="ValueSourceMemberShard.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ConstantSourceMemberShard type.
+//   Defines the ValueSourceMemberShard type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,11 +34,32 @@ namespace Bijectiv.Configuration
 
     using JetBrains.Annotations;
 
-    public class ConstantSourceMemberShard : MemberShard
+    /// <summary>
+    /// A member shard that contains a value from which the member will be injected.
+    /// </summary>
+    public class ValueSourceMemberShard : MemberShard
     {
+        /// <summary>
+        /// The value from which to inject the member.
+        /// </summary>
         private readonly object value;
 
-        public ConstantSourceMemberShard(
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ValueSourceMemberShard"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source type.
+        /// </param>
+        /// <param name="target">
+        /// The target type.
+        /// </param>
+        /// <param name="member">
+        /// The member on the target type to which the shard corresponds.
+        /// </param>
+        /// <param name="value">
+        /// The value from which to inject the member.
+        /// </param>
+        public ValueSourceMemberShard(
             [NotNull] Type source, 
             [NotNull] Type target, 
             [NotNull] MemberInfo member, 
@@ -48,11 +69,17 @@ namespace Bijectiv.Configuration
             this.value = value;
         }
 
+        /// <summary>
+        /// Gets the shard category.
+        /// </summary>
         public override Guid ShardCategory
         {
             get { return LegendaryShards.Source; }
         }
 
+        /// <summary>
+        /// Gets the value from which to inject the member.
+        /// </summary>
         public object Value
         {
             get { return this.value; }
