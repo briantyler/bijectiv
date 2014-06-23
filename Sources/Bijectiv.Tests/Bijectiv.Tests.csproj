@@ -66,6 +66,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BuildConfiguratorTests.cs" />
+    <Compile Include="Configuration\MemberFragmentBuilderTests.cs" />
     <Compile Include="Configuration\MemberFragmentTests.cs" />
     <Compile Include="Configuration\MemberShardTests.cs" />
     <Compile Include="Configuration\PredicateConditionMemberShardTests.cs" />

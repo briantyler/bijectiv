@@ -52,7 +52,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// The <see cref="InjectionDefinition"/> builder that spawned this instance.
         /// </summary>
-        private readonly InjectionDefinitionBuilder<TSource, TTarget> builder;
+        private readonly IInjectionDefinitionBuilder<TSource, TTarget> builder;
 
         /// <summary>
         /// The fragment that is being built.
@@ -72,7 +72,7 @@ namespace Bijectiv.Configuration
         /// Thrown when any parameter is null.
         /// </exception>
         public MemberFragmentBuilder(
-            [NotNull] InjectionDefinitionBuilder<TSource, TTarget> builder,
+            [NotNull] IInjectionDefinitionBuilder<TSource, TTarget> builder,
             [NotNull] MemberFragment fragment)
         {
             if (builder == null)
@@ -92,7 +92,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the <see cref="InjectionDefinition"/> builder that spawned this instance.
         /// </summary>
-        public InjectionDefinitionBuilder<TSource, TTarget> Builder
+        public IInjectionDefinitionBuilder<TSource, TTarget> Builder
         {
             get { return this.builder; }
         }
@@ -106,7 +106,7 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Registers a condition that must be met for the member ot be injected.
+        /// Registers a condition that must be met for the member to be injected.
         /// </summary>
         /// <param name="predicate">
         /// The predicate that defines the condition.
@@ -147,6 +147,16 @@ namespace Bijectiv.Configuration
             return this.Builder;
         }
 
+        /// <summary>
+        /// Injects a value into the member using the run-time type of <paramref name="value"/> to determine how to
+        /// inject it into the target member.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
         public IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value)
         {
             this.Fragment.Add(
