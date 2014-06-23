@@ -39,8 +39,6 @@ namespace Bijectiv
     using Bijectiv.KernelFactory;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Provides default <see cref="IInjectionStore"/> build configuration options.
     /// </summary>
@@ -157,15 +155,6 @@ namespace Bijectiv
             Justification = "The annonymous methods make this theoretically bad, but in practice it's fine.")]
         private void ResetTransformTasks()
         {
-            this.MemberTransformTasks.Clear();
-            this.MemberTransformTasks.AddRange(
-                new Func<IInjectionSubTask<MemberFragment>>[]
-                {
-                    () => new MemberConditionSubTask(f => f.Member.Name),
-                    () => new MemberValueSourceTransformSubTask(), 
-                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name), 
-                });
-
             this.TransformTasks.Clear();
             this.TransformTasks.AddRange(
                 new Func<IInjectionTask>[]
@@ -199,7 +188,7 @@ namespace Bijectiv
                 {
                     () => new MemberConditionSubTask(f => f.Member.Name),
                     () => new MemberValueSourceTransformSubTask(), 
-                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name), 
+                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name)
                 });
         }
 
