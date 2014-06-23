@@ -62,7 +62,7 @@ namespace Bijectiv
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        IMemberFragmentBuilder<TSource, TTarget, TMember> Condidtion(
+        IMemberFragmentBuilder<TSource, TTarget, TMember> Condition(
             [NotNull] Func<IInjectionParameters<TSource, TTarget>, bool> predicate);
 
         /// <summary>

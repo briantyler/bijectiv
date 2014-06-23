@@ -29,6 +29,8 @@
 
 namespace Bijectiv.Tests.Configuration
 {
+    using System;
+    using System.Linq;
     using System.Reflection;
 
     using Bijectiv.Configuration;
@@ -37,6 +39,8 @@ namespace Bijectiv.Tests.Configuration
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="MemberFragmentBuilder{TSource,TTarget,TMember}"/> class.
@@ -54,6 +58,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new MemberFragmentBuilder<TestClass1, TestClass2, string>(null, CreateFragment()).Naught();
 
             // Assert
@@ -67,6 +72,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), null).Naught();
 
@@ -119,9 +125,109 @@ namespace Bijectiv.Tests.Configuration
             Assert.AreEqual(fragment, target.Fragment);
         }
 
-        private static MemberFragment CreateFragment(MemberInfo member = null)
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Condition_PredicateParameterIsNull_Throws()
         {
-            return new MemberFragment(TestClass1.T, TestClass2.T, member ?? Member);
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                    Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                    fragment);
+            
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.Condition(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Condition_ValidParameters_AddsPredicateConditionMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                    Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                    fragment);
+
+            // Act
+            target.Condition(p => true);
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(PredicateConditionMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Condition_ValidParameters_AddedPredicateConditionMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                    Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                    fragment);
+
+            Func<IInjectionParameters<TestClass1, TestClass2>, bool> predicate = p => true;
+
+            // Act
+            target.Condition(predicate);
+
+            // Assert
+            var shard = (PredicateConditionMemberShard)fragment.Single();
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(predicate, shard.Predicate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Condition_ValidParameters_ReturnsSelf()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                    Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                    fragment);
+
+            // Act
+            var result = target.Condition(p => true);
+
+            // Assert
+            Assert.AreEqual(target, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ignore_DefaultParameters_CallsCondition()
+        {
+            // Arrange
+            var targetMock = new Mock<MemberFragmentBuilder<TestClass1, TestClass2, string>>(
+                MockBehavior.Loose,
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                CreateFragment()) { CallBase = true };
+
+            Func<IInjectionParameters<TestClass1, TestClass2>, bool> predicate = null;
+
+            targetMock
+                .Setup(_ => _.Condition(It.IsAny<Func<IInjectionParameters<TestClass1, TestClass2>, bool>>()))
+                .Callback((Func<IInjectionParameters<TestClass1, TestClass2>, bool> f) => predicate = f);
+
+            // Act
+            targetMock.Object.Ignore();
+
+            // Assert
+            Assert.IsNotNull(predicate);
+            Assert.IsFalse(predicate(null));
+            Assert.IsFalse(predicate(Stub.Create<IInjectionParameters<TestClass1, TestClass2>>()));
+        }
+
+        private static MemberFragment CreateFragment()
+        {
+            return new MemberFragment(TestClass1.T, TestClass2.T, Member);
         }
     }
 }

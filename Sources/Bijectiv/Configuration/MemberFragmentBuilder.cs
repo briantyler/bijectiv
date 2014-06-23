@@ -117,7 +117,7 @@ namespace Bijectiv.Configuration
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public IMemberFragmentBuilder<TSource, TTarget, TMember> Condidtion(
+        public virtual IMemberFragmentBuilder<TSource, TTarget, TMember> Condition(
             Func<IInjectionParameters<TSource, TTarget>, bool> predicate)
         {
             if (predicate == null)
@@ -141,9 +141,9 @@ namespace Bijectiv.Configuration
         /// <returns>
         /// An object that allows further configuration of the injection.
         /// </returns>
-        public IInjectionDefinitionBuilder<TSource, TTarget> Ignore()
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> Ignore()
         {
-            this.Condidtion(p => false);
+            this.Condition(p => false);
             return this.Builder;
         }
 
@@ -157,7 +157,7 @@ namespace Bijectiv.Configuration
         /// <returns>
         /// An object that allows further configuration of the injection.
         /// </returns>
-        public IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value)
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value)
         {
             this.Fragment.Add(
                 new ValueSourceMemberShard(
@@ -169,7 +169,7 @@ namespace Bijectiv.Configuration
             return this.Builder;
         }
 
-        public IInjectionDefinitionBuilder<TSource, TTarget> InjectSource<TResult>(
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectSource<TResult>(
             Expression<Func<TSource, TResult>> expression)
         {
             this.Fragment.Add(
@@ -182,7 +182,7 @@ namespace Bijectiv.Configuration
             return this.Builder;
         }
 
-        public IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
             Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate)
         {
             this.Fragment.Add(
@@ -196,7 +196,7 @@ namespace Bijectiv.Configuration
             return this.Builder;
         }
 
-        public IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
             Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate)
         {
             this.Fragment.Add(
