@@ -35,9 +35,8 @@ namespace Bijectiv.Tests
     using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -100,6 +99,28 @@ namespace Bijectiv.Tests
             Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
 
+            Assert.AreEqual(index, tasks.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_MemberTransformTasksInitialized()
+        {
+            // Arrange
+            var member = Reflect<TestClass2>.Property(_ => _.Id);
+            var fragment = new MemberFragment(TestClass1.T, TestClass2.T, member);
+
+            // Act
+            var target = new BuildConfigurator();
+
+            // Assert
+            var tasks = target.MemberTransformTasks.Select(item => item()).ToArray();
+            var index = 0;
+            Assert.IsInstanceOfType(tasks[index], typeof(MemberConditionSubTask));
+            Assert.AreEqual("Id", ((MemberConditionSubTask)tasks[index++]).LabelNameFactory(fragment));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubTask));
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubTask<MemberFragment>));
+            Assert.AreEqual("Id", ((CreateLabelSubTask<MemberFragment>)tasks[index++]).LabelNameFactory(fragment));
             Assert.AreEqual(index, tasks.Length);
         }
 

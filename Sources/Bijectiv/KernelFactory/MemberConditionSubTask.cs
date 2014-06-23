@@ -16,6 +16,11 @@
             this.labelNameFactory = labelNameFactory;
         }
 
+        public Func<MemberFragment, string> LabelNameFactory
+        {
+            get { return this.labelNameFactory; }
+        }
+
         public void Execute(InjectionScaffold scaffold, MemberFragment fragment)
         {
             if (scaffold == null)
@@ -41,7 +46,7 @@
 
         public virtual void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, PredicateConditionMemberShard shard)
         {
-            var label = scaffold.GetOrAddLabel(this.labelNameFactory(fragment));
+            var label = scaffold.GetOrAddLabel(this.LabelNameFactory(fragment));
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
 
             var delegateType = shard.Predicate.GetType();

@@ -17,6 +17,11 @@
             this.labelNameFactory = labelNameFactory;
         }
 
+        public Func<TFragment, string> LabelNameFactory
+        {
+            get { return this.labelNameFactory; }
+        }
+
         public void Execute(InjectionScaffold scaffold, TFragment fragment)
         {
             if (scaffold == null)
@@ -29,7 +34,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var label = scaffold.GetOrAddLabel(this.labelNameFactory(fragment));
+            var label = scaffold.GetOrAddLabel(this.LabelNameFactory(fragment));
             scaffold.Expressions.Add(Expression.Label(label));
         }
     }

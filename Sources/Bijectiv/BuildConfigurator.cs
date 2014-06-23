@@ -89,6 +89,10 @@ namespace Bijectiv
         /// </summary>
         public IList<Func<IInjectionTask>> TransformTasks { get; private set; }
 
+        /// <summary>
+        /// Gets the default sequence of <see cref="IInjectionSubTask{T}"/> instances used for constructing 
+        /// member <see cref="ITransform"/> instances.
+        /// </summary>
         public IList<Func<IInjectionSubTask<MemberFragment>>> MemberTransformTasks { get; private set; }
 
         /// <summary>
@@ -104,6 +108,7 @@ namespace Bijectiv
         {
             this.ResetStoreFactories();
             this.ResetInstanceFactories();
+            this.ResetMemberTransformTasks();
             this.ResetTransformTasks();
             this.ResetMergeTasks();
         }
@@ -157,7 +162,7 @@ namespace Bijectiv
                 new Func<IInjectionSubTask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubTask(f => f.Member.Name),
-                    () => new MemberSourceConstantTransformSubTask(), 
+                    () => new MemberValueSourceTransformSubTask(), 
                     () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name), 
                 });
 
@@ -180,6 +185,21 @@ namespace Bijectiv
                     () => new AutoInjectionTask(new AutoInjectionTaskTransformDetail()),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnTargetAsObjectTask()
+                });
+        }
+
+        /// <summary>
+        /// Resets <see cref="MemberTransformTasks"/> to its default configuration.
+        /// </summary>
+        private void ResetMemberTransformTasks()
+        {
+            this.MemberTransformTasks.Clear();
+            this.MemberTransformTasks.AddRange(
+                new Func<IInjectionSubTask<MemberFragment>>[]
+                {
+                    () => new MemberConditionSubTask(f => f.Member.Name),
+                    () => new MemberValueSourceTransformSubTask(), 
+                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name), 
                 });
         }
 

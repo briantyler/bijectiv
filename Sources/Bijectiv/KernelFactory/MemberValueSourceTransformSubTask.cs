@@ -7,7 +7,7 @@
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
-    public class MemberSourceConstantTransformSubTask : IInjectionSubTask<MemberFragment>
+    public class MemberValueSourceTransformSubTask : IInjectionSubTask<MemberFragment>
     {
         public void Execute(InjectionScaffold scaffold, MemberFragment fragment)
         {

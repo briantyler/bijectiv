@@ -118,7 +118,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the member on the target type to inject into.
         /// </summary>
-        public MemberInfo Member
+        public virtual MemberInfo Member
         {
             get { return this.member; }
         }
