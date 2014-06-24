@@ -40,8 +40,6 @@ namespace Bijectiv.Tests.KernelFactory
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -329,6 +327,19 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_LabelsProperty_IsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var target = CreateTarget();
+
+            // Assert
+            Assert.IsFalse(target.Labels.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void UnprocessedFragmentsProperty_DefaultParameters_FiltersCandidateFragmentsByProcessedFragments()
         {
             // Arrange
@@ -365,6 +376,34 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             Assert.AreEqual(member2, result.Single());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetOrAddLabel_NameParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.GetOrAddLabel(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void GetOrAddLabel_NameParameterIsWhiteSpace_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.GetOrAddLabel(new string(' ', 10));
+
+            // Assert
         }
 
         private static InjectionScaffold CreateTarget()

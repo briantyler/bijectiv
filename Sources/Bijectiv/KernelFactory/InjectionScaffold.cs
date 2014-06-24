@@ -283,11 +283,29 @@ namespace Bijectiv.KernelFactory
             get { return this.expressions; }
         }
 
+        /// <summary>
+        /// Adds a label called <paramref name="name"/> to the <see cref="InjectionScaffold"/> if one does not 
+        /// already exist.
+        /// </summary>
+        /// <param name="name">
+        /// The name of the label.
+        /// </param>
+        /// <returns>
+        /// The <see cref="LabelTarget"/> with the corresponding name.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public virtual LabelTarget GetOrAddLabel([NotNull] string name)
         {
             if (name == null)
             {
                 throw new ArgumentNullException("name");
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Name cannot be white space", "name");
             }
 
             if (!this.Labels.ContainsKey(name))
