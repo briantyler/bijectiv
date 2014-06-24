@@ -83,13 +83,15 @@ namespace Bijectiv
         /// <returns>
         /// An object that allows further configuration of the injection.
         /// </returns>
-        IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value);
+        IInjectionDefinitionBuilder<TSource, TTarget> InjectValue([NotNull] object value);
 
         IInjectionDefinitionBuilder<TSource, TTarget> InjectSource<TResult>(
             Expression<Func<TSource, TResult>> expression);
 
         IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
             Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate);
+
+        IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value);
 
         IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
             Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate);

@@ -157,8 +157,15 @@ namespace Bijectiv.Configuration
         /// <returns>
         /// An object that allows further configuration of the injection.
         /// </returns>
-        public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectValue(object value)
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectValue( object value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(
+                    "value",
+                    "To set the member to NULL use AssignValue(null) instead.");
+            }
+
             this.Fragment.Add(
                 new ValueSourceMemberShard(
                     typeof(TSource), 
@@ -194,6 +201,11 @@ namespace Bijectiv.Configuration
                     false));
 
             return this.Builder;
+        }
+
+        public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
