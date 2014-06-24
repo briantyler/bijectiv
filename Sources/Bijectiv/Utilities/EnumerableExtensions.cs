@@ -83,7 +83,9 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentNullException">
         /// Thrown if any parameter is null.
         /// </exception>
-        public static void ForEach<T>([NotNull] this IEnumerable<T> @this, [NotNull] Action<T> action)
+        public static void ForEach<T>(
+            [NotNull, InstantHandle] this IEnumerable<T> @this, 
+            [NotNull, InstantHandle] Action<T> action)
         {
             if (@this == null)
             {
