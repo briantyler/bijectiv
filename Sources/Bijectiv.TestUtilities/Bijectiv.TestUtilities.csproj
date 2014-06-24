@@ -67,6 +67,8 @@
     <Compile Include="TestTypes\AutoInjectionTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass2.cs" />
+    <Compile Include="TestTypes\BaseTestClass3.cs" />
+    <Compile Include="TestTypes\DerivedTestClass3.cs" />
     <Compile Include="TestTypes\EquatableCollection.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>

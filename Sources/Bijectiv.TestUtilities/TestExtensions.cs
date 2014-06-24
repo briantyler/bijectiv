@@ -31,6 +31,7 @@ namespace Bijectiv.TestUtilities
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     using Bijectiv.Utilities;
 
@@ -95,7 +96,7 @@ namespace Bijectiv.TestUtilities
         /// The actual sequence.
         /// </param>
         /// <typeparam name="T">
-        /// The type of items in a sequence.
+        /// The type of items in the sequence.
         /// </typeparam>
         public static void AssertSequenceEqual<T>(this IEnumerable<T> expected, IEnumerable<T> actual)
         {
@@ -130,6 +131,36 @@ namespace Bijectiv.TestUtilities
                     expectedItem,
                     actualItem);
             }
+        }
+
+        /// <summary>
+        /// Asserts that collection <paramref name="expected"/> is equal to <paramref name="actual"/> up to order,
+        /// failing usefully when the assert fails.
+        /// </summary>
+        /// <param name="expected">
+        /// The expected collection.
+        /// </param>
+        /// <param name="actual">
+        /// The actual collection.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of items in the collection.
+        /// </typeparam>
+        public static void AssertSetEqual<T>(this IEnumerable<T> expected, IEnumerable<T> actual)
+        {
+            if (ReferenceEquals(expected, actual))
+            {
+                return;
+            }
+
+            Assert.IsNotNull(expected);
+            Assert.IsNotNull(actual);
+
+            var idGenerator = new ObjectIDGenerator();
+            bool hack;
+            expected
+                .OrderBy(item => idGenerator.GetId(item, out hack))
+                .AssertSequenceEqual(actual.OrderBy(item => idGenerator.GetId(item, out hack)));
         }
     }
 }

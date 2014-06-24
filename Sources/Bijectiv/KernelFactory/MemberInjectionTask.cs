@@ -94,6 +94,7 @@ namespace Bijectiv.KernelFactory
             var fragments = scaffold.UnprocessedFragments.OfType<MemberFragment>().ToArray();
 
             //// TODO: Ensure that duplicates are ignored.
+            //// TODO: Ensure that inherited members are treated correctly.
             fragments
                 .Where(candidate => scaffold.UnprocessedTargetMembers.Contains(candidate.Member))
                 .ForEach(item => this.ProcessFragment(scaffold, item));
@@ -101,6 +102,18 @@ namespace Bijectiv.KernelFactory
             scaffold.ProcessedFragments.AddRange(fragments);
         }
 
+        /// <summary>
+        /// The process a <see cref="MemberFragment"/>.
+        /// </summary>
+        /// <param name="scaffold">
+        /// The scaffold on which the <see cref="IInjection"/> is being built.
+        /// </param>
+        /// <param name="fragment">
+        /// The fragment to process.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public virtual void ProcessFragment([NotNull] InjectionScaffold scaffold, [NotNull] MemberFragment fragment)
         {
             if (scaffold == null)

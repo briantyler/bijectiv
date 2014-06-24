@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionExtensions.cs" company="Bijectiv">
+// <copyright file="DerivedTestClass3.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,52 +23,32 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the CollectionExtensions type.
+//   Defines the DerivedTestClass3 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Utilities
+namespace Bijectiv.TestUtilities.TestTypes
 {
     using System;
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents extensions to types that implement <see cref="ICollection{T}"/>.
+    /// The derived test class 3.
     /// </summary>
-    public static class CollectionExtensions
+    public class DerivedTestClass3 : BaseTestClass3
     {
         /// <summary>
-        /// Adds the range <paramref name="collection"/> to <paramref name="this"/>.
+        /// The type of the class.
         /// </summary>
-        /// <param name="this">
-        /// The collection to which the range will be added.
-        /// </param>
-        /// <param name="collection">
-        /// The collection to add to <paramref name="this"/>.
-        /// </param>
-        /// <typeparam name="T">
-        /// The type of the elements in the collection.
-        /// </typeparam>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public static void AddRange<T>(
-            [NotNull] this ICollection<T> @this, 
-            [NotNull, InstantHandle] IEnumerable<T> collection)
-        {
-            if (@this == null)
-            {
-                throw new ArgumentNullException("this");
-            }
+        public static new readonly Type T = typeof(DerivedTestClass3);
 
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
+        /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        public override int Value { get; set; }
 
-            collection.ForEach(@this.Add);
-        }
+        /// <summary>
+        /// Gets or sets the measure.
+        /// </summary>
+        public new double Measure { get; set; }
     }
 }
