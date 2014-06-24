@@ -406,6 +406,37 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetOrAddLabel_LabelDoesNotExist_GetsLabel()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.GetOrAddLabel("bijectiv");
+
+            // Assert
+            Assert.AreEqual("bijectiv", result.Name);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetOrAddLabel_LabelExists_GetsLabel()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            var label = Expression.Label("bijectiv");
+            target.Labels.Add("bijectiv", label);
+
+            // Act
+            var result = target.GetOrAddLabel("bijectiv");
+
+            // Assert
+            Assert.AreEqual(label, result);
+        }
+
         private static InjectionScaffold CreateTarget()
         {
             return new InjectionScaffold(
