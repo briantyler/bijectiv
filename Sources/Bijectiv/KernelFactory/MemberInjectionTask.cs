@@ -93,8 +93,6 @@ namespace Bijectiv.KernelFactory
 
             var fragments = scaffold.UnprocessedFragments.OfType<MemberFragment>().ToArray();
 
-            //// TODO: Ensure that duplicates are ignored.
-            //// TODO: Ensure that inherited members are treated correctly.
             fragments
                 .Where(candidate => scaffold.UnprocessedTargetMembers.Contains(candidate.Member))
                 .ForEach(item => this.ProcessFragment(scaffold, item));

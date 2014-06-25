@@ -109,59 +109,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_AllUnprocessedMemberFragmentsInScaffold_AreProcessed()
         {
             // Arrange
-            var unprocessedFragments = CreateUnprocessedFragments();
-
-            var processedFragments = new HashSet<InjectionFragment>();
-            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
-            scaffoldMock.SetupGet(_ => _.UnprocessedFragments).Returns(unprocessedFragments);
-            scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(processedFragments);
-            scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new List<MemberInfo>());
-            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
-
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
-
-            // Act
-            target.Execute(scaffoldMock.Object);
-
-            // Assert
-            processedFragments.AssertSetEqual(unprocessedFragments.OfType<MemberFragment>());
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Execute_UnprocessedIdenticalMember_FragmentIsProcessed()
-        {
-            // Arrange
             var unprocessedFragments = new[]
-            {
-                new MemberFragment(TestClass1.T, BaseTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Id))
-            };
-
-            var unprocessedTargetMembers = new MemberInfo[]
-            {
-                Reflect<BaseTestClass3>.Property(_ => _.Id)
-            };
-
-            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
-            scaffoldMock.SetupGet(_ => _.UnprocessedFragments).Returns(unprocessedFragments);
-            scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
-            scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(unprocessedTargetMembers);
-
-            var targetMock = new Mock<MemberInjectionTask>(
-                MockBehavior.Strict, 
-                new List<IInjectionSubTask<MemberFragment>>());
-            targetMock.Setup(_ => _.ProcessFragment(scaffoldMock.Object, unprocessedFragments[0]));
-
-            // Act
-            targetMock.Object.Execute(scaffoldMock.Object);
-
-            // Assert
-            targetMock.VerifyAll();
-        }
-
-        private static List<InjectionFragment> CreateUnprocessedFragments()
-        {
-            return new List<InjectionFragment>
             {
                 new MemberFragment(
                     TestClass1.T,
@@ -178,6 +126,109 @@ namespace Bijectiv.Tests.KernelFactory
                     BaseTestClass3.T,
                     Reflect<BaseTestClass3>.Property(_ => _.Value)),
             };
+            var expected = new[] { unprocessedFragments[0], unprocessedFragments[2], unprocessedFragments[4] };
+
+            var processedFragments = new HashSet<InjectionFragment>();
+            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
+            scaffoldMock.SetupGet(_ => _.UnprocessedFragments).Returns(unprocessedFragments);
+            scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(processedFragments);
+            scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new List<MemberInfo>());
+            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
+
+            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+
+            // Act
+            target.Execute(scaffoldMock.Object);
+
+            // Assert
+            processedFragments.AssertSetEqual(expected);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_DuplicateMemberFragmentsInScaffold_OnlyFirstFragmentIsProcessed()
+        {
+            // Arrange
+            var unprocessedFragments = new[]
+            {
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Id)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Id)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Value)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Value)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Measure)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Measure)),
+            };
+
+            var unprocessedTargetMembers = new List<MemberInfo>
+            {
+                Reflect<DerivedTestClass3>.Property(_ => _.Id),
+                Reflect<DerivedTestClass3>.Property(_ => _.Value),
+                Reflect<BaseTestClass3>.Property(_ => _.Measure),
+                Reflect<DerivedTestClass3>.Property(_ => _.Measure),
+            };
+
+            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
+            scaffoldMock.SetupGet(_ => _.UnprocessedFragments).Returns(unprocessedFragments);
+            scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
+            scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(unprocessedTargetMembers);
+
+            var proessedFragments = new List<MemberFragment>();
+
+            var targetMock = new Mock<MemberInjectionTask>(
+                MockBehavior.Strict,
+                new List<IInjectionSubTask<MemberFragment>>());
+
+            targetMock
+                .Setup(_ => _.ProcessFragment(scaffoldMock.Object, It.IsAny<MemberFragment>()))
+                .Callback(
+                    (InjectionScaffold s, MemberFragment f) =>
+                        {
+                            unprocessedTargetMembers.Remove(f.Member);
+                            proessedFragments.Add(f);
+                        });
+
+            // Act
+            targetMock.Object.Execute(scaffoldMock.Object);
+
+            // Assert
+            targetMock.VerifyAll();
+
+            new[]
+                {
+                    unprocessedFragments[0], 
+                    unprocessedFragments[2], 
+                    unprocessedFragments[4], 
+                    unprocessedFragments[5]
+                }.AssertSetEqual(proessedFragments);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void ProcessFragment_ScaffoldParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var member = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
+            
+            // Act
+            target.ProcessFragment(null, member);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void ProcessFragment_FragmentParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+
+            // Act
+            target.ProcessFragment(null, null);
+
+            // Assert
         }
     }
 }

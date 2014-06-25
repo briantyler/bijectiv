@@ -380,6 +380,78 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void UnprocessedTargetMembers_ProcessedTargetMembersContainsIdenticalProperty_DoesNotContain()
+        {
+            // Arrange
+            var member = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var target = CreateTarget();
+
+            target.TargetMembers.Add(member);
+            target.ProcessedTargetMembers.Add(member);
+
+            // Act
+            var result = target.UnprocessedTargetMembers.Contains(member);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnprocessedTargetMembers_ProcessedTargetMembersContainsBaseProperty_DoesNotContain()
+        {
+            // Arrange
+            var member = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var target = CreateTarget();
+
+            target.TargetMembers.Add(member);
+            target.ProcessedTargetMembers.Add(Reflect<BaseTestClass3>.Property(_ => _.Id));
+
+            // Act
+            var result = target.UnprocessedTargetMembers.Contains(member);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnprocessedTargetMembers_ProcessedTargetMembersContainsVirtualProperty_DoesNotContain()
+        {
+            // Arrange
+            var member = Reflect<DerivedTestClass3>.Property(_ => _.Value);
+            var target = CreateTarget();
+
+            target.TargetMembers.Add(member);
+            target.ProcessedTargetMembers.Add(Reflect<BaseTestClass3>.Property(_ => _.Value));
+
+            // Act
+            var result = target.UnprocessedTargetMembers.Contains(member);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UnprocessedTargetMembers_ProcessedTargetMembersContainsNewPoperty_Contains()
+        {
+            // Arrange
+            var member = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
+            var target = CreateTarget();
+
+            target.TargetMembers.Add(member);
+            target.ProcessedTargetMembers.Add(Reflect<BaseTestClass3>.Property(_ => _.Measure));
+
+            // Act
+            var result = target.UnprocessedTargetMembers.Contains(member);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
         public void GetOrAddLabel_NameParameterIsNull_Throws()
         {
