@@ -101,7 +101,7 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// The process a <see cref="MemberFragment"/>.
+        /// Processes a <see cref="MemberFragment"/>.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
