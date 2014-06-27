@@ -121,7 +121,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(new[] { Stub.Create<PropertyInfo>() });
 
             var scaffold = CreateScaffold();
-            scaffold.ProcessedTargetMembers.Add(Stub.Create<MemberInfo>());
+            scaffold.ProcessedTargetMembers.Add(Reflect<TestClass1>.Property(_ => _.Id));
 
             var target = new InitializeMembersTask(reflectionGatewayMock.Object);
 

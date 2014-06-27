@@ -399,9 +399,9 @@ namespace Bijectiv.Tests
             target.Add(intVirtualMember);
             target.Add(intNewMember);
 
-            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
-            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
-            Assert.IsFalse(target.Members.Contains(newMember), "New Member");
+            Assert.IsTrue(target.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
+            Assert.IsFalse(target.Contains(newMember), "New Member");
         }
 
         [TestMethod]
@@ -422,9 +422,9 @@ namespace Bijectiv.Tests
             target.Add(intVirtualMember);
             target.Add(intNewMember);
 
-            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
-            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
-            Assert.IsFalse(target.Members.Contains(newMember), "New Member");
+            Assert.IsTrue(target.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
+            Assert.IsFalse(target.Contains(newMember), "New Member");
         }
 
         [TestMethod]
@@ -445,9 +445,9 @@ namespace Bijectiv.Tests
             target.Add(intVirtualMember);
             target.Add(intNewMember);
 
-            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
-            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
-            Assert.IsTrue(target.Members.Contains(newMember), "New Member");
+            Assert.IsTrue(target.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
+            Assert.IsTrue(target.Contains(newMember), "New Member");
         }
 
         [TestMethod]
@@ -472,61 +472,61 @@ namespace Bijectiv.Tests
 
             target.Add(memberI1);
 
-            Assert.IsTrue(target.Members.Contains(member1), "Member 1");
-            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
-            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
-            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
-            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
-            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+            Assert.IsTrue(target.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Contains(member6), "Member 6");
 
-            target.Members.Clear();
+            target.Clear();
             target.Add(memberI2);
 
-            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
-            Assert.IsTrue(target.Members.Contains(member2), "Member 2");
-            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
-            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
-            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
-            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+            Assert.IsFalse(target.Contains(member1), "Member 1");
+            Assert.IsTrue(target.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Contains(member6), "Member 6");
 
-            target.Members.Clear();
+            target.Clear();
             target.Add(memberI3);
 
-            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
-            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
-            Assert.IsTrue(target.Members.Contains(member3), "Member 3");
-            Assert.IsTrue(target.Members.Contains(member4), "Member 4");
-            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
-            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+            Assert.IsFalse(target.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Contains(member2), "Member 2");
+            Assert.IsTrue(target.Contains(member3), "Member 3");
+            Assert.IsTrue(target.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Contains(member6), "Member 6");
 
-            target.Members.Clear();
+            target.Clear();
             target.Add(memberI4);
 
-            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
-            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
-            Assert.IsTrue(target.Members.Contains(member3), "Member 3");
-            Assert.IsTrue(target.Members.Contains(member4), "Member 4");
-            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
-            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+            Assert.IsFalse(target.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Contains(member2), "Member 2");
+            Assert.IsTrue(target.Contains(member3), "Member 3");
+            Assert.IsTrue(target.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Contains(member6), "Member 6");
 
-            target.Members.Clear();
+            target.Clear();
             target.Add(memberI5);
 
-            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
-            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
-            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
-            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
-            Assert.IsTrue(target.Members.Contains(member5), "Member 5");
-            Assert.IsTrue(target.Members.Contains(member6), "Member 6");
+            Assert.IsFalse(target.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Contains(member4), "Member 4");
+            Assert.IsTrue(target.Contains(member5), "Member 5");
+            Assert.IsTrue(target.Contains(member6), "Member 6");
 
             target.Add(memberI6);
 
-            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
-            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
-            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
-            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
-            Assert.IsTrue(target.Members.Contains(member5), "Member 5");
-            Assert.IsTrue(target.Members.Contains(member6), "Member 6");
+            Assert.IsFalse(target.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Contains(member4), "Member 4");
+            Assert.IsTrue(target.Contains(member5), "Member 5");
+            Assert.IsTrue(target.Contains(member6), "Member 6");
         }
 
         private static InjectionContext CreateContext(IInjectionKernel kernel)

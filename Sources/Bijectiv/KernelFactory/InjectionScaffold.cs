@@ -81,7 +81,7 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// The target members that have already been processed.
         /// </summary>
-        private readonly HashSet<MemberInfo> processedTargetMembers = new HashSet<MemberInfo>();
+        private readonly ICollection<MemberInfo> processedTargetMembers;
 
         /// <summary>
         /// The return label.
@@ -136,6 +136,7 @@ namespace Bijectiv.KernelFactory
             this.Definition = definition;
             this.InjectionContext = injectionContext;
             this.SourceAsObject = sourceAsObject;
+            this.processedTargetMembers = new InheritedMemberInfoCollection(definition.Target);
         }
 
         /// <summary>
@@ -241,7 +242,7 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// Gets the target members that have already been processed.
         /// </summary>
-        public virtual ISet<MemberInfo> ProcessedTargetMembers
+        public virtual ICollection<MemberInfo> ProcessedTargetMembers
         {
             get { return this.processedTargetMembers; }
         }

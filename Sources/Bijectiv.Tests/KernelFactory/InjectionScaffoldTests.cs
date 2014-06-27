@@ -32,7 +32,6 @@ namespace Bijectiv.Tests.KernelFactory
 {
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
 
     using Bijectiv.Configuration;
     using Bijectiv.KernelFactory;
@@ -364,9 +363,9 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var target = CreateTarget();
-            var member1 = Stub.Create<MemberInfo>();
-            var member2 = Stub.Create<MemberInfo>();
-            var member3 = Stub.Create<MemberInfo>();
+            var member1 = Reflect<TestClass1>.Property(_ => _.Id);
+            var member2 = Reflect<TestClass2>.Property(_ => _.Id);
+            var member3 = Reflect<BaseTestClass1>.Property(_ => _.Id);
 
             target.TargetMembers.AddRange(new[] { member1, member2, member3 });
             target.ProcessedTargetMembers.AddRange(new[] { member1, member3 });

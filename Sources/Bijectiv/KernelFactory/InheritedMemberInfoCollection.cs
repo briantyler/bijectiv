@@ -37,9 +37,7 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
-    public class InheritedMemberInfoCollection : IEnumerable<MemberInfo>
+    public class InheritedMemberInfoCollection : ICollection<MemberInfo>
     {
         private readonly Type[] hierarchy;
 
@@ -58,12 +56,18 @@ namespace Bijectiv.KernelFactory
             this.hierarchy = types.AsEnumerable().Reverse().ToArray();
         }
 
-        public ISet<MemberInfo> Members
+        public int Count
         {
-            get { return this.members; }
+            get { return this.members.Count; }
         }
 
-        public void Add([NotNull] MemberInfo member)
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+
+        public void Add(MemberInfo member)
         {
             if (member == null)
             {
@@ -77,7 +81,7 @@ namespace Bijectiv.KernelFactory
                     "member");
             }
 
-            if (!this.Members.Add(member))
+            if (!this.members.Add(member))
             {
                 // The member has previously been added so there is nothing to do.
                 return;
@@ -103,26 +107,41 @@ namespace Bijectiv.KernelFactory
                 }
 
                 found = true;
-                this.Members.Add(property);
+                this.members.Add(property);
 
                 var currentProperty = property;
                 var baseProperty = currentProperty.GetBaseDefinition();
                 while (baseProperty != currentProperty)
                 {
                     currentProperty = baseProperty;
-                    this.Members.Add(baseProperty = property.GetBaseDefinition());
+                    this.members.Add(baseProperty = property.GetBaseDefinition());
                 }
             }
         }
 
-        public bool Contains([NotNull] MemberInfo member)
+        public bool Contains(MemberInfo member)
         {
-            return this.Members.Contains(member);
+            return this.members.Contains(member);
+        }
+
+        public void CopyTo(MemberInfo[] array, int arrayIndex)
+        {
+            this.members.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(MemberInfo item)
+        {
+            throw new NotSupportedException("Items cannot be removed from this collection individually.");
+        }
+
+        public void Clear()
+        {
+            this.members.Clear();
         }
 
         public IEnumerator<MemberInfo> GetEnumerator()
         {
-            return this.Members.GetEnumerator();
+            return this.members.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
