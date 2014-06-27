@@ -42,14 +42,17 @@ namespace Bijectiv.Utilities
         /// <summary>
         /// The flags required to bind to public instance members.
         /// </summary>
-        public const BindingFlags Instance =
-            BindingFlags.Instance | BindingFlags.Public;
+        public const BindingFlags Instance = BindingFlags.Instance | BindingFlags.Public;
 
         /// <summary>
         /// The flags required to bind to public or private instance members.
         /// </summary>
-        public const BindingFlags NonPublicInstance =
-            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        public const BindingFlags NonPublicInstance = Instance | BindingFlags.NonPublic;
+
+        /// <summary>
+        /// The flags required to bind to public or private instance or static members.
+        /// </summary>
+        public const BindingFlags All = NonPublicInstance | BindingFlags.Static;
 
         /// <summary>
         /// Gets the collection of <see cref="FieldInfo"/> that belong to <paramref name="type"/>.

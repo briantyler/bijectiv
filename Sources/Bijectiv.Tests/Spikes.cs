@@ -36,8 +36,10 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Kernel;
+    using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -377,6 +379,154 @@ namespace Bijectiv.Tests
             Assert.IsNotNull(target.PropertyBase);
             Assert.IsNotNull(target.FieldBase);
             Assert.AreSame(target.PropertyBase, target.FieldBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MemberInfoCollection_InterfaceSpike()
+        {
+            var intRegularMember = Reflect<IBaseTestClass3>.Property(_ => _.Id);
+            var intVirtualMember = Reflect<IBaseTestClass3>.Property(_ => _.Value);
+            var intNewMember = Reflect<IBaseTestClass3>.Property(_ => _.Measure);
+
+            var regularMember = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
+            var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
+
+            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+
+            target.Add(intRegularMember);
+            target.Add(intVirtualMember);
+            target.Add(intNewMember);
+
+            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
+            Assert.IsFalse(target.Members.Contains(newMember), "New Member");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MemberInfoCollection_BaseSpike()
+        {
+            var intRegularMember = Reflect<BaseTestClass3>.Property(_ => _.Id);
+            var intVirtualMember = Reflect<BaseTestClass3>.Property(_ => _.Value);
+            var intNewMember = Reflect<BaseTestClass3>.Property(_ => _.Measure);
+
+            var regularMember = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
+            var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
+
+            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+
+            target.Add(intRegularMember);
+            target.Add(intVirtualMember);
+            target.Add(intNewMember);
+
+            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
+            Assert.IsFalse(target.Members.Contains(newMember), "New Member");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MemberInfoCollection_Spike()
+        {
+            var intRegularMember = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var intVirtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
+            var intNewMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
+
+            var regularMember = Reflect<DerivedTestClass3>.Property(_ => _.Id);
+            var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
+            var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
+
+            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+
+            target.Add(intRegularMember);
+            target.Add(intVirtualMember);
+            target.Add(intNewMember);
+
+            Assert.IsTrue(target.Members.Contains(regularMember), "Regular Member");
+            Assert.IsTrue(target.Members.Contains(virtualMember), "Virtual Member");
+            Assert.IsTrue(target.Members.Contains(newMember), "New Member");
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void MemberInfoCollection_Hierarchy_Spike()
+        {
+            var memberI1 = Reflect<IMemberInfoHierarchy1>.Property(_ => _.Id);
+            var memberI2 = Reflect<IMemberInfoHierarchy2>.Property(_ => _.Id);
+            var memberI3 = Reflect<IMemberInfoHierarchy3>.Property(_ => _.Id);
+            var memberI4 = Reflect<IMemberInfoHierarchy4>.Property(_ => _.Id);
+            var memberI5 = Reflect<IMemberInfoHierarchy5>.Property(_ => _.Id);
+            var memberI6 = Reflect<IMemberInfoHierarchy6>.Property(_ => _.Id);
+
+            var member1 = Reflect<MemberInfoHierarchy1>.Property(_ => _.Id);
+            var member2 = Reflect<MemberInfoHierarchy2>.Property(_ => _.Id);
+            var member3 = Reflect<MemberInfoHierarchy3>.Property(_ => _.Id);
+            var member4 = Reflect<MemberInfoHierarchy4>.Property(_ => _.Id);
+            var member5 = Reflect<MemberInfoHierarchy5>.Property(_ => _.Id);
+            var member6 = Reflect<MemberInfoHierarchy6>.Property(_ => _.Id);
+
+            var target = new InheritedMemberInfoCollection(typeof(MemberInfoHierarchy6));
+
+            target.Add(memberI1);
+
+            Assert.IsTrue(target.Members.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+
+            target.Members.Clear();
+            target.Add(memberI2);
+
+            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
+            Assert.IsTrue(target.Members.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+
+            target.Members.Clear();
+            target.Add(memberI3);
+
+            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
+            Assert.IsTrue(target.Members.Contains(member3), "Member 3");
+            Assert.IsTrue(target.Members.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+
+            target.Members.Clear();
+            target.Add(memberI4);
+
+            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
+            Assert.IsTrue(target.Members.Contains(member3), "Member 3");
+            Assert.IsTrue(target.Members.Contains(member4), "Member 4");
+            Assert.IsFalse(target.Members.Contains(member5), "Member 5");
+            Assert.IsFalse(target.Members.Contains(member6), "Member 6");
+
+            target.Members.Clear();
+            target.Add(memberI5);
+
+            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
+            Assert.IsTrue(target.Members.Contains(member5), "Member 5");
+            Assert.IsTrue(target.Members.Contains(member6), "Member 6");
+
+            target.Add(memberI6);
+
+            Assert.IsFalse(target.Members.Contains(member1), "Member 1");
+            Assert.IsFalse(target.Members.Contains(member2), "Member 2");
+            Assert.IsFalse(target.Members.Contains(member3), "Member 3");
+            Assert.IsFalse(target.Members.Contains(member4), "Member 4");
+            Assert.IsTrue(target.Members.Contains(member5), "Member 5");
+            Assert.IsTrue(target.Members.Contains(member6), "Member 6");
         }
 
         private static InjectionContext CreateContext(IInjectionKernel kernel)

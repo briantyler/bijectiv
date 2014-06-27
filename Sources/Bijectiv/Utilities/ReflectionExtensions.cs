@@ -209,5 +209,62 @@ namespace Bijectiv.Utilities
 
             return @this.IsValueType ? Activator.CreateInstance(@this) : null;
         }
+
+        public static TMemberInfo GetBaseDefinition<TMemberInfo>([NotNull] this TMemberInfo @this)
+            where TMemberInfo : MemberInfo
+        {
+            if (@this is FieldInfo)
+            {
+                return @this;
+            }
+
+            var method = @this as MethodInfo;
+            if (method != null)
+            {
+                return method.GetBaseDefinition() as TMemberInfo;
+            }
+
+            var property = @this as PropertyInfo;
+            if (property == null)
+            {
+                throw new ArgumentException(
+                    string.Format("Cannot get the base definition of member '{0}'", @this), "this");
+            }
+
+            var accessor = property.GetAccessors(true)[0];
+            if (accessor == null)
+            {
+                return property as TMemberInfo;
+            }
+
+            var baseAccessor = accessor.GetBaseDefinition();
+            return baseAccessor == accessor
+                ? property as TMemberInfo
+                : baseAccessor.DeclaringType.GetProperty(property.Name, ReflectionGateway.All) as TMemberInfo;
+        }
+
+        public static bool IsOverride([NotNull] this MemberInfo @this)
+        {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
+            if (@this is FieldInfo)
+            {
+                return false;
+            }
+
+            var method = @this as MethodInfo;
+            if (method == null)
+            {
+                var property = @this as PropertyInfo;
+                method = property != null ? property.GetAccessors(true)[0] : null;
+            }
+
+            return method != null
+                && (method.Attributes & MethodAttributes.Virtual) != 0
+                && (method.Attributes & MethodAttributes.NewSlot) == 0;
+        }
     }
 }

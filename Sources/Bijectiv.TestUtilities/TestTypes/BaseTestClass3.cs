@@ -34,7 +34,7 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// <summary>
     /// A test class that has derived classes 3.
     /// </summary>
-    public class BaseTestClass3
+    public class BaseTestClass3 : IBaseTestClass3
     {
         /// <summary>
         /// The type of the class.

@@ -72,8 +72,10 @@
     <Compile Include="TestTypes\EquatableCollection.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="TestTypes\IBaseTestClass3.cs" />
     <Compile Include="TestTypes\IRegisterTest.cs" />
     <Compile Include="TestTypes\KeyedClass1.cs" />
+    <Compile Include="TestTypes\MemberInfoHierarchy.cs" />
     <Compile Include="TestTypes\NonMonadicPlaceholderCollection.cs" />
     <Compile Include="TestTypes\CrazyPlaceholderCollection.cs" />
     <Compile Include="TestTypes\DerivedTestClass1.cs" />
