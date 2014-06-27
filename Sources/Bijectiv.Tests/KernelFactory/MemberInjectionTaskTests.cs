@@ -124,7 +124,7 @@ namespace Bijectiv.Tests.KernelFactory
                 new MemberFragment(
                     TestClass1.T,
                     BaseTestClass3.T,
-                    Reflect<BaseTestClass3>.Property(_ => _.Value)),
+                    Reflect<BaseTestClass3>.Property(_ => _.Value))
             };
             var expected = new[] { unprocessedFragments[0], unprocessedFragments[2], unprocessedFragments[4] };
 
@@ -156,7 +156,7 @@ namespace Bijectiv.Tests.KernelFactory
                 new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Value)),
                 new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Value)),
                 new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<BaseTestClass3>.Property(_ => _.Measure)),
-                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Measure)),
+                new MemberFragment(TestClass1.T, DerivedTestClass3.T, Reflect<DerivedTestClass3>.Property(_ => _.Measure))
             };
 
             var unprocessedTargetMembers = new List<MemberInfo>
@@ -209,10 +209,11 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
-            var member = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
+            var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
             
             // Act
-            target.ProcessFragment(null, member);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.ProcessFragment(null, fragment);
 
             // Assert
         }
@@ -224,11 +225,63 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
+            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
             // Act
-            target.ProcessFragment(null, null);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            target.ProcessFragment(scaffoldMock.Object, null);
 
             // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ProcessFragment_FragmentParameter_MemberPropertyIsProcessed()
+        {
+            // Arrange
+            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
+            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
+            var processedMembers = new HashSet<MemberInfo>();
+            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(processedMembers);
+
+            // Act
+            target.ProcessFragment(scaffoldMock.Object, fragment);
+
+            // Assert
+            Assert.AreEqual(Reflect<TestClass2>.Property(_ => _.Id), processedMembers.Single());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ProcessFragment_SubTasksProperty_ExecutesAllTasksInOrder()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+            
+            var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
+            
+            var scaffoldMock = repository.Create<InjectionScaffold>(MockBehavior.Loose);
+            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
+
+            var subTask1Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
+            var subTask2Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
+            var subTask3Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
+
+            var sequence = new MockSequence();
+            subTask1Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
+            subTask2Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
+            subTask3Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
+
+            var subTasks = new[] { subTask1Mock.Object, subTask2Mock.Object, subTask3Mock.Object };
+            var target = new MemberInjectionTask(subTasks);
+
+            // Act
+            target.ProcessFragment(scaffoldMock.Object, fragment);
+
+            // Assert
+            repository.VerifyAll();
         }
     }
 }
