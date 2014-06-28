@@ -38,9 +38,9 @@ namespace Bijectiv.Tests.Utilities
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="ReflectionExtensions"/> class.
@@ -410,6 +410,134 @@ namespace Bijectiv.Tests.Utilities
 
             // Assert
             Assert.AreEqual(default(TestClass1), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetBaseDefinition_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(FieldInfo).GetBaseDefinition();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void GetBaseDefinition_ThisParameterIsEvent_Throws()
+        {
+            // Arrange
+            var target = typeof(EventTestClass).GetEvent("SomethingHappened");
+
+            // Act
+            target.GetBaseDefinition();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetBaseDefinition_ThisParameterIsField_ReturnsThisParameter()
+        {
+            // Arrange
+            var target = Reflect<FieldTestClass>.Field(_ => _.Field);
+
+            // Act
+            var result = target.GetBaseDefinition();
+
+            // Assert
+            Assert.AreEqual(target, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetBaseDefinition_ThisParameterIsMethod_ReturnsMethodGetBaseDefinition()
+        {
+            // Arrange
+            var targetMock = new Mock<MethodInfo>(MockBehavior.Strict);
+            var baseMethod = Stub.Create<MethodInfo>();
+            targetMock.Setup(_ => _.GetBaseDefinition()).Returns(baseMethod);
+
+            // Act
+            var result = targetMock.Object.GetBaseDefinition();
+
+            // Assert
+            Assert.AreEqual(baseMethod, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetBaseDefinition_ThisParameterIsNonOverridingProperty_ReturnsThisParameter()
+        {
+            // Arrange
+            var target = typeof(MemberInfoHierarchy1).GetProperty("Id");
+
+            // Act
+            var result = target.GetBaseDefinition();
+
+            // Assert
+            Assert.AreEqual(target, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetBaseDefinition_ThisParameterIsOverridingProperty_ReturnsBaseProperty()
+        {
+            // Arrange
+            var target = typeof(MemberInfoHierarchy4).GetProperty("Id");
+
+            // Act
+            var result = target.GetBaseDefinition();
+
+            // Assert
+            Assert.AreEqual(typeof(MemberInfoHierarchy3).GetProperty("Id"), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void IsOverride_ThisParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            default(FieldInfo).IsOverride();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void IsOverride_ThisParameterIsEvent_Throws()
+        {
+            // Arrange
+            var target = typeof(EventTestClass).GetEvent("SomethingHappened");
+
+            // Act
+            target.IsOverride();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetBaseDefinition_ThisParameterIsField_ReturnsFalse()
+        {
+            // Arrange
+            var target = Reflect<FieldTestClass>.Field(_ => _.Field);
+
+            // Act
+            var result = target.IsOverride();
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }

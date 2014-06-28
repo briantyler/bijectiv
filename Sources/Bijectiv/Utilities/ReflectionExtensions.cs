@@ -210,9 +210,33 @@ namespace Bijectiv.Utilities
             return @this.IsValueType ? Activator.CreateInstance(@this) : null;
         }
 
+        /// <summary>
+        /// Gets the <see cref="MemberInfo"/> on the direct or indirect base class in which the 
+        /// <see cref="MemberInfo"/> represented by <paramref name="this"/> was first declared.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="MemberInfo"/> for which to get the base definition.
+        /// </param>
+        /// <typeparam name="TMemberInfo">
+        /// The concrete type of the <see cref="MemberInfo"/>.
+        /// </typeparam>
+        /// <returns>
+        /// A  <see cref="MemberInfo"/> object for the first implementation of <paramref name="this"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="this"/> does not represent a field, property or method.
+        /// </exception>
         public static TMemberInfo GetBaseDefinition<TMemberInfo>([NotNull] this TMemberInfo @this)
             where TMemberInfo : MemberInfo
         {
+            if (@this == null)
+            {
+                throw new ArgumentNullException("this");
+            }
+
             if (@this is FieldInfo)
             {
                 return @this;
@@ -228,21 +252,33 @@ namespace Bijectiv.Utilities
             if (property == null)
             {
                 throw new ArgumentException(
-                    string.Format("Cannot get the base definition of member '{0}'", @this), "this");
+                    string.Format("Cannot get the base definition of member '{0}' (is it an event?)", @this), "this");
             }
 
             var accessor = property.GetAccessors(true)[0];
-            if (accessor == null)
-            {
-                return property as TMemberInfo;
-            }
-
             var baseAccessor = accessor.GetBaseDefinition();
             return baseAccessor == accessor
                 ? property as TMemberInfo
+                // ReSharper disable once PossibleNullReferenceException
                 : baseAccessor.DeclaringType.GetProperty(property.Name, ReflectionGateway.All) as TMemberInfo;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the member overrides some base member. Note that this returns false for
+        /// any member not declared with the <see langword="override"/> keyword.
+        /// </summary>
+        /// <param name="this">
+        /// The <see cref="MemberInfo"/> to test.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the member overrides some base member.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="this"/> does not represent a field, property or method.
+        /// </exception>
         public static bool IsOverride([NotNull] this MemberInfo @this)
         {
             if (@this == null)
@@ -262,8 +298,13 @@ namespace Bijectiv.Utilities
                 method = property != null ? property.GetAccessors(true)[0] : null;
             }
 
-            return method != null
-                && (method.Attributes & MethodAttributes.Virtual) != 0
+            if (method == null)
+            {
+                throw new ArgumentException(
+                    string.Format("Cannot determine whether '{0}' is an override (is it an event?)", @this), "this");
+            }
+
+            return (method.Attributes & MethodAttributes.Virtual) != 0
                 && (method.Attributes & MethodAttributes.NewSlot) == 0;
         }
     }
