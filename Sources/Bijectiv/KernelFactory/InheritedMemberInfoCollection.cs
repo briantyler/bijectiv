@@ -39,8 +39,16 @@ namespace Bijectiv.KernelFactory
 
     public class InheritedMemberInfoCollection : ICollection<MemberInfo>
     {
+        /// <summary>
+        /// The hierarchy of all base types below the originating type where the item at position 0 is the type 
+        /// <see cref="object"/>.
+        /// </summary>
         private readonly Type[] hierarchy;
 
+        /// <summary>
+        /// The members that are currently known; this set has the property that if M1 is a contained within the
+        /// set and M2 has an equivalent action.
+        /// </summary>
         private readonly HashSet<MemberInfo> members = new HashSet<MemberInfo>();
 
         public InheritedMemberInfoCollection(Type type)
