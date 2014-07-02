@@ -393,7 +393,7 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
 
             target.Add(intRegularMember);
             target.Add(intVirtualMember);
@@ -416,7 +416,7 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
 
             target.Add(intRegularMember);
             target.Add(intVirtualMember);
@@ -439,7 +439,7 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new InheritedMemberInfoCollection(DerivedTestClass3.T);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
 
             target.Add(intRegularMember);
             target.Add(intVirtualMember);
@@ -468,7 +468,7 @@ namespace Bijectiv.Tests
             var member5 = Reflect<MemberInfoHierarchy5>.Property(_ => _.Id);
             var member6 = Reflect<MemberInfoHierarchy6>.Property(_ => _.Id);
 
-            var target = new InheritedMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
 
             target.Add(memberI1);
 

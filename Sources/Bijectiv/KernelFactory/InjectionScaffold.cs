@@ -136,7 +136,7 @@ namespace Bijectiv.KernelFactory
             this.Definition = definition;
             this.InjectionContext = injectionContext;
             this.SourceAsObject = sourceAsObject;
-            this.processedTargetMembers = new InheritedMemberInfoCollection(definition.Target);
+            this.processedTargetMembers = new EquivalentMemberInfoCollection(definition.Target);
         }
 
         /// <summary>

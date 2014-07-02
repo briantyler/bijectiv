@@ -167,7 +167,7 @@
     <Compile Include="Kernel\PassThroughInjection.cs" />
     <Compile Include="Utilities\CollectionExtensions.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
-    <Compile Include="KernelFactory\InheritedMemberInfoCollection.cs" />
+    <Compile Include="KernelFactory\EquivalentMemberInfoCollection.cs" />
     <Compile Include="Utilities\ParameterExpressionVisitor.cs" />
     <Compile Include="Utilities\Placeholder.cs" />
     <Compile Include="Utilities\PlaceholderExpressionVisitor.cs" />
