@@ -32,6 +32,7 @@ namespace Bijectiv.KernelFactory
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
 
@@ -40,8 +41,15 @@ namespace Bijectiv.KernelFactory
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A collection of <see cref="MemberInfo"/> that  with respect to a given type ???????
+    /// A collection of <see cref="MemberInfo"/> that determines equivalence with contained members with respect to 
+    /// a given type. Let the container determine equivalence with respect to type T; and let be the M1 be some member 
+    /// belonging to some type. Then <see cref="EquivalentMemberInfoCollection.Contains"/> will return true when 
+    /// applied to and instance t of T if and only if invoking M1 on t has exactly the same result as invoking some 
+    /// member M2 that is contained within the collection on t.
     /// </summary>
+    /// <remarks>
+    /// Only properties and fields can be added to the collection.
+    /// </remarks>
     public class EquivalentMemberInfoCollection : ICollection<MemberInfo>
     {
         /// <summary>
@@ -72,7 +80,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("type");
             }
 
-            var types = new List<Type>();
+            var types = new Collection<Type>();
             do
             {
                 types.Add(type);
@@ -80,7 +88,24 @@ namespace Bijectiv.KernelFactory
             } 
             while (type != null);
 
-            this.hierarchy = types.AsEnumerable().Reverse().ToArray();
+            this.hierarchy = types.Reverse().ToArray();
+        }
+
+        /// <summary>
+        /// Gets the type that represents the limit of the inheritance hierarchy.
+        /// </summary>
+        public Type Type
+        {
+            get { return this.hierarchy.Last(); }
+        }
+
+        /// <summary>
+        /// Gets the hierarchy of all base types below the originating type where the item at position 0 is the type 
+        /// <see cref="object"/>.
+        /// </summary>
+        public IEnumerable<Type> Hierarchy
+        {
+            get { return this.hierarchy; }
         }
 
         /// <summary>
@@ -224,10 +249,19 @@ namespace Bijectiv.KernelFactory
             return this.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets all <see cref="MemberInfo"/> objects declared by a base class of <see cref=""/>
+        /// </summary>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable"/>.
+        /// </returns>
         private IEnumerable<MemberInfo> GetEquivalentMembers([NotNull] MemberInfo item)
         {
             var found = false;
-            foreach (var type in this.hierarchy)
+            foreach (var type in this.Hierarchy)
             {
                 var member = type.GetMember(item.Name, ReflectionGateway.NonPublicInstance).FirstOrDefault();
                 if (member == null)
