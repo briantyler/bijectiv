@@ -12,16 +12,22 @@ namespace Bijectiv.TestUtilities.TestTypes
 {
     public class MemberInfoHierarchy1: IMemberInfoHierarchy1
     {
+        public string Value;
+
         public int Id { get; set; }
     }
 
     public class MemberInfoHierarchy2 : MemberInfoHierarchy1, IMemberInfoHierarchy2
     {
+        public new string Value;
+
         public new int Id { get; set; }
     }
 
     public class MemberInfoHierarchy3 : MemberInfoHierarchy2, IMemberInfoHierarchy3
     {
+        public new string Value;
+
         public new virtual int Id { get; set; }
     }
 
@@ -32,6 +38,8 @@ namespace Bijectiv.TestUtilities.TestTypes
 
     public class MemberInfoHierarchy5 : MemberInfoHierarchy4, IMemberInfoHierarchy5
     {
+        public new string Value;
+
         public new int Id { get; set; }
     }
 

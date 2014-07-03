@@ -84,6 +84,7 @@ namespace Bijectiv.KernelFactory
             do
             {
                 types.Add(type);
+                // ReSharper disable once AssignNullToNotNullAttribute
                 type = type.BaseType;
             } 
             while (type != null);
@@ -153,8 +154,6 @@ namespace Bijectiv.KernelFactory
             this.members.AddRange(this.GetEquivalentMembers(item).Concat(item));
         }
 
-  
-
         /// <summary>
         /// Determines whether the <see cref="EquivalentMemberInfoCollection"/> contains a specific value.
         /// </summary>
@@ -167,7 +166,7 @@ namespace Bijectiv.KernelFactory
         /// </returns>
         public bool Contains(MemberInfo item)
         {
-            if (item == null || !(item is FieldInfo || item is PropertyInfo))
+            if (!(item is FieldInfo || item is PropertyInfo))
             {
                 return false;
             }
@@ -250,7 +249,7 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Gets all <see cref="MemberInfo"/> objects declared by a base class of <see cref=""/>
+        /// Gets all <see cref="MemberInfo"/> objects declared by a base class of <see cref="Type"/>.
         /// </summary>
         /// <param name="item">
         /// The item.
@@ -269,6 +268,7 @@ namespace Bijectiv.KernelFactory
                     continue;
                 }
 
+                // ReSharper disable once PossibleNullReferenceException
                 if (!item.DeclaringType.IsAssignableFrom(type))
                 {
                     continue;
