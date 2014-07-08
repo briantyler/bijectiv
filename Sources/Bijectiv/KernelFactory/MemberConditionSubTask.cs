@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemberConditionSubTask.cs" company="Bijectiv">
+// <copyright file="MemberConditionSubtask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the MemberConditionSubTask type.
+//   Defines the MemberConditionSubtask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ namespace Bijectiv.KernelFactory
     /// Represents a task that is performed as part of processing a <see cref="MemberFragment"/> that conditionally
     /// injects the member based on the result of some predicate.
     /// </summary>
-    public class MemberConditionSubTask : IInjectionSubTask<MemberFragment>
+    public class MemberConditionSubtask : IInjectionSubtask<MemberFragment>
     {
         /// <summary>
         /// Executes the task.
@@ -51,7 +51,7 @@ namespace Bijectiv.KernelFactory
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
         /// <param name="fragment">
-        /// The fragment for which this is a sub-task.
+        /// The fragment for which this is a subtask.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.

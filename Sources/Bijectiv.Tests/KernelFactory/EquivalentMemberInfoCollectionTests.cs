@@ -102,7 +102,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_TypeParameter_IsAssignedToTypeProperty()
+        public void CreateInstance_LimitParameter_IsAssignedToLimitProperty()
         {
             // Arrange
 
@@ -110,7 +110,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new EquivalentMemberInfoCollection(TestClass1.T);
 
             // Assert
-            Assert.AreEqual(TestClass1.T, target.Type);
+            Assert.AreEqual(TestClass1.T, target.Limit);
         }
 
         [TestMethod]

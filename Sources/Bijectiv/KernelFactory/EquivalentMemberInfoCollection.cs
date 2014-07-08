@@ -67,27 +67,27 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// Initialises a new instance of the <see cref="EquivalentMemberInfoCollection"/> class.
         /// </summary>
-        /// <param name="type">
+        /// <param name="limit">
         /// The type that represents the limit of the inheritance hierarchy.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public EquivalentMemberInfoCollection([NotNull] Type type)
+        public EquivalentMemberInfoCollection([NotNull] Type limit)
         {
-            if (type == null)
+            if (limit == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException("limit");
             }
 
             var types = new Collection<Type>();
             do
             {
-                types.Add(type);
+                types.Add(limit);
                 // ReSharper disable once AssignNullToNotNullAttribute
-                type = type.BaseType;
+                limit = limit.BaseType;
             } 
-            while (type != null);
+            while (limit != null);
 
             this.hierarchy = types.Reverse().ToArray();
         }
@@ -95,7 +95,7 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// Gets the type that represents the limit of the inheritance hierarchy.
         /// </summary>
-        public Type Type
+        public Type Limit
         {
             get { return this.hierarchy.Last(); }
         }
@@ -249,7 +249,7 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Gets all <see cref="MemberInfo"/> objects declared by a base class of <see cref="Type"/>.
+        /// Gets all <see cref="MemberInfo"/> objects declared by a base class of <see cref="Limit"/>.
         /// </summary>
         /// <param name="item">
         /// The item.

@@ -30,6 +30,7 @@
 namespace Bijectiv
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
@@ -48,6 +49,8 @@ namespace Bijectiv
     /// <typeparam name="TMember">
     /// The type of the target member referenced by the fragment.
     /// </typeparam>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes",
+        Justification = "By design.")]
     public interface IMemberFragmentBuilder<TSource, TTarget, in TMember>
     {
         /// <summary>
@@ -89,11 +92,11 @@ namespace Bijectiv
             Expression<Func<TSource, TResult>> expression);
 
         IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
-            Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate);
+            Func<IInjectionParameters<TSource, TTarget>, TResult> createInjectionSource);
 
         IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value);
 
         IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
-            Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate);
+            Func<IInjectionParameters<TSource, TTarget>, TMember> createTargetMember);
     }
 }

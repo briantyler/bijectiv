@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemberConditionSubTaskTests.cs" company="Bijectiv">
+// <copyright file="MemberConditionSubtaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,22 +23,35 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the MemberConditionSubTaskTests type.
+//   Defines the MemberConditionSubtaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Tests.KernelFactory
 {
     using Bijectiv.KernelFactory;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="MemberConditionSubTask"/> class.
+    /// This class tests the <see cref="MemberConditionSubtask"/> class.
     /// </summary>
     [TestClass]
-    public class MemberConditionSubTaskTests
+    public class MemberConditionSubtaskTests
     {
-         
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            new MemberConditionSubtask().Naught();
+
+            // Assert
+        }
+
+        
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionSubTask.cs" company="Bijectiv">
+// <copyright file="IInjectionSubtask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionSubTask type.
+//   Defines the IInjectionSubtask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,9 +39,9 @@ namespace Bijectiv.KernelFactory
     /// Represents a task that is performed as part of processing a <see cref="InjectionFragment"/>.
     /// </summary>
     /// <typeparam name="TFragment">
-    /// The type fragment for which this is a sub-task.
+    /// The type fragment for which this is a subtask.
     /// </typeparam>
-    public interface IInjectionSubTask<in TFragment> where TFragment : InjectionFragment
+    public interface IInjectionSubtask<in TFragment> where TFragment : InjectionFragment
     {
         /// <summary>
         /// Executes the task.
@@ -50,7 +50,7 @@ namespace Bijectiv.KernelFactory
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
         /// <param name="fragment">
-        /// The fragment for which this is a sub-task.
+        /// The fragment for which this is a subtask.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.

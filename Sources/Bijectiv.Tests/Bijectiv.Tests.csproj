@@ -89,7 +89,7 @@
     <Compile Include="KernelFactory\InitializeInjectionParametersTaskTests.cs" />
     <Compile Include="KernelFactory\InititalizeFragmentsTaskTests.cs" />
     <Compile Include="KernelFactory\InjectionScaffoldTests.cs" />
-    <Compile Include="KernelFactory\MemberConditionSubTaskTests.cs" />
+    <Compile Include="KernelFactory\MemberConditionSubtaskTests.cs" />
     <Compile Include="KernelFactory\MemberInjectionTaskTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />

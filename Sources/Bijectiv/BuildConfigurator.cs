@@ -57,7 +57,7 @@ namespace Bijectiv
             this.StoreFactories = new List<Func<IInjectionStoreFactory>>();
             this.InstanceFactories = new List<Func<IInstanceFactory>>();
             this.TransformTasks = new List<Func<IInjectionTask>>();
-            this.MemberTransformTasks = new List<Func<IInjectionSubTask<MemberFragment>>>();
+            this.MemberTransformTasks = new List<Func<IInjectionSubtask<MemberFragment>>>();
             this.MergeTasks = new List<Func<IInjectionTask>>();
 
             this.Reset();
@@ -88,10 +88,10 @@ namespace Bijectiv
         public IList<Func<IInjectionTask>> TransformTasks { get; private set; }
 
         /// <summary>
-        /// Gets the default sequence of <see cref="IInjectionSubTask{T}"/> instances used for constructing 
+        /// Gets the default sequence of <see cref="IInjectionSubtasktask{TFragment}"/> instances used for constructing 
         /// member <see cref="ITransform"/> instances.
         /// </summary>
-        public IList<Func<IInjectionSubTask<MemberFragment>>> MemberTransformTasks { get; private set; }
+        public IList<Func<IInjectionSubtask<MemberFragment>>> MemberTransformTasks { get; private set; }
 
         /// <summary>
         /// Gets the default sequence of <see cref="IInjectionTask"/> instances used for constructing 
@@ -184,11 +184,11 @@ namespace Bijectiv
         {
             this.MemberTransformTasks.Clear();
             this.MemberTransformTasks.AddRange(
-                new Func<IInjectionSubTask<MemberFragment>>[]
+                new Func<IInjectionSubtask<MemberFragment>>[]
                 {
-                    () => new MemberConditionSubTask(),
-                    () => new MemberValueSourceTransformSubTask(), 
-                    () => new CreateLabelSubTask<MemberFragment>(LabelCategory.End)
+                    () => new MemberConditionSubtask(),
+                    () => new MemberValueSourceTransformSubtask(), 
+                    () => new CreateLabelSubtask<MemberFragment>(LabelCategory.End)
                 });
         }
 

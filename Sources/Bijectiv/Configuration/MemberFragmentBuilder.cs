@@ -30,6 +30,7 @@
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq.Expressions;
 
     using JetBrains.Annotations;
@@ -46,6 +47,8 @@ namespace Bijectiv.Configuration
     /// <typeparam name="TMember">
     /// The type of the target member referenced by the fragment.
     /// </typeparam>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes",
+        Justification = "By design.")]
     public class MemberFragmentBuilder<TSource, TTarget, TMember> 
         : IMemberFragmentBuilder<TSource, TTarget, TMember>
     {
@@ -190,14 +193,14 @@ namespace Bijectiv.Configuration
         }
 
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
-            Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate)
+            Func<IInjectionParameters<TSource, TTarget>, TResult> createInjectionSource)
         {
             this.Fragment.Add(
                 new DelegateSourceMemberShard(
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    @delegate,
+                    createInjectionSource,
                     false));
 
             return this.Builder;
@@ -209,14 +212,14 @@ namespace Bijectiv.Configuration
         }
 
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
-            Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate)
+            Func<IInjectionParameters<TSource, TTarget>, TMember> createTargetMember)
         {
             this.Fragment.Add(
                 new DelegateSourceMemberShard(
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    @delegate,
+                    createTargetMember,
                     true));
 
             return this.Builder;

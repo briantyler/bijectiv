@@ -113,10 +113,10 @@ namespace Bijectiv.Tests
             // Assert
             var tasks = target.MemberTransformTasks.Select(item => item()).ToArray();
             var index = 0;
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubTask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubTask));
-            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubTask<MemberFragment>));
-            Assert.AreEqual(LabelCategory.End, ((CreateLabelSubTask<MemberFragment>)tasks[index++]).Category);
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubtask));
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask<MemberFragment>));
+            Assert.AreEqual(LabelCategory.End, ((CreateLabelSubtask<MemberFragment>)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);
         }
 

@@ -46,33 +46,33 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// The sub-tasks that determine how the member injection will be built.
         /// </summary>
-        private readonly IEnumerable<IInjectionSubTask<MemberFragment>> subTasks;
+        private readonly IEnumerable<IInjectionSubtask<MemberFragment>> subtasks;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="MemberInjectionTask"/> class.
         /// </summary>
-        /// <param name="subTasks">
-        /// The sub-tasks that determine how the member injection will be built.
+        /// <param name="subtasks">
+        /// The subtasks that determine how the member injection will be built.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public MemberInjectionTask([NotNull] IEnumerable<IInjectionSubTask<MemberFragment>> subTasks)
+        public MemberInjectionTask([NotNull] IEnumerable<IInjectionSubtask<MemberFragment>> subtasks)
         {
-            if (subTasks == null)
+            if (subtasks == null)
             {
-                throw new ArgumentNullException("subTasks");
+                throw new ArgumentNullException("subtasks");
             }
 
-            this.subTasks = subTasks;
+            this.subtasks = subtasks;
         }
 
         /// <summary>
-        /// Gets the sub-tasks that determine how the member injection will be built.
+        /// Gets the subtasks that determine how the member injection will be built.
         /// </summary>
-        public IEnumerable<IInjectionSubTask<MemberFragment>> SubTasks
+        public IEnumerable<IInjectionSubtask<MemberFragment>> Subtasks
         {
-            get { return this.subTasks; }
+            get { return this.subtasks; }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("fragment");
             }
 
-            this.SubTasks.ForEach(item => item.Execute(scaffold, fragment));
+            this.Subtasks.ForEach(item => item.Execute(scaffold, fragment));
             scaffold.ProcessedTargetMembers.Add(fragment.Member);
         }
     }

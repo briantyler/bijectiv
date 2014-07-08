@@ -275,6 +275,8 @@ namespace Bijectiv.Utilities
         /// <exception cref="ArgumentException">
         /// Thrown when the expression does not describe a field or property.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters",
+            Justification = "LambdaExpression base type is not helpful here")]
         public static MemberInfo FieldOrProperty<TMember>([NotNull] Expression<Func<T, TMember>> expression)
         {
             if (expression == null)

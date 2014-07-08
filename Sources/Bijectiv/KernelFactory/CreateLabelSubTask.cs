@@ -8,11 +8,11 @@
 
     using JetBrains.Annotations;
 
-    public class CreateLabelSubTask<TFragment> : IInjectionSubTask<TFragment> where TFragment : InjectionFragment
+    public class CreateLabelSubtask<TFragment> : IInjectionSubtask<TFragment> where TFragment : InjectionFragment
     {
         private readonly LabelCategory category;
 
-        public CreateLabelSubTask(LabelCategory category)
+        public CreateLabelSubtask(LabelCategory category)
         {
             this.category = category;
         }

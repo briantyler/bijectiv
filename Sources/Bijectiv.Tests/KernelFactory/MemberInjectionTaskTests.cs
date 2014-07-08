@@ -52,7 +52,7 @@ namespace Bijectiv.Tests.KernelFactory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_SubTasksParameterIsNull_Throws()
+        public void CreateInstance_SubtasksParameterIsNull_Throws()
         {
             // Arrange
 
@@ -70,23 +70,23 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>()).Naught();
+            new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>()).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_SubTasksParameter_IsAssignedToSubTasksProperty()
+        public void CreateInstance_SubtasksParameter_IsAssignedToSubtasksProperty()
         {
             // Arrange
-            var subTasks = new List<IInjectionSubTask<MemberFragment>>();
+            var subtasks = new List<IInjectionSubtask<MemberFragment>>();
 
             // Act
-            var target = new MemberInjectionTask(subTasks);
+            var target = new MemberInjectionTask(subtasks);
 
             // Assert
-            Assert.AreEqual(subTasks, target.SubTasks);
+            Assert.AreEqual(subtasks, target.Subtasks);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -135,7 +135,7 @@ namespace Bijectiv.Tests.KernelFactory
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new List<MemberInfo>());
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
 
             // Act
             target.Execute(scaffoldMock.Object);
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             var targetMock = new Mock<MemberInjectionTask>(
                 MockBehavior.Strict,
-                new List<IInjectionSubTask<MemberFragment>>());
+                new List<IInjectionSubtask<MemberFragment>>());
 
             targetMock
                 .Setup(_ => _.ProcessFragment(scaffoldMock.Object, It.IsAny<MemberFragment>()))
@@ -208,7 +208,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
             
             // Act
@@ -224,7 +224,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
@@ -240,7 +240,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_FragmentParameter_MemberPropertyIsProcessed()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubTask<MemberFragment>>());
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             var processedMembers = new HashSet<MemberInfo>();
@@ -255,7 +255,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessFragment_SubTasksProperty_ExecutesAllTasksInOrder()
+        public void ProcessFragment_SubtasksProperty_ExecutesAllTasksInOrder()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
@@ -265,17 +265,17 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffoldMock = repository.Create<InjectionScaffold>(MockBehavior.Loose);
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
-            var subTask1Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
-            var subTask2Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
-            var subTask3Mock = repository.Create<IInjectionSubTask<MemberFragment>>();
+            var subTask1Mock = repository.Create<IInjectionSubtask<MemberFragment>>();
+            var subTask2Mock = repository.Create<IInjectionSubtask<MemberFragment>>();
+            var subTask3Mock = repository.Create<IInjectionSubtask<MemberFragment>>();
 
             var sequence = new MockSequence();
             subTask1Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
             subTask2Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
             subTask3Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
 
-            var subTasks = new[] { subTask1Mock.Object, subTask2Mock.Object, subTask3Mock.Object };
-            var target = new MemberInjectionTask(subTasks);
+            var subtasks = new[] { subTask1Mock.Object, subTask2Mock.Object, subTask3Mock.Object };
+            var target = new MemberInjectionTask(subtasks);
 
             // Act
             target.ProcessFragment(scaffoldMock.Object, fragment);
