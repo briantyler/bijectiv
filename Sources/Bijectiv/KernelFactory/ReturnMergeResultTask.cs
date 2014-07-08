@@ -61,7 +61,7 @@ namespace Bijectiv.KernelFactory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {
@@ -76,7 +76,7 @@ namespace Bijectiv.KernelFactory
             var result = Expression.New(Constructor, postMergeAction, scaffold.TargetAsObject);
             var returnTarget = Expression.Label(ReturnType);
 
-            scaffold.Expressions.Add(Expression.Label(scaffold.ReturnLabel));
+            scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LabelCategory.End)));
             scaffold.Expressions.Add(Expression.Return(returnTarget, result, ReturnType));
             scaffold.Expressions.Add(Expression.Label(returnTarget, Expression.Constant(null, ReturnType)));
         }

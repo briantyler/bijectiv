@@ -46,7 +46,7 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// The labels that are required by the <see cref="IInjection"/>.
         /// </summary>
-        private readonly Dictionary<string, LabelTarget> labels = new Dictionary<string, LabelTarget>();
+        private readonly ILabelCache labels = new LabelCache();
 
         /// <summary>
         /// The temporary variables that are required by the <see cref="IInjection"/>.
@@ -82,11 +82,6 @@ namespace Bijectiv.KernelFactory
         /// The target members that have already been processed.
         /// </summary>
         private readonly ICollection<MemberInfo> processedTargetMembers;
-
-        /// <summary>
-        /// The return label.
-        /// </summary>
-        private readonly LabelTarget returnLabel = Expression.Label("return");
 
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionScaffold"/> class.
@@ -187,14 +182,6 @@ namespace Bijectiv.KernelFactory
         public virtual Expression Hint { get; set; }
 
         /// <summary>
-        /// Gets the return label.
-        /// </summary>
-        public virtual LabelTarget ReturnLabel
-        {
-            get { return this.returnLabel; }
-        }
-
-        /// <summary>
         /// Gets the fragments that have not been processed.
         /// </summary>
         public virtual IEnumerable<InjectionFragment> UnprocessedFragments
@@ -261,14 +248,6 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Gets the labels that are required by the <see cref="IInjection"/>.
-        /// </summary>
-        public IDictionary<string, LabelTarget> Labels
-        {
-            get { return this.labels; }
-        }
-
-        /// <summary>
         /// Gets the temporary variables that are required by the <see cref="IInjection"/>.
         /// </summary>
         public virtual IList<ParameterExpression> Variables
@@ -285,36 +264,20 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Adds a label called <paramref name="name"/> to the <see cref="InjectionScaffold"/> if one does not 
-        /// already exist.
+        /// Gets the label scoped to <paramref name="scope"/> with a given <paramref name="category"/>.
         /// </summary>
-        /// <param name="name">
-        /// The name of the label.
+        /// <param name="scope">
+        /// The object that defines the label's scope; leave null for global scope.
+        /// </param>
+        /// <param name="category">
+        /// The label category.
         /// </param>
         /// <returns>
-        /// The <see cref="LabelTarget"/> with the corresponding name.
+        /// The <see cref="LabelTarget"/> with given scope and category.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public virtual LabelTarget GetOrAddLabel([NotNull] string name)
+        public virtual LabelTarget GetLabel(object scope, LabelCategory category)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be white space", "name");
-            }
-
-            if (!this.Labels.ContainsKey(name))
-            {
-                this.Labels.Add(name, Expression.Label(name));
-            }
-
-            return this.Labels[name];
+            return this.labels.GetLabel(scope ?? this, category);
         }
     }
 }

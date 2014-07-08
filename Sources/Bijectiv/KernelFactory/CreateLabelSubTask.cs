@@ -10,16 +10,16 @@
 
     public class CreateLabelSubTask<TFragment> : IInjectionSubTask<TFragment> where TFragment : InjectionFragment
     {
-        private readonly Func<TFragment, string> labelNameFactory;
+        private readonly LabelCategory category;
 
-        public CreateLabelSubTask(Func<TFragment, string> labelNameFactory)
+        public CreateLabelSubTask(LabelCategory category)
         {
-            this.labelNameFactory = labelNameFactory;
+            this.category = category;
         }
 
-        public Func<TFragment, string> LabelNameFactory
+        public LabelCategory Category
         {
-            get { return this.labelNameFactory; }
+            get { return this.category; }
         }
 
         public void Execute(InjectionScaffold scaffold, TFragment fragment)
@@ -34,8 +34,7 @@
                 throw new ArgumentNullException("fragment");
             }
 
-            var label = scaffold.GetOrAddLabel(this.LabelNameFactory(fragment));
-            scaffold.Expressions.Add(Expression.Label(label));
+            scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(fragment, this.Category)));
         }
     }
 }

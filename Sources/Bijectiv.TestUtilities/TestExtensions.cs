@@ -35,8 +35,6 @@ namespace Bijectiv.TestUtilities
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

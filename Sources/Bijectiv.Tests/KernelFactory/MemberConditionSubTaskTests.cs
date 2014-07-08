@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReturnTargetAsObjectTask.cs" company="Bijectiv">
+// <copyright file="MemberConditionSubTaskTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,43 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ReturnTargetAsObjectTask type.
+//   Defines the MemberConditionSubTaskTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.KernelFactory
+namespace Bijectiv.Tests.KernelFactory
 {
-    using System;
-    using System.Linq.Expressions;
+    using Bijectiv.KernelFactory;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// A task that returns the target as an object.
+    /// This class tests the <see cref="MemberConditionSubTask"/> class.
     /// </summary>
-    public class ReturnTargetAsObjectTask : IInjectionTask
+    [TestClass]
+    public class MemberConditionSubTaskTests
     {
-        /// <summary>
-        /// The return type.
-        /// </summary>
-        private static readonly Type ReturnType = typeof(object);
-
-        /// <summary>
-        /// Executes the task.
-        /// </summary>
-        /// <param name="scaffold">
-        /// The scaffold on which the <see cref="IInjection"/> is being built.
-        /// </param>
-        public void Execute(InjectionScaffold scaffold)
-        {
-            if (scaffold == null)
-            {
-                throw new ArgumentNullException("scaffold");
-            }
-
-            var returnTarget = Expression.Label(ReturnType);
-
-            scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LabelCategory.End)));
-            scaffold.Expressions.Add(Expression.Return(returnTarget, scaffold.TargetAsObject, ReturnType));
-            scaffold.Expressions.Add(Expression.Label(returnTarget, Expression.Constant(null, ReturnType)));
-        }
+         
     }
 }

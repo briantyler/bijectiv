@@ -186,9 +186,9 @@ namespace Bijectiv
             this.MemberTransformTasks.AddRange(
                 new Func<IInjectionSubTask<MemberFragment>>[]
                 {
-                    () => new MemberConditionSubTask(f => f.Member.Name),
+                    () => new MemberConditionSubTask(),
                     () => new MemberValueSourceTransformSubTask(), 
-                    () => new CreateLabelSubTask<MemberFragment>(f => f.Member.Name)
+                    () => new CreateLabelSubTask<MemberFragment>(LabelCategory.End)
                 });
         }
 

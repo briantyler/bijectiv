@@ -45,41 +45,6 @@ namespace Bijectiv.KernelFactory
     public class MemberConditionSubTask : IInjectionSubTask<MemberFragment>
     {
         /// <summary>
-        /// A factory that create a name from a <see cref="MemberFragment"/>; this name identifies the label that
-        /// marks the end member injection. 
-        /// </summary>
-        private readonly Func<MemberFragment, string> labelNameFactory;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="MemberConditionSubTask"/> class.
-        /// </summary>
-        /// <param name="labelNameFactory">
-        /// A factory that create a name from a <see cref="MemberFragment"/>; this name identifies the label that
-        /// marks the end member injection. 
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public MemberConditionSubTask([NotNull] Func<MemberFragment, string> labelNameFactory)
-        {
-            if (labelNameFactory == null)
-            {
-                throw new ArgumentNullException("labelNameFactory");
-            }
-
-            this.labelNameFactory = labelNameFactory;
-        }
-
-        /// <summary>
-        /// Gets a factory that create a name from a <see cref="MemberFragment"/>; this name identifies the label that
-        /// marks the end member injection. 
-        /// </summary>
-        public Func<MemberFragment, string> LabelNameFactory
-        {
-            get { return this.labelNameFactory; }
-        }
-
-        /// <summary>
         /// Executes the task.
         /// </summary>
         /// <param name="scaffold">
@@ -149,7 +114,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
-            var label = scaffold.GetOrAddLabel(this.LabelNameFactory(fragment));
+            var label = scaffold.GetLabel(fragment, LabelCategory.End);
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
 
             var delegateType = shard.Predicate.GetType();

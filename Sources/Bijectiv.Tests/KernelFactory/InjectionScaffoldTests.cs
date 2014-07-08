@@ -326,19 +326,6 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_LabelsProperty_IsEmpty()
-        {
-            // Arrange
-
-            // Act
-            var target = CreateTarget();
-
-            // Assert
-            Assert.IsFalse(target.Labels.Any());
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void UnprocessedFragmentsProperty_DefaultParameters_FiltersCandidateFragmentsByProcessedFragments()
         {
             // Arrange
@@ -384,58 +371,42 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void GetOrAddLabel_NameParameterIsNull_Throws()
-        {
-            // Arrange
-            var target = CreateTarget();
-
-            // Act
-            target.GetOrAddLabel(null);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
-        public void GetOrAddLabel_NameParameterIsWhiteSpace_Throws()
-        {
-            // Arrange
-            var target = CreateTarget();
-
-            // Act
-            target.GetOrAddLabel(new string(' ', 10));
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void GetOrAddLabel_LabelDoesNotExist_GetsLabel()
         {
             // Arrange
             var target = CreateTarget();
 
             // Act
-            var result = target.GetOrAddLabel("bijectiv");
+            var result = target.GetLabel(null, LabelCategory.End);
 
             // Assert
-            Assert.AreEqual("bijectiv", result.Name);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetOrAddLabel_LabelExists_GetsLabel()
+        public void GetOrAddLabel_LabelDoesNotExistWithScope_GetsLabel()
         {
             // Arrange
             var target = CreateTarget();
 
-            var label = Expression.Label("bijectiv");
-            target.Labels.Add("bijectiv", label);
+            // Act
+            var result = target.GetLabel(new object(), LabelCategory.End);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetOrAddLabel_LabelExistsWithScope_GetsLabel()
+        {
+            var target = CreateTarget();
+            var scope = new object();
+            var label = target.GetLabel(scope, LabelCategory.End);
 
             // Act
-            var result = target.GetOrAddLabel("bijectiv");
+            var result = target.GetLabel(scope, LabelCategory.End);
 
             // Assert
             Assert.AreEqual(label, result);
