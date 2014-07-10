@@ -115,8 +115,8 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubtask));
-            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask<MemberFragment>));
-            Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask<MemberFragment>)tasks[index++]).Category);
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask));
+            Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);
         }
 
