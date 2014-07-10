@@ -377,7 +377,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = CreateTarget();
 
             // Act
-            var result = target.GetLabel(null, LabelCategory.End);
+            var result = target.GetLabel(null, LegendaryLabels.End);
 
             // Assert
             Assert.IsNotNull(result);
@@ -391,7 +391,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = CreateTarget();
 
             // Act
-            var result = target.GetLabel(new object(), LabelCategory.End);
+            var result = target.GetLabel(new object(), LegendaryLabels.End);
 
             // Assert
             Assert.IsNotNull(result);
@@ -403,10 +403,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             var target = CreateTarget();
             var scope = new object();
-            var label = target.GetLabel(scope, LabelCategory.End);
+            var label = target.GetLabel(scope, LegendaryLabels.End);
 
             // Act
-            var result = target.GetLabel(scope, LabelCategory.End);
+            var result = target.GetLabel(scope, LegendaryLabels.End);
 
             // Assert
             Assert.AreEqual(label, result);

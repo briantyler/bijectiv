@@ -68,7 +68,7 @@ namespace Bijectiv.KernelFactory
             substituted = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(substituted);
             substituted = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(substituted);
 
-            scaffold.Expressions.Add(Expression.IfThen(substituted, Expression.Goto(scaffold.GetLabel(null, LabelCategory.End))));
+            scaffold.Expressions.Add(Expression.IfThen(substituted, Expression.Goto(scaffold.GetLabel(null, LegendaryLabels.End))));
         }
     }
 }

@@ -66,7 +66,7 @@
     <Compile Include="KernelFactory\IInjectionSubtask.cs" />
     <Compile Include="KernelFactory\ILabelCache.cs" />
     <Compile Include="KernelFactory\InitializeInjectionParametersTask.cs" />
-    <Compile Include="KernelFactory\LabelCategory.cs" />
+    <Compile Include="KernelFactory\LegendaryLabels.cs" />
     <Compile Include="KernelFactory\LabelCache.cs" />
     <Compile Include="KernelFactory\MemberConditionSubtask.cs" />
     <Compile Include="KernelFactory\MemberInjectionTask.cs" />

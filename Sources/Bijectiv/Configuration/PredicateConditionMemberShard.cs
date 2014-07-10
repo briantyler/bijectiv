@@ -123,6 +123,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="PredicateConditionMemberShard"/> class.
+        /// </summary>
+        protected PredicateConditionMemberShard()
+        {
+        }
+
+        /// <summary>
         /// Gets the shard category.
         /// </summary>
         public override Guid ShardCategory
@@ -133,7 +140,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the predicate.
         /// </summary>
-        public object Predicate
+        public virtual object Predicate
         {
             get { return this.predicate; }
         }
@@ -141,7 +148,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the type of the predicate parameter.
         /// </summary>
-        public Type PredicateParameterType
+        public virtual Type PredicateParameterType
         {
             get { return this.predicateParameterType; }
         }

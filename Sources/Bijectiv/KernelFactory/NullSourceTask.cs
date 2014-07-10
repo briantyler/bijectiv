@@ -81,7 +81,7 @@ namespace Bijectiv.KernelFactory
             var targetToObject = Expression.Convert(scaffold.Target, typeof(object));
             var assignTargetAsObject = Expression.Assign(scaffold.TargetAsObject, targetToObject);
 
-            var @goto = Expression.Goto(scaffold.GetLabel(null, LabelCategory.End));
+            var @goto = Expression.Goto(scaffold.GetLabel(null, LegendaryLabels.End));
             var ifIsNull = Expression.IfThen(
                 Expression.Equal(scaffold.SourceAsObject, Expression.Constant(null)),
                 Expression.Block(assignTarget, assignTargetAsObject, @goto));

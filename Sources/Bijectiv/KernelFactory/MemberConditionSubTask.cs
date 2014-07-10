@@ -114,14 +114,15 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
-            var label = scaffold.GetLabel(fragment, LabelCategory.End);
+            var label = scaffold.GetLabel(fragment, LegendaryLabels.End);
             var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParameters");
 
+            var castParameters = Expression.Convert(parameters, shard.PredicateParameterType);
             var delegateType = shard.Predicate.GetType();
             var method = delegateType.GetMethod("Invoke");
 
             var @delegate = Expression.Constant(shard.Predicate, delegateType);
-            var negatePredicate = Expression.Not(Expression.Call(@delegate, method,  parameters));
+            var negatePredicate = Expression.Not(Expression.Call(@delegate, method, new Expression[] { castParameters }));
 
             scaffold.Expressions.Add(Expression.IfThen(negatePredicate, Expression.Goto(label)));
         }

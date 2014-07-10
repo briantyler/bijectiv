@@ -57,7 +57,7 @@ namespace Bijectiv.KernelFactory
 
             var returnTarget = Expression.Label(ReturnType);
 
-            scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LabelCategory.End)));
+            scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LegendaryLabels.End)));
             scaffold.Expressions.Add(Expression.Return(returnTarget, scaffold.TargetAsObject, ReturnType));
             scaffold.Expressions.Add(Expression.Label(returnTarget, Expression.Constant(null, ReturnType)));
         }

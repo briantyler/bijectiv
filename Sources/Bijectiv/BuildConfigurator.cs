@@ -188,7 +188,7 @@ namespace Bijectiv
                 {
                     () => new MemberConditionSubtask(),
                     () => new MemberValueSourceTransformSubtask(), 
-                    () => new CreateLabelSubtask<MemberFragment>(LabelCategory.End)
+                    () => new CreateLabelSubtask<MemberFragment>(LegendaryLabels.End)
                 });
         }
 

@@ -275,7 +275,7 @@ namespace Bijectiv.KernelFactory
         /// <returns>
         /// The <see cref="LabelTarget"/> with given scope and category.
         /// </returns>
-        public virtual LabelTarget GetLabel(object scope, LabelCategory category)
+        public virtual LabelTarget GetLabel(object scope, Guid category)
         {
             return this.labels.GetLabel(scope ?? this, category);
         }

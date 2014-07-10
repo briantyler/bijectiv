@@ -1,23 +1,20 @@
 ﻿namespace Bijectiv.KernelFactory
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
 
-    using JetBrains.Annotations;
-
     public class CreateLabelSubtask<TFragment> : IInjectionSubtask<TFragment> where TFragment : InjectionFragment
     {
-        private readonly LabelCategory category;
+        private readonly Guid category;
 
-        public CreateLabelSubtask(LabelCategory category)
+        public CreateLabelSubtask(Guid category)
         {
             this.category = category;
         }
 
-        public LabelCategory Category
+        public Guid Category
         {
             get { return this.category; }
         }

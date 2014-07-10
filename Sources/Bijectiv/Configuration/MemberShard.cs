@@ -57,6 +57,13 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Initialises a new instance of the <see cref="MemberShard"/> class.
         /// </summary>
+        protected MemberShard()
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MemberShard"/> class.
+        /// </summary>
         /// <param name="source">
         /// The source.
         /// </param>

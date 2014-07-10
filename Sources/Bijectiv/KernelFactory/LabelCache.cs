@@ -9,10 +9,10 @@
 
     public class LabelCache : ILabelCache
     {
-        private readonly Dictionary<Tuple<object, LabelCategory>, LabelTarget> cache = 
-            new Dictionary<Tuple<object, LabelCategory>, LabelTarget>();
+        private readonly Dictionary<Tuple<object, Guid>, LabelTarget> cache = 
+            new Dictionary<Tuple<object, Guid>, LabelTarget>();
 
-        public LabelTarget GetLabel([NotNull] object scope, LabelCategory category)
+        public LabelTarget GetLabel(object scope, Guid category)
         {
             if (scope == null)
             {
@@ -28,9 +28,9 @@
             return this.cache[key];
         }
 
-        private void CreateLabel(Tuple<object, LabelCategory> key)
+        private void CreateLabel(Tuple<object, Guid> key)
         {
-            var label = Expression.Label(string.Format("{0}_{1}_{2}", this.cache.Count(), key.Item1, key.Item2));
+            var label = Expression.Label(string.Format("{0}_{1}_{2:D}", this.cache.Count(), key.Item1, key.Item2));
 
             this.cache.Add(key, label);
         }

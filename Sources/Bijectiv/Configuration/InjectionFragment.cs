@@ -77,9 +77,16 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="InjectionFragment"/> class.
+        /// </summary>
+        protected InjectionFragment()
+        {
+        }
+
+        /// <summary>
         /// Gets the source type.
         /// </summary>
-        public Type Source
+        public virtual Type Source
         {
             get { return this.source; }
         }
@@ -87,7 +94,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the target type.
         /// </summary>
-        public Type Target
+        public virtual Type Target
         {
             get { return this.target; }
         }

@@ -100,6 +100,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="MemberFragment"/> class.
+        /// </summary>
+        protected MemberFragment()
+        {
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the fragment is inherited.
         /// </summary>
         public override bool Inherited
@@ -148,7 +155,7 @@ namespace Bijectiv.Configuration
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Add([NotNull] MemberShard shard)
+        public virtual void Add([NotNull] MemberShard shard)
         {
             if (shard == null)
             {
@@ -185,7 +192,7 @@ namespace Bijectiv.Configuration
         /// <returns>
         /// An enumerator that can be used to iterate through the shards in the collection.
         /// </returns>
-        public IEnumerator<MemberShard> GetEnumerator()
+        public virtual IEnumerator<MemberShard> GetEnumerator()
         {
             return this.shards.GetEnumerator();
         }

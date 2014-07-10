@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LabelCategory.cs" company="Bijectiv">
+// <copyright file="LegendaryLabels.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,20 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the LabelCategory type.
+//   Defines the LegendaryLabels type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.KernelFactory
 {
+    using System;
+
     /// <summary>
-    /// Represents the category to which a label belongs.
+    /// Labels that are well known throughout the library.
     /// </summary>
-    public enum LabelCategory
+    public static class LegendaryLabels
     {
         /// <summary>
         /// The end of the scope to which the label belongs.
         /// </summary>
-        End
+        public static readonly Guid End = new Guid("b113c714-3894-470B-B757-E5A8BAF2214D");
     }
 }
