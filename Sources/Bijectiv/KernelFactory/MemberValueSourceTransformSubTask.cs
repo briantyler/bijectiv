@@ -30,16 +30,27 @@
 namespace Bijectiv.KernelFactory
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
-    public class MemberValueSourceTransformSubtask : IInjectionSubtask<MemberFragment>
+    /// <summary>
+    /// A subtask that transforms a value into a member.
+    /// </summary>
+    public class MemberValueSourceTransformSubtask 
+        : SingleInstanceShardCategoryMemberFragmentSubtask<ValueSourceMemberShard>
     {
         /// <summary>
-        /// Executes the task.
+        /// Initialises a new instance of the <see cref="MemberValueSourceTransformSubtask"/> class.
+        /// </summary>
+        public MemberValueSourceTransformSubtask()
+            : base(LegendaryShards.Source)
+        {
+        }
+
+        /// <summary>
+        /// Processes a shard.
         /// </summary>
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
@@ -47,42 +58,23 @@ namespace Bijectiv.KernelFactory
         /// <param name="fragment">
         /// The fragment for which this is a subtask.
         /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public void Execute(InjectionScaffold scaffold, MemberFragment fragment)
+        /// <param name="shard">
+        /// The shard to process.
+        /// </param>
+        public override void ProcessShard(
+            InjectionScaffold scaffold, MemberFragment fragment, ValueSourceMemberShard shard)
         {
-            if (scaffold == null)
-            {
-                throw new ArgumentNullException("scaffold");
-            }
+            var expression = ((Expression<Action>)(() =>
+                Placeholder.Of<IInjectionContext>("context")
+                            .InjectionStore.Resolve<ITransform>(shard.Value.GetType(), fragment.Member.GetReturnType())
+                            .Transform(shard.Value, Placeholder.Of<IInjectionContext>("context"), null))).Body;
 
-            if (fragment == null)
-            {
-                throw new ArgumentNullException("fragment");
-            }
-
-            var shard = fragment.UnprocessedShards.OfType<ValueSourceMemberShard>().FirstOrDefault();
-            if (shard == null)
-            {
-                return;
-            }
-
-            var expression = CreateExpressionTemplate(shard.Value, fragment.Member.GetReturnType()).Body;
             expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(expression);
             expression = Expression.Assign(
                 fragment.Member.GetAccessExpression(scaffold.Target),
                 Expression.Convert(expression, fragment.Member.GetReturnType()));
 
             scaffold.Expressions.Add(expression);
-        }
-
-        private static Expression<Action> CreateExpressionTemplate(object value, Type targetMemberType)
-        {
-            return () =>
-                Placeholder.Of<IInjectionContext>("context")
-                    .InjectionStore.Resolve<ITransform>(value.GetType(), targetMemberType)
-                    .Transform(value, Placeholder.Of<IInjectionContext>("context"), null);
         }
     }
 }
