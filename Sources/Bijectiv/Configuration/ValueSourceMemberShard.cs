@@ -70,6 +70,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="ValueSourceMemberShard"/> class.
+        /// </summary>
+        protected ValueSourceMemberShard()
+        {
+        }
+
+        /// <summary>
         /// Gets the shard category.
         /// </summary>
         public override Guid ShardCategory

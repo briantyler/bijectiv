@@ -83,6 +83,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Execute(null, Stub.Create<MemberFragment>());
 
             // Assert
@@ -98,6 +99,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Execute(Stub.Create<InjectionScaffold>(), null);
 
             // Assert

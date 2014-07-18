@@ -32,10 +32,9 @@ namespace Bijectiv.Tests.KernelFactory
     using System;
 
     using Bijectiv.KernelFactory;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Bijectiv.TestUtilities;
 
     /// <summary>
     /// This class tests the <see cref="LabelCache"/> class.
@@ -64,6 +63,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new LabelCache();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.GetLabel(null, Guid.Empty);
 
             // Assert

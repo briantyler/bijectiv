@@ -33,8 +33,6 @@ namespace Bijectiv.TestUtilities.TestTypes
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A really strange collection type.
     /// </summary>

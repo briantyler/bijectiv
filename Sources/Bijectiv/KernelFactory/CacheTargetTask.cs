@@ -34,8 +34,6 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A task that caches a target instance.
     /// </summary>
@@ -50,7 +48,7 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

@@ -81,7 +81,7 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

@@ -37,8 +37,6 @@ namespace Bijectiv.KernelFactory
     using Bijectiv.Kernel;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A task that returns a <see cref="IMergeResult"/>.
     /// </summary>

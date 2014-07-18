@@ -251,6 +251,7 @@ namespace Bijectiv.Tests.Configuration
                 CreateFragment());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.InjectValue(null);
 
             // Assert

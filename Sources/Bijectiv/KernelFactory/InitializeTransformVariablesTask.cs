@@ -33,8 +33,6 @@ namespace Bijectiv.KernelFactory
     using System.Linq;
     using System.Linq.Expressions;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// The task that initializes the scaffold variables for a <see cref="ITransform"/>.
     /// </summary>
@@ -49,7 +47,7 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

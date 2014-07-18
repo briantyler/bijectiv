@@ -36,8 +36,6 @@ namespace Bijectiv.KernelFactory
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Represents a task that processes <see cref="NullSourceFragment"/> fragments.
     /// </summary>
@@ -49,7 +47,7 @@ namespace Bijectiv.KernelFactory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
-        public void Execute([NotNull] InjectionScaffold scaffold)
+        public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
             {

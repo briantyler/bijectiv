@@ -393,11 +393,12 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
-
-            target.Add(intRegularMember);
-            target.Add(intVirtualMember);
-            target.Add(intNewMember);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T)
+            {
+                intRegularMember,
+                intVirtualMember,
+                intNewMember
+            };
 
             Assert.IsTrue(target.Contains(regularMember), "Regular Member");
             Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
@@ -416,11 +417,12 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
-
-            target.Add(intRegularMember);
-            target.Add(intVirtualMember);
-            target.Add(intNewMember);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T)
+            {
+                intRegularMember,
+                intVirtualMember,
+                intNewMember
+            };
 
             Assert.IsTrue(target.Contains(regularMember), "Regular Member");
             Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
@@ -439,11 +441,12 @@ namespace Bijectiv.Tests
             var virtualMember = Reflect<DerivedTestClass3>.Property(_ => _.Value);
             var newMember = Reflect<DerivedTestClass3>.Property(_ => _.Measure);
 
-            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T);
-
-            target.Add(intRegularMember);
-            target.Add(intVirtualMember);
-            target.Add(intNewMember);
+            var target = new EquivalentMemberInfoCollection(DerivedTestClass3.T)
+            {
+                intRegularMember,
+                intVirtualMember,
+                intNewMember
+            };
 
             Assert.IsTrue(target.Contains(regularMember), "Regular Member");
             Assert.IsTrue(target.Contains(virtualMember), "Virtual Member");
@@ -468,9 +471,7 @@ namespace Bijectiv.Tests
             var member5 = Reflect<MemberInfoHierarchy5>.Property(_ => _.Id);
             var member6 = Reflect<MemberInfoHierarchy6>.Property(_ => _.Id);
 
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
-
-            target.Add(memberI1);
+            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6)) { memberI1 };
 
             Assert.IsTrue(target.Contains(member1), "Member 1");
             Assert.IsFalse(target.Contains(member2), "Member 2");

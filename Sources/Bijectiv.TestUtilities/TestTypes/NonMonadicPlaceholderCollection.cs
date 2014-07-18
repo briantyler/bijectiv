@@ -33,8 +33,6 @@ namespace Bijectiv.TestUtilities.TestTypes
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A collection type that is not a monad.
     /// </summary>

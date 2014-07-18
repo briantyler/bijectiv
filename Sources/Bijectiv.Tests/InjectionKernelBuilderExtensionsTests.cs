@@ -36,13 +36,10 @@ namespace Bijectiv.Tests
     using System.Linq;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
-
-    using JetBrains.Annotations;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

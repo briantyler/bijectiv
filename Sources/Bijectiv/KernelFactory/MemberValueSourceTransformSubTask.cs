@@ -35,6 +35,8 @@ namespace Bijectiv.KernelFactory
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// A subtask that transforms a value into a member.
     /// </summary>
@@ -62,8 +64,25 @@ namespace Bijectiv.KernelFactory
         /// The shard to process.
         /// </param>
         public override void ProcessShard(
-            InjectionScaffold scaffold, MemberFragment fragment, ValueSourceMemberShard shard)
+            [NotNull] InjectionScaffold scaffold,
+            [NotNull] MemberFragment fragment,
+            [NotNull] ValueSourceMemberShard shard)
         {
+            if (scaffold == null)
+            {
+                throw new ArgumentNullException("scaffold");
+            }
+
+            if (fragment == null)
+            {
+                throw new ArgumentNullException("fragment");
+            }
+
+            if (shard == null)
+            {
+                throw new ArgumentNullException("shard");
+            }
+
             var expression = ((Expression<Action>)(() =>
                 Placeholder.Of<IInjectionContext>("context")
                             .InjectionStore.Resolve<ITransform>(shard.Value.GetType(), fragment.Member.GetReturnType())

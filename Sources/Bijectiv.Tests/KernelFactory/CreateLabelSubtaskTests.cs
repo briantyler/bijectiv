@@ -83,6 +83,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new CreateLabelSubtask(Guid.Empty);
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Execute(null, Stub.Create<InjectionFragment>());
 
             // Assert
@@ -97,6 +98,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new CreateLabelSubtask(Guid.Empty);
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Execute(Stub.Create<InjectionScaffold>(), null);
 
             // Assert

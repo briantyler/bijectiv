@@ -38,8 +38,6 @@ namespace Bijectiv.Tests.Kernel
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;

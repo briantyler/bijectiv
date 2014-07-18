@@ -39,8 +39,6 @@ namespace Bijectiv.Tests.KernelFactory
     using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Moq;

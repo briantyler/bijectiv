@@ -88,7 +88,7 @@ namespace Bijectiv
         public IList<Func<IInjectionTask>> TransformTasks { get; private set; }
 
         /// <summary>
-        /// Gets the default sequence of <see cref="IInjectionSubtasktask{TFragment}"/> instances used for constructing 
+        /// Gets the default sequence of <see cref="IInjectionSubtask{TFragment}"/> instances used for constructing 
         /// member <see cref="ITransform"/> instances.
         /// </summary>
         public IList<Func<IInjectionSubtask<MemberFragment>>> MemberTransformTasks { get; private set; }

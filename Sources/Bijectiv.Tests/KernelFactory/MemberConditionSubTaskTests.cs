@@ -68,6 +68,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new MemberConditionSubtask();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.ProcessShard(null, Stub.Create<MemberFragment>(), Stub.Create<PredicateConditionMemberShard>());
 
             // Assert
@@ -82,6 +83,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new MemberConditionSubtask();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.ProcessShard(Stub.Create<InjectionScaffold>(), null, Stub.Create<PredicateConditionMemberShard>());
 
             // Assert
@@ -96,6 +98,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new MemberConditionSubtask();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
