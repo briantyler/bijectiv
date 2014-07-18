@@ -36,8 +36,6 @@ namespace Bijectiv.Tests.KernelFactory
     using Bijectiv.Configuration;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
-    using Bijectiv.TestUtilities.TestTypes;
-    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -59,95 +57,6 @@ namespace Bijectiv.Tests.KernelFactory
             new MemberConditionSubtask().Naught();
 
             // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void Execute_ScaffoldParameterIsNull_Throws()
-        {
-            // Arrange
-            var target = new MemberConditionSubtask();
-
-            // Act
-            target.Execute(null, Stub.Create<MemberFragment>());
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void Execute_FragmentParameterIsNull_Throws()
-        {
-            // Arrange
-            var target = new MemberConditionSubtask();
-
-            // Act
-            target.Execute(Stub.Create<InjectionScaffold>(), null);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Execute_PredicateConditionMemberShards_AreAddedToProcessedShardsCollection()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-
-            var fragmentMock = repository.Create<MemberFragment>();
-            var unprocessed = new List<MemberShard>
-            {
-                Stub.Create<MemberShard>(),
-                Stub.Create<PredicateConditionMemberShard>(),
-                Stub.Create<MemberShard>(),
-                Stub.Create<PredicateConditionMemberShard>(),
-                Stub.Create<MemberShard>(),
-                Stub.Create<PredicateConditionMemberShard>(),
-            };
-            var processed = new HashSet<MemberShard>();
-            fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
-            fragmentMock.SetupGet(_ => _.ProcessedShards).Returns(processed);
-            
-            var targetMock = repository.Create<MemberConditionSubtask>(MockBehavior.Loose);
-            
-            // Act
-            targetMock.Object.Execute(Stub.Create<InjectionScaffold>(), fragmentMock.Object);
-
-            // Assert
-            new[] { unprocessed[1], unprocessed[3], unprocessed[5] }.AssertSetEqual(processed);
-        }
-
-        public void Execute_FirstPredicateConditionMemberShard_IsProcessed()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-
-            var fragmentMock = repository.Create<MemberFragment>();
-            var shard = Stub.Create<PredicateConditionMemberShard>();
-            var unprocessed = new List<MemberShard>
-            {
-                Stub.Create<MemberShard>(),
-                shard,
-                Stub.Create<MemberShard>(),
-                Stub.Create<PredicateConditionMemberShard>(),
-                Stub.Create<MemberShard>(),
-                Stub.Create<PredicateConditionMemberShard>(),
-            };
-            var processed = new HashSet<MemberShard>();
-            fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
-            fragmentMock.SetupGet(_ => _.ProcessedShards).Returns(processed);
-
-            var targetMock = repository.Create<MemberConditionSubtask>();
-            var scaffold = Stub.Create<InjectionScaffold>();
-            targetMock.Setup(_ => _.ProcessShard(scaffold, fragmentMock.Object, shard));
-
-            // Act
-            targetMock.Object.Execute(scaffold, fragmentMock.Object);
-
-            // Assert
-            repository.VerifyAll();
         }
 
         [TestMethod]

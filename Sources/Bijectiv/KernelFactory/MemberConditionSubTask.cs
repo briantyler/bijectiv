@@ -34,7 +34,6 @@ namespace Bijectiv.KernelFactory
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
@@ -42,40 +41,14 @@ namespace Bijectiv.KernelFactory
     /// Represents a task that is performed as part of processing a <see cref="MemberFragment"/> that conditionally
     /// injects the member based on the result of some predicate.
     /// </summary>
-    public class MemberConditionSubtask : IInjectionSubtask<MemberFragment>
+    public class MemberConditionSubtask : SingleInstanceShardCategorySubtask<PredicateConditionMemberShard>
     {
         /// <summary>
-        /// Executes the task.
+        /// Initialises a new instance of the <see cref="MemberConditionSubtask"/> class.
         /// </summary>
-        /// <param name="scaffold">
-        /// The scaffold on which the <see cref="IInjection"/> is being built.
-        /// </param>
-        /// <param name="fragment">
-        /// The fragment for which this is a subtask.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when any parameter is null.
-        /// </exception>
-        public void Execute(InjectionScaffold scaffold, MemberFragment fragment)
+        public MemberConditionSubtask()
+            : base(LegendaryShards.Condition)
         {
-            if (scaffold == null)
-            {
-                throw new ArgumentNullException("scaffold");
-            }
-
-            if (fragment == null)
-            {
-                throw new ArgumentNullException("fragment");
-            }
-
-            var shards = fragment.UnprocessedShards.OfType<PredicateConditionMemberShard>().ToArray();
-            var shard = shards.FirstOrDefault();
-            if (shard != null)
-            {
-                this.ProcessShard(scaffold, fragment, shard);
-            }
-
-            fragment.ProcessedShards.AddRange(shards);
         }
 
         /// <summary>
@@ -94,7 +67,7 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any argument is null.
         /// </exception>
-        public virtual void ProcessShard(
+        public override void ProcessShard(
             [NotNull] InjectionScaffold scaffold, 
             [NotNull] MemberFragment fragment,
             [NotNull] PredicateConditionMemberShard shard)

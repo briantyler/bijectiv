@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SingleInstanceShardCategoryMemberFragmentSubtask.cs" company="Bijectiv">
+// <copyright file="SingleInstanceShardCategorySubtask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the SingleInstanceShardCategoryMemberFragmentSubtask type.
+//   Defines the SingleInstanceShardCategorySubtask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ namespace Bijectiv.KernelFactory
     /// <typeparam name="TShard">
     /// The type of shard to process.
     /// </typeparam>
-    public abstract class SingleInstanceShardCategoryMemberFragmentSubtask<TShard> : IInjectionSubtask<MemberFragment> 
+    public abstract class SingleInstanceShardCategorySubtask<TShard> : IInjectionSubtask<MemberFragment> 
         where TShard : MemberShard
     {
         /// <summary>
@@ -51,14 +51,22 @@ namespace Bijectiv.KernelFactory
         private readonly Guid category;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="SingleInstanceShardCategoryMemberFragmentSubtask{TShard}"/> class.
+        /// Initialises a new instance of the <see cref="SingleInstanceShardCategorySubtask{TShard}"/> class.
         /// </summary>
         /// <param name="category">
         /// The shard category.
         /// </param>
-        protected SingleInstanceShardCategoryMemberFragmentSubtask(Guid category)
+        protected SingleInstanceShardCategorySubtask(Guid category)
         {
             this.category = category;
+        }
+
+        /// <summary>
+        /// Gets the shard category.
+        /// </summary>
+        public Guid Category
+        {
+            get { return this.category; }
         }
 
         /// <summary>
@@ -85,7 +93,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("fragment");
             }
 
-            var shards = fragment.Where(candidate => candidate.ShardCategory == this.category).ToArray();
+            var shards = fragment.UnprocessedShards.Where(candidate => candidate.ShardCategory == this.Category).ToArray();
             var shard = shards.FirstOrDefault() as TShard;
             if (shard == null)
             {

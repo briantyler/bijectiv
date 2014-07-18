@@ -39,7 +39,7 @@ namespace Bijectiv.KernelFactory
     /// A subtask that transforms a value into a member.
     /// </summary>
     public class MemberValueSourceTransformSubtask 
-        : SingleInstanceShardCategoryMemberFragmentSubtask<ValueSourceMemberShard>
+        : SingleInstanceShardCategorySubtask<ValueSourceMemberShard>
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="MemberValueSourceTransformSubtask"/> class.

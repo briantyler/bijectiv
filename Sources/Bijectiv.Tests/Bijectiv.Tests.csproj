@@ -97,6 +97,7 @@
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />
     <Compile Include="KernelFactory\ReturnMergeResultTaskTests.cs" />
     <Compile Include="KernelFactory\ReturnTargetAsObjectTaskTests.cs" />
+    <Compile Include="KernelFactory\SingleInstanceShardCategorySubtaskTests.cs" />
     <Compile Include="KernelFactory\TransformFactoryTests.cs" />
     <Compile Include="KernelFactory\TryGetTargetFromCacheTaskTests.cs" />
     <Compile Include="Kernel\DelegateInjectionTriggerTests.cs" />
