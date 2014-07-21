@@ -30,6 +30,7 @@
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -51,17 +52,48 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("expression");
             }
 
-            //// TODO: Assert that expression is a lambda that takes `source` and returns anything.
+            var lambda = expression as LambdaExpression;
+            if (lambda == null)
+            {
+                throw new ArgumentException(
+                    string.Format("Lambda expression expected, but was '{0}'", expression));
+            }
+
+            if (lambda.Parameters.Count != 1)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Lambda expression expected with 1 parameter, but {0} parameters found", 
+                        lambda.Parameters.Count));
+            }
+
+            var parameterType = lambda.Parameters.First().Type;
+            if (parameterType != source)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Lambda expression parameter type '{0}' expected, but was '{1}'",
+                        source,
+                        parameterType));
+            }
+
+            // TODO: Void return type is not allowed.
 
             this.expression = expression;
         }
 
+        /// <summary>
+        /// Gets the shard category.
+        /// </summary>
         public override Guid ShardCategory
         {
             get { return LegendaryShards.Source; }
         }
 
-        public Expression Expression
+        /// <summary>
+        /// Gets the expression.
+        /// </summary>
+        public virtual Expression Expression
         {
             get { return this.expression; }
         }

@@ -82,6 +82,7 @@
     <Compile Include="KernelFactory\CreateTriggersTaskTests.cs" />
     <Compile Include="KernelFactory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\DefaultFactoryExpressionFactoryTests.cs" />
+    <Compile Include="KernelFactory\ExpressionSourceMemberSubtaskTests.cs" />
     <Compile Include="KernelFactory\FallbackFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\EquivalentMemberInfoCollectionTests.cs" />
     <Compile Include="KernelFactory\InitializeMembersTaskTests.cs" />
