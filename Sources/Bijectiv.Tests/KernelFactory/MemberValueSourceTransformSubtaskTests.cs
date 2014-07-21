@@ -29,11 +29,19 @@
 
 namespace Bijectiv.Tests.KernelFactory
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
     using Bijectiv.Configuration;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Moq;
 
     /// <summary>
     /// This class tests the <see cref="MemberValueSourceTransformSubtask"/> class.
@@ -96,6 +104,59 @@ namespace Bijectiv.Tests.KernelFactory
             target.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ProcessShard_ValidParameters_AddsTransformMemberExpressionToScaffold()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+
+            var scaffoldMock = repository.Create<InjectionScaffold>();
+
+            var expressions = new List<Expression>();
+            scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
+
+            var contextMock = repository.Create<IInjectionContext>();
+            scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(contextMock.Object));
+
+            var targetParameter = Expression.Parameter(typeof(AutoInjectionTestClass1));
+            scaffoldMock.SetupGet(_ => _.Target).Returns(targetParameter);
+
+            var storeMock = repository.Create<IInjectionStore>();
+            contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
+
+            var transformMock = repository.Create<ITransform>();
+            storeMock
+                .Setup(_ => _.Resolve<ITransform>(typeof(string), typeof(BaseTestClass1)))
+                .Returns(transformMock.Object);
+            var transformedValue = new DerivedTestClass1();
+            transformMock.Setup(_ => _.Transform("bijectiv", contextMock.Object, null)).Returns(transformedValue);
+
+            var fragmentMock = repository.Create<MemberFragment>();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            fragmentMock.SetupGet(_ => _.Member).Returns(member);
+
+            var shardMock = repository.Create<ValueSourceMemberShard>();
+            shardMock.SetupGet(_ => _.Value).Returns("bijectiv");
+
+            var target = new MemberValueSourceTransformSubtask();
+
+            // Act
+            target.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shardMock.Object);
+
+            // Assert
+            var @delegate = Expression
+                .Lambda<Action<AutoInjectionTestClass1>>(Expression.Block(expressions), targetParameter)
+                .Compile();
+
+            var targetInstance = new AutoInjectionTestClass1();
+            @delegate(targetInstance);
+
+            repository.VerifyAll();
+            
+            Assert.AreEqual(transformedValue, targetInstance.PropertyBase);
         }
     }
 }

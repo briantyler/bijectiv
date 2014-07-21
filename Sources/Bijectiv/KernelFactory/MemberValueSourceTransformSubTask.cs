@@ -83,15 +83,18 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
+            var sourceType = shard.Value.GetType();
+            var targetMemberType = fragment.Member.GetReturnType();
+
             var expression = ((Expression<Action>)(() =>
                 Placeholder.Of<IInjectionContext>("context")
-                            .InjectionStore.Resolve<ITransform>(shard.Value.GetType(), fragment.Member.GetReturnType())
+                            .InjectionStore.Resolve<ITransform>(sourceType, targetMemberType)
                             .Transform(shard.Value, Placeholder.Of<IInjectionContext>("context"), null))).Body;
 
             expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(expression);
             expression = Expression.Assign(
                 fragment.Member.GetAccessExpression(scaffold.Target),
-                Expression.Convert(expression, fragment.Member.GetReturnType()));
+                Expression.Convert(expression, targetMemberType));
 
             scaffold.Expressions.Add(expression);
         }

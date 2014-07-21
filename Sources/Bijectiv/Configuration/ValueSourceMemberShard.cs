@@ -87,7 +87,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the value from which to inject the member.
         /// </summary>
-        public object Value
+        public virtual object Value
         {
             get { return this.value; }
         }
