@@ -29,6 +29,7 @@
 
 namespace Bijectiv.Tests.KernelFactory
 {
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.Configuration;
@@ -54,6 +55,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
 
             // Assert
@@ -61,15 +63,143 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_ExpressionParameterIsNotLambda_Throws()
+        [ArgumentExceptionExpected]
+        public void CreateInstance_ExpressionParameterHasLessThanOneArgument_Throws()
         {
             // Arrange
-
+            var expression = Expression.Lambda(Expression.Constant(1));
+            
             // Act
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
 
             // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_ExpressionParameterHasMoreThanOneArgument_Throws()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1), 
+                Expression.Parameter(TestClass1.T),
+                Expression.Parameter(TestClass1.T));
+
+            // Act
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_ExpressionParameterArgumentTypeIsNotAssignableFromSource_Throws()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(TestClass2.T));
+
+            // Act
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_ExpressionParameterReturnTypeIsVoid_Throws()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Empty(),
+                Expression.Parameter(TestClass1.T));
+
+            // Act
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ExpressionParameterIsEqualToSource_InstanceCreated()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(BaseTestClass1.T));
+
+            // Act
+            new ExpressionSourceMemberShard(BaseTestClass1.T, TestClass2.T, Member, expression).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ExpressionParameterIsAssignableFromSource_InstanceCreated()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(BaseTestClass1.T));
+
+            // Act
+            new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_ExpressionParameterIsAssignedToExpressionProperty()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(TestClass1.T));
+
+            // Act
+            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression);
+
+            // Assert
+            Assert.AreEqual(expression, target.Expression);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_ExpressionParameterArgumentTypeIsAssignedToParameterTypeProperty()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(BaseTestClass1.T));
+
+            // Act
+            var target = new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression);
+
+            // Assert
+            Assert.AreEqual(BaseTestClass1.T, target.ParameterType);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_ShardCategoryPropertyIsSource()
+        {
+            // Arrange
+            var expression = Expression.Lambda(
+                Expression.Constant(1),
+                Expression.Parameter(TestClass1.T));
+
+            // Act
+            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression);
+
+            // Assert
+            Assert.AreEqual(LegendaryShards.Source, target.ShardCategory);
         }
     }
 }

@@ -36,15 +36,48 @@ namespace Bijectiv.Configuration
 
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// A member shard that contains a lambda expression that extracts a value from an instance of type 
+    /// <see cref="MemberShard.Source"/> from which the target member will be injected.
+    /// </summary>
     public class ExpressionSourceMemberShard : MemberShard
     {
-        private readonly Expression expression;
+        /// <summary>
+        /// The lambda expression.
+        /// </summary>
+        private readonly LambdaExpression expression;
 
+        /// <summary>
+        /// The type of the parameter to the expression.
+        /// </summary>
+        private readonly Type parameterType;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ExpressionSourceMemberShard"/> class.
+        /// </summary>
+        /// <param name="source">
+        /// The source type.
+        /// </param>
+        /// <param name="target">
+        /// The target type.
+        /// </param>
+        /// <param name="member">
+        /// The member on the target type to which the shard corresponds.
+        /// </param>
+        /// <param name="expression">
+        /// The lambda expression that extracts a value from an instance of type <see cref="MemberShard.Source"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the lambda expression does not have signature <c>Func&lt;source, *&gt;</c>.
+        /// </exception>
         public ExpressionSourceMemberShard(
             [NotNull] Type source, 
             [NotNull] Type target, 
             [NotNull] MemberInfo member,
-            [NotNull] Expression expression)
+            [NotNull] LambdaExpression expression)
             : base(source, target, member)
         {
             if (expression == null)
@@ -52,32 +85,28 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("expression");
             }
 
-            var lambda = expression as LambdaExpression;
-            if (lambda == null)
-            {
-                throw new ArgumentException(
-                    string.Format("Lambda expression expected, but was '{0}'", expression));
-            }
-
-            if (lambda.Parameters.Count != 1)
+            if (expression.Parameters.Count != 1)
             {
                 throw new ArgumentException(
                     string.Format(
-                        "Lambda expression expected with 1 parameter, but {0} parameters found", 
-                        lambda.Parameters.Count));
+                        "Lambda expression expected with 1 parameter, but {0} parameters found.",
+                        expression.Parameters.Count));
             }
 
-            var parameterType = lambda.Parameters.First().Type;
-            if (parameterType != source)
+            this.parameterType = expression.Parameters.First().Type;
+            if (!this.ParameterType.IsAssignableFrom(source))
             {
                 throw new ArgumentException(
                     string.Format(
-                        "Lambda expression parameter type '{0}' expected, but was '{1}'",
+                        "Lambda expression parameter type '{0}' expected, but was '{1}'.",
                         source,
-                        parameterType));
+                        this.ParameterType));
             }
 
-            // TODO: Void return type is not allowed.
+            if (expression.ReturnType == typeof(void))
+            {
+                throw new ArgumentException("Lambda expression has no return value.");
+            }
 
             this.expression = expression;
         }
@@ -93,9 +122,17 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the expression.
         /// </summary>
-        public virtual Expression Expression
+        public virtual LambdaExpression Expression
         {
             get { return this.expression; }
+        }
+
+        /// <summary>
+        /// Gets the type of the parameter to the expression.
+        /// </summary>
+        public Type ParameterType
+        {
+            get { return this.parameterType; }
         }
     }
 }
