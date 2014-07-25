@@ -106,6 +106,7 @@ namespace Bijectiv.KernelFactory
             var sourceAsObject = Expression.Parameter(typeof(object), "sourceAsObject");
             var injectionContext = Expression.Parameter(typeof(IInjectionContext), "injectionContext");
             var hint = Expression.Parameter(typeof(object), "hint");
+            var injection = Expression.Parameter(typeof(IInjection), "injection");
 
             var scaffold = new InjectionScaffold(
                 definitionRegistry, definition, sourceAsObject, injectionContext)
@@ -117,7 +118,8 @@ namespace Bijectiv.KernelFactory
                 Expression.Block(typeof(object), scaffold.Variables, scaffold.Expressions),
                 sourceAsObject,
                 injectionContext,
-                hint);
+                hint,
+                injection);
 
             return new DelegateTransform(definition.Source, definition.Target, lambda.Compile());
         }

@@ -41,8 +41,11 @@ namespace Bijectiv.Kernel
     /// <param name="hint">
     /// A hint that can be used to pass additional information to the injection.
     /// </param>
+    /// <param name="injection">
+    /// The injection itself that wraps delegate.
+    /// </param>
     /// <returns>
     /// The newly created target instance.
     /// </returns>
-    public delegate object DTransform(object source, IInjectionContext context, object hint);
+    public delegate object DTransform(object source, IInjectionContext context, object hint, IInjection injection);
 }

@@ -60,6 +60,11 @@ namespace Bijectiv.Kernel
         private readonly ITargetCache targetCache = new TargetCache();
 
         /// <summary>
+        /// The injection trail.
+        /// </summary>
+        private readonly IInjectionTrail injectionTrail = new InjectionTrail();
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="InjectionContext"/> class.
         /// </summary>
         /// <param name="culture">
@@ -137,6 +142,14 @@ namespace Bijectiv.Kernel
         public IInstanceRegistry InstanceRegistry
         {
             get { return this.injectionKernel.Registry; }
+        }
+
+        /// <summary>
+        /// Gets the injection trail.
+        /// </summary>
+        public IInjectionTrail InjectionTrail
+        {
+            get { return this.injectionTrail; }
         }
 
         /// <summary>

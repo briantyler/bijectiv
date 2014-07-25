@@ -58,6 +58,7 @@
     <Compile Include="Configuration\MemberShard.cs" />
     <Compile Include="Configuration\ValueSourceMemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
+    <Compile Include="IInjectionTrail.cs" />
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionParameters.cs" />
     <Compile Include="IMemberFragmentBuilder.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Kernel\EnumerableToEnumerableInjection.cs" />
     <Compile Include="Kernel\ICollectionMerger.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinder.cs" />
+    <Compile Include="Kernel\InjectionTrail.cs" />
     <Compile Include="Kernel\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
     <Compile Include="ITargetFinder.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Kernel\MergeResult.cs" />
     <Compile Include="Configuration\EnumerableRegistration.cs" />
     <Compile Include="Kernel\EnumerableFactory.cs" />
+    <Compile Include="InjectionTrailItem.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">

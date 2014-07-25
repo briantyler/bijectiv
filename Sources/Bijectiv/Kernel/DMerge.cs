@@ -44,8 +44,12 @@ namespace Bijectiv.Kernel
     /// <param name="hint">
     /// A hint that can be used to pass additional information to the injection.
     /// </param>
+    /// <param name="injection">
+    /// The injection itself that wraps delegate.
+    /// </param>
     /// <returns>
     /// A <see cref="IMergeResult"/> representing the result of the merge.
     /// </returns>
-    public delegate IMergeResult DMerge(object source, object target, IInjectionContext context, object hint);
+    public delegate IMergeResult DMerge(
+        object source, object target, IInjectionContext context, object hint, IInjection injection);
 }

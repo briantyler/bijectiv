@@ -71,6 +71,7 @@
     <Compile Include="Configuration\MemberShardTests.cs" />
     <Compile Include="Configuration\PredicateConditionMemberShardTests.cs" />
     <Compile Include="Configuration\ValueSourceMemberShardTests.cs" />
+    <Compile Include="InjectionTrailItemTests.cs" />
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskMergeDetailTests.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Kernel\DelegateMergeTests.cs" />
     <Compile Include="Kernel\EnumerableToArrayInjectionTests.cs" />
     <Compile Include="Kernel\EnumerableToEnumerableInjectionTests.cs" />
+    <Compile Include="Kernel\InjectionTrailTests.cs" />
     <Compile Include="Kernel\NullTargetFinderTests.cs" />
     <Compile Include="Configuration\TargetFinderRegistrationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

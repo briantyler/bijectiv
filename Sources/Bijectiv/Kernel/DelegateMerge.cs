@@ -116,7 +116,7 @@ namespace Bijectiv.Kernel
                 throw new ArgumentNullException("context");
             }
 
-            return this.Delegate(source, target, context, hint);
+            return this.Delegate(source, target, context, hint, this);
         }
     }
 }

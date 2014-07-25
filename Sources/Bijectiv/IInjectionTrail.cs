@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionContext.cs" company="Bijectiv">
+// <copyright file="IInjectionTrail.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,55 +23,43 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionContext type.
+//   Defines the IInjectionTrail type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv
 {
-    using System;
-    using System.Globalization;
+    using System.Collections.Generic;
+
+    using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an <see cref="IInjection"/> context.
+    /// Represents a trail of injection operations.
     /// </summary>
-    public interface IInjectionContext
+    public interface IInjectionTrail : IEnumerable<InjectionTrailItem>
     {
         /// <summary>
-        /// Gets the culture in which the injection is taking place. Defaults to 
-        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
+        /// Adds a new item to the trail.
         /// </summary>
-        CultureInfo Culture { get; }
-
-        /// <summary>
-        /// Gets the target cache.
-        /// </summary>
-        ITargetCache TargetCache { get; }
-
-        /// <summary>
-        /// Gets the <see cref="IInjection"/> store.
-        /// </summary>
-        IInjectionStore InjectionStore { get; }
-
-        /// <summary>
-        /// Gets the instance registry.
-        /// </summary>
-        IInstanceRegistry InstanceRegistry { get; }
-
-        /// <summary>
-        /// Gets the injection trail.
-        /// </summary>
-        IInjectionTrail InjectionTrail { get; }
-
-        /// <summary>
-        /// Retrieve a service from the default factory.
-        /// </summary>
-        /// <param name="service">
-        /// The service to retrieve.
+        /// <param name="item">
+        /// The item to add to the trail.
         /// </param>
         /// <returns>
-        /// The component instance that provides the service.
+        /// A value indicating whether the target has previously been seen by the trail.
         /// </returns>
-        object Resolve(Type service);
+        bool Add([NotNull] InjectionTrailItem item);
+
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="target"/> has been added as the target of a 
+        /// <see cref="InjectionTrailItem"/>.
+        /// </summary>
+        /// <param name="target">
+        /// The target to check.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether <paramref name="target"/> has been added as the target of a
+        /// <see cref="InjectionTrailItem"/>.
+        /// </returns>
+        bool ContainsTarget(object target);
     }
 }

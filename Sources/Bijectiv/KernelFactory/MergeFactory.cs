@@ -107,6 +107,7 @@ namespace Bijectiv.KernelFactory
             var targetAsObject = Expression.Parameter(typeof(object), "targetAsObject");
             var injectionContext = Expression.Parameter(typeof(IInjectionContext), "InjectionContext");
             var hint = Expression.Parameter(typeof(object), "hint");
+            var injection = Expression.Parameter(typeof(IInjection), "injection");
 
             var scaffold = new InjectionScaffold(
                 definitionRegistry, definition, sourceAsObject, injectionContext)
@@ -122,7 +123,8 @@ namespace Bijectiv.KernelFactory
                 sourceAsObject,
                 targetAsObject,
                 injectionContext,
-                hint);
+                hint,
+                injection);
 
             return new DelegateMerge(definition.Source, definition.Target, lambda.Compile());
         }

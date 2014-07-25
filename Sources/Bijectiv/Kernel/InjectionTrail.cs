@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionContext.cs" company="Bijectiv">
+// <copyright file="InjectionTrail.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,55 +23,51 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionContext type.
+//   Defines the InjectionTrail type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Kernel
 {
     using System;
-    using System.Globalization;
+    using System.Collections;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// Represents an <see cref="IInjection"/> context.
-    /// </summary>
-    public interface IInjectionContext
+    public class InjectionTrail : IInjectionTrail
     {
-        /// <summary>
-        /// Gets the culture in which the injection is taking place. Defaults to 
-        /// <see cref="CultureInfo.InvariantCulture"/> when not explicitly set.
-        /// </summary>
-        CultureInfo Culture { get; }
+        private readonly ICollection<InjectionTrailItem> trail = new List<InjectionTrailItem>();
+ 
+        private readonly ISet<object> targets = new HashSet<object>();
 
-        /// <summary>
-        /// Gets the target cache.
-        /// </summary>
-        ITargetCache TargetCache { get; }
+        public IEnumerable<object> Targets
+        {
+            get { return this.targets; }
+        }
 
-        /// <summary>
-        /// Gets the <see cref="IInjection"/> store.
-        /// </summary>
-        IInjectionStore InjectionStore { get; }
+        public bool Add(InjectionTrailItem item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
 
-        /// <summary>
-        /// Gets the instance registry.
-        /// </summary>
-        IInstanceRegistry InstanceRegistry { get; }
+            this.trail.Add(item);
+            return item.Target != null && this.targets.Add(item.Target);
+        }
 
-        /// <summary>
-        /// Gets the injection trail.
-        /// </summary>
-        IInjectionTrail InjectionTrail { get; }
+        public bool ContainsTarget(object target)
+        {
+            return this.targets.Contains(target);
+        }
 
-        /// <summary>
-        /// Retrieve a service from the default factory.
-        /// </summary>
-        /// <param name="service">
-        /// The service to retrieve.
-        /// </param>
-        /// <returns>
-        /// The component instance that provides the service.
-        /// </returns>
-        object Resolve(Type service);
+        public IEnumerator<InjectionTrailItem> GetEnumerator()
+        {
+            return this.trail.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 }

@@ -163,6 +163,20 @@ namespace Bijectiv.Tests.Kernel
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void CreateInstance_IjectionTrailProperty_IsNotNull()
+        {
+            // Arrange
+
+            // Act
+            var target = new InjectionContext(
+                CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
+
+            // Assert
+            Assert.IsNotNull(target.InjectionTrail);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
         public void Resolve_TypeParameterIsNull_Throws()
         {
