@@ -169,6 +169,7 @@ namespace Bijectiv
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
                     () => new CreateTargetTask(new FallbackFactoryExpressionFactory()), 
                     () => new CacheTargetTask(),
+                    () => new AddToInjectionTrailTask(), 
                     () => new InitializeInjectionParametersTask(),
                     () => new MemberInjectionTask(this.MemberTransformTasks.Select(item => item()).ToArray()), 
                     () => new AutoInjectionTask(new AutoInjectionTaskTransformDetail()),
@@ -204,7 +205,8 @@ namespace Bijectiv
                     () => new InitializeFragmentsTask(), 
                     () => new InitializeMergeVariablesTask(),
                     () => new InitializeInjectionParametersTask(),
-                    () => new InitializeMembersTask(new ReflectionGateway()), 
+                    () => new InitializeMembersTask(new ReflectionGateway()),
+                    () => new AddToInjectionTrailTask(), 
                     () => new AutoInjectionTask(new AutoInjectionTaskMergeDetail()),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnMergeResultTask()

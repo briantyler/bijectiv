@@ -62,6 +62,7 @@
     <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionParameters.cs" />
     <Compile Include="IMemberFragmentBuilder.cs" />
+    <Compile Include="KernelFactory\AddToInjectionTrailTask.cs" />
     <Compile Include="KernelFactory\CreateLabelSubtask.cs" />
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
     <Compile Include="KernelFactory\IInjectionSubtask.cs" />

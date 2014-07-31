@@ -47,7 +47,7 @@ namespace Bijectiv.Tests
     public class Spikes
     {
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_Activate_Activated()
         {
             // Arrange
@@ -65,7 +65,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoTransform_AutoTransforms()
         {
             // Arrange
@@ -108,7 +108,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoTransformCollection_AutoTransforms()
         {
             // Arrange
@@ -170,7 +170,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void Spike_StringToDecimalArray_Transforms()
         {
             // Arrange
@@ -192,7 +192,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoMerge_AutoMerges()
         {
             // Arrange
@@ -239,7 +239,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoMerge_AutoMergesCollectionAgainstKey()
         {
             // Arrange
@@ -296,7 +296,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoMerge_AutoMergesIntoNull()
         {
             // Arrange
@@ -335,7 +335,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [TestCategory("Spike")]
         public void Spike_AutoTransformWithExplicitMemberTransforms_Transforms()
         {
             // Arrange
@@ -382,7 +382,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void MemberInfoCollection_InterfaceSpike()
         {
             var intRegularMember = Reflect<IBaseTestClass3>.Property(_ => _.Id);
@@ -406,7 +406,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void MemberInfoCollection_BaseSpike()
         {
             var intRegularMember = Reflect<BaseTestClass3>.Property(_ => _.Id);
@@ -430,7 +430,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void MemberInfoCollection_Spike()
         {
             var intRegularMember = Reflect<DerivedTestClass3>.Property(_ => _.Id);
@@ -454,7 +454,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void MemberInfoCollection_Hierarchy_Spike()
         {
             var memberI1 = Reflect<IMemberInfoHierarchy1>.Property(_ => _.Id);
@@ -528,6 +528,36 @@ namespace Bijectiv.Tests
             Assert.IsFalse(target.Contains(member4), "Member 4");
             Assert.IsTrue(target.Contains(member5), "Member 5");
             Assert.IsTrue(target.Contains(member6), "Member 6");
+        }
+
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_Merge_HandlesCircularDependencies()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            builder.Register<CircularClass1, CircularClass1>().AutoExact();
+            builder.Register<CircularClass2, CircularClass2>().AutoExact();
+
+            var kernel = builder.Build();
+            var injection = kernel.Store.Resolve<IMerge>(typeof(CircularClass1), typeof(CircularClass1));
+
+            var spin1 = new CircularClass1 { Id = 1 };
+            var flip1 = new CircularClass2 { Id = 2, Circular = spin1 };
+            spin1.Circular = flip1;
+
+            var spin2 = new CircularClass1 { Id = 3 };
+            var flip2 = new CircularClass2 { Id = 4, Circular = spin2 };
+            spin2.Circular = flip2;
+
+            // Act
+            injection.Merge(spin1, spin2, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(1, spin2.Id);
+            Assert.AreEqual(flip2, spin2.Circular);
+            Assert.AreEqual(2, flip2.Id);
+            Assert.AreEqual(spin2, flip2.Circular);
         }
 
         private static InjectionContext CreateContext(IInjectionKernel kernel)

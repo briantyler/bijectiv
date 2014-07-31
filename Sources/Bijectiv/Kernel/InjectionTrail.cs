@@ -33,17 +33,38 @@ namespace Bijectiv.Kernel
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// A trail of injection operations.
+    /// </summary>
     public class InjectionTrail : IInjectionTrail
     {
+        /// <summary>
+        /// The trail.
+        /// </summary>
         private readonly ICollection<InjectionTrailItem> trail = new List<InjectionTrailItem>();
- 
+
+        /// <summary>
+        /// The target instances that have already been seen.
+        /// </summary>
         private readonly ISet<object> targets = new HashSet<object>();
 
+        /// <summary>
+        /// Gets the target instances that have already been seen.
+        /// </summary>
         public IEnumerable<object> Targets
         {
             get { return this.targets; }
         }
 
+        /// <summary>
+        /// Adds a new item to the trail.
+        /// </summary>
+        /// <param name="item">
+        /// The item to add to the trail.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the target was seen for the first time.
+        /// </returns>
         public bool Add(InjectionTrailItem item)
         {
             if (item == null)
@@ -55,16 +76,39 @@ namespace Bijectiv.Kernel
             return item.Target != null && this.targets.Add(item.Target);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether <paramref name="target"/> has been added as the target of a 
+        /// <see cref="InjectionTrailItem"/>.
+        /// </summary>
+        /// <param name="target">
+        /// The target to check.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether <paramref name="target"/> has been added as the target of a
+        /// <see cref="InjectionTrailItem"/>.
+        /// </returns>
         public bool ContainsTarget(object target)
         {
             return this.targets.Contains(target);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<InjectionTrailItem> GetEnumerator()
         {
             return this.trail.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

@@ -109,11 +109,11 @@ namespace Bijectiv.KernelFactory
             var hint = Expression.Parameter(typeof(object), "hint");
             var injection = Expression.Parameter(typeof(IInjection), "injection");
 
-            var scaffold = new InjectionScaffold(
-                definitionRegistry, definition, sourceAsObject, injectionContext)
+            var scaffold = new InjectionScaffold(definitionRegistry, definition, sourceAsObject, injectionContext)
                 {
                     TargetAsObject = targetAsObject,
-                    Hint = hint
+                    Hint = hint,
+                    Injection = injection
                 };
 
             this.Tasks.ForEach(item => item.Execute(scaffold));

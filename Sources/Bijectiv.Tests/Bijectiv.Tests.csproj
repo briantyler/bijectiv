@@ -73,6 +73,7 @@
     <Compile Include="Configuration\ValueSourceMemberShardTests.cs" />
     <Compile Include="InjectionTrailItemTests.cs" />
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
+    <Compile Include="KernelFactory\AddToInjectionTrailTaskTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskMergeDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskTests.cs" />

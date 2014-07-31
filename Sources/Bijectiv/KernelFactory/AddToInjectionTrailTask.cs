@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TryGetTargetFromCacheTask.cs" company="Bijectiv">
+// <copyright file="AddToInjectionTrailTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TryGetTargetFromCacheTask type.
+//   Defines the AddToInjectionTrailTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,9 +35,10 @@ namespace Bijectiv.KernelFactory
     using Bijectiv.Utilities;
 
     /// <summary>
-    /// A task that tries to get the target instance from the cache and jumps to the exit if successful.
+    /// A task that adds the current <see cref="IInjection"/> to the <see cref="IInjectionTrail"/> on the current
+    /// <see cref="IInjectionContext"/>.
     /// </summary>
-    public class TryGetTargetFromCacheTask : IInjectionTask
+    public class AddToInjectionTrailTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.
@@ -45,6 +46,9 @@ namespace Bijectiv.KernelFactory
         /// <param name="scaffold">
         /// The scaffold on which the <see cref="IInjection"/> is being built.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public void Execute(InjectionScaffold scaffold)
         {
             if (scaffold == null)
@@ -52,22 +56,20 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var expression = (Expression<Action<object>>)
-                // ReSharper disable once RedundantAssignment
-                (o => Placeholder.Of<IInjectionContext>("context")
-                     .TargetCache.TryGet(
-                         scaffold.Definition.Source,
-                         scaffold.Definition.Target,
-                         Placeholder.Of<object>("source"),
-                         out o));
+            Expression<Func<bool>> addToTrail =
+                () => !Placeholder.Of<IInjectionContext>("context").InjectionTrail.Add(
+                    new InjectionTrailItem(
+                        Placeholder.Of<IInjection>("injection"),
+                        Placeholder.Of<object>("source"),
+                        Placeholder.Of<object>("target")));
 
-            var substituted = new ParameterExpressionVisitor(expression.Parameters[0], scaffold.TargetAsObject)
-                .Visit(expression.Body);
-            substituted = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(substituted);
-            substituted = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(substituted);
+            var expression = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(addToTrail.Body);
+            expression = new PlaceholderExpressionVisitor("injection", scaffold.Injection).Visit(expression);
+            expression = new PlaceholderExpressionVisitor("source", scaffold.SourceAsObject).Visit(expression);
+            expression = new PlaceholderExpressionVisitor("target", scaffold.TargetAsObject).Visit(expression);
 
             scaffold.Expressions.Add(
-                Expression.IfThen(substituted, Expression.Goto(scaffold.GetLabel(null, LegendaryLabels.End))));
+                Expression.IfThen(expression, Expression.Goto(scaffold.GetLabel(null, LegendaryLabels.End))));
         }
     }
 }

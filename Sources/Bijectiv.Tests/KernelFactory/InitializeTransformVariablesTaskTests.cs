@@ -158,24 +158,6 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ValidParameters_AddsTargetAsObjectVariableToScaffoldVariablesProperty()
-        {
-            // Arrange
-            var target = CreateTarget();
-            var scaffold = CreateScaffold();
-
-            // Act
-            target.Execute(scaffold);
-
-            // Assert
-            var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "targetAsObject");
-            Assert.IsNotNull(variable);
-            Assert.IsInstanceOfType(variable, typeof(ParameterExpression));
-            Assert.AreEqual(typeof(object), variable.Type);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Execute_ValidParameters_AssignsTargetAsObjectVariableToScaffoldTargetAsObjectProperty()
         {
             // Arrange

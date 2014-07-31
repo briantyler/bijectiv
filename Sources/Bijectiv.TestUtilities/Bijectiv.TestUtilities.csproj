@@ -68,6 +68,8 @@
     <Compile Include="TestTypes\BaseTestClass1.cs" />
     <Compile Include="TestTypes\BaseTestClass2.cs" />
     <Compile Include="TestTypes\BaseTestClass3.cs" />
+    <Compile Include="TestTypes\CircularClass1.cs" />
+    <Compile Include="TestTypes\CircularClass2.cs" />
     <Compile Include="TestTypes\DerivedTestClass3.cs" />
     <Compile Include="TestTypes\EquatableCollection.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>

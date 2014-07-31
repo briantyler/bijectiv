@@ -182,6 +182,11 @@ namespace Bijectiv.KernelFactory
         public virtual Expression Hint { get; set; }
 
         /// <summary>
+        /// Gets or sets the the injection that is currently executing.
+        /// </summary>
+        public virtual Expression Injection { get; set; }
+
+        /// <summary>
         /// Gets the fragments that have not been processed.
         /// </summary>
         public virtual IEnumerable<InjectionFragment> UnprocessedFragments

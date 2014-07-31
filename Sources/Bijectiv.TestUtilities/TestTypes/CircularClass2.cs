@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionTrail.cs" company="Bijectiv">
+// <copyright file="CircularClass2.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,43 +23,25 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionTrail type.
+//   Defines the CircularClass2 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.TestUtilities.TestTypes
 {
-    using System.Collections.Generic;
-
-    using JetBrains.Annotations;
-
     /// <summary>
-    /// Represents a trail of injection operations.
+    /// A class that can exhibit a circular dependency.
     /// </summary>
-    public interface IInjectionTrail : IEnumerable<InjectionTrailItem>
+    public class CircularClass2
     {
         /// <summary>
-        /// Adds a new item to the trail.
+        /// Gets or sets a value that can be used to identify the instance.
         /// </summary>
-        /// <param name="item">
-        /// The item to add to the trail.
-        /// </param>
-        /// <returns>
-        /// A value indicating whether the target was seen for the first time.
-        /// </returns>
-        bool Add([NotNull] InjectionTrailItem item);
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether <paramref name="target"/> has been added as the target of a 
-        /// <see cref="InjectionTrailItem"/>.
+        /// Gets or sets an instance that may exhibit a circular dependency.
         /// </summary>
-        /// <param name="target">
-        /// The target to check.
-        /// </param>
-        /// <returns>
-        /// A value indicating whether <paramref name="target"/> has been added as the target of a
-        /// <see cref="InjectionTrailItem"/>.
-        /// </returns>
-        bool ContainsTarget(object target);
+        public CircularClass1 Circular { get; set; }
     }
 }
