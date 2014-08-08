@@ -124,6 +124,8 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("fragment");
             }
 
+            fragment.ProcessedShards.Clear();
+
             this.Subtasks.ForEach(item => item.Execute(scaffold, fragment));
             scaffold.ProcessedTargetMembers.Add(fragment.Member);
         }

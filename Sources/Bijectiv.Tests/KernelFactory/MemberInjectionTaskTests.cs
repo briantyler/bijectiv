@@ -237,6 +237,31 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void ProcessFragment_FragmentParameter_ProcessedShardsPropertyIsCleared()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict);
+            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            
+            var processedMock = repository.Create<ISet<MemberShard>>();
+            processedMock.Setup(_ => _.Clear());
+
+            var fragmentMock = repository.Create<MemberFragment>();
+            fragmentMock.SetupGet(_ => _.ProcessedShards).Returns(processedMock.Object);
+            fragmentMock.SetupGet(_ => _.Member).Returns(Stub.Create<MemberInfo>());
+
+            var scaffoldMock = repository.Create<InjectionScaffold>();
+            scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
+
+            // Act
+            target.ProcessFragment(scaffoldMock.Object, fragmentMock.Object);
+
+            // Assert
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void ProcessFragment_FragmentParameter_MemberPropertyIsProcessed()
         {
             // Arrange

@@ -134,10 +134,12 @@ namespace Bijectiv.Tests
             var tasks = target.MergeTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(FallbackToTransformOnNullTargetTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMergeVariablesTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeInjectionParametersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeMembersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(AddToInjectionTrailTask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberInjectionTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
             Assert.IsInstanceOfType(
                 ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));

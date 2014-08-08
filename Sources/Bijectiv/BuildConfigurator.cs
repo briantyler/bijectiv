@@ -59,6 +59,7 @@ namespace Bijectiv
             this.TransformTasks = new List<Func<IInjectionTask>>();
             this.MemberTransformTasks = new List<Func<IInjectionSubtask<MemberFragment>>>();
             this.MergeTasks = new List<Func<IInjectionTask>>();
+            this.MemberMergeTasks = new List<Func<IInjectionSubtask<MemberFragment>>>();
 
             this.Reset();
         }
@@ -100,6 +101,12 @@ namespace Bijectiv
         public IList<Func<IInjectionTask>> MergeTasks { get; private set; }
 
         /// <summary>
+        /// Gets the default sequence of <see cref="IInjectionSubtask{TFragment}"/> instances used for constructing 
+        /// member <see cref="IMerge"/> instances.
+        /// </summary>
+        public IList<Func<IInjectionSubtask<MemberFragment>>> MemberMergeTasks { get; private set; }
+
+        /// <summary>
         /// Resets the configurator to the default configuration.
         /// </summary>
         public void Reset()
@@ -108,6 +115,7 @@ namespace Bijectiv
             this.ResetInstanceFactories();
             this.ResetMemberTransformTasks();
             this.ResetTransformTasks();
+            this.ResetMemberMergeTasks();
             this.ResetMergeTasks();
         }
 
@@ -203,13 +211,30 @@ namespace Bijectiv
                 new Func<IInjectionTask>[]
                 {
                     () => new InitializeFragmentsTask(), 
+                    () => new FallbackToTransformOnNullTargetTask(), 
                     () => new InitializeMergeVariablesTask(),
                     () => new InitializeInjectionParametersTask(),
                     () => new InitializeMembersTask(new ReflectionGateway()),
                     () => new AddToInjectionTrailTask(), 
+                    () => new MemberInjectionTask(this.MemberMergeTasks.Select(item => item()).ToArray()), 
                     () => new AutoInjectionTask(new AutoInjectionTaskMergeDetail()),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnMergeResultTask()
+                });
+        }
+
+        /// <summary>
+        /// Resets <see cref="MemberMergeTasks"/> to its default configuration.
+        /// </summary>
+        private void ResetMemberMergeTasks()
+        {
+            this.MemberMergeTasks.Clear();
+            this.MemberMergeTasks.AddRange(
+                new Func<IInjectionSubtask<MemberFragment>>[]
+                {
+                    () => new MemberConditionSubtask(),
+                    () => new MemberValueSourceMergeSubtask(),
+                    () => new CreateLabelSubtask(LegendaryLabels.End)
                 });
         }
     }

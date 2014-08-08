@@ -560,6 +560,84 @@ namespace Bijectiv.Tests
             Assert.AreEqual(spin2, flip2.Circular);
         }
 
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_AutoMergeWithExplicitMemberMerges_Merges()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            var @sealed = new SealedClass1();
+
+            builder
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
+                .AutoExact()
+                .InjectMember(t => t.FieldInt).Ignore()
+                .InjectMember(t => t.PropertyInt).Condition(p => p.Source.PropertyInt == 33).InjectValue("123")
+                .InjectMember(t => t.PropertySealed).InjectValue("sealed");
+
+            builder
+                .Register<string, SealedClass1>()
+                .CustomFactory(ctx => @sealed);
+
+            builder.Register<DerivedTestClass1, BaseTestClass1>();
+
+            var @base = new DerivedTestClass1();
+            var source = new AutoInjectionTestClass1
+            {
+                PropertyInt = 33,
+                FieldInt = 17,
+                PropertySealed = null,
+                FieldBase = @base,
+                PropertyBase = @base,
+            };
+
+            var target = new AutoInjectionTestClass1
+            {
+                PropertySealed = null,
+                FieldBase = new BaseTestClass1(),
+                PropertyBase = new BaseTestClass1(),
+            };
+
+            var kernel = builder.Build();
+
+            var merge = kernel.Store.Resolve<IMerge>(typeof(AutoInjectionTestClass1), typeof(AutoInjectionTestClass1));
+
+            // Act
+            var result = merge.Merge(source, target, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.None, result.Action);
+            Assert.AreEqual(123, target.PropertyInt);
+            Assert.AreEqual(default(int), target.FieldInt);
+            Assert.AreEqual(@sealed, target.PropertySealed);
+            Assert.IsNotNull(target.PropertyBase);
+            Assert.IsNotNull(target.FieldBase);
+            Assert.AreNotSame(target.PropertyBase, target.FieldBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Spike_MergeIntoNull_Replaces()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            var @sealed = new SealedClass1();
+
+            builder
+                .Register<string, SealedClass1>()
+                .CustomFactory(ctx => @sealed);
+            var kernel = builder.Build();
+
+            var merge = kernel.Store.Resolve<IMerge>(typeof(string), typeof(SealedClass1));
+
+            // Act
+            var result = merge.Merge("foo", null, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(PostMergeAction.Replace, result.Action);
+            Assert.AreEqual(@sealed, result.Target);
+        }
+
         private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(

@@ -284,5 +284,35 @@ namespace Bijectiv.KernelFactory
         {
             return this.labels.GetLabel(scope ?? this, category);
         }
+
+        public virtual ParameterExpression GetVariable([NotNull] string name, [NotNull] Type type)
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            var variable = this.Variables.SingleOrDefault(candidate => candidate.Name.Equals(name));
+            if (variable == null)
+            {
+                variable = Expression.Variable(type, name);
+                this.Variables.Add(variable);
+            }
+            else if (type != variable.Type)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "A variable already exists with a different type. Requested '{0}', existing '{1}'", 
+                        type, 
+                        variable.Type));
+            }
+
+            return variable;
+        }
     }
 }
