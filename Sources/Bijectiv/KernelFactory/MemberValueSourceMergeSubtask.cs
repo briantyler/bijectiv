@@ -6,7 +6,7 @@
 
     public class MemberValueSourceMergeSubtask : MemberSourceMergeSubtask<ValueSourceMemberShard>
     {
-        protected override Expression GetMemberSource(ValueSourceMemberShard shard)
+        protected override Expression GetMemberSource(InjectionScaffold scaffold, ValueSourceMemberShard shard)
         {
             return Expression.Constant(shard.Value);
         }

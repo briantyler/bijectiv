@@ -197,6 +197,8 @@ namespace Bijectiv
                 {
                     () => new MemberConditionSubtask(),
                     () => new MemberValueSourceTransformSubtask(), 
+                    () => new MemberExpressionSourceTransformSubtask(), 
+                    () => new MemberParametersSourceTransformSubtask(), 
                     () => new CreateLabelSubtask(LegendaryLabels.End)
                 });
         }
@@ -234,6 +236,8 @@ namespace Bijectiv
                 {
                     () => new MemberConditionSubtask(),
                     () => new MemberValueSourceMergeSubtask(),
+                    () => new MemberExpressionSourceMergeSubtask(), 
+                    () => new MemberParametersSourceMergeSubtask(), 
                     () => new CreateLabelSubtask(LegendaryLabels.End)
                 });
         }

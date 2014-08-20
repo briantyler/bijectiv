@@ -13,7 +13,7 @@
     /// </summary>
     public abstract class MemberSourceTransformSubtask<TShard>
         : SingleInstanceShardCategorySubtask<TShard>
-        where TShard : ValueSourceMemberShard
+        where TShard : MemberShard
     {
         protected MemberSourceTransformSubtask()
             : base(LegendaryShards.Source)
@@ -52,12 +52,12 @@
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.GetMemberSource(shard);
+            var targetMemberSource = this.GetMemberSource(scaffold, shard);
 
             this.AddTransformExpressionToScaffold(scaffold, fragment, targetMemberSource);
         }
 
-        protected abstract Expression GetMemberSource(TShard shard);
+        protected abstract Expression GetMemberSource(InjectionScaffold scaffold, TShard shard);
 
         protected internal virtual void AddTransformExpressionToScaffold(
             InjectionScaffold scaffold,

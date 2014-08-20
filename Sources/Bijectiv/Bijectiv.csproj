@@ -63,6 +63,7 @@
     <Compile Include="IInjectionParameters.cs" />
     <Compile Include="IMemberFragmentBuilder.cs" />
     <Compile Include="KernelFactory\AddToInjectionTrailTask.cs" />
+    <Compile Include="KernelFactory\MemberParametersSourceMergeSubtask.cs" />
     <Compile Include="KernelFactory\CreateLabelSubtask.cs" />
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
     <Compile Include="KernelFactory\FallbackToTransformOnNullTargetTask.cs" />
@@ -72,7 +73,10 @@
     <Compile Include="KernelFactory\LegendaryLabels.cs" />
     <Compile Include="KernelFactory\LabelCache.cs" />
     <Compile Include="KernelFactory\MemberConditionSubtask.cs" />
+    <Compile Include="KernelFactory\MemberExpressionSourceMergeSubtask.cs" />
+    <Compile Include="KernelFactory\MemberExpressionSourceTransformSubtask.cs" />
     <Compile Include="KernelFactory\MemberInjectionTask.cs" />
+    <Compile Include="KernelFactory\MemberParametersSourceTransformSubtask.cs" />
     <Compile Include="KernelFactory\MemberSourceMergeSubtask.cs" />
     <Compile Include="KernelFactory\MemberSourceTransformSubtask.cs" />
     <Compile Include="KernelFactory\MemberValueSourceMergeSubtask.cs" />

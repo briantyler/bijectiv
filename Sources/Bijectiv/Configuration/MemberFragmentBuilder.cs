@@ -200,8 +200,7 @@ namespace Bijectiv.Configuration
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    createInjectionSource,
-                    false));
+                    createInjectionSource));
 
             return this.Builder;
         }
@@ -219,8 +218,7 @@ namespace Bijectiv.Configuration
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    createTargetMember,
-                    true));
+                    createTargetMember));
 
             return this.Builder;
         }

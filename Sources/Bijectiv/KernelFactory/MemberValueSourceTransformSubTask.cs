@@ -35,7 +35,7 @@ namespace Bijectiv.KernelFactory
 
     public class MemberValueSourceTransformSubtask : MemberSourceTransformSubtask<ValueSourceMemberShard>
     {
-        protected override Expression GetMemberSource(ValueSourceMemberShard shard)
+        protected override Expression GetMemberSource(InjectionScaffold scaffold, ValueSourceMemberShard shard)
         {
             return Expression.Constant(shard.Value);
         }

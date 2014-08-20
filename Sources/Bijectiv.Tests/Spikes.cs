@@ -638,6 +638,64 @@ namespace Bijectiv.Tests
             Assert.AreEqual(@sealed, result.Target);
         }
 
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_TransformFromSourceExpression_Transforms()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+
+            builder
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
+                .InjectMember(d => d.PropertyInt).InjectSource(s => s.FieldInt * 22)
+                .InjectMember(d => d.FieldInt).InjectSource(s => s.PropertyInt * 14)
+                .InjectMember(d => d.PropertyBase).Ignore()
+                .InjectMember(d => d.PropertySealed).Ignore()
+                .InjectMember(d => d.FieldBase).Ignore()
+                .AutoExact();
+
+            var kernel = builder.Build();
+            var transform = kernel.Store.Resolve<ITransform>(AutoInjectionTestClass1.T, AutoInjectionTestClass1.T);
+
+            var source = new AutoInjectionTestClass1 { FieldInt = 2, PropertyInt = 3 };
+
+            // Act
+            var result = (AutoInjectionTestClass1)transform.Transform(source, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(44, result.PropertyInt);
+            Assert.AreEqual(42, result.FieldInt);
+        }
+
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_TransformFromSourceParameters_Transforms()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+
+            builder
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
+                .InjectMember(d => d.PropertyInt).InjectParameters(p => p.Source.FieldInt * 22)
+                .InjectMember(d => d.FieldInt).InjectParameters(p => p.Source.PropertyInt * 14)
+                .InjectMember(d => d.PropertyBase).Ignore()
+                .InjectMember(d => d.PropertySealed).Ignore()
+                .InjectMember(d => d.FieldBase).Ignore()
+                .AutoExact();
+
+            var kernel = builder.Build();
+            var transform = kernel.Store.Resolve<ITransform>(AutoInjectionTestClass1.T, AutoInjectionTestClass1.T);
+
+            var source = new AutoInjectionTestClass1 { FieldInt = 2, PropertyInt = 3 };
+
+            // Act
+            var result = (AutoInjectionTestClass1)transform.Transform(source, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(44, result.PropertyInt);
+            Assert.AreEqual(42, result.FieldInt);
+        }
+
         private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(

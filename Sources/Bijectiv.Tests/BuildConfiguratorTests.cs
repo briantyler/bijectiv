@@ -116,6 +116,8 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberExpressionSourceTransformSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberParametersSourceTransformSubtask));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask));
             Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);
@@ -147,6 +149,27 @@ namespace Bijectiv.Tests
             Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnMergeResultTask));
 
+            Assert.AreEqual(index, tasks.Length);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_DefaultParameters_MemberMergeTasksInitialized()
+        {
+            // Arrange
+
+            // Act
+            var target = new BuildConfigurator();
+
+            // Assert
+            var tasks = target.MemberMergeTasks.Select(item => item()).ToArray();
+            var index = 0;
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceMergeSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberExpressionSourceMergeSubtask));
+            Assert.IsInstanceOfType(tasks[index++], typeof(MemberParametersSourceMergeSubtask));
+            Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask));
+            Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);
         }
 

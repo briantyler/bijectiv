@@ -77,12 +77,12 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.GetMemberSource(shard);
+            var targetMemberSource = this.GetMemberSource(scaffold, shard);
             
             this.AddMergeExpressionToScaffold(scaffold, fragment, targetMemberSource);
         }
 
-        protected abstract Expression GetMemberSource(TShard shard);
+        protected abstract Expression GetMemberSource(InjectionScaffold scaffold, TShard shard);
 
         protected internal virtual void AddMergeExpressionToScaffold(
             InjectionScaffold scaffold,

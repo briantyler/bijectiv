@@ -1,22 +1,27 @@
 ﻿namespace Bijectiv.Configuration
 {
     using System;
+    using System.Linq;
     using System.Reflection;
 
     using JetBrains.Annotations;
 
     public class DelegateSourceMemberShard : MemberShard
     {
-        private readonly object @delegate;
+        private readonly Delegate @delegate;
 
-        private readonly bool isDirect;
+        /// <summary>
+        /// The type of the parameter to the expression.
+        /// </summary>
+        private readonly Type parameterType;
+
+        private readonly Type returnType;
 
         public DelegateSourceMemberShard(
             [NotNull] Type source,
             [NotNull] Type target, 
             [NotNull] MemberInfo member,
-            [NotNull] object @delegate, 
-            bool isDirect)
+            [NotNull] Delegate @delegate)
             : base(source, target, member)
         {
             if (@delegate == null)
@@ -24,8 +29,21 @@
                 throw new ArgumentNullException("delegate");
             }
 
+            var parameters = @delegate.Method.GetParameters();
+            if (parameters.Count() != 1)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    "Delegate with single parameter expected, but {0} parameters found",
+                    parameters.Count()));
+            }
+
+            var parameter = parameters[0];
+            //// TODO: validate the parameter type.
+            
+            this.parameterType = parameter.ParameterType;
+            this.returnType = @delegate.Method.ReturnType;
             this.@delegate = @delegate;
-            this.isDirect = isDirect;
         }
 
         public override Guid ShardCategory
@@ -33,14 +51,22 @@
             get { return LegendaryShards.Source; }
         }
 
-        public object Delegate
+        public Delegate Delegate
         {
             get { return this.@delegate; }
         }
 
-        public bool IsDirect
+        /// <summary>
+        /// Gets the type of the parameter to the delegate.
+        /// </summary>
+        public Type ParameterType
         {
-            get { return this.isDirect; }
+            get { return this.parameterType; }
+        }
+
+        public Type ReturnType
+        {
+            get { return this.returnType; }
         }
     }
 }
