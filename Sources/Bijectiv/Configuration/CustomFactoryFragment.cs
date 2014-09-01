@@ -30,6 +30,7 @@
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Linq;
 
     using JetBrains.Annotations;
 
@@ -51,7 +52,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// The custom factory delegate.
         /// </summary>
-        private readonly object factory;
+        private readonly Delegate factory;
 
         /// <summary>
         /// The type of the custom factory delegate.
@@ -81,7 +82,7 @@ namespace Bijectiv.Configuration
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="factory"/> does not have the expected type.
         /// </exception>
-        public CustomFactoryFragment([NotNull] Type source, [NotNull] Type target, [NotNull] object factory)
+        public CustomFactoryFragment([NotNull] Type source, [NotNull] Type target, [NotNull] Delegate factory)
             : base(source, target)
         {
             if (factory == null)
@@ -89,13 +90,37 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("factory");
             }
 
-            this.parametersType = ParametersTypeTemplate.MakeGenericType(source);
-            this.factoryType = FactoryTypeTemplate.MakeGenericType(this.parametersType, target);
-            if (!this.factoryType.IsInstanceOfType(factory))
+            var parameters = factory.Method.GetParameters();
+            if (parameters.Count() != 1)
             {
-                var message = string.Format(
-                    "The factory '{0}' is not an instance of '{1}'.", factory.GetType(), this.factoryType);
-                throw new ArgumentException(message, "factory");
+                throw new ArgumentException(
+                    string.Format(
+                        "Expected 1 parameter, but {0} parameters found: {1}",
+                        parameters.Count(),
+                        string.Join(", ", parameters.Select(item => item.ParameterType))),
+                    "factory");
+            }
+
+            this.parametersType = parameters[0].ParameterType;
+            var expectedParameterType = ParametersTypeTemplate.MakeGenericType(source);
+            if (!expectedParameterType.IsAssignableFrom(this.parametersType))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Parameter type '{0}' is not an assignable to '{1}'.", 
+                        this.parametersType,
+                        expectedParameterType), 
+                    "factory");
+            }
+
+            if (!source.IsAssignableFrom(factory.Method.ReturnType))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Return type '{0}' is not an assignable to '{1}'.",
+                        factory.Method.ReturnType,
+                        source),
+                    "factory");
             }
 
             this.factory = factory;
@@ -120,7 +145,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the custom factory delegate.
         /// </summary>
-        public object Factory
+        public Delegate Factory
         {
             get { return this.factory; }
         }
