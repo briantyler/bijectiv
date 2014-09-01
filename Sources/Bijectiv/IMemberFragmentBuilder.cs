@@ -96,6 +96,9 @@ namespace Bijectiv
 
         IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value);
 
+        IInjectionDefinitionBuilder<TSource, TTarget> AssignSource<TResult>(
+            Expression<Func<TSource, TResult>> expression);
+
         IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
             Func<IInjectionParameters<TSource, TTarget>, TMember> createTargetMember);
     }

@@ -131,6 +131,7 @@ namespace Bijectiv.Tests.KernelFactory
             var targetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
                 MockBehavior.Loose,
                 LegendaryShards.Condition);
+            targetMock.Setup(_ => _.CanProcess(It.IsAny<PredicateConditionMemberShard>())).Returns(true);
 
             // Act
             targetMock.Object.Execute(Stub.Create<InjectionScaffold>(), fragmentMock.Object);
@@ -166,6 +167,7 @@ namespace Bijectiv.Tests.KernelFactory
                 LegendaryShards.Condition);
 
             var scaffold = Stub.Create<InjectionScaffold>();
+            targetMock.Setup(_ => _.CanProcess(shard)).Returns(true);
             targetMock.Setup(_ => _.ProcessShard(scaffold, fragmentMock.Object, shard));
 
             // Act
@@ -177,7 +179,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_FirstCategoryShardDoesNotHaveExpectedType_IsProcessed()
+        public void Execute_FirstCategoryShardDoesNotHaveExpectedType_IsNotProcessed()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };

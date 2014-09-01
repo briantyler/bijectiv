@@ -6,9 +6,9 @@
     using Bijectiv.Configuration;
     using Bijectiv.Utilities;
 
-    public class MemberExpressionSourceMergeSubtask : MemberSourceMergeSubtask<ExpressionSourceMemberShard>
+    public class ExpressionSourceExpressionFactory : ISourceExpressionFactory<ExpressionSourceMemberShard>
     {
-        protected override Expression GetMemberSource(InjectionScaffold scaffold, ExpressionSourceMemberShard shard)
+        public Expression Create(InjectionScaffold scaffold, MemberFragment fragment, ExpressionSourceMemberShard shard)
         {
             return new ParameterExpressionVisitor(
                 shard.Expression.Parameters.Single(),

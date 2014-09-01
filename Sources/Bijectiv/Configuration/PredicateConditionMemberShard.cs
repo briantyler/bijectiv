@@ -30,6 +30,7 @@
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Linq;
     using System.Reflection;
 
     using JetBrains.Annotations;
@@ -47,7 +48,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// The predicate.
         /// </summary>
-        private readonly object predicate;
+        private readonly Delegate predicate;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="PredicateConditionMemberShard"/> class.
@@ -74,7 +75,7 @@ namespace Bijectiv.Configuration
             [NotNull] Type source, 
             [NotNull] Type target, 
             [NotNull] MemberInfo member,
-            [NotNull] object predicate)
+            [NotNull] Delegate predicate)
             : base(source, target, member)
         {
             if (predicate == null)
@@ -82,43 +83,33 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("predicate");
             }
 
-            var predicateType = predicate.GetType();
-            if (!predicateType.IsGenericType)
+            if (predicate.Method.ReturnType != typeof(bool))
             {
                 throw new ArgumentException(
-                    string.Format("Predicate '{0}' is not a generic type.", predicateType),
-                    "predicate");
+                    string.Format("The predicate must return 'bool' but returns '{0}'", predicate.Method.ReturnType));
             }
 
-            var genericType = predicate.GetType().GetGenericTypeDefinition();
-            if (genericType != typeof(Func<,>))
-            {
-                throw new ArgumentException(
-                    string.Format("Predicate '{0}' definition is not Func<,>.", predicateType),
-                    "predicate");
-            }
-
-            var genericArguments = predicateType.GetGenericArguments();
-            if (genericArguments[1] != typeof(bool))
-            {
-                throw new ArgumentException(
-                    string.Format("Predicate '{0}' definition is not Func<, bool>.", predicateType),
-                    "predicate");
-            }
-
-            var maximalParametersType = typeof(IInjectionParameters<,>).MakeGenericType(source, target);
-            if (!genericArguments[0].IsAssignableFrom(maximalParametersType))
+            var parameters = predicate.Method.GetParameters();
+            if (parameters.Count() != 1)
             {
                 throw new ArgumentException(
                     string.Format(
-                        "The parameter '{0}' to predicate '{1}' is not assignable from '{2}'.", 
-                        genericArguments[0],
-                        predicateType,
+                    "Delegate with single parameter expected, but {0} parameters found",
+                    parameters.Count()));
+            }
+
+            var maximalParametersType = typeof(IInjectionParameters<,>).MakeGenericType(source, target);
+            if (!parameters[0].ParameterType.IsAssignableFrom(maximalParametersType))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "The parameter '{0}' to the predicate the is not assignable from '{1}'.",
+                        parameters[0].ParameterType,
                         maximalParametersType),
                     "predicate");
             }
 
-            this.predicateParameterType = genericArguments[0];
+            this.predicateParameterType = parameters[0].ParameterType;
             this.predicate = predicate;
         }
 
@@ -140,7 +131,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the predicate.
         /// </summary>
-        public virtual object Predicate
+        public virtual Delegate Predicate
         {
             get { return this.predicate; }
         }

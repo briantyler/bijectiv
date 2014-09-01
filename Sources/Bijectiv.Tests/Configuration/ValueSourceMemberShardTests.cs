@@ -53,7 +53,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, new object()).Naught();
+            new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, new object(), true).Naught();
 
             // Assert
         }
@@ -65,22 +65,9 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
+            new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, null, true).Naught();
 
             // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_ShardCategoryIsSource()
-        {
-            // Arrange
-
-            // Act
-            var target = new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, new object());
-
-            // Assert
-            Assert.AreEqual(LegendaryShards.Source, target.ShardCategory);
         }
 
         [TestMethod]
@@ -91,10 +78,22 @@ namespace Bijectiv.Tests.Configuration
             var value = new object();
 
             // Act
-            var target = new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, value);
+            var target = new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, value, true);
 
             // Assert
             Assert.AreEqual(value, target.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ProtectedDefaultParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            Stub.Create<ValueSourceMemberShard>();
+
+            // Assert
         }
     }
 }

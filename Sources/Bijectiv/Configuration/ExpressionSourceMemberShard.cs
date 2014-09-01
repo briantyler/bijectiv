@@ -40,7 +40,7 @@ namespace Bijectiv.Configuration
     /// A member shard that contains a lambda expression that extracts a value from an instance of type 
     /// <see cref="MemberShard.Source"/> from which the target member will be injected.
     /// </summary>
-    public class ExpressionSourceMemberShard : MemberShard
+    public class ExpressionSourceMemberShard : SourceMemberShard
     {
         /// <summary>
         /// The lambda expression.
@@ -67,6 +67,10 @@ namespace Bijectiv.Configuration
         /// <param name="expression">
         /// The lambda expression that extracts a value from an instance of type <see cref="MemberShard.Source"/>.
         /// </param>
+        /// <param name="injectSource">
+        /// A value indicating whether to inject the source; when false the source will be assigned to the target 
+        /// member, not injected.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
@@ -74,11 +78,12 @@ namespace Bijectiv.Configuration
         /// Thrown when the lambda expression does not have signature <c>Func&lt;source, *&gt;</c>.
         /// </exception>
         public ExpressionSourceMemberShard(
-            [NotNull] Type source, 
+            [NotNull] Type source,
             [NotNull] Type target, 
-            [NotNull] MemberInfo member,
-            [NotNull] LambdaExpression expression)
-            : base(source, target, member)
+            [NotNull] MemberInfo member, 
+            [NotNull] LambdaExpression expression,
+            bool injectSource)
+            : base(source, target, member, injectSource)
         {
             if (expression == null)
             {
@@ -109,14 +114,6 @@ namespace Bijectiv.Configuration
             }
 
             this.expression = expression;
-        }
-
-        /// <summary>
-        /// Gets the shard category.
-        /// </summary>
-        public override Guid ShardCategory
-        {
-            get { return LegendaryShards.Source; }
         }
 
         /// <summary>

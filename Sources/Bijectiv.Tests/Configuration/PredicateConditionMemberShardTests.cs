@@ -66,32 +66,6 @@ namespace Bijectiv.Tests.Configuration
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentExceptionExpected]
-        public void CreateInstance_PredicateParameterIsNotOfCorrectType_Throws()
-        {
-            // Arrange
-
-            // Act
-            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, new object()).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
-        public void CreateInstance_PredicateParameterIsNotGeneric_Throws()
-        {
-            // Arrange
-
-            // Act
-            new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, new Action(() => 1.Naught())).Naught();
-
-            // Assert
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        [ArgumentExceptionExpected]
         public void CreateInstance_PredicateParameterHasWrongFuncType_Throws()
         {
             // Arrange

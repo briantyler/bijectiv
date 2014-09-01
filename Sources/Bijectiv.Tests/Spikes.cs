@@ -696,6 +696,56 @@ namespace Bijectiv.Tests
             Assert.AreEqual(42, result.FieldInt);
         }
 
+        [TestMethod]
+        [TestCategory("Spike")]
+        public void Spike_TransformAssignAndInject_Transforms()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+            var propertyBase = new DerivedTestClass1();
+
+            builder
+                .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
+                .InjectMember(d => d.PropertyInt).AssignValue(8)
+                .InjectMember(d => d.PropertyInt).InjectSource(p => p.FieldInt * 22)
+
+                .InjectMember(d => d.FieldInt).AssignSource(s => 8)
+                .InjectMember(d => d.FieldInt).InjectParameters(p => p.Source.PropertyInt * 14)
+
+                .InjectMember(d => d.PropertySealed).AssignParameters(p => new SealedClass1())
+                .InjectMember(d => d.PropertySealed).AssignSource(s => s.PropertySealed)
+
+                .InjectMember(d => d.PropertyBase).InjectValue("no map")
+                .InjectMember(d => d.PropertyBase).InjectParameters(p => new object())
+                .InjectMember(d => d.PropertyBase).AssignValue(propertyBase)
+                
+                .InjectMember(d => d.FieldBase).InjectSource(s => new object())
+                .InjectMember(d => d.FieldBase).AssignParameters(s => s.Source.FieldBase)
+
+                .AutoExact();
+
+            var kernel = builder.Build();
+            var transform = kernel.Store.Resolve<ITransform>(AutoInjectionTestClass1.T, AutoInjectionTestClass1.T);
+
+            var source = new AutoInjectionTestClass1
+            {
+                FieldInt = 2,
+                PropertyInt = 3,
+                PropertySealed = new SealedClass1(),
+                FieldBase = new DerivedTestClass1()
+            };
+
+            // Act
+            var result = (AutoInjectionTestClass1)transform.Transform(source, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual(44, result.PropertyInt);
+            Assert.AreEqual(42, result.FieldInt);
+            Assert.AreEqual(propertyBase, result.PropertyBase);
+            Assert.AreEqual(source.FieldBase, result.FieldBase);
+            Assert.AreEqual(source.PropertySealed, result.PropertySealed);
+        }
+
         private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(

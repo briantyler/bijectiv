@@ -56,7 +56,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, null).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, null, true).Naught();
 
             // Assert
         }
@@ -70,7 +70,7 @@ namespace Bijectiv.Tests.KernelFactory
             var expression = Expression.Lambda(Expression.Constant(1));
             
             // Act
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -87,7 +87,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -103,7 +103,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass2.T));
 
             // Act
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -119,7 +119,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -134,7 +134,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(BaseTestClass1.T));
 
             // Act
-            new ExpressionSourceMemberShard(BaseTestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(BaseTestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -149,7 +149,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(BaseTestClass1.T));
 
             // Act
-            new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression).Naught();
+            new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression, true).Naught();
 
             // Assert
         }
@@ -164,7 +164,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression);
+            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
             Assert.AreEqual(expression, target.Expression);
@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(BaseTestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression);
+            var target = new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
             Assert.AreEqual(BaseTestClass1.T, target.ParameterType);
@@ -196,7 +196,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression);
+            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
             Assert.AreEqual(LegendaryShards.Source, target.ShardCategory);

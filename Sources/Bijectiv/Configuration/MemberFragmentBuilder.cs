@@ -174,7 +174,8 @@ namespace Bijectiv.Configuration
                     typeof(TSource), 
                     typeof(TTarget), 
                     this.Fragment.Member,
-                    value));
+                    value, 
+                    true));
 
             return this.Builder;
         }
@@ -187,7 +188,8 @@ namespace Bijectiv.Configuration
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    expression));
+                    expression, 
+                    true));
 
             return this.Builder;
         }
@@ -200,14 +202,36 @@ namespace Bijectiv.Configuration
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    createInjectionSource));
+                    createInjectionSource, 
+                    true));
 
             return this.Builder;
         }
 
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value)
         {
-            throw new NotImplementedException();
+            this.Fragment.Add(
+                new ValueSourceMemberShard(
+                    typeof(TSource),
+                    typeof(TTarget),
+                    this.Fragment.Member,
+                    value,
+                    false));
+
+            return this.Builder; ;
+        }
+
+        public IInjectionDefinitionBuilder<TSource, TTarget> AssignSource<TResult>(Expression<Func<TSource, TResult>> expression)
+        {
+            this.Fragment.Add(
+                new ExpressionSourceMemberShard(
+                    typeof(TSource),
+                    typeof(TTarget),
+                    this.Fragment.Member,
+                    expression,
+                    false));
+
+            return this.Builder;
         }
 
         public virtual IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
@@ -218,7 +242,8 @@ namespace Bijectiv.Configuration
                     typeof(TSource),
                     typeof(TTarget),
                     this.Fragment.Member,
-                    createTargetMember));
+                    createTargetMember, 
+                    false));
 
             return this.Builder;
         }

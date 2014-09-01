@@ -95,7 +95,7 @@ namespace Bijectiv.KernelFactory
 
             var shards = fragment.UnprocessedShards.Where(candidate => candidate.ShardCategory == this.Category).ToArray();
             var shard = shards.FirstOrDefault() as TShard;
-            if (shard == null)
+            if (shard == null || !this.CanProcess(shard))
             {
                 return;
             }
@@ -118,5 +118,11 @@ namespace Bijectiv.KernelFactory
         /// The shard to process.
         /// </param>
         public abstract void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, TShard shard);
+
+        //// TODO: requires testing
+        protected internal virtual bool CanProcess(TShard shard)
+        {
+            return true;
+        }
     }
 }

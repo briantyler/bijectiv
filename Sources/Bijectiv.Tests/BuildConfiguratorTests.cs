@@ -115,9 +115,13 @@ namespace Bijectiv.Tests
             var tasks = target.MemberTransformTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceTransformSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberExpressionSourceTransformSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberParametersSourceTransformSubtask));
+            //// TODO Validate factories
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<DelegateSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<DelegateSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask));
             Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);
@@ -165,9 +169,13 @@ namespace Bijectiv.Tests
             var tasks = target.MemberMergeTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberValueSourceMergeSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberExpressionSourceMergeSubtask));
-            Assert.IsInstanceOfType(tasks[index++], typeof(MemberParametersSourceMergeSubtask));
+            //// TODO Validate factories
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<DelegateSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<DelegateSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index], typeof(CreateLabelSubtask));
             Assert.AreEqual(LegendaryLabels.End, ((CreateLabelSubtask)tasks[index++]).Category);
             Assert.AreEqual(index, tasks.Length);

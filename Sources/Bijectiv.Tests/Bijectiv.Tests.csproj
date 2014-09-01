@@ -66,10 +66,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BuildConfiguratorTests.cs" />
+    <Compile Include="Configuration\DelegateSourceMemberShardTests.cs" />
     <Compile Include="Configuration\MemberFragmentBuilderTests.cs" />
     <Compile Include="Configuration\MemberFragmentTests.cs" />
     <Compile Include="Configuration\MemberShardTests.cs" />
     <Compile Include="Configuration\PredicateConditionMemberShardTests.cs" />
+    <Compile Include="Configuration\SourceMemberShardTests.cs" />
     <Compile Include="Configuration\ValueSourceMemberShardTests.cs" />
     <Compile Include="InjectionTrailItemTests.cs" />
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
@@ -96,7 +98,7 @@
     <Compile Include="KernelFactory\LabelCacheTests.cs" />
     <Compile Include="KernelFactory\MemberConditionSubtaskTests.cs" />
     <Compile Include="KernelFactory\MemberInjectionTaskTests.cs" />
-    <Compile Include="KernelFactory\MemberValueSourceTransformSubtaskTests.cs" />
+    <Compile Include="KernelFactory\ValueSourceMemberTransformSubtaskTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />
     <Compile Include="KernelFactory\ReturnMergeResultTaskTests.cs" />

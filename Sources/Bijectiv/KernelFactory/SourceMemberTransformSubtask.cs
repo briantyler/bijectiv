@@ -11,14 +11,27 @@
     /// <summary>
     /// A subtask that transforms a source shard into a member.
     /// </summary>
-    public abstract class MemberSourceTransformSubtask<TShard>
+    public class SourceMemberTransformSubtask<TShard>
         : SingleInstanceShardCategorySubtask<TShard>
-        where TShard : MemberShard
+        where TShard : SourceMemberShard
     {
-        protected MemberSourceTransformSubtask()
+        public SourceMemberTransformSubtask([NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory)
+            : this()
+        {
+            if (sourceExpressionFactory == null)
+            {
+                throw new ArgumentNullException("sourceExpressionFactory");
+            }
+
+            this.SourceExpressionFactory = sourceExpressionFactory;
+        }
+
+        protected SourceMemberTransformSubtask()
             : base(LegendaryShards.Source)
         {
         }
+
+        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; } 
 
         /// <summary>
         /// Processes a shard.
@@ -52,12 +65,14 @@
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.GetMemberSource(scaffold, shard);
-
+            var targetMemberSource = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
             this.AddTransformExpressionToScaffold(scaffold, fragment, targetMemberSource);
         }
 
-        protected abstract Expression GetMemberSource(InjectionScaffold scaffold, TShard shard);
+        protected internal override bool CanProcess(TShard shard)
+        {
+            return shard.InjectSource;
+        }
 
         protected internal virtual void AddTransformExpressionToScaffold(
             InjectionScaffold scaffold,

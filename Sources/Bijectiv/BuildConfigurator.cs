@@ -196,9 +196,12 @@ namespace Bijectiv
                 new Func<IInjectionSubtask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubtask(),
-                    () => new MemberValueSourceTransformSubtask(), 
-                    () => new MemberExpressionSourceTransformSubtask(), 
-                    () => new MemberParametersSourceTransformSubtask(), 
+                    () => new SourceMemberTransformSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
+                    () => new SourceMemberTransformSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
+                    () => new SourceMemberTransformSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 
                     () => new CreateLabelSubtask(LegendaryLabels.End)
                 });
         }
@@ -235,9 +238,12 @@ namespace Bijectiv
                 new Func<IInjectionSubtask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubtask(),
-                    () => new MemberValueSourceMergeSubtask(),
-                    () => new MemberExpressionSourceMergeSubtask(), 
-                    () => new MemberParametersSourceMergeSubtask(), 
+                    () => new SourceMemberMergeSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
+                    () => new SourceMemberMergeSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
+                    () => new SourceMemberMergeSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
+                    () => new SourceMemberAssignSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 
                     () => new CreateLabelSubtask(LegendaryLabels.End)
                 });
         }

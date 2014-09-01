@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemberValueSourceTransformSubtask.cs" company="Bijectiv">
+// <copyright file="DelegateSourceMemberShardTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,21 +23,22 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the MemberValueSourceTransformSubtask type.
+//   Defines the DelegateSourceMemberShardTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.KernelFactory
+namespace Bijectiv.Tests.Configuration
 {
-    using System.Linq.Expressions;
-
     using Bijectiv.Configuration;
 
-    public class MemberValueSourceTransformSubtask : MemberSourceTransformSubtask<ValueSourceMemberShard>
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// This class tests the <see cref="DelegateSourceMemberShard"/> class.
+    /// </summary>
+    [TestClass]
+    public class DelegateSourceMemberShardTests
     {
-        protected override Expression GetMemberSource(InjectionScaffold scaffold, ValueSourceMemberShard shard)
-        {
-            return Expression.Constant(shard.Value);
-        }
+         
     }
 }

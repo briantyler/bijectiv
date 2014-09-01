@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemberSourceMergeSubtask.cs" company="Bijectiv">
+// <copyright file="SourceMemberMergeSubtask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the MemberSourceMergeSubtask type.
+//   Defines the SourceMemberMergeSubtask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -37,13 +37,26 @@ namespace Bijectiv.KernelFactory
 
     using JetBrains.Annotations;
 
-    public abstract class MemberSourceMergeSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
-        where TShard : MemberShard
+    public class SourceMemberMergeSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
+        where TShard : SourceMemberShard
     {
-        protected MemberSourceMergeSubtask()
+        public SourceMemberMergeSubtask([NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory)
+            : this()
+        {
+            if (sourceExpressionFactory == null)
+            {
+                throw new ArgumentNullException("sourceExpressionFactory");
+            }
+
+            this.SourceExpressionFactory = sourceExpressionFactory;
+        }
+
+        protected SourceMemberMergeSubtask()
             : base(LegendaryShards.Source)
         {
         }
+
+        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; } 
 
         /// <summary>
         /// Processes a shard.
@@ -77,12 +90,15 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.GetMemberSource(scaffold, shard);
-            
+            var targetMemberSource = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
             this.AddMergeExpressionToScaffold(scaffold, fragment, targetMemberSource);
         }
 
-        protected abstract Expression GetMemberSource(InjectionScaffold scaffold, TShard shard);
+        protected internal override bool CanProcess(TShard shard)
+        {
+            return shard.InjectSource;
+        }
+
 
         protected internal virtual void AddMergeExpressionToScaffold(
             InjectionScaffold scaffold,

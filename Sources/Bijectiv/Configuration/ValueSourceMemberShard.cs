@@ -37,7 +37,7 @@ namespace Bijectiv.Configuration
     /// <summary>
     /// A member shard that contains a value from which the member will be injected.
     /// </summary>
-    public class ValueSourceMemberShard : MemberShard
+    public class ValueSourceMemberShard : SourceMemberShard
     {
         /// <summary>
         /// The value from which to inject the member.
@@ -59,12 +59,17 @@ namespace Bijectiv.Configuration
         /// <param name="value">
         /// The value from which to inject the member.
         /// </param>
+        /// <param name="injectSource">
+        /// A value indicating whether to inject the source; when false the source will be assigned to the target 
+        /// member, not injected. 
+        /// </param>
         public ValueSourceMemberShard(
-            [NotNull] Type source, 
-            [NotNull] Type target, 
+            [NotNull] Type source,
+            [NotNull] Type target,
             [NotNull] MemberInfo member, 
-            object value)
-            : base(source, target, member)
+            object value, 
+            bool injectSource)
+            : base(source, target, member, injectSource)
         {
             this.value = value;
         }
@@ -74,14 +79,6 @@ namespace Bijectiv.Configuration
         /// </summary>
         protected ValueSourceMemberShard()
         {
-        }
-
-        /// <summary>
-        /// Gets the shard category.
-        /// </summary>
-        public override Guid ShardCategory
-        {
-            get { return LegendaryShards.Source; }
         }
 
         /// <summary>
