@@ -146,33 +146,7 @@ namespace Bijectiv.Tests.Configuration
             var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(typeof(CustomFactoryParameters<TestClass1>), target.ParametersType);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_ExactFactory_FactoryTypePropertyIsCalculatedFromTargetParameter()
-        {
-            // Arrange
-
-            // Act
-            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
-
-            // Assert
-            Assert.AreEqual(typeof(Func<CustomFactoryParameters<TestClass1>, TestClass2>), target.FactoryType);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_CovariantFactory_FactoryTypePropertyIsCalculatedFromTargetParameter()
-        {
-            // Arrange
-
-            // Act
-            var target = new CustomFactoryFragment(TestClass1.T, typeof(object), Factory);
-
-            // Assert
-            Assert.AreEqual(typeof(Func<CustomFactoryParameters<TestClass1>, object>), target.FactoryType);
+            Assert.AreEqual(typeof(CustomFactoryParameters<TestClass1>), target.ParameterType);
         }
     }
 }

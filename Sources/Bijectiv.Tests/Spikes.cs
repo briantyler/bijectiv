@@ -616,7 +616,7 @@ namespace Bijectiv.Tests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [TestCategory("Spike")]
         public void Spike_MergeIntoNull_Replaces()
         {
             // Arrange

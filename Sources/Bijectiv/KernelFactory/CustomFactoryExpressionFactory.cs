@@ -32,6 +32,7 @@ namespace Bijectiv.KernelFactory
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     using Bijectiv.Configuration;
 
@@ -88,11 +89,10 @@ namespace Bijectiv.KernelFactory
                 new[] { scaffold.Definition.Source, typeof(IInjectionContext) });
             // ReSharper disable once AssignNullToNotNullAttribute
             var parameters = Expression.New(constructor, scaffold.Source, scaffold.InjectionContext);
-            
-            var factory = Expression.Constant(fragment.Factory, fragment.FactoryType);
-            var invoke = fragment.FactoryType.GetMethod("Invoke");
 
-            return Expression.Call(factory, invoke, new Expression[] { parameters });
+            return fragment.Factory.Target == null 
+                ? Expression.Call(fragment.Factory.Method, new Expression[] { parameters }) 
+                : Expression.Call(Expression.Constant(fragment.Factory.Target), fragment.Factory.Method, new Expression[] { parameters });
         }
     }
 }

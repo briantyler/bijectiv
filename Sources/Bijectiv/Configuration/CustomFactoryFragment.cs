@@ -55,14 +55,9 @@ namespace Bijectiv.Configuration
         private readonly Delegate factory;
 
         /// <summary>
-        /// The type of the custom factory delegate.
+        /// The parameter type.
         /// </summary>
-        private readonly Type factoryType;
-
-        /// <summary>
-        /// The parameters type.
-        /// </summary>
-        private readonly Type parametersType;
+        private readonly Type parameterType;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="CustomFactoryFragment"/> class.
@@ -101,25 +96,25 @@ namespace Bijectiv.Configuration
                     "factory");
             }
 
-            this.parametersType = parameters[0].ParameterType;
+            this.parameterType = parameters[0].ParameterType;
             var expectedParameterType = ParametersTypeTemplate.MakeGenericType(source);
-            if (!expectedParameterType.IsAssignableFrom(this.parametersType))
+            if (!expectedParameterType.IsAssignableFrom(this.parameterType))
             {
                 throw new ArgumentException(
                     string.Format(
                         "Parameter type '{0}' is not an assignable to '{1}'.", 
-                        this.parametersType,
+                        this.parameterType,
                         expectedParameterType), 
                     "factory");
             }
 
-            if (!source.IsAssignableFrom(factory.Method.ReturnType))
+            if (!target.IsAssignableFrom(factory.Method.ReturnType))
             {
                 throw new ArgumentException(
                     string.Format(
                         "Return type '{0}' is not an assignable to '{1}'.",
                         factory.Method.ReturnType,
-                        source),
+                        target),
                     "factory");
             }
 
@@ -151,19 +146,11 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Gets the type of the custom factory delegate.
+        /// Gets the parameter type.
         /// </summary>
-        public Type FactoryType
+        public Type ParameterType
         {
-            get { return this.factoryType; }
-        }
-
-        /// <summary>
-        /// Gets the parameters type.
-        /// </summary>
-        public Type ParametersType
-        {
-            get { return this.parametersType; }
+            get { return this.parameterType; }
         }
     }
 }
