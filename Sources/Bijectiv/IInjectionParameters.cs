@@ -30,32 +30,6 @@
 namespace Bijectiv
 {
     /// <summary>
-    /// Standard weakly typed parameters to an operation that happens as part of a <see cref="IInjection"/>.
-    /// </summary>
-    public interface IInjectionParameters
-    {
-        /// <summary>
-        /// Gets the source instance as an object.
-        /// </summary>
-        object SourceAsObject { get; }
-
-        /// <summary>
-        /// Gets the target instance as an object.
-        /// </summary>
-        object TargetAsObject { get; }
-
-        /// <summary>
-        /// Gets the context in which the operation occurs.
-        /// </summary>
-        IInjectionContext Context { get; }
-
-        /// <summary>
-        /// Gets the hint that was passed to the <see cref="IInjection"/>.
-        /// </summary>
-        object Hint { get; }
-    }
-
-    /// <summary>
     /// Standard strongly typed parameters to an operation that happens as part of a <see cref="IInjection"/>.
     /// </summary>
     /// <typeparam name="TSource">
@@ -64,7 +38,7 @@ namespace Bijectiv
     /// <typeparam name="TTarget">
     /// The target type.
     /// </typeparam>
-    public interface IInjectionParameters<out TSource, out TTarget> : IInjectionParameters
+    public interface IInjectionParameters<out TSource, out TTarget>
     {
         /// <summary>
         /// Gets the source.
@@ -75,5 +49,15 @@ namespace Bijectiv
         /// Gets the target.
         /// </summary>
         TTarget Target { get; }
+
+        /// <summary>
+        /// Gets the context in which the operation occurs.
+        /// </summary>
+        IInjectionContext Context { get; }
+
+        /// <summary>
+        /// Gets the hint that was passed to the <see cref="IInjection"/>.
+        /// </summary>
+        object Hint { get; }
     }
 }

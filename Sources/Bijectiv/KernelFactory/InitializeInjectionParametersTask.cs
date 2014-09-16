@@ -56,30 +56,18 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            var parametersConcreteType = typeof(InjectionParameters<,>)
+            var parametersType = typeof(InjectionParameters<,>)
                 .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
 
             var createParameters = Expression.New(
-                parametersConcreteType.GetConstructors().Single(),
+                parametersType.GetConstructors().Single(),
                 scaffold.Source,
                 scaffold.Target,
                 scaffold.InjectionContext,
                 scaffold.Hint);
 
-            var parametersType = typeof(IInjectionParameters<,>)
-                .MakeGenericType(scaffold.Definition.Source, scaffold.Definition.Target);
-
-            var parametersVariable = Expression.Variable(parametersType, "injectionParameters");
-            var downCastParameters = Expression.Convert(createParameters, parametersType);
-
-            var parametersAsWeakVariable = Expression.Variable(typeof(IInjectionParameters), "injectionParametersAsWeak");
-            var downCastParametersToWeak = Expression.Convert(parametersVariable, typeof(IInjectionParameters));
-
-            scaffold.Variables.Add(parametersVariable);
-            scaffold.Variables.Add(parametersAsWeakVariable);
-
-            scaffold.Expressions.Add(Expression.Assign(parametersVariable, downCastParameters));
-            scaffold.Expressions.Add(Expression.Assign(parametersAsWeakVariable, downCastParametersToWeak));
+            var parametersVariable = scaffold.GetVariable("injectionParameters", parametersType);
+            scaffold.Expressions.Add(Expression.Assign(parametersVariable, createParameters));
         }
     }
 }

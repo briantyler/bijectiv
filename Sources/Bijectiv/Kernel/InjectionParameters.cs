@@ -91,22 +91,6 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Gets the source instance as an object.
-        /// </summary>
-        public object SourceAsObject
-        {
-            get { return this.Source; }
-        }
-
-        /// <summary>
-        /// Gets the target instance as an object.
-        /// </summary>
-        public object TargetAsObject
-        {
-            get { return this.Target; }
-        }
-
-        /// <summary>
         /// Gets the context in which the operation occurs.
         /// </summary>
         public IInjectionContext Context

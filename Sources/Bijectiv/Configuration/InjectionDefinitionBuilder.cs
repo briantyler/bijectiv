@@ -465,13 +465,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Registers a <see cref="IInjectionTrigger"/> with the <see cref="IInjection"/>.
+        /// Registers an action with the <see cref="IInjection"/>.
         /// </summary>
         /// <param name="trigger">
         /// The trigger.
         /// </param>
         /// <param name="triggeredBy">
-        /// The reason that a <see cref="IInjectionTrigger"/> is pulled.
+        /// The reason that the <paramref name="trigger"/> is invoked.
         /// </param>
         /// <returns>
         /// An object that allows further configuration of the injection.
@@ -479,8 +479,8 @@ namespace Bijectiv.Configuration
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public virtual IInjectionDefinitionBuilder<TSource, TTarget> RegisterTrigger(
-            IInjectionTrigger trigger, 
+        public IInjectionDefinitionBuilder<TSource, TTarget> RegisterTrigger(
+            Action<IInjectionParameters<TSource, TTarget>> trigger,
             TriggeredBy triggeredBy)
         {
             if (trigger == null)
@@ -512,9 +512,7 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("action");
             }
 
-            return this.RegisterTrigger(
-                new DelegateInjectionTrigger(p => action((IInjectionParameters<TSource, TTarget>)p)), 
-                TriggeredBy.InjectionEnded);
+            return this.RegisterTrigger(action, TriggeredBy.InjectionEnded);
         }
 
         /// <summary>

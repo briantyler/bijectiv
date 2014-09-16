@@ -35,6 +35,7 @@ namespace Bijectiv.Tests.KernelFactory
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
+    using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -57,9 +58,11 @@ namespace Bijectiv.Tests.KernelFactory
 
         private readonly object hint = new object();
 
-        private readonly List<ParameterExpression> variables = new List<ParameterExpression>();
-
         private readonly List<Expression> expressions = new List<Expression>();
+
+        private ParameterExpression parameter;
+
+        private Mock<InjectionScaffold> scaffoldMock;
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -100,9 +103,7 @@ namespace Bijectiv.Tests.KernelFactory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(2, scaffold.Variables.Count());
-            Assert.IsNotNull(scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "injectionParameters"));
-            Assert.IsNotNull(scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "injectionParametersAsWeak"));
+            this.scaffoldMock.VerifyAll();
         }
 
         [TestMethod]
@@ -122,23 +123,6 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Execute_ValidParameters_ParametersAreStronglyTyped()
-        {
-            // Arrange
-            var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
-
-            // Act
-            target.Execute(scaffold);
-
-            // Assert
-            Assert.IsInstanceOfType(
-                this.RetrieveParameters(),
-                typeof(IInjectionParameters<TestClass1, TestClass2>));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Execute_ValidParameters_AssignsParametersSource()
         {
             // Arrange
@@ -149,7 +133,7 @@ namespace Bijectiv.Tests.KernelFactory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(this.sourceInstance, this.RetrieveParameters().SourceAsObject);
+            Assert.AreEqual(this.sourceInstance, this.RetrieveParameters().Source);
         }
 
         [TestMethod]
@@ -164,7 +148,7 @@ namespace Bijectiv.Tests.KernelFactory
             target.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(this.targetInstance, this.RetrieveParameters().TargetAsObject);
+            Assert.AreEqual(this.targetInstance, this.RetrieveParameters().Target);
         }
 
         [TestMethod]
@@ -199,25 +183,29 @@ namespace Bijectiv.Tests.KernelFactory
 
         private InjectionScaffold CreateScaffold()
         {
-            var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
-            scaffoldMock.SetupGet(_ => _.Definition).Returns(new InjectionDefinition(TestClass1.T, TestClass2.T));
+            this.scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
+            this.scaffoldMock.SetupGet(_ => _.Definition).Returns(new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(this.sourceInstance));
-            scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(this.targetInstance));
-            scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(this.context));
-            scaffoldMock.SetupGet(_ => _.Hint).Returns(Expression.Constant(this.hint));
+            this.scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(this.sourceInstance));
+            this.scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(this.targetInstance));
+            this.scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(this.context));
+            this.scaffoldMock.SetupGet(_ => _.Hint).Returns(Expression.Constant(this.hint));
 
-            scaffoldMock.SetupGet(_ => _.Variables).Returns(this.variables);
-            scaffoldMock.SetupGet(_ => _.Expressions).Returns(this.expressions);
+            this.parameter = Expression.Parameter(typeof(InjectionParameters<TestClass1, TestClass2>));
+            this.scaffoldMock
+                .Setup(_ => _.GetVariable("injectionParameters", typeof(InjectionParameters<TestClass1, TestClass2>)))
+                .Returns(this.parameter);
+            this.scaffoldMock.SetupGet(_ => _.Expressions).Returns(this.expressions);
 
-            return scaffoldMock.Object;
+            return this.scaffoldMock.Object;
         }
-        
-        private IInjectionParameters RetrieveParameters()
+
+        private IInjectionParameters<TestClass1, TestClass2> RetrieveParameters()
         {
-            this.expressions.Add(this.variables.Single(candidate => candidate.Name == "injectionParametersAsWeak"));
+            this.expressions.Add(this.parameter);
             return Expression
-                .Lambda<Func<IInjectionParameters>>(Expression.Block(this.variables, this.expressions))
+                .Lambda<Func<IInjectionParameters<TestClass1, TestClass2>>>(
+                    Expression.Block(new[] {this.parameter}, this.expressions))
                 .Compile()();
         }
     }

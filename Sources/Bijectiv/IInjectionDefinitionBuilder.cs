@@ -255,13 +255,13 @@ namespace Bijectiv
             [NotNull] Func<TTarget, object> targetKeySelector);
 
         /// <summary>
-        /// Registers a <see cref="IInjectionTrigger"/> with the <see cref="IInjection"/>.
+        /// Registers an action with the <see cref="IInjection"/>.
         /// </summary>
         /// <param name="trigger">
         /// The trigger.
         /// </param>
         /// <param name="triggeredBy">
-        /// The reason that a <see cref="IInjectionTrigger"/> is pulled.
+        /// The reason that the <paramref name="trigger"/> is invoked.
         /// </param>
         /// <returns>
         /// An object that allows further configuration of the injection.
@@ -270,7 +270,7 @@ namespace Bijectiv
         /// Thrown when any parameter is null.
         /// </exception>
         IInjectionDefinitionBuilder<TSource, TTarget> RegisterTrigger(
-            [NotNull] IInjectionTrigger trigger, 
+            [NotNull] Action<IInjectionParameters<TSource, TTarget>> trigger, 
             TriggeredBy triggeredBy);
 
         /// <summary>

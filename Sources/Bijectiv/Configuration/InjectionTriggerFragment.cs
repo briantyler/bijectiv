@@ -30,23 +30,31 @@
 namespace Bijectiv.Configuration
 {
     using System;
+    using System.Linq;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Specifies that a <see cref="IInjectionTrigger"/> is pulled when <see cref="TriggeredBy"/> occurs.
+    /// Specifies that a delegate is invoked when <see cref="TriggeredBy"/> occurs.
     /// </summary>
     public class InjectionTriggerFragment : InjectionFragment
     {
         /// <summary>
-        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// The parameters type template.
+        /// </summary>
+        private static readonly Type ParametersTypeTemplate = typeof(IInjectionParameters<,>);
+
+        /// <summary>
+        /// The reason that <see cref="trigger"/> is invoked.
         /// </summary>
         private readonly TriggeredBy triggeredBy;
 
         /// <summary>
-        /// The trigger to pull when <see cref="InjectionTriggerFragment.TriggeredBy"/> occurs.
+        /// The delegate to invoke when when <see cref="InjectionTriggerFragment.TriggeredBy"/> occurs.
         /// </summary>
-        private readonly IInjectionTrigger trigger;
+        private readonly Delegate trigger;
+
+        private readonly Type parameterType;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionTriggerFragment"/> class.
@@ -58,10 +66,10 @@ namespace Bijectiv.Configuration
         /// The target type.
         /// </param>
         /// <param name="trigger">
-        /// The trigger to pull when <paramref name="triggeredBy"/> occurs.
+        /// The delegate to invoke when <paramref name="triggeredBy"/> occurs.
         /// </param>
         /// <param name="triggeredBy">
-        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// The reason that <paramref name="trigger"/> is invoked.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
@@ -69,7 +77,7 @@ namespace Bijectiv.Configuration
         public InjectionTriggerFragment(
             [NotNull] Type source, 
             [NotNull] Type target, 
-            [NotNull] IInjectionTrigger trigger,
+            [NotNull] Delegate trigger,
             TriggeredBy triggeredBy)
             : base(source, target)
         {
@@ -78,8 +86,31 @@ namespace Bijectiv.Configuration
                 throw new ArgumentNullException("trigger");
             }
 
-            this.triggeredBy = triggeredBy;
+            var parameters = trigger.Method.GetParameters();
+            if (parameters.Count() != 1)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Expected 1 parameter, but {0} parameters found: {1}",
+                        parameters.Count(),
+                        string.Join(", ", parameters.Select(item => item.ParameterType))),
+                    "trigger");
+            }
+
+            this.parameterType = parameters[0].ParameterType;
+            var expectedParameterType = ParametersTypeTemplate.MakeGenericType(source, target);
+            if (!expectedParameterType.IsAssignableFrom(this.ParameterType))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Parameter type '{0}' is not an assignable to '{1}'.",
+                        this.ParameterType,
+                        expectedParameterType),
+                    "target");
+            }
+
             this.trigger = trigger;
+            this.triggeredBy = triggeredBy;
         }
 
         /// <summary>
@@ -99,7 +130,7 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Gets the reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// Gets the reason that <see cref="Trigger"/> is invoked.
         /// </summary>
         public TriggeredBy TriggeredBy
         {
@@ -107,11 +138,19 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
-        /// Gets the trigger to pull when <see cref="InjectionTriggerFragment.TriggeredBy"/> occurs.
+        /// Gets the delegate to invoke when <see cref="InjectionTriggerFragment.TriggeredBy"/> occurs.
         /// </summary>
-        public IInjectionTrigger Trigger
+        public Delegate Trigger
         {
             get { return this.trigger; }
+        }
+
+        public Type ParameterType
+        {
+            get
+            {
+                return this.parameterType;
+            }
         }
     }
 }

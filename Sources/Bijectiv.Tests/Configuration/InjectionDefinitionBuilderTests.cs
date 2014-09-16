@@ -930,7 +930,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var trigger = Stub.Create<IInjectionTrigger>();
+            Action<IInjectionParameters<TestClass1, TestClass2>> trigger = p => p.Naught(); 
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
 
             // Act
@@ -948,7 +948,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var trigger = Stub.Create<IInjectionTrigger>();
+            Action<IInjectionParameters<TestClass1, TestClass2>> trigger = p => p.Naught(); 
             var target = new InjectionDefinitionBuilder<TestClass1, TestClass2>(definition, registryMock.Object);
 
             // Act
@@ -990,19 +990,17 @@ namespace Bijectiv.Tests.Configuration
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
 
-            IInjectionTrigger trigger = null;
-            targetMock
-                .Setup(_ => _.RegisterTrigger(It.IsAny<IInjectionTrigger>(), TriggeredBy.InjectionEnded))
-                .Callback((IInjectionTrigger t, TriggeredBy b) => trigger = t);
-
-            object called = false;
+            Action<IInjectionParameters<TestClass1, TestClass2>> trigger = p => p.Naught();
 
             // Act
-            targetMock.Object.OnInjectionEnded(p => called = true);
-            trigger.Pull(new InjectionParameters<TestClass1, TestClass2>());
-
+            targetMock.Object.OnInjectionEnded(trigger);
+            
             // Assert
-            Assert.IsTrue((bool)called);
+            var fragment = (InjectionTriggerFragment)definition.Single();
+            Assert.AreEqual(TestClass1.T, fragment.Source);
+            Assert.AreEqual(TestClass2.T, fragment.Target);
+            Assert.AreEqual(trigger, fragment.Trigger);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, fragment.TriggeredBy);
         }
 
         [TestMethod]

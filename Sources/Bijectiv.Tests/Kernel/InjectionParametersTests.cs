@@ -81,20 +81,6 @@ namespace Bijectiv.Tests.Kernel
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_SourceParameter_IsAssignedToSourceAsObjectProperty()
-        {
-            // Arrange
-            var sourceInstance = new TestClass1();
-
-            // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
-
-            // Assert
-            Assert.AreEqual(sourceInstance, target.SourceAsObject);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
         {
             // Arrange
@@ -105,20 +91,6 @@ namespace Bijectiv.Tests.Kernel
 
             // Assert
             Assert.AreEqual(targetInstance, target.Target);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_TargetParameter_IsAssignedToTargetAsObjectProperty()
-        {
-            // Arrange
-            var targetInstance = new TestClass2();
-
-            // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
-
-            // Assert
-            Assert.AreEqual(targetInstance, target.TargetAsObject);
         }
 
         [TestMethod]

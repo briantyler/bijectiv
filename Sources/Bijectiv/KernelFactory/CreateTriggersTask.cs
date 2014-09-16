@@ -44,7 +44,7 @@ namespace Bijectiv.KernelFactory
     public class CreateTriggersTask : IInjectionTask
     {
         /// <summary>
-        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// The reason that the trigger is invoked.
         /// </summary>
         private readonly TriggeredBy triggeredBy;
 
@@ -52,7 +52,7 @@ namespace Bijectiv.KernelFactory
         /// Initialises a new instance of the <see cref="CreateTriggersTask"/> class.
         /// </summary>
         /// <param name="triggeredBy">
-        /// The reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// The reason that the trigger is invoked.
         /// </param>
         public CreateTriggersTask(TriggeredBy triggeredBy)
         {
@@ -60,7 +60,7 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Gets the reason that <see cref="IInjectionTrigger"/> is pulled.
+        /// Gets the reason that the trigger is invoked.
         /// </summary>
         public TriggeredBy TriggeredBy
         {
@@ -116,16 +116,16 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("scaffold");
             }
 
-            //// TODO: rework to use the strong version.
+            var parameter = Expression.Convert(
+                scaffold.Variables.First(candidate => candidate.Name == "injectionParameters"),
+                fragment.ParameterType);
 
-            var parameters = scaffold.Variables.First(candidate => candidate.Name == "injectionParametersAsWeak");
             var trigger = fragment.Trigger;
-            var expression = ((Expression<Action>)(
-                () => trigger.Pull(Placeholder.Of<IInjectionParameters>("parameters"))))
-                .Body;
-
-            scaffold.Expressions.Add(new PlaceholderExpressionVisitor("parameters", parameters).Visit(expression));
-
+            var expression = trigger.Target == null
+                ? Expression.Call(trigger.Method, parameter)
+                : Expression.Call(Expression.Constant(trigger.Target), trigger.Method, parameter);
+            
+            scaffold.Expressions.Add(expression);
             scaffold.ProcessedFragments.Add(fragment);
         }
     }

@@ -60,7 +60,6 @@
     <Compile Include="Configuration\ValueSourceMemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
     <Compile Include="IInjectionTrail.cs" />
-    <Compile Include="IInjectionTrigger.cs" />
     <Compile Include="IInjectionParameters.cs" />
     <Compile Include="IMemberFragmentBuilder.cs" />
     <Compile Include="KernelFactory\AddToInjectionTrailTask.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="KernelFactory\SourceMemberTransformSubtask.cs" />
     <Compile Include="KernelFactory\ValueSourceExpressionFactory.cs" />
     <Compile Include="KernelFactory\SingleInstanceShardCategorySubtask.cs" />
-    <Compile Include="Kernel\DelegateInjectionTrigger.cs" />
     <Compile Include="Kernel\DMerge.cs" />
     <Compile Include="Kernel\DTransform.cs" />
     <Compile Include="Kernel\EnumerableInjectionHint.cs" />

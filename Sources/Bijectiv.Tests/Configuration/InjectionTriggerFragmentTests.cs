@@ -29,6 +29,8 @@
 
 namespace Bijectiv.Tests.Configuration
 {
+    using System;
+
     using Bijectiv.Configuration;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -41,6 +43,9 @@ namespace Bijectiv.Tests.Configuration
     [TestClass]
     public class InjectionTriggerFragmentTests
     {
+        private static readonly Action<IInjectionParameters<TestClass1, TestClass2>> Trigger = 
+            p => p.Naught(); 
+            
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
@@ -50,7 +55,8 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionTriggerFragment(TestClass1.T, TestClass2.T, null, TriggeredBy.InjectionEnded).Naught();
+            new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, null, TriggeredBy.InjectionEnded).Naught();
 
             // Assert
         }
@@ -63,7 +69,7 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded).Naught();
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded).Naught();
 
             // Assert
         }
@@ -76,7 +82,7 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             var target = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
             Assert.AreEqual(LegendaryFragments.Trigger, target.FragmentCategory);
@@ -90,7 +96,7 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             var target = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
             Assert.IsTrue(target.Inherited);
@@ -101,7 +107,7 @@ namespace Bijectiv.Tests.Configuration
         public void CreateInstance_TriggerParameter_IsAssignedToTriggerProperty()
         {
             // Arrange
-            var trigger = Stub.Create<IInjectionTrigger>();
+            var trigger = Trigger;
 
             // Act
             var target = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
@@ -118,7 +124,7 @@ namespace Bijectiv.Tests.Configuration
 
             // Act
             var target = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
             Assert.AreEqual(TriggeredBy.InjectionEnded, target.TriggeredBy);

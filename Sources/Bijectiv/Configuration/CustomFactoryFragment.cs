@@ -40,11 +40,6 @@ namespace Bijectiv.Configuration
     public class CustomFactoryFragment : InjectionFragment
     {
         /// <summary>
-        /// The factory type template.
-        /// </summary>
-        private static readonly Type FactoryTypeTemplate = typeof(Func<,>);
-
-        /// <summary>
         /// The parameters type template.
         /// </summary>
         private static readonly Type ParametersTypeTemplate = typeof(CustomFactoryParameters<>);

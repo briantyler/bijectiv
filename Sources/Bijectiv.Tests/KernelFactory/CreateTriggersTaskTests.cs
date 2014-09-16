@@ -49,6 +49,8 @@ namespace Bijectiv.Tests.KernelFactory
     [TestClass]
     public class CreateTriggersTaskTests
     {
+        private static readonly Action<IInjectionParameters<TestClass1, TestClass2>> Trigger = p => p.Naught(); 
+
         [TestMethod]
         [TestCategory("Unit")]
         public void CreateInstance_ValidParameters_InstanceCreated()
@@ -99,13 +101,13 @@ namespace Bijectiv.Tests.KernelFactory
             var fragment3 = Stub.Fragment<TestClass1, TestClass2>();
             var fragment4 = Stub.Fragment<TestClass1, TestClass2>(LegendaryFragments.Trigger);
             var triggerFragment1 = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.Nothing);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.Nothing);
             var triggerFragment2 = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
             var triggerFragment3 = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.Nothing);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.Nothing);
             var triggerFragment4 = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
             var scaffoldMock = repository.Create<InjectionScaffold>();
@@ -158,7 +160,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var fragment = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
             var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             // Act
@@ -173,14 +175,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_ValidParameters_ProcessesFragment()
         {
             // Arrange
-            var fragment = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, Stub.Create<IInjectionTrigger>(), TriggeredBy.InjectionEnded);
+            var fragment = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
             var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             var scaffoldMock = new Mock<InjectionScaffold>();
+            var parameter = Expression.Variable(typeof(IInjectionParameters<TestClass1, TestClass2>), "injectionParameters");
             scaffoldMock
                 .SetupGet(_ => _.Variables)
-                .Returns(new[] { Expression.Variable(typeof(IInjectionParameters), "injectionParametersAsWeak") });
+                .Returns(new[] { parameter });
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(new List<Expression>());
             
             var processedFragments = new HashSet<InjectionFragment>();
@@ -199,30 +201,34 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_ValidParameters_BuildsTrigger()
         {
             // Arrange
-            var triggerMock = new Mock<IInjectionTrigger>(MockBehavior.Strict);
-            var fragment = new InjectionTriggerFragment(
-                TestClass1.T, TestClass2.T, triggerMock.Object, TriggeredBy.InjectionEnded);
+            var parameters = Stub.Create<IInjectionParameters<TestClass1, TestClass2>>();
+            object called = false;
+            Action<IInjectionParameters<TestClass1, TestClass2>> trigger = p =>
+                {
+                    Assert.AreEqual(p, parameters);
+                    called = true;
+                }; 
+
+
+            var fragment = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
             var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             var scaffoldMock = new Mock<InjectionScaffold>();
-            var variable = Expression.Variable(typeof(IInjectionParameters), "injectionParametersAsWeak");
+            var variable = Expression.Variable(typeof(IInjectionParameters<TestClass1, TestClass2>), "injectionParameters");
             var expressions = new List<Expression>();
-            
+
             scaffoldMock.SetupGet(_ => _.Variables).Returns(new[] { variable });
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
             scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(new HashSet<InjectionFragment>());
 
-            var parameters = Stub.Create<IInjectionParameters>();
             expressions.Add(Expression.Assign(variable, Expression.Constant(parameters)));
 
             // Act
             target.ProcessFragment(fragment, scaffoldMock.Object);
 
             // Assert
-            triggerMock.Setup(_ => _.Pull(parameters));
             Expression.Lambda<Action>(Expression.Block(new[] { variable }, expressions)).Compile()();
-
-            triggerMock.VerifyAll();
+            Assert.IsTrue((bool)called);
         }
     }
 }
