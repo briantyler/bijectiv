@@ -45,6 +45,11 @@ namespace Bijectiv.Configuration
     public class DelegateSourceMemberShard : SourceMemberShard
     {
         /// <summary>
+        /// The parameters type template.
+        /// </summary>
+        private static readonly Type ParametersTypeTemplate = typeof(IInjectionParameters<,>);
+
+        /// <summary>
         /// The delegate that returns the member source.
         /// </summary>
         private readonly Delegate @delegate;
@@ -74,7 +79,7 @@ namespace Bijectiv.Configuration
         /// member, not injected.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Thron when any parameter is null.
+        /// Thrown when any parameter is null.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when the delgate has the wrong signature.
@@ -100,11 +105,25 @@ namespace Bijectiv.Configuration
                     "Delegate with single parameter expected, but {0} parameters found",
                     parameters.Count()));
             }
-
-            var parameter = parameters[0];
-            //// TODO: validate the parameter type.
             
+            var parameter = parameters[0];
             this.parameterType = parameter.ParameterType;
+            var expectedParameterType = ParametersTypeTemplate.MakeGenericType(source, target);
+            if (!expectedParameterType.IsAssignableFrom(this.parameterType))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        "Parameter type '{0}' is not an assignable to '{1}'.",
+                        this.parameterType,
+                        expectedParameterType),
+                    "delegate");
+            }
+
+            if (typeof(void) == @delegate.Method.ReturnType)
+            {
+                throw new ArgumentException("Delegate has no return value", "delegate");
+            }
+            
             this.@delegate = @delegate;
         }
 

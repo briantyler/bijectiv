@@ -29,7 +29,13 @@
 
 namespace Bijectiv.Tests.Configuration
 {
+    using System;
+    using System.Reflection;
+
     using Bijectiv.Configuration;
+    using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,6 +45,127 @@ namespace Bijectiv.Tests.Configuration
     [TestClass]
     public class DelegateSourceMemberShardTests
     {
-         
+        private static readonly Func<IInjectionParameters<TestClass1, TestClass2>, BaseTestClass1> Delegate =
+           p => default(BaseTestClass1);
+
+        private static readonly MemberInfo Member = Reflect<TestClass2>.FieldOrProperty(_ => _.Id);
+        
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_DelegateParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, null, false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasTooFewParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, new Func<int>(() => 1), false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasTooManyParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(
+                TestClass1.T, 
+                TestClass2.T, 
+                Member,
+                new Func<IInjectionParameters<TestClass1, TestClass2>, int, int>((x, y) => 1),
+                false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasWrongParameterType_Throws()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(
+                TestClass1.T,
+                TestClass2.T,
+                Member,
+                new Func<int, int>(x => 1),
+                false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterIsAnAction_Throws()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(
+                TestClass1.T,
+                TestClass2.T,
+                Member,
+                new Action<IInjectionParameters<TestClass1, TestClass2>>(x => 1.Naught()),
+                false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_DelegateParameterIsAssignedToDelegateProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
+
+            // Assert
+            Assert.AreEqual(Delegate, target.Delegate);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_ParameterTypePropertyIsAssigned()
+        {
+            // Arrange
+
+            // Act
+            var target = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
+
+            // Assert
+            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), target.ParameterType);
+        }
     }
 }

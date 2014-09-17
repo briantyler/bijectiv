@@ -63,12 +63,67 @@ namespace Bijectiv.Tests.Configuration
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentExceptionExpected]
+        public void CreateInstance_FactoryHasTooFewParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new CustomFactoryFragment(TestClass2.T, TestClass1.T, new Func<TestClass2>(() => new TestClass2())).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_FactoryHasTooManyParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new CustomFactoryFragment(
+                TestClass2.T, TestClass1.T, new Func<int, int, TestClass2>((x, y) => new TestClass2())).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
         public void CreateInstance_FactoryParameterHasWrongType_Throws()
         {
             // Arrange
 
             // Act
             new CustomFactoryFragment(TestClass2.T, TestClass1.T, Factory).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_FactoryIsAction_Throws()
+        {
+            // Arrange
+
+            // Act
+            new CustomFactoryFragment(
+                TestClass1.T, TestClass2.T, new Action<CustomFactoryParameters<TestClass1>>(x => 1.Naught())).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_FactoryHasWrongReturnType_Throws()
+        {
+            // Arrange
+
+            // Act
+            new CustomFactoryFragment(
+                TestClass1.T, TestClass2.T, new Func<CustomFactoryParameters<TestClass1>, int>(x => 1)).Naught();
 
             // Assert
         }
