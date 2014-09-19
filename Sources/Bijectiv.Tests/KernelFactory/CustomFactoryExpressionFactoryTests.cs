@@ -137,7 +137,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateExpression_ValidParameters_ExpressionCallsResolveOnInjectionContext()
+        public void CreateExpression_ValidParameters_ExpressionCreatesFromStaticMethod()
         {
             // Arrange
             var expected = new TestClass2();
@@ -157,12 +157,40 @@ namespace Bijectiv.Tests.KernelFactory
             var result = target.CreateExpression(scaffold);
 
             // Assert
-            var @delegate = Expression.Lambda<Func<IInjectionContext, TestClass2>>(
-                result, (ParameterExpression)scaffold.InjectionContext)
+            var @delegate = Expression
+                .Lambda<Func<IInjectionContext, TestClass2>>(result, (ParameterExpression)scaffold.InjectionContext)
                 .Compile();
 
             Assert.AreEqual(expected, @delegate(injectionContextMock.Object));
             injectionContextMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateExpression_ValidParameters_ExpressionCreatesFromInstanceMethod()
+        {
+            // Arrange
+            var wrapper = new Wrapper(new TestClass2());
+
+            var scaffold = CreateScaffold();
+            scaffold.Source = Expression.Constant(new TestClass1());
+            scaffold.CandidateFragments.Add(
+                new CustomFactoryFragment(
+                    TestClass1.T, 
+                    TestClass2.T, 
+                    (Func<CustomFactoryParameters<TestClass1>, TestClass2>)wrapper.Create));
+
+            var target = CreateTarget();
+
+            // Act
+            var result = target.CreateExpression(scaffold);
+
+            // Assert
+            var @delegate = Expression
+                .Lambda<Func<IInjectionContext, TestClass2>>(result, (ParameterExpression)scaffold.InjectionContext)
+                .Compile();
+
+            Assert.AreEqual(wrapper.Expected, @delegate(Stub.Create<IInjectionContext>()));
         }
 
         private static CustomFactoryFragment CreateFragment()
@@ -183,6 +211,26 @@ namespace Bijectiv.Tests.KernelFactory
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(typeof(object)),
                 Expression.Parameter(typeof(IInjectionContext)));
+        }
+
+        private class Wrapper
+        {
+            private readonly TestClass2 expected;
+
+            public Wrapper(TestClass2 expected)
+            {
+                this.expected = expected;
+            }
+
+            public TestClass2 Expected
+            {
+                get { return this.expected; }
+            }
+
+            public TestClass2 Create(CustomFactoryParameters<TestClass1> parameters)
+            {
+                return this.Expected;
+            }
         }
     }
 }

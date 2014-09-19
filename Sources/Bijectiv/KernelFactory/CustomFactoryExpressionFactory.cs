@@ -32,7 +32,6 @@ namespace Bijectiv.KernelFactory
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
 
     using Bijectiv.Configuration;
 
