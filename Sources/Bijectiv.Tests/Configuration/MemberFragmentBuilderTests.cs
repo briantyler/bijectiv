@@ -31,6 +31,7 @@ namespace Bijectiv.Tests.Configuration
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.Configuration;
@@ -311,6 +312,347 @@ namespace Bijectiv.Tests.Configuration
 
             // Assert
             Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignValue_ValidParameters_AddsValueSourceMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+
+            // Act
+            target.AssignValue("bijectiv");
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(ValueSourceMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignValue_ValidParameters_AddedValueSourceMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+
+            var value = "bijectiv";
+
+            // Act
+            target.AssignValue(value);
+
+            // Assert
+            var shard = (ValueSourceMemberShard)fragment.Single();
+
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(value, shard.Value);
+            Assert.AreEqual(false, shard.Inject);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignValue_ValidParameters_ReturnsParentBuilder()
+        {
+            // Arrange
+            var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+
+            // Act
+            var result = target.AssignValue("bijectiv");
+
+            // Assert
+            Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void InjectSource_ExpressionParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), 
+                CreateFragment());
+
+            // Act
+            target.InjectSource<int>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectSource_ValidParameters_ReturnsParentBuilder()
+        {
+            // Arrange
+            var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+
+            // Act
+            var result = target.InjectSource(s => s.Id);
+
+            // Assert
+            Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectSource_ValidParameters_AddsExpressionSourceMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), 
+                fragment);
+
+            // Act
+            target.InjectSource(s => s.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(ExpressionSourceMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectSource_ValidParameters_AddedExpressionSourceMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+            Expression<Func<TestClass1, string>> expression = s => s.Id;
+
+            // Act
+            target.InjectSource(expression);
+
+            // Assert
+            var shard = (ExpressionSourceMemberShard)fragment.Single();
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(expression, shard.Expression);
+            Assert.AreEqual(true, shard.Inject);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AssignSource_ExpressionParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                CreateFragment());
+
+            // Act
+            target.AssignSource(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignSource_ValidParameters_ReturnsParentBuilder()
+        {
+            // Arrange
+            var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+
+            // Act
+            var result = target.AssignSource(s => s.Id);
+
+            // Assert
+            Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignSource_ValidParameters_AddsExpressionSourceMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+
+            // Act
+            target.AssignSource(s => s.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(ExpressionSourceMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignSource_ValidParameters_AddedExpressionSourceMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+            Expression<Func<TestClass1, string>> expression = s => s.Id;
+
+            // Act
+            target.AssignSource(expression);
+
+            // Assert
+            var shard = (ExpressionSourceMemberShard)fragment.Single();
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(expression, shard.Expression);
+            Assert.AreEqual(false, shard.Inject);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void InjectDelegate_DelegateParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                CreateFragment());
+
+            // Act
+            target.InjectDelegate<int>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectDelegate_ValidParameters_ReturnsParentBuilder()
+        {
+            // Arrange
+            var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+
+            // Act
+            var result = target.InjectDelegate(s => s.Source.Id);
+
+            // Assert
+            Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectDelegate_ValidParameters_AddsDelegateSourceMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+
+            // Act
+            target.InjectDelegate(p => p.Source.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(DelegateSourceMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void InjectDelegate_ValidParameters_AddedDelegateSourceMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+            Func<IInjectionParameters<TestClass1, TestClass2>, string> @delegate = p => p.Source.Id;
+
+            // Act
+            target.InjectDelegate(@delegate);
+
+            // Assert
+            var shard = (DelegateSourceMemberShard)fragment.Single();
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(@delegate, shard.Delegate);
+            Assert.AreEqual(true, shard.Inject);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void AssignDelegate_DelegateParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                CreateFragment());
+
+            // Act
+            target.AssignDelegate(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignDelegate_ValidParameters_ReturnsParentBuilder()
+        {
+            // Arrange
+            var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+
+            // Act
+            var result = target.AssignDelegate(s => s.Source.Id);
+
+            // Assert
+            Assert.AreEqual(builder, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignDelegate_ValidParameters_AddsDelegateSourceMemberShardToFragment()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+
+            // Act
+            target.AssignDelegate(p => p.Source.Id);
+
+            // Assert
+            Assert.IsInstanceOfType(fragment.Single(), typeof(DelegateSourceMemberShard));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AssignDelegate_ValidParameters_AddedDelegateSourceMemberShardHasExpectedProperties()
+        {
+            // Arrange
+            var fragment = CreateFragment();
+            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+                Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
+                fragment);
+            Func<IInjectionParameters<TestClass1, TestClass2>, string> @delegate = p => p.Source.Id;
+
+            // Act
+            target.AssignDelegate(@delegate);
+
+            // Assert
+            var shard = (DelegateSourceMemberShard)fragment.Single();
+            Assert.AreEqual(TestClass1.T, shard.Source);
+            Assert.AreEqual(TestClass2.T, shard.Target);
+            Assert.AreEqual(Member, shard.Member);
+            Assert.AreEqual(@delegate, shard.Delegate);
+            Assert.AreEqual(false, shard.Inject);
         }
 
         private static MemberFragment CreateFragment()

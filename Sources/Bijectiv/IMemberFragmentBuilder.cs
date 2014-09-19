@@ -51,7 +51,7 @@ namespace Bijectiv
     /// </typeparam>
     [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes",
         Justification = "By design.")]
-    public interface IMemberFragmentBuilder<TSource, TTarget, in TMember>
+    public interface IMemberFragmentBuilder<TSource, TTarget, TMember>
     {
         /// <summary>
         /// Registers a condition that must be met for the member to be injected.
@@ -88,18 +88,78 @@ namespace Bijectiv
         /// </returns>
         IInjectionDefinitionBuilder<TSource, TTarget> InjectValue([NotNull] object value);
 
+        /// <summary>
+        /// Injects the result of an <paramref name="expression"/>, that takes the source object as input, into
+        /// the member using the run-time type of the <paramref name="expression"/> result to determine how to inject 
+        /// it into the target member.
+        /// </summary>
+        /// <typeparam name="TResult">
+        /// The type of the result of the expression; should be automatically inferred from the 
+        /// <paramref name="expression"/>.
+        /// </typeparam>
+        /// <param name="expression">
+        /// The expression.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
         IInjectionDefinitionBuilder<TSource, TTarget> InjectSource<TResult>(
             Expression<Func<TSource, TResult>> expression);
 
-        IInjectionDefinitionBuilder<TSource, TTarget> InjectParameters<TResult>(
-            Func<IInjectionParameters<TSource, TTarget>, TResult> createInjectionSource);
+        /// <summary>
+        /// Injects the result of a <paramref name="delegate"/>, that takes 
+        /// <see cref="IInjectionParameters{TSource,TTarget}"/> as input, into
+        /// the member using the run-time type of the <paramref name="delegate"/> result to determine how to inject it 
+        /// into the target member.
+        /// </summary>
+        /// <typeparam name="TResult">
+        /// The type of the result of the delegate; should be automatically inferred from the 
+        /// <paramref name="delegate"/>.
+        /// </typeparam>
+        /// <param name="delegate">
+        /// The delegate.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        IInjectionDefinitionBuilder<TSource, TTarget> InjectDelegate<TResult>(
+            Func<IInjectionParameters<TSource, TTarget>, TResult> @delegate);
 
+        /// <summary>
+        /// Assigns a value directly to the member.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
         IInjectionDefinitionBuilder<TSource, TTarget> AssignValue(TMember value);
 
-        IInjectionDefinitionBuilder<TSource, TTarget> AssignSource<TResult>(
-            Expression<Func<TSource, TResult>> expression);
+        /// <summary>
+        /// Assigns the result of an <paramref name="expression"/>, that takes the source as input, directly to the
+        /// member.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        IInjectionDefinitionBuilder<TSource, TTarget> AssignSource(
+            Expression<Func<TSource, TMember>> expression);
 
-        IInjectionDefinitionBuilder<TSource, TTarget> AssignParameters(
-            Func<IInjectionParameters<TSource, TTarget>, TMember> createTargetMember);
+        /// <summary>
+        /// Assigns the result of a <paramref name="delegate"/>, that takes 
+        /// <see cref="IInjectionParameters{TSource,TTarget}"/> as input, directly to the member.
+        /// </summary>
+        /// <param name="delegate">
+        /// The delegate.
+        /// </param>
+        /// <returns>
+        /// An object that allows further configuration of the injection.
+        /// </returns>
+        IInjectionDefinitionBuilder<TSource, TTarget> AssignDelegate(
+            Func<IInjectionParameters<TSource, TTarget>, TMember> @delegate);
     }
 }

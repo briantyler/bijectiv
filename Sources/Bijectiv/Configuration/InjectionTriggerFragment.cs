@@ -54,6 +54,9 @@ namespace Bijectiv.Configuration
         /// </summary>
         private readonly Delegate trigger;
 
+        /// <summary>
+        /// The parameter type of the trigger delegate.
+        /// </summary>
         private readonly Type parameterType;
 
         /// <summary>
@@ -145,12 +148,12 @@ namespace Bijectiv.Configuration
             get { return this.trigger; }
         }
 
+        /// <summary>
+        /// Gets the parameter type of the trigger delegate.
+        /// </summary>
         public Type ParameterType
         {
-            get
-            {
-                return this.parameterType;
-            }
+            get { return this.parameterType; }
         }
     }
 }

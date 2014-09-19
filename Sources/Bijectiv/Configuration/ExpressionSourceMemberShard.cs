@@ -67,7 +67,7 @@ namespace Bijectiv.Configuration
         /// <param name="expression">
         /// The lambda expression that extracts a value from an instance of type <see cref="MemberShard.Source"/>.
         /// </param>
-        /// <param name="injectSource">
+        /// <param name="inject">
         /// A value indicating whether to inject the source; when false the source will be assigned to the target 
         /// member, not injected.
         /// </param>
@@ -82,8 +82,8 @@ namespace Bijectiv.Configuration
             [NotNull] Type target, 
             [NotNull] MemberInfo member, 
             [NotNull] LambdaExpression expression,
-            bool injectSource)
-            : base(source, target, member, injectSource)
+            bool inject)
+            : base(source, target, member, inject)
         {
             if (expression == null)
             {

@@ -71,7 +71,7 @@
 
         protected internal override bool CanProcess(TShard shard)
         {
-            return shard.InjectSource;
+            return shard.Inject;
         }
 
         protected internal virtual void AddTransformExpressionToScaffold(

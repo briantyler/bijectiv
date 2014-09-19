@@ -71,7 +71,7 @@ namespace Bijectiv.Tests.Configuration
                 .Object;
 
             // Assert
-            Assert.IsTrue(target.InjectSource);
+            Assert.IsTrue(target.Inject);
         }
 
         [TestMethod]

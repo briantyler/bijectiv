@@ -676,8 +676,8 @@ namespace Bijectiv.Tests
 
             builder
                 .Register<AutoInjectionTestClass1, AutoInjectionTestClass1>()
-                .InjectMember(d => d.PropertyInt).InjectParameters(p => p.Source.FieldInt * 22)
-                .InjectMember(d => d.FieldInt).InjectParameters(p => p.Source.PropertyInt * 14)
+                .InjectMember(d => d.PropertyInt).InjectDelegate(p => p.Source.FieldInt * 22)
+                .InjectMember(d => d.FieldInt).InjectDelegate(p => p.Source.PropertyInt * 14)
                 .InjectMember(d => d.PropertyBase).Ignore()
                 .InjectMember(d => d.PropertySealed).Ignore()
                 .InjectMember(d => d.FieldBase).Ignore()
@@ -710,17 +710,17 @@ namespace Bijectiv.Tests
                 .InjectMember(d => d.PropertyInt).InjectSource(p => p.FieldInt * 22)
 
                 .InjectMember(d => d.FieldInt).AssignSource(s => 8)
-                .InjectMember(d => d.FieldInt).InjectParameters(p => p.Source.PropertyInt * 14)
+                .InjectMember(d => d.FieldInt).InjectDelegate(p => p.Source.PropertyInt * 14)
 
-                .InjectMember(d => d.PropertySealed).AssignParameters(p => new SealedClass1())
+                .InjectMember(d => d.PropertySealed).AssignDelegate(p => new SealedClass1())
                 .InjectMember(d => d.PropertySealed).AssignSource(s => s.PropertySealed)
 
                 .InjectMember(d => d.PropertyBase).InjectValue("no map")
-                .InjectMember(d => d.PropertyBase).InjectParameters(p => new object())
+                .InjectMember(d => d.PropertyBase).InjectDelegate(p => new object())
                 .InjectMember(d => d.PropertyBase).AssignValue(propertyBase)
                 
                 .InjectMember(d => d.FieldBase).InjectSource(s => new object())
-                .InjectMember(d => d.FieldBase).AssignParameters(s => s.Source.FieldBase)
+                .InjectMember(d => d.FieldBase).AssignDelegate(s => s.Source.FieldBase)
 
                 .AutoExact();
 

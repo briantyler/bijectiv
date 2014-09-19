@@ -63,6 +63,54 @@ namespace Bijectiv.Tests.Configuration
 
         [TestMethod]
         [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasTooFewParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, new Action(() => 1.Naught()), TriggeredBy.InjectionEnded).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasTooManyParameters_Throws()
+        {
+            // Arrange
+
+            // Act
+            new InjectionTriggerFragment(
+                TestClass1.T, 
+                TestClass2.T, 
+                new Action<IInjectionParameters<TestClass1, TestClass2>, int>((x, y) => 1.Naught()), 
+                TriggeredBy.InjectionEnded).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void CreateInstance_DelegateParameterHasWrongParameterType_Throws()
+        {
+            // Arrange
+
+            // Act
+            new InjectionTriggerFragment(
+                TestClass1.T,
+                TestClass2.T,
+                new Action<int>(x => 1.Naught()),
+                TriggeredBy.InjectionEnded).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
@@ -128,6 +176,20 @@ namespace Bijectiv.Tests.Configuration
 
             // Assert
             Assert.AreEqual(TriggeredBy.InjectionEnded, target.TriggeredBy);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_TriggerPropertyParameterType_IsAssignedToParameterTypeProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = new InjectionTriggerFragment(
+                TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
+
+            // Assert
+            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), target.ParameterType);
         }
     }
 }

@@ -96,7 +96,7 @@ namespace Bijectiv.KernelFactory
 
         protected internal override bool CanProcess(TShard shard)
         {
-            return shard.InjectSource;
+            return shard.Inject;
         }
 
 

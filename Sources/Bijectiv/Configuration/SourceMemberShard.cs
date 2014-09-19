@@ -43,7 +43,7 @@ namespace Bijectiv.Configuration
         /// A value indicating whether to inject the source; when false the source will be assigned to the target 
         /// member, not injected. 
         /// </summary>
-        private readonly bool injectSource;
+        private readonly bool inject;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="SourceMemberShard"/> class.
@@ -57,7 +57,7 @@ namespace Bijectiv.Configuration
         /// <param name="member">
         /// The member.
         /// </param>
-        /// <param name="injectSource">
+        /// <param name="inject">
         /// A value indicating whether to inject the source. When <see langref="true"/> the source is injected; 
         /// otherwise it is assigned.
         /// </param>
@@ -65,10 +65,10 @@ namespace Bijectiv.Configuration
         /// Thrown when any parameter is null.
         /// </exception>
         protected SourceMemberShard(
-            [NotNull] Type source, [NotNull] Type target, [NotNull] MemberInfo member, bool injectSource)
+            [NotNull] Type source, [NotNull] Type target, [NotNull] MemberInfo member, bool inject)
             : base(source, target, member)
         {
-            this.injectSource = injectSource;
+            this.inject = inject;
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace Bijectiv.Configuration
         /// Gets a value indicating whether to inject the source; when false the source will be assigned to the target 
         /// member, not injected. 
         /// </summary>
-        public virtual bool InjectSource
+        public virtual bool Inject
         {
-            get { return this.injectSource; }
+            get { return this.inject; }
         }
     }
 }
