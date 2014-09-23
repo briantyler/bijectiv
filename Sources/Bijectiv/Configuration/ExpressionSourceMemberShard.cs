@@ -117,6 +117,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="ExpressionSourceMemberShard"/> class.
+        /// </summary>
+        protected ExpressionSourceMemberShard()
+        {
+        }
+
+        /// <summary>
         /// Gets the expression.
         /// </summary>
         public virtual LambdaExpression Expression
