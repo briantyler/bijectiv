@@ -116,6 +116,7 @@ namespace Bijectiv.Tests.KernelFactory
             Expression<Func<BaseTestClass1, string>> expression = b => b.Id;
             var shardMock = new Mock<ExpressionSourceMemberShard>(MockBehavior.Strict);
             shardMock.SetupGet(_ => _.Expression).Returns(expression);
+            shardMock.SetupGet(_ => _.ParameterType).Returns(typeof(DerivedTestClass1));
 
             var target = new ExpressionSourceExpressionFactory();
 

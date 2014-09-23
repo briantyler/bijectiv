@@ -134,7 +134,7 @@ namespace Bijectiv.Configuration
         /// <summary>
         /// Gets the type of the parameter to the expression.
         /// </summary>
-        public Type ParameterType
+        public virtual Type ParameterType
         {
             get { return this.parameterType; }
         }

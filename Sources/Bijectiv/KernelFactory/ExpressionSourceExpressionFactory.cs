@@ -75,10 +75,9 @@ namespace Bijectiv.KernelFactory
             }
 
             var parameter = shard.Expression.Parameters.Single();
-
             return new ParameterExpressionVisitor(
                 parameter,
-                Expression.Convert(scaffold.Source, parameter.Type))
+                Expression.Convert(scaffold.Source, shard.ParameterType))
                 .Visit(shard.Expression.Body);
         }
     }
