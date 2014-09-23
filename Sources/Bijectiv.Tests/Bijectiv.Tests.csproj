@@ -86,6 +86,7 @@
     <Compile Include="KernelFactory\CreateTriggersTaskTests.cs" />
     <Compile Include="KernelFactory\CustomFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\DefaultFactoryExpressionFactoryTests.cs" />
+    <Compile Include="KernelFactory\DelegateSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ExpressionSourceMemberSubtaskTests.cs" />
     <Compile Include="KernelFactory\FallbackFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\EquivalentMemberInfoCollectionTests.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="KernelFactory\LabelCacheTests.cs" />
     <Compile Include="KernelFactory\MemberConditionSubtaskTests.cs" />
     <Compile Include="KernelFactory\MemberInjectionTaskTests.cs" />
+    <Compile Include="KernelFactory\ValueSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ValueSourceMemberTransformSubtaskTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />

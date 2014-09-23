@@ -285,6 +285,24 @@ namespace Bijectiv.KernelFactory
             return this.labels.GetLabel(scope ?? this, category);
         }
 
+        /// <summary>
+        /// Gets a variable from the scaffold with a given <paramref name="name"/> and a given <paramref name="type"/>.
+        /// </summary>
+        /// <param name="name">
+        /// The name of the variable.
+        /// </param>
+        /// <param name="type">
+        /// The type of the variable.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ParameterExpression"/> representing the variable.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any of the parameters is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when a variable with matching name and non matching type exists.
+        /// </exception>
         public virtual ParameterExpression GetVariable([NotNull] string name, [NotNull] Type type)
         {
             if (name == null)

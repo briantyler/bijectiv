@@ -128,6 +128,13 @@ namespace Bijectiv.Configuration
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="DelegateSourceMemberShard"/> class.
+        /// </summary>
+        protected DelegateSourceMemberShard()
+        {
+        }
+
+        /// <summary>
         /// Gets the delegate that returns the member source.
         /// </summary>
         public Delegate Delegate

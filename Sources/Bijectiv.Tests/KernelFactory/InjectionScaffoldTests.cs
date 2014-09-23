@@ -412,6 +412,81 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.AreEqual(label, result);
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetVariable_NameParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.GetVariable(null, TestClass1.T);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void GetVariable_TypeParameterIsNull_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            target.GetVariable("bijectiv", null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetVariable_VariableDoesNotExist_VariableCreated()
+        {
+            // Arrange
+            var target = CreateTarget();
+
+            // Act
+            var result = target.GetVariable("bijectiv", TestClass1.T);
+
+            // Assert
+            Assert.AreEqual("bijectiv", result.Name);
+            Assert.AreEqual(TestClass1.T, result.Type);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetVariable_VariableExists_VariableReturned()
+        {
+            // Arrange
+            var target = CreateTarget();
+            var parameter = Expression.Parameter(TestClass1.T, "bijectiv");
+            target.Variables.Add(parameter);
+
+            // Act
+            var result = target.GetVariable("bijectiv", TestClass1.T);
+
+            // Assert
+            Assert.AreEqual(parameter, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void GetVariable_VariableExistsButWithDifferentType_Throws()
+        {
+            // Arrange
+            var target = CreateTarget();
+            var parameter = Expression.Parameter(BaseTestClass1.T, "bijectiv");
+            target.Variables.Add(parameter);
+
+            // Act
+            target.GetVariable("bijectiv", DerivedTestClass1.T);
+
+            // Assert
+        }
+
         private static InjectionScaffold CreateTarget()
         {
             return new InjectionScaffold(
