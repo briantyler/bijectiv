@@ -100,6 +100,7 @@
     <Compile Include="KernelFactory\LabelCacheTests.cs" />
     <Compile Include="KernelFactory\MemberConditionSubtaskTests.cs" />
     <Compile Include="KernelFactory\MemberInjectionTaskTests.cs" />
+    <Compile Include="KernelFactory\SourceMemberAssignSubtaskTests.cs" />
     <Compile Include="KernelFactory\ValueSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ValueSourceMemberTransformSubtaskTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
