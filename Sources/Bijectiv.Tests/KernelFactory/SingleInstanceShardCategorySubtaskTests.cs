@@ -210,5 +210,53 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
             repository.VerifyAll();
         }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Execute_FirstCategoryShardHasExpectedTypeButCannotBeProcessed_IsNotProcessed()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
+
+            var fragmentMock = repository.Create<MemberFragment>();
+            var shard = Stub.Create<PredicateConditionMemberShard>();
+            var unprocessed = new List<MemberShard>
+            {
+                Stub.Create<MemberShard>(),
+                shard,
+                Stub.Create<MemberShard>(),
+                Stub.Create<PredicateConditionMemberShard>(),
+                Stub.Create<MemberShard>(),
+                Stub.Create<PredicateConditionMemberShard>(),
+            };
+            fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
+
+            var targetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
+                MockBehavior.Strict,
+                LegendaryShards.Condition);
+
+            var scaffold = Stub.Create<InjectionScaffold>();
+            targetMock.Setup(_ => _.CanProcess(shard)).Returns(false);
+
+            // Act
+            targetMock.Object.Execute(scaffold, fragmentMock.Object);
+
+            // Assert
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CanProcess_ValidParameters_ReturnsTrue()
+        {
+            // Arrange
+            var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(LegendaryShards.Condition);
+            
+            // Act
+            var result = target.CanProcess(null);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
     }
 }

@@ -119,7 +119,15 @@ namespace Bijectiv.KernelFactory
         /// </param>
         public abstract void ProcessShard(InjectionScaffold scaffold, MemberFragment fragment, TShard shard);
 
-        //// TODO: requires testing
+        /// <summary>
+        /// Determines whether a shard can be processed.
+        /// </summary>
+        /// <param name="shard">
+        /// The shard to check.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the shard can be processed.
+        /// </returns>
         protected internal virtual bool CanProcess(TShard shard)
         {
             return true;
