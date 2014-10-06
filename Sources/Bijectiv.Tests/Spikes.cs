@@ -562,6 +562,31 @@ namespace Bijectiv.Tests
 
         [TestMethod]
         [TestCategory("Spike")]
+        public void Spike_SimpleTransform_Transforms()
+        {
+            // Arrange
+            var builder = new InjectionKernelBuilder();
+
+            builder.Register<TestClass1, TestClass1>().AutoExact();
+
+            var source = new TestClass1
+            {
+                Id = "bijectiv"
+            };
+
+            var kernel = builder.Build();
+
+            var merge = kernel.Store.Resolve<ITransform>(typeof(TestClass1), typeof(TestClass1));
+
+            // Act
+            var result = (TestClass1)merge.Transform(source, CreateContext(kernel), null);
+
+            // Assert
+            Assert.AreEqual("bijectiv", result.Id);
+        }
+
+        [TestMethod]
+        [TestCategory("Spike")]
         public void Spike_AutoMergeWithExplicitMemberMerges_Merges()
         {
             // Arrange

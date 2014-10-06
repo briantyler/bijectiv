@@ -91,10 +91,7 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeInjectionParametersTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberInjectionTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
-            Assert.IsInstanceOfType(
-                ((AutoInjectionTask)tasks[index]).Detail, typeof(AutoInjectionTaskTransformDetail));
-            Assert.IsNotInstanceOfType(
-                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
+            Assert.AreEqual(((AutoInjectionTask)tasks[index++]).Detail.IsMerge, false);
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
             Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnTargetAsObjectTask));
@@ -147,8 +144,7 @@ namespace Bijectiv.Tests
             Assert.IsInstanceOfType(tasks[index++], typeof(AddToInjectionTrailTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberInjectionTask));
             Assert.IsInstanceOfType(tasks[index], typeof(AutoInjectionTask));
-            Assert.IsInstanceOfType(
-                ((AutoInjectionTask)tasks[index++]).Detail, typeof(AutoInjectionTaskMergeDetail));
+            Assert.AreEqual(((AutoInjectionTask)tasks[index++]).Detail.IsMerge, true);
             Assert.IsInstanceOfType(tasks[index], typeof(CreateTriggersTask));
             Assert.AreEqual(TriggeredBy.InjectionEnded, ((CreateTriggersTask)tasks[index++]).TriggeredBy);
             Assert.IsInstanceOfType(tasks[index++], typeof(ReturnMergeResultTask));
@@ -170,9 +166,9 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             //// TODO Validate factories
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<ValueSourceMemberShard>));
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<ExpressionSourceMemberShard>));
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberMergeSubtask<DelegateSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<DelegateSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ValueSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ExpressionSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<DelegateSourceMemberShard>));

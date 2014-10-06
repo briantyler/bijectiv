@@ -1,4 +1,33 @@
-﻿namespace Bijectiv.KernelFactory
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SourceMemberTransformSubtask.cs" company="Bijectiv">
+//   The MIT License (MIT)
+//   
+//   Copyright (c) 2014 Brian Tyler
+//   
+//   Permission is hereby granted, free of charge, to any person obtaining a copy
+//   of this software and associated documentation files (the "Software"), to deal
+//   in the Software without restriction, including without limitation the rights
+//   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//   copies of the Software, and to permit persons to whom the Software is
+//   furnished to do so, subject to the following conditions:
+//   
+//   The above copyright notice and this permission notice shall be included in
+//   all copies or substantial portions of the Software.
+//   
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//   THE SOFTWARE.
+// </copyright>
+// <summary>
+//   A subtask that transforms a source shard into a member.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Bijectiv.KernelFactory
 {
     using System;
     using System.Linq.Expressions;
@@ -9,13 +38,27 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A subtask that transforms a source shard into a member.
+    /// A subtask that transforms a source object provided by a <typeparamref name="TShard"/> into a target instance 
+    /// member.
     /// </summary>
-    public class SourceMemberTransformSubtask<TShard>
-        : SingleInstanceShardCategorySubtask<TShard>
+    /// <typeparam name="TShard">
+    /// The type of shard that provides the source object.
+    /// </typeparam>
+    public class SourceMemberTransformSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
         where TShard : SourceMemberShard
     {
-        public SourceMemberTransformSubtask([NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory)
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SourceMemberTransformSubtask{TShard}"/> class.
+        /// </summary>
+        /// <param name="sourceExpressionFactory">
+        /// The source expression factory.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public SourceMemberTransformSubtask(
+            [NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory,
+            [NotNull] IInjectionHelper injectionHelper)
             : this()
         {
             if (sourceExpressionFactory == null)
@@ -24,14 +67,23 @@
             }
 
             this.SourceExpressionFactory = sourceExpressionFactory;
+            this.InjectionHelper = injectionHelper;
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SourceMemberTransformSubtask{TShard}"/> class.
+        /// </summary>
         protected SourceMemberTransformSubtask()
             : base(LegendaryShards.Source)
         {
         }
 
-        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; } 
+        /// <summary>
+        /// Gets the source expression factory.
+        /// </summary>
+        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; }
+
+        public IInjectionHelper InjectionHelper { get; private set; }
 
         /// <summary>
         /// Processes a shard.
@@ -45,6 +97,9 @@
         /// <param name="shard">
         /// The shard to process.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public override void ProcessShard(
             [NotNull] InjectionScaffold scaffold,
             [NotNull] MemberFragment fragment,
@@ -65,44 +120,30 @@
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
-            this.AddTransformExpressionToScaffold(scaffold, fragment, targetMemberSource);
+            var sourceExpression = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
+            this.InjectionHelper.AddTransformExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
         }
 
-        protected internal override bool CanProcess(TShard shard)
+        /// <summary>
+        /// Determines whether a shard can be processed.
+        /// </summary>
+        /// <param name="shard">
+        /// The shard to check.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the shard can be processed.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        protected internal override bool CanProcess([NotNull] TShard shard)
         {
+            if (shard == null)
+            {
+                throw new ArgumentNullException("shard");
+            }
+
             return shard.Inject;
-        }
-
-        protected internal virtual void AddTransformExpressionToScaffold(
-            InjectionScaffold scaffold,
-            MemberFragment fragment,
-            Expression targetMemberSource)
-        {
-            var targetMemberType = fragment.Member.GetReturnType();
-
-            var memberSource = Expression.Variable(typeof(object));
-            var assignMemberSource = Expression.Assign(
-                memberSource, Expression.Convert(targetMemberSource, typeof(object)));
-
-            var transform = ((Expression<Action>) (() =>
-                 Placeholder.Of<IInjectionContext>("context")
-                    .InjectionStore.Resolve<ITransform>(
-                        Placeholder.Of<object>("memberSource").GetType(), 
-                        targetMemberType)
-                    .Transform(
-                        Placeholder.Of<object>("memberSource"),
-                        Placeholder.Of<IInjectionContext>("context"),
-                        null))).Body;
-
-            transform = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(transform);
-            transform = new PlaceholderExpressionVisitor("memberSource", memberSource).Visit(transform);
-
-            var accessExpression = fragment.Member.GetAccessExpression(scaffold.Target);
-            transform = Expression.Assign(accessExpression, Expression.Convert(transform, targetMemberType));
-
-            scaffold.Expressions.Add(
-                Expression.Block(new[] { memberSource }, assignMemberSource, transform));
         }
     }
 }

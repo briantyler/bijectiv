@@ -37,6 +37,8 @@ namespace Bijectiv.Tests.KernelFactory
 
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -376,71 +378,18 @@ namespace Bijectiv.Tests.KernelFactory
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
 
+            var injectionHelperMock = repository.Create<IInjectionHelper>();
+            injectionHelperMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, scaffold.Source));
+
             var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock
-                .Setup(_ => _.CreateExpression(
-                    It.IsAny<InjectionScaffold>(), It.IsAny<MemberInfo>(), It.IsAny<MemberInfo>()))
-                .Returns(Stub.Create<Expression>());
+            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
 
             // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create(Stub.Create<MemberInfo>(), targetMember));
+            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
 
             // Assert
             Assert.AreEqual(1, scaffold.ProcessedTargetMembers.Count());
             Assert.IsTrue(scaffold.ProcessedTargetMembers.Contains(targetMember));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ProcessPair_ValidParameters_CallsCreateExpression()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
-
-            var sourceMember = Stub.Create<MemberInfo>();
-            var targetMember = Stub.Create<MemberInfo>();
-
-            List<Expression> expressions;
-            var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
-
-            var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock
-                .Setup(_ => _.CreateExpression(scaffold, sourceMember, targetMember))
-                .Returns(Stub.Create<Expression>())
-                .Verifiable();
-
-            // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create(sourceMember, targetMember));
-
-            // Assert
-            repository.Verify();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void ProcessPair_ValidParameters_AddsExpressionToScaffold()
-        {
-            // Arrange
-            var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
-
-            var sourceMember = Stub.Create<MemberInfo>();
-            var targetMember = Stub.Create<MemberInfo>();
-
-            List<Expression> expressions;
-            var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
-
-            var expression = Stub.Create<Expression>();
-            var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock
-                .Setup(_ => _.CreateExpression(scaffold, sourceMember, targetMember))
-                .Returns(expression);
-
-            // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create(sourceMember, targetMember));
-
-            // Assert
-            Assert.AreEqual(1, expressions.Count());
-            Assert.IsTrue(expressions.Contains(expression));
         }
 
         private static AutoInjectionTaskDetail CreateTarget()
@@ -456,6 +405,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             expressions = new List<Expression>();
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
+            scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(new TestClass1()));
 
             var processedTargetMembers = new HashSet<MemberInfo>();
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(processedTargetMembers);

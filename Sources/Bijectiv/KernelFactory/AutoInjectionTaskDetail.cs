@@ -32,16 +32,55 @@ namespace Bijectiv.KernelFactory
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
+
+    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="AutoInjectionTask"/> implementation detail.
     /// </summary>
-    public abstract class AutoInjectionTaskDetail
+    public class AutoInjectionTaskDetail
     {
+        /// <summary>
+        /// The injection helper.
+        /// </summary>
+        private readonly IInjectionHelper injectionHelper;
+
+        private readonly bool isMerge;
+
+        public AutoInjectionTaskDetail([NotNull] IInjectionHelper injectionHelper, bool isMerge)
+        {
+            if (injectionHelper == null)
+            {
+                throw new ArgumentNullException("injectionHelper");
+            }
+
+            this.injectionHelper = injectionHelper;
+            this.isMerge = isMerge;
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AutoInjectionTaskDetail"/> class.
+        /// </summary>
+        protected AutoInjectionTaskDetail()
+        {
+        }
+
+        /// <summary>
+        /// Gets the injection helper.
+        /// </summary>
+        public virtual IInjectionHelper InjectionHelper
+        {
+            get { return this.injectionHelper; }
+        }
+
+        public virtual bool IsMerge
+        {
+            get { return this.isMerge; }
+        }
+
         /// <summary>
         /// Creates the (source, target) member pairs that will be auto injected.
         /// </summary>
@@ -117,30 +156,22 @@ namespace Bijectiv.KernelFactory
             var sourceMember = pair.Item1;
             var targetMember = pair.Item2;
 
-            var expression = this.CreateExpression(scaffold, sourceMember, targetMember);
+            if (this.IsMerge)
+            {
+                this.InjectionHelper.AddMergeExpressionToScaffold(
+                    scaffold,
+                    targetMember,
+                    sourceMember.GetAccessExpression(scaffold.Source));
+            }
+            else
+            {
+                this.InjectionHelper.AddTransformExpressionToScaffold(
+                    scaffold,
+                    targetMember,
+                    sourceMember.GetAccessExpression(scaffold.Source));
+            }
 
-            scaffold.Expressions.Add(expression);
             scaffold.ProcessedTargetMembers.Add(targetMember);
         }
-
-        /// <summary>
-        /// Creates the member mapping <see cref="Expression"/>.
-        /// </summary>
-        /// <param name="scaffold">
-        /// The scaffold.
-        /// </param>
-        /// <param name="sourceMember">
-        /// The source member.
-        /// </param>
-        /// <param name="targetMember">
-        /// The target member.
-        /// </param>
-        /// <returns>
-        /// The member mapping <see cref="Expression"/>.
-        /// </returns>
-        protected internal abstract Expression CreateExpression(
-            [NotNull] InjectionScaffold scaffold,
-            [NotNull] MemberInfo sourceMember,
-            [NotNull] MemberInfo targetMember);
     }
 }

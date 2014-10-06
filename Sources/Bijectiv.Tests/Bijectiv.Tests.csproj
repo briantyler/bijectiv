@@ -77,9 +77,7 @@
     <Compile Include="KernelFactory\ActivateTargetExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\AddToInjectionTrailTaskTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskDetailTests.cs" />
-    <Compile Include="KernelFactory\AutoInjectionTaskMergeDetailTests.cs" />
     <Compile Include="KernelFactory\AutoInjectionTaskTests.cs" />
-    <Compile Include="KernelFactory\AutoInjectionTaskTransformDetailTests.cs" />
     <Compile Include="KernelFactory\CacheTargetTaskTests.cs" />
     <Compile Include="KernelFactory\CreateLabelSubtaskTests.cs" />
     <Compile Include="KernelFactory\CreateTargetTaskTests.cs" />

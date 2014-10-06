@@ -30,17 +30,18 @@
 namespace Bijectiv.KernelFactory
 {
     using System;
-    using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
-    using Bijectiv.Utilities;
 
     using JetBrains.Annotations;
 
-    public class SourceMemberMergeSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
+    public class SourceMemberInjectionSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
         where TShard : SourceMemberShard
     {
-        public SourceMemberMergeSubtask([NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory)
+        public SourceMemberInjectionSubtask(
+            [NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory,
+            [NotNull] IInjectionHelper injectionHelper,
+            bool isMerge)
             : this()
         {
             if (sourceExpressionFactory == null)
@@ -48,15 +49,26 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("sourceExpressionFactory");
             }
 
+            if (injectionHelper == null)
+            {
+                throw new ArgumentNullException("injectionHelper");
+            }
+
             this.SourceExpressionFactory = sourceExpressionFactory;
+            this.InjectionHelper = injectionHelper;
+            this.IsMerge = isMerge;
         }
 
-        protected SourceMemberMergeSubtask()
+        protected SourceMemberInjectionSubtask()
             : base(LegendaryShards.Source)
         {
         }
 
-        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; } 
+        public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; }
+
+        public virtual IInjectionHelper InjectionHelper { get; private set; }
+
+        public bool IsMerge { get; set; }
 
         /// <summary>
         /// Processes a shard.
@@ -90,58 +102,20 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("shard");
             }
 
-            var targetMemberSource = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
-            this.AddMergeExpressionToScaffold(scaffold, fragment, targetMemberSource);
+            var sourceExpression = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
+            if (this.IsMerge)
+            {
+                this.InjectionHelper.AddMergeExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
+            }
+            else
+            {
+                this.InjectionHelper.AddTransformExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
+            }
         }
 
         protected internal override bool CanProcess(TShard shard)
         {
             return shard.Inject;
-        }
-
-
-        protected internal virtual void AddMergeExpressionToScaffold(
-            InjectionScaffold scaffold,
-            MemberFragment fragment,
-            Expression targetMemberSource)
-        {
-            var targetMemberType = fragment.Member.GetReturnType();
-
-            var memberSource = Expression.Variable(typeof(object));
-            
-            var merge = ((Expression<Func<IMergeResult>>)(() =>
-                Placeholder.Of<IInjectionContext>("context")
-                    .InjectionStore.Resolve<IMerge>(
-                        Placeholder.Of<object>("memberSource").GetType(),
-                        Placeholder.Of<object>("targetMember") == null ? targetMemberType : Placeholder.Of<object>("targetMember").GetType())
-                    .Merge(
-                        Placeholder.Of<object>("memberSource"),
-                        Placeholder.Of<object>("targetMember"),
-                        Placeholder.Of<IInjectionContext>("context"),
-                        null))).Body;
-
-            var targetMember = fragment.Member.GetAccessExpression(scaffold.Target);
-
-            merge = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(merge);
-            merge = new PlaceholderExpressionVisitor("memberSource", memberSource).Visit(merge);
-            merge = new PlaceholderExpressionVisitor("targetMember", Expression.Convert(targetMember, typeof(object))).Visit(merge);
-
-            var mergeResult = Expression.Variable(typeof(IMergeResult));
-
-            var replaceTarget = ((Expression<Func<bool>>)(
-                () => Placeholder.Of<IMergeResult>("mergeResult").Action == PostMergeAction.Replace)).Body;
-            replaceTarget = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(replaceTarget);
-
-            var mergeTarget = ((Expression<Func<object>>)(() => Placeholder.Of<IMergeResult>("mergeResult").Target)).Body;
-            mergeTarget = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(mergeTarget);
-
-            var block = Expression.Block(
-                new[] { memberSource,  mergeResult },
-                Expression.Assign(memberSource, Expression.Convert(targetMemberSource, typeof(object))),
-                Expression.Assign(mergeResult, merge),
-                Expression.IfThen(replaceTarget, Expression.Assign(targetMember, Expression.Convert(mergeTarget, targetMemberType))));
-
-            scaffold.Expressions.Add(block);
         }
     }
 }
