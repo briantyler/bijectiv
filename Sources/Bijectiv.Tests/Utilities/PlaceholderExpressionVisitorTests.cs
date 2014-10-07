@@ -33,6 +33,7 @@ namespace Bijectiv.Tests.Utilities
     using System.Linq.Expressions;
 
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
     using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -154,6 +155,63 @@ namespace Bijectiv.Tests.Utilities
             // Assert
             var @delegate = expression.Compile();
             Assert.AreEqual(31, @delegate());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Substitute_CapturedParameterHasWrongName_DoesNotSubstituteExpression()
+        {
+            // Arrange
+            var constant = Expression.Constant(31);
+            const string Parameter = "x";
+            Expression<Func<int>> expression = () => Placeholder.Of<int>(Parameter);
+
+            var target = new PlaceholderExpressionVisitor("parameter", constant);
+
+            // Act
+            expression = (Expression<Func<int>>)target.Visit(expression);
+
+            // Assert
+            var @delegate = expression.Compile();
+            Assert.AreNotEqual(31, @delegate());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Substitute_CapturedMemberParameter_SubstitutesExpression()
+        {
+            // Arrange
+            var constant = Expression.Constant(31);
+            var parameterSource = new TestClass1 { Id = "parameter" };
+            Expression<Func<int>> expression = () => Placeholder.Of<int>(parameterSource.Id);
+
+            var target = new PlaceholderExpressionVisitor("parameter", constant);
+
+            // Act
+            expression = (Expression<Func<int>>)target.Visit(expression);
+
+            // Assert
+            var @delegate = expression.Compile();
+            Assert.AreEqual(31, @delegate());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Substitute_CapturedMemberParameterHasWrongName_DoesNotSubstituteExpression()
+        {
+            // Arrange
+            var constant = Expression.Constant(31);
+            var parameterSource = new TestClass1 { Id = "x" };
+            Expression<Func<int>> expression = () => Placeholder.Of<int>(parameterSource.Id);
+
+            var target = new PlaceholderExpressionVisitor("parameter", constant);
+
+            // Act
+            expression = (Expression<Func<int>>)target.Visit(expression);
+
+            // Assert
+            var @delegate = expression.Compile();
+            Assert.AreNotEqual(31, @delegate());
         }
 
         [TestMethod]
