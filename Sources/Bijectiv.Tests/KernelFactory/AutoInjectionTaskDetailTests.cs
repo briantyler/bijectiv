@@ -53,6 +53,59 @@ namespace Bijectiv.Tests.KernelFactory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
+        public void CreateInstance_InjectionHelperParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new AutoInjectionTaskDetail(null, false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_InstanceCreated()
+        {
+            // Arrange
+
+            // Act
+            new AutoInjectionTaskDetail(Stub.Create<IInjectionHelper>(), false).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_InjectionHelperParameter_IsAssignedToInjectionHelperProperty()
+        {
+            // Arrange
+            var injectionHelper = Stub.Create<IInjectionHelper>();
+
+            // Act
+            var target = new AutoInjectionTaskDetail(injectionHelper, false);
+
+            // Assert
+            Assert.AreEqual(injectionHelper, target.InjectionHelper);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_IsMergeParameter_IsAssignedToIsMergeProperty()
+        {
+            // Arrange
+
+            // Act
+            var target = new AutoInjectionTaskDetail(Stub.Create<IInjectionHelper>(), true);
+
+            // Assert
+            Assert.IsTrue(target.IsMerge);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
         public void CreateSourceTargetPairs_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
@@ -390,6 +443,57 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
             Assert.AreEqual(1, scaffold.ProcessedTargetMembers.Count());
             Assert.IsTrue(scaffold.ProcessedTargetMembers.Contains(targetMember));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ProcessPair_ValidParameters_TransformsUsingInjectionHelper()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
+
+            var targetMember = Stub.Create<MemberInfo>();
+
+            List<Expression> expressions;
+            var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
+
+            var injectionHelperMock = repository.Create<IInjectionHelper>();
+            injectionHelperMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
+
+            var targetMock = repository.Create<AutoInjectionTaskDetail>();
+            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
+
+            // Act
+            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
+
+            // Assert
+            repository.Verify();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void ProcessPair_ValidParameters_MergesUsingInjectionHelper()
+        {
+            // Arrange
+            var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
+
+            var targetMember = Stub.Create<MemberInfo>();
+
+            List<Expression> expressions;
+            var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
+
+            var injectionHelperMock = repository.Create<IInjectionHelper>();
+            injectionHelperMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
+
+            var targetMock = repository.Create<AutoInjectionTaskDetail>();
+            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
+            targetMock.SetupGet(_ => _.IsMerge).Returns(true);
+
+            // Act
+            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
+
+            // Assert
+            repository.Verify();
         }
 
         private static AutoInjectionTaskDetail CreateTarget()

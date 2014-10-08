@@ -48,8 +48,23 @@ namespace Bijectiv.KernelFactory
         /// </summary>
         private readonly IInjectionHelper injectionHelper;
 
+        /// <summary>
+        /// A value indicating whether the implementation detail is for a merge injection.
+        /// </summary>
         private readonly bool isMerge;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AutoInjectionTaskDetail"/> class.
+        /// </summary>
+        /// <param name="injectionHelper">
+        /// The injection helper.
+        /// </param>
+        /// <param name="isMerge">
+        /// A value indicating whether the implementation detail is for a merge injection.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public AutoInjectionTaskDetail([NotNull] IInjectionHelper injectionHelper, bool isMerge)
         {
             if (injectionHelper == null)
@@ -76,6 +91,9 @@ namespace Bijectiv.KernelFactory
             get { return this.injectionHelper; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the implementation detail is for a merge injection.
+        /// </summary>
         public virtual bool IsMerge
         {
             get { return this.isMerge; }
