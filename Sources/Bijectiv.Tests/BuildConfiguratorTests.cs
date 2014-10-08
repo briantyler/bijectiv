@@ -113,9 +113,9 @@ namespace Bijectiv.Tests
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             //// TODO Validate factories
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<ValueSourceMemberShard>));
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<ExpressionSourceMemberShard>));
-            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberTransformSubtask<DelegateSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<ValueSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<ExpressionSourceMemberShard>));
+            Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberInjectionSubtask<DelegateSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ValueSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<ExpressionSourceMemberShard>));
             Assert.IsInstanceOfType(tasks[index++], typeof(SourceMemberAssignSubtask<DelegateSourceMemberShard>));

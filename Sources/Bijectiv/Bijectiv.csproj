@@ -80,7 +80,6 @@
     <Compile Include="KernelFactory\MemberInjectionTask.cs" />
     <Compile Include="KernelFactory\SourceMemberAssignSubtask.cs" />
     <Compile Include="KernelFactory\SourceMemberInjectionSubtask.cs" />
-    <Compile Include="KernelFactory\SourceMemberTransformSubtask.cs" />
     <Compile Include="KernelFactory\ValueSourceExpressionFactory.cs" />
     <Compile Include="KernelFactory\SingleInstanceShardCategorySubtask.cs" />
     <Compile Include="Kernel\DMerge.cs" />

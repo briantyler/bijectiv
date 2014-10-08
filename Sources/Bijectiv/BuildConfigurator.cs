@@ -196,9 +196,9 @@ namespace Bijectiv
                 new Func<IInjectionSubtask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubtask(),
-                    () => new SourceMemberTransformSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new InjectionHelper()), 
-                    () => new SourceMemberTransformSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new InjectionHelper()), 
-                    () => new SourceMemberTransformSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new InjectionHelper()), 
+                    () => new SourceMemberInjectionSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new InjectionHelper(), false), 
+                    () => new SourceMemberInjectionSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new InjectionHelper(), false), 
+                    () => new SourceMemberInjectionSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new InjectionHelper(), false), 
                     () => new SourceMemberAssignSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SourceMemberMergeSubtask.cs" company="Bijectiv">
+// <copyright file="SourceMemberInjectionSubtask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the SourceMemberMergeSubtask type.
+//   Defines the SourceMemberInjectionSubtask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,9 +35,30 @@ namespace Bijectiv.KernelFactory
 
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// A subtask that injects a source object provided by a <typeparamref name="TShard"/> into a target instance member.
+    /// </summary>
+    /// <typeparam name="TShard">
+    /// The type of shard that provides the source object.
+    /// </typeparam>
     public class SourceMemberInjectionSubtask<TShard> : SingleInstanceShardCategorySubtask<TShard>
         where TShard : SourceMemberShard
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SourceMemberInjectionSubtask{TShard}"/> class.
+        /// </summary>
+        /// <param name="sourceExpressionFactory">
+        /// The source expression factory.
+        /// </param>
+        /// <param name="injectionHelper">
+        /// The injection helper.
+        /// </param>
+        /// <param name="isMerge">
+        /// A value indicating whether the operation is for a merge injection.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public SourceMemberInjectionSubtask(
             [NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory,
             [NotNull] IInjectionHelper injectionHelper,
@@ -59,15 +80,27 @@ namespace Bijectiv.KernelFactory
             this.IsMerge = isMerge;
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="SourceMemberInjectionSubtask{TShard}"/> class.
+        /// </summary>
         protected SourceMemberInjectionSubtask()
             : base(LegendaryShards.Source)
         {
         }
 
+        /// <summary>
+        /// Gets the source expression factory.
+        /// </summary>
         public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; }
 
+        /// <summary>
+        /// Gets the injection helper.
+        /// </summary>
         public virtual IInjectionHelper InjectionHelper { get; private set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the implementation detail is for a merge injection.
+        /// </summary>
         public bool IsMerge { get; set; }
 
         /// <summary>
@@ -113,8 +146,22 @@ namespace Bijectiv.KernelFactory
             }
         }
 
-        protected internal override bool CanProcess(TShard shard)
+        /// <summary>
+        /// Determines whether a shard can be processed.
+        /// </summary>
+        /// <param name="shard">
+        /// The shard to check.
+        /// </param>
+        /// <returns>
+        /// A value indicating whether the shard can be processed.
+        /// </returns>
+        protected internal override bool CanProcess([NotNull] TShard shard)
         {
+            if (shard == null)
+            {
+                throw new ArgumentNullException("shard");
+            }
+
             return shard.Inject;
         }
     }
