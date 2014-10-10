@@ -99,9 +99,9 @@ namespace Bijectiv.KernelFactory
         public virtual IInjectionHelper InjectionHelper { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the implementation detail is for a merge injection.
+        /// Gets a value indicating whether the implementation detail is for a merge injection.
         /// </summary>
-        public bool IsMerge { get; set; }
+        public virtual bool IsMerge { get; private set; }
 
         /// <summary>
         /// Processes a shard.
