@@ -53,7 +53,7 @@ namespace Bijectiv.Tests.KernelFactory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_InjectionHelperParameterIsNull_Throws()
+        public void CreateInstance_InjectorParameterIsNull_Throws()
         {
             // Arrange
 
@@ -71,23 +71,23 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            new AutoInjectionTaskDetail(Stub.Create<IInjectionHelper>(), false).Naught();
+            new AutoInjectionTaskDetail(Stub.Create<ITargetMemberInjector>(), false).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InjectionHelperParameter_IsAssignedToInjectionHelperProperty()
+        public void CreateInstance_InjectorParameter_IsAssignedToProperty()
         {
             // Arrange
-            var injectionHelper = Stub.Create<IInjectionHelper>();
+            var injector = Stub.Create<ITargetMemberInjector>();
 
             // Act
-            var target = new AutoInjectionTaskDetail(injectionHelper, false);
+            var target = new AutoInjectionTaskDetail(injector, false);
 
             // Assert
-            Assert.AreEqual(injectionHelper, target.InjectionHelper);
+            Assert.AreEqual(injector, target.Injector);
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new AutoInjectionTaskDetail(Stub.Create<IInjectionHelper>(), true);
+            var target = new AutoInjectionTaskDetail(Stub.Create<ITargetMemberInjector>(), true);
 
             // Assert
             Assert.IsTrue(target.IsMerge);
@@ -431,11 +431,11 @@ namespace Bijectiv.Tests.KernelFactory
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
 
-            var injectionHelperMock = repository.Create<IInjectionHelper>();
-            injectionHelperMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, scaffold.Source));
+            var injectorMock = repository.Create<ITargetMemberInjector>();
+            injectorMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, scaffold.Source));
 
             var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
+            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
 
             // Act
             targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
@@ -447,7 +447,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_ValidParameters_TransformsUsingInjectionHelper()
+        public void ProcessPair_ValidParameters_TransformsUsingInjector()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
@@ -457,11 +457,11 @@ namespace Bijectiv.Tests.KernelFactory
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
 
-            var injectionHelperMock = repository.Create<IInjectionHelper>();
-            injectionHelperMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
+            var injectorMock = repository.Create<ITargetMemberInjector>();
+            injectorMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
 
             var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
+            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
 
             // Act
             targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
@@ -472,7 +472,7 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void ProcessPair_ValidParameters_MergesUsingInjectionHelper()
+        public void ProcessPair_ValidParameters_MergesUsingInjector()
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Loose) { CallBase = true };
@@ -482,11 +482,11 @@ namespace Bijectiv.Tests.KernelFactory
             List<Expression> expressions;
             var scaffold = CreateScaffoldForProcessPair(repository, out expressions);
 
-            var injectionHelperMock = repository.Create<IInjectionHelper>();
-            injectionHelperMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
+            var injectorMock = repository.Create<ITargetMemberInjector>();
+            injectorMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
 
             var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.InjectionHelper).Returns(injectionHelperMock.Object);
+            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
             targetMock.SetupGet(_ => _.IsMerge).Returns(true);
 
             // Act

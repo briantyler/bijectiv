@@ -35,10 +35,9 @@ namespace Bijectiv.Tests.Kernel
 
     using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Bijectiv.Utilities;
 
     /// <summary>
     /// This class tests the <see cref="InjectionTrail"/> class.

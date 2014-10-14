@@ -50,8 +50,8 @@ namespace Bijectiv.KernelFactory
         /// <param name="sourceExpressionFactory">
         /// The source expression factory.
         /// </param>
-        /// <param name="injectionHelper">
-        /// The injection helper.
+        /// <param name="injector">
+        /// The target member injector.
         /// </param>
         /// <param name="isMerge">
         /// A value indicating whether the operation is for a merge injection.
@@ -61,7 +61,7 @@ namespace Bijectiv.KernelFactory
         /// </exception>
         public SourceMemberInjectionSubtask(
             [NotNull] ISourceExpressionFactory<TShard> sourceExpressionFactory,
-            [NotNull] IInjectionHelper injectionHelper,
+            [NotNull] ITargetMemberInjector injector,
             bool isMerge)
             : this()
         {
@@ -70,13 +70,13 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("sourceExpressionFactory");
             }
 
-            if (injectionHelper == null)
+            if (injector == null)
             {
-                throw new ArgumentNullException("injectionHelper");
+                throw new ArgumentNullException("injector");
             }
 
             this.SourceExpressionFactory = sourceExpressionFactory;
-            this.InjectionHelper = injectionHelper;
+            this.Injector = injector;
             this.IsMerge = isMerge;
         }
 
@@ -94,9 +94,9 @@ namespace Bijectiv.KernelFactory
         public virtual ISourceExpressionFactory<TShard> SourceExpressionFactory { get; private set; }
 
         /// <summary>
-        /// Gets the injection helper.
+        /// Gets the target member injector.
         /// </summary>
-        public virtual IInjectionHelper InjectionHelper { get; private set; }
+        public virtual ITargetMemberInjector Injector { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the implementation detail is for a merge injection.
@@ -138,11 +138,11 @@ namespace Bijectiv.KernelFactory
             var sourceExpression = this.SourceExpressionFactory.Create(scaffold, fragment, shard);
             if (this.IsMerge)
             {
-                this.InjectionHelper.AddMergeExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
+                this.Injector.AddMergeExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
             }
             else
             {
-                this.InjectionHelper.AddTransformExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
+                this.Injector.AddTransformExpressionToScaffold(scaffold, fragment.Member, sourceExpression);
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionHelper.cs" company="Bijectiv">
+// <copyright file="TargetMemberInjector.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionHelper type.
+//   Defines the TargetMemberInjector type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -36,10 +36,25 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Utilities;
 
-    using JetBrains.Annotations;
-
-    public class InjectionHelper : IInjectionHelper
+    /// <summary>
+    /// Represents a service that augments the injection that is currently being built with an expression 
+    /// that injects a source expression into a target member.
+    /// </summary>
+    public class TargetMemberInjector : ITargetMemberInjector
     {
+        /// <summary>
+        /// Adds an expression to the scaffold that transforms the <paramref name="sourceExpression"/> into the 
+        /// referenced <paramref name="member"/> of the <paramref name="scaffold"/> target.
+        /// </summary>
+        /// <param name="scaffold">
+        /// The scaffold.
+        /// </param>
+        /// <param name="member">
+        /// The member in the target that is the target of the transform.
+        /// </param>
+        /// <param name="sourceExpression">
+        /// The source expression that will be transformed.
+        /// </param>
         public virtual void AddTransformExpressionToScaffold(
             InjectionScaffold scaffold,
             MemberInfo member,
@@ -91,16 +106,28 @@ namespace Bijectiv.KernelFactory
 
             transform = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(transform);
             transform = new PlaceholderExpressionVisitor("memberSource", memberSource).Visit(transform);
-            transform = new PlaceholderExpressionVisitor("memberSourceType", CreateTypeExpression(memberSource, sourceExpression.Type)).Visit(transform);
+            transform = new PlaceholderExpressionVisitor(
+                "memberSourceType", CreateTypeExpression(memberSource, sourceExpression.Type)).Visit(transform);
 
             var accessExpression = member.GetAccessExpression(scaffold.Target);
             transform = Expression.Assign(accessExpression, Expression.Convert(transform, targetMemberType));
 
-            scaffold.Expressions.Add(
-                Expression.Block(new[] { memberSource }, assignMemberSource, transform));
-        
+            scaffold.Expressions.Add(Expression.Block(new[] { memberSource }, assignMemberSource, transform));
         }
 
+        /// <summary>
+        /// Adds an expression to the scaffold that merges the <paramref name="sourceExpression"/> into the 
+        /// referenced <paramref name="member"/> of the <paramref name="scaffold"/> target.
+        /// </summary>
+        /// <param name="scaffold">
+        /// The scaffold.
+        /// </param>
+        /// <param name="member">
+        /// The member in the target that is the target of the merge.
+        /// </param>
+        /// <param name="sourceExpression">
+        /// The source expression that will be merged.
+        /// </param>
         public virtual void AddMergeExpressionToScaffold(
             InjectionScaffold scaffold,
             MemberInfo member,
@@ -151,9 +178,12 @@ namespace Bijectiv.KernelFactory
 
             merge = new PlaceholderExpressionVisitor("context", scaffold.InjectionContext).Visit(merge);
             merge = new PlaceholderExpressionVisitor("memberSource", memberSource).Visit(merge);
-            merge = new PlaceholderExpressionVisitor("memberSourceType", CreateTypeExpression(memberSource, sourceExpression.Type)).Visit(merge);
-            merge = new PlaceholderExpressionVisitor("targetMember", Expression.Convert(targetMember, typeof(object))).Visit(merge);
-            merge = new PlaceholderExpressionVisitor("targetMemberType", CreateTypeExpression(targetMember, member.GetReturnType())).Visit(merge);
+            merge = new PlaceholderExpressionVisitor(
+                "memberSourceType", CreateTypeExpression(memberSource, sourceExpression.Type)).Visit(merge);
+            merge = new PlaceholderExpressionVisitor(
+                "targetMember", Expression.Convert(targetMember, typeof(object))).Visit(merge);
+            merge = new PlaceholderExpressionVisitor(
+                "targetMemberType", CreateTypeExpression(targetMember, member.GetReturnType())).Visit(merge);
 
             var mergeResult = Expression.Variable(typeof(IMergeResult));
 
@@ -167,9 +197,9 @@ namespace Bijectiv.KernelFactory
                     Expression.Constant(
                         new InvalidOperationException(
                             string.Format(
-                                "Unable to merge into member '{0}'. The member is readonly, but a replace-merge is required. "
+                                "Unable to merge into member '{0}'. The member is read-only, but a replace-merge is required. "
                                 + "Either make the member writeable, or if that is not possible, or desirable ignore the "
-                                + "member in teh injection configuration.",
+                                + "member in the injection configuration.",
                                 member))));
             }
 
@@ -185,11 +215,25 @@ namespace Bijectiv.KernelFactory
             scaffold.Expressions.Add(block);
         }
 
+        /// <summary>
+        /// The create type expression.
+        /// </summary>
+        /// <param name="expression">
+        /// The expression.
+        /// </param>
+        /// <param name="fallback">
+        /// The most derived type that the result of <paramref name="expression"/> can be.
+        /// </param>
+        /// <returns>
+        /// An expression that returns the type of the result of <paramref name="expression"/>.
+        /// </returns>
         private static Expression CreateTypeExpression(Expression expression, Type fallback)
         {
-            Expression<Func<object, Type>> x = o => fallback.IsValueType || fallback.IsSealed || o == null ? fallback : o.GetType();
+            Expression<Func<object, Type>> x = 
+                o => fallback.IsValueType || fallback.IsSealed || o == null ? fallback : o.GetType();
 
-            return new ParameterExpressionVisitor(x.Parameters.Single(), Expression.Convert(expression, typeof(object))).Visit(x.Body);
+            return new ParameterExpressionVisitor(
+                x.Parameters.Single(), Expression.Convert(expression, typeof(object))).Visit(x.Body);
         }
     }
 }

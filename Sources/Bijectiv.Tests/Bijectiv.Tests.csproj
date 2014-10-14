@@ -87,9 +87,9 @@
     <Compile Include="KernelFactory\DelegateSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ExpressionSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ExpressionSourceMemberSubtaskTests.cs" />
-    <Compile Include="KernelFactory\FallBackFactoryExpressionFactoryTests.cs" />
+    <Compile Include="KernelFactory\FallbackFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\EquivalentMemberInfoCollectionTests.cs" />
-    <Compile Include="KernelFactory\FallBackToTransformOnNullTargetTaskTests.cs" />
+    <Compile Include="KernelFactory\FallbackToTransformOnNullTargetTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeMembersTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeMergeVariablesTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeTransformVariablesTaskTests.cs" />
@@ -102,7 +102,6 @@
     <Compile Include="KernelFactory\SourceMemberAssignSubtaskTests.cs" />
     <Compile Include="KernelFactory\SourceMemberInjectionSubtaskTests.cs" />
     <Compile Include="KernelFactory\ValueSourceExpressionFactoryTests.cs" />
-    <Compile Include="KernelFactory\ValueSourceMemberTransformSubtaskTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />
     <Compile Include="KernelFactory\ReturnMergeResultTaskTests.cs" />

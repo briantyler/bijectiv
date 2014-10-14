@@ -33,10 +33,9 @@ namespace Bijectiv.Tests.KernelFactory
 
     using Bijectiv.Configuration;
     using Bijectiv.KernelFactory;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Bijectiv.TestUtilities;
 
     using Moq;
 
@@ -67,6 +66,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new ValueSourceExpressionFactory();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Create(null, Stub.Create<MemberFragment>(), Stub.Create<ValueSourceMemberShard>());
 
             // Assert
@@ -81,6 +81,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new ValueSourceExpressionFactory();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<ValueSourceMemberShard>());
 
             // Assert
@@ -95,6 +96,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new ValueSourceExpressionFactory();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert

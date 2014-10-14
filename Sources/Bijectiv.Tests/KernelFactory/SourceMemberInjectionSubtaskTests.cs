@@ -55,7 +55,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            new SourceMemberInjectionSubtask<SourceMemberShard>(null, Stub.Create<IInjectionHelper>(), false).Naught();
+            new SourceMemberInjectionSubtask<SourceMemberShard>(null, Stub.Create<ITargetMemberInjector>(), false).Naught();
             
             // Assert
         }
@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.KernelFactory
         [TestMethod]
         [TestCategory("Unit")]
         [ArgumentNullExceptionExpected]
-        public void CreateInstance_InjectionHelperParameterIsNull_Throws()
+        public void CreateInstance_InjectorParameterIsNull_Throws()
         {
             // Arrange
 
@@ -86,7 +86,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             new SourceMemberInjectionSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>(),
-                Stub.Create<IInjectionHelper>(),
+                Stub.Create<ITargetMemberInjector>(),
                 false).Naught();
 
             // Assert
@@ -102,7 +102,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 sourceExpressionFactory,
-                Stub.Create<IInjectionHelper>(),
+                Stub.Create<ITargetMemberInjector>(),
                 false);
 
             // Assert
@@ -111,19 +111,19 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InjectionHelperParameter_IsAssignedToInjectionHelperProperty()
+        public void CreateInstance_InjectorParameter_IsAssignedToInjectorProperty()
         {
             // Arrange
-            var injectionHelper = Stub.Create<IInjectionHelper>();
+            var injector = Stub.Create<ITargetMemberInjector>();
 
             // Act
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>(),
-                injectionHelper,
+                injector,
                 false);
 
             // Assert
-            Assert.AreEqual(injectionHelper, target.InjectionHelper);
+            Assert.AreEqual(injector, target.Injector);
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>(),
-                Stub.Create<IInjectionHelper>(),
+                Stub.Create<ITargetMemberInjector>(),
                 true);
 
             // Assert
@@ -151,7 +151,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>(),
-                Stub.Create<IInjectionHelper>(),
+                Stub.Create<ITargetMemberInjector>(),
                 true);
 
             // Assert
@@ -222,12 +222,12 @@ namespace Bijectiv.Tests.KernelFactory
             var sourceExpressionFactoryMock = repository.Create<ISourceExpressionFactory<SourceMemberShard>>();
             sourceExpressionFactoryMock.Setup(_ => _.Create(scaffold, fragmentMock.Object, shard)).Returns(sourceExpression);
 
-            var injectionHelperMock = repository.Create<IInjectionHelper>();
-            injectionHelperMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, member, sourceExpression));
+            var injectorMock = repository.Create<ITargetMemberInjector>();
+            injectorMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, member, sourceExpression));
 
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 sourceExpressionFactoryMock.Object,
-                injectionHelperMock.Object,
+                injectorMock.Object,
                 false);
 
             // Act
@@ -256,12 +256,12 @@ namespace Bijectiv.Tests.KernelFactory
             var sourceExpressionFactoryMock = repository.Create<ISourceExpressionFactory<SourceMemberShard>>();
             sourceExpressionFactoryMock.Setup(_ => _.Create(scaffold, fragmentMock.Object, shard)).Returns(sourceExpression);
 
-            var injectionHelperMock = repository.Create<IInjectionHelper>();
-            injectionHelperMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, member, sourceExpression));
+            var injectorMock = repository.Create<ITargetMemberInjector>();
+            injectorMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, member, sourceExpression));
 
             var target = new SourceMemberInjectionSubtask<SourceMemberShard>(
                 sourceExpressionFactoryMock.Object,
-                injectionHelperMock.Object,
+                injectorMock.Object,
                 true);
 
             // Act

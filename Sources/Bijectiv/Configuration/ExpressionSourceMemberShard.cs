@@ -99,13 +99,13 @@ namespace Bijectiv.Configuration
             }
 
             this.parameterType = expression.Parameters.First().Type;
-            if (!this.ParameterType.IsAssignableFrom(source))
+            if (!this.parameterType.IsAssignableFrom(source))
             {
                 throw new ArgumentException(
                     string.Format(
                         "Lambda expression parameter type '{0}' expected, but was '{1}'.",
                         source,
-                        this.ParameterType));
+                        this.parameterType));
             }
 
             if (expression.ReturnType == typeof(void))

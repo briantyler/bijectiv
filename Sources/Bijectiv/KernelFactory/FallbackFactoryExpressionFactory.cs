@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FallBackFactoryExpressionFactory.cs" company="Bijectiv">
+// <copyright file="FallbackFactoryExpressionFactory.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the FallBackFactoryExpressionFactory type.
+//   Defines the FallbackFactoryExpressionFactory type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ namespace Bijectiv.KernelFactory
     /// An expression factory that creates an expression that creates a target by activation when no other factory 
     /// has created the target.
     /// </summary>
-    public class FallBackFactoryExpressionFactory : ISelectiveExpressionFactory
+    public class FallbackFactoryExpressionFactory : ISelectiveExpressionFactory
     {
         /// <summary>
         /// Gets a value indicating whether the factory can create an expression from a 

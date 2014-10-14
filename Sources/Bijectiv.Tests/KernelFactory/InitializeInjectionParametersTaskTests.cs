@@ -31,7 +31,6 @@ namespace Bijectiv.Tests.KernelFactory
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Linq.Expressions;
 
     using Bijectiv.Configuration;
@@ -205,7 +204,7 @@ namespace Bijectiv.Tests.KernelFactory
             this.expressions.Add(this.parameter);
             return Expression
                 .Lambda<Func<IInjectionParameters<TestClass1, TestClass2>>>(
-                    Expression.Block(new[] {this.parameter}, this.expressions))
+                    Expression.Block(new[] { this.parameter }, this.expressions))
                 .Compile()();
         }
     }

@@ -68,11 +68,11 @@
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
     <Compile Include="KernelFactory\ExpressionSourceExpressionFactory.cs" />
     <Compile Include="KernelFactory\FallBackToTransformOnNullTargetTask.cs" />
-    <Compile Include="KernelFactory\IInjectionHelper.cs" />
+    <Compile Include="KernelFactory\ITargetMemberInjector.cs" />
     <Compile Include="KernelFactory\IInjectionSubtask.cs" />
     <Compile Include="KernelFactory\ILabelCache.cs" />
     <Compile Include="KernelFactory\InitializeInjectionParametersTask.cs" />
-    <Compile Include="KernelFactory\InjectionHelper.cs" />
+    <Compile Include="KernelFactory\TargetMemberInjector.cs" />
     <Compile Include="KernelFactory\ISourceExpressionFactory.cs" />
     <Compile Include="KernelFactory\LegendaryLabels.cs" />
     <Compile Include="KernelFactory\LabelCache.cs" />

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FallBackToTransformOnNullTargetTask.cs" company="Bijectiv">
+// <copyright file="FallbackToTransformOnNullTargetTask.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the FallBackToTransformOnNullTargetTask type.
+//   Defines the FallbackToTransformOnNullTargetTask type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ namespace Bijectiv.KernelFactory
     /// is null.
     /// </summary>
     public class 
-        FallBackToTransformOnNullTargetTask : IInjectionTask
+        FallbackToTransformOnNullTargetTask : IInjectionTask
     {
         /// <summary>
         /// Executes the task.

@@ -175,12 +175,12 @@ namespace Bijectiv
                     () => new CreateTargetTask(new ActivateTargetExpressionFactory()),
                     () => new CreateTargetTask(new DefaultFactoryExpressionFactory()),
                     () => new CreateTargetTask(new CustomFactoryExpressionFactory()),
-                    () => new CreateTargetTask(new FallBackFactoryExpressionFactory()), 
+                    () => new CreateTargetTask(new FallbackFactoryExpressionFactory()), 
                     () => new CacheTargetTask(),
                     () => new AddToInjectionTrailTask(), 
                     () => new InitializeInjectionParametersTask(),
                     () => new MemberInjectionTask(this.MemberTransformTasks.Select(item => item()).ToArray()), 
-                    () => new AutoInjectionTask(new AutoInjectionTaskDetail(new InjectionHelper(), false)),
+                    () => new AutoInjectionTask(new AutoInjectionTaskDetail(new TargetMemberInjector(), false)),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnTargetAsObjectTask()
                 });
@@ -196,9 +196,9 @@ namespace Bijectiv
                 new Func<IInjectionSubtask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubtask(),
-                    () => new SourceMemberInjectionSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new InjectionHelper(), false), 
-                    () => new SourceMemberInjectionSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new InjectionHelper(), false), 
-                    () => new SourceMemberInjectionSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new InjectionHelper(), false), 
+                    () => new SourceMemberInjectionSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new TargetMemberInjector(), false), 
+                    () => new SourceMemberInjectionSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new TargetMemberInjector(), false), 
+                    () => new SourceMemberInjectionSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new TargetMemberInjector(), false), 
                     () => new SourceMemberAssignSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 
@@ -216,13 +216,13 @@ namespace Bijectiv
                 new Func<IInjectionTask>[]
                 {
                     () => new InitializeFragmentsTask(), 
-                    () => new FallBackToTransformOnNullTargetTask(), 
+                    () => new FallbackToTransformOnNullTargetTask(), 
                     () => new InitializeMergeVariablesTask(),
                     () => new InitializeInjectionParametersTask(),
                     () => new InitializeMembersTask(new ReflectionGateway()),
                     () => new AddToInjectionTrailTask(), 
                     () => new MemberInjectionTask(this.MemberMergeTasks.Select(item => item()).ToArray()), 
-                    () => new AutoInjectionTask(new AutoInjectionTaskDetail(new InjectionHelper(), true)),
+                    () => new AutoInjectionTask(new AutoInjectionTaskDetail(new TargetMemberInjector(), true)),
                     () => new CreateTriggersTask(TriggeredBy.InjectionEnded), 
                     () => new ReturnMergeResultTask()
                 });
@@ -238,9 +238,9 @@ namespace Bijectiv
                 new Func<IInjectionSubtask<MemberFragment>>[]
                 {
                     () => new MemberConditionSubtask(),
-                    () => new SourceMemberInjectionSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new InjectionHelper(), true), 
-                    () => new SourceMemberInjectionSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new InjectionHelper(), true), 
-                    () => new SourceMemberInjectionSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new InjectionHelper(), true), 
+                    () => new SourceMemberInjectionSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory(), new TargetMemberInjector(), true), 
+                    () => new SourceMemberInjectionSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory(), new TargetMemberInjector(), true), 
+                    () => new SourceMemberInjectionSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory(), new TargetMemberInjector(), true), 
                     () => new SourceMemberAssignSubtask<ValueSourceMemberShard>(new ValueSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<ExpressionSourceMemberShard>(new ExpressionSourceExpressionFactory()), 
                     () => new SourceMemberAssignSubtask<DelegateSourceMemberShard>(new DelegateSourceExpressionFactory()), 

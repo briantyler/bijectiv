@@ -209,7 +209,6 @@ namespace Bijectiv.Tests.KernelFactory
                     called = true;
                 }; 
 
-
             var fragment = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
             var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 

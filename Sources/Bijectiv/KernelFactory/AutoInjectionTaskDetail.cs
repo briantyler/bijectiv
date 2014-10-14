@@ -44,9 +44,9 @@ namespace Bijectiv.KernelFactory
     public class AutoInjectionTaskDetail
     {
         /// <summary>
-        /// The injection helper.
+        /// The target member injector.
         /// </summary>
-        private readonly IInjectionHelper injectionHelper;
+        private readonly ITargetMemberInjector injector;
 
         /// <summary>
         /// A value indicating whether the implementation detail is for a merge injection.
@@ -56,8 +56,8 @@ namespace Bijectiv.KernelFactory
         /// <summary>
         /// Initialises a new instance of the <see cref="AutoInjectionTaskDetail"/> class.
         /// </summary>
-        /// <param name="injectionHelper">
-        /// The injection helper.
+        /// <param name="injector">
+        /// The target member injector.
         /// </param>
         /// <param name="isMerge">
         /// A value indicating whether the implementation detail is for a merge injection.
@@ -65,14 +65,14 @@ namespace Bijectiv.KernelFactory
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public AutoInjectionTaskDetail([NotNull] IInjectionHelper injectionHelper, bool isMerge)
+        public AutoInjectionTaskDetail([NotNull] ITargetMemberInjector injector, bool isMerge)
         {
-            if (injectionHelper == null)
+            if (injector == null)
             {
-                throw new ArgumentNullException("injectionHelper");
+                throw new ArgumentNullException("injector");
             }
 
-            this.injectionHelper = injectionHelper;
+            this.injector = injector;
             this.isMerge = isMerge;
         }
 
@@ -84,11 +84,11 @@ namespace Bijectiv.KernelFactory
         }
 
         /// <summary>
-        /// Gets the injection helper.
+        /// Gets the target member injector.
         /// </summary>
-        public virtual IInjectionHelper InjectionHelper
+        public virtual ITargetMemberInjector Injector
         {
-            get { return this.injectionHelper; }
+            get { return this.injector; }
         }
 
         /// <summary>
@@ -176,14 +176,14 @@ namespace Bijectiv.KernelFactory
 
             if (this.IsMerge)
             {
-                this.InjectionHelper.AddMergeExpressionToScaffold(
+                this.Injector.AddMergeExpressionToScaffold(
                     scaffold,
                     targetMember,
                     sourceMember.GetAccessExpression(scaffold.Source));
             }
             else
             {
-                this.InjectionHelper.AddTransformExpressionToScaffold(
+                this.Injector.AddTransformExpressionToScaffold(
                     scaffold,
                     targetMember,
                     sourceMember.GetAccessExpression(scaffold.Source));

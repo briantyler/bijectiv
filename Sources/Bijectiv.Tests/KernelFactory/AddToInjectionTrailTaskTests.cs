@@ -34,10 +34,9 @@ namespace Bijectiv.Tests.KernelFactory
     using System.Linq.Expressions;
 
     using Bijectiv.KernelFactory;
+    using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using Bijectiv.TestUtilities;
 
     using Moq;
 
