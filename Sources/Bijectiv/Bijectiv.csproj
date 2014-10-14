@@ -67,7 +67,7 @@
     <Compile Include="KernelFactory\CreateLabelSubtask.cs" />
     <Compile Include="KernelFactory\CreateTriggersTask.cs" />
     <Compile Include="KernelFactory\ExpressionSourceExpressionFactory.cs" />
-    <Compile Include="KernelFactory\FallbackToTransformOnNullTargetTask.cs" />
+    <Compile Include="KernelFactory\FallBackToTransformOnNullTargetTask.cs" />
     <Compile Include="KernelFactory\IInjectionHelper.cs" />
     <Compile Include="KernelFactory\IInjectionSubtask.cs" />
     <Compile Include="KernelFactory\ILabelCache.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="KernelFactory\AutoInjectionTaskDetail.cs" />
     <Compile Include="KernelFactory\AutoInjectionTask.cs" />
     <Compile Include="KernelFactory\CacheTargetTask.cs" />
-    <Compile Include="KernelFactory\FallbackFactoryExpressionFactory.cs" />
+    <Compile Include="KernelFactory\FallBackFactoryExpressionFactory.cs" />
     <Compile Include="KernelFactory\InitializeMembersTask.cs" />
     <Compile Include="KernelFactory\InitializeMergeVariablesTask.cs" />
     <Compile Include="KernelFactory\MergeFactory.cs" />

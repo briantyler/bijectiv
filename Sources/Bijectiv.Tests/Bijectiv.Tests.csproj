@@ -87,8 +87,9 @@
     <Compile Include="KernelFactory\DelegateSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ExpressionSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\ExpressionSourceMemberSubtaskTests.cs" />
-    <Compile Include="KernelFactory\FallbackFactoryExpressionFactoryTests.cs" />
+    <Compile Include="KernelFactory\FallBackFactoryExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\EquivalentMemberInfoCollectionTests.cs" />
+    <Compile Include="KernelFactory\FallBackToTransformOnNullTargetTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeMembersTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeMergeVariablesTaskTests.cs" />
     <Compile Include="KernelFactory\InitializeTransformVariablesTaskTests.cs" />

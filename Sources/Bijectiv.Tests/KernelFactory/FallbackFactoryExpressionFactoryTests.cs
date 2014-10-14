@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FallbackFactoryExpressionFactoryTests.cs" company="Bijectiv">
+// <copyright file="FallBackFactoryExpressionFactoryTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the FallbackFactoryExpressionFactoryTests type.
+//   Defines the FallBackFactoryExpressionFactoryTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,10 +40,10 @@ namespace Bijectiv.Tests.KernelFactory
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// This class tests the <see cref="FallbackFactoryExpressionFactory"/> class.
+    /// This class tests the <see cref="FallBackFactoryExpressionFactory"/> class.
     /// </summary>
     [TestClass]
-    public class FallbackFactoryExpressionFactoryTests
+    public class FallBackFactoryExpressionFactoryTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -52,7 +52,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            new FallbackFactoryExpressionFactory().Naught();
+            new FallBackFactoryExpressionFactory().Naught();
 
             // Assert
         }
@@ -143,9 +143,9 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.IsFalse(((NewExpression)result).Arguments.Any());
         }
 
-        private static FallbackFactoryExpressionFactory CreateTarget()
+        private static FallBackFactoryExpressionFactory CreateTarget()
         {
-            return new FallbackFactoryExpressionFactory();
+            return new FallBackFactoryExpressionFactory();
         }
 
         private static InjectionScaffold CreateScaffold()
