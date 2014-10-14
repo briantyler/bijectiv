@@ -75,13 +75,6 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("sourceExpression");
             }
 
-            if (!member.CanWrite() && !member.CanRead())
-            {
-                throw new ArgumentException(
-                    string.Format("Member '{0}' has no public accessors. It must be ignored by the injection.", member),
-                    "member");
-            }
-
             if (!member.CanWrite())
             {
                 this.AddMergeExpressionToScaffold(scaffold, member, sourceExpression);
@@ -146,13 +139,6 @@ namespace Bijectiv.KernelFactory
             if (sourceExpression == null)
             {
                 throw new ArgumentNullException("sourceExpression");
-            }
-
-            if (!member.CanWrite() && !member.CanRead())
-            {
-                throw new ArgumentException(
-                    string.Format("Member '{0}' has no public accessors. It must be ignored by the injection.", member),
-                    "member");
             }
 
             if (!member.CanRead())

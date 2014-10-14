@@ -101,6 +101,7 @@
     <Compile Include="KernelFactory\MemberInjectionTaskTests.cs" />
     <Compile Include="KernelFactory\SourceMemberAssignSubtaskTests.cs" />
     <Compile Include="KernelFactory\SourceMemberInjectionSubtaskTests.cs" />
+    <Compile Include="KernelFactory\TargetMemberInjectorTests.cs" />
     <Compile Include="KernelFactory\ValueSourceExpressionFactoryTests.cs" />
     <Compile Include="KernelFactory\MergeFactoryTests.cs" />
     <Compile Include="KernelFactory\NullSourceTaskTests.cs" />
