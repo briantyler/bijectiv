@@ -123,7 +123,7 @@ namespace Bijectiv.KernelFactory
             var trigger = fragment.Trigger;
             var expression = trigger.Target == null
                 ? Expression.Call(trigger.Method, parameter)
-                : Expression.Call(Expression.Constant(trigger.Target), trigger.Method, parameter);
+                : Expression.Call(Expression.Constant(trigger.Target), trigger.Method, new Expression[] { parameter });
             
             scaffold.Expressions.Add(expression);
             scaffold.ProcessedFragments.Add(fragment);

@@ -47,6 +47,7 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new InjectionTrailItem(null, new object(), new object()).Naught();
 
             // Assert

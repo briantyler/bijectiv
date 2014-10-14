@@ -341,10 +341,8 @@ namespace Bijectiv.Tests.Configuration
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
-            var value = "bijectiv";
-
             // Act
-            target.AssignValue(value);
+            target.AssignValue("bijectiv");
 
             // Assert
             var shard = (ValueSourceMemberShard)fragment.Single();
@@ -352,7 +350,7 @@ namespace Bijectiv.Tests.Configuration
             Assert.AreEqual(TestClass1.T, shard.Source);
             Assert.AreEqual(TestClass2.T, shard.Target);
             Assert.AreEqual(Member, shard.Member);
-            Assert.AreEqual(value, shard.Value);
+            Assert.AreEqual("bijectiv", shard.Value);
             Assert.AreEqual(false, shard.Inject);
         }
 
@@ -382,6 +380,7 @@ namespace Bijectiv.Tests.Configuration
                 CreateFragment());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.InjectSource<int>(null);
 
             // Assert
@@ -453,6 +452,7 @@ namespace Bijectiv.Tests.Configuration
                 CreateFragment());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AssignSource(null);
 
             // Assert
@@ -524,6 +524,7 @@ namespace Bijectiv.Tests.Configuration
                 CreateFragment());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.InjectDelegate<int>(null);
 
             // Assert
@@ -595,6 +596,7 @@ namespace Bijectiv.Tests.Configuration
                 CreateFragment());
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.AssignDelegate(null);
 
             // Assert

@@ -67,6 +67,7 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new AddToInjectionTrailTask();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             target.Execute(null);
 
             // Assert

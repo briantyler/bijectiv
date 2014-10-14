@@ -30,7 +30,7 @@
 namespace Bijectiv.Configuration
 {
     /// <summary>
-    /// Represents the reason that a <see cref="IInjectionTrigger"/> is pulled.
+    /// Represents the reason that a trigger action is invoked.
     /// </summary>
     public enum TriggeredBy
     {

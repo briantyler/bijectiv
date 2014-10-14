@@ -65,7 +65,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new InjectionTrail { null };
+            new InjectionTrail { null }.Naught();
 
             // Assert
         }
@@ -192,6 +192,8 @@ namespace Bijectiv.Tests.Kernel
             var result = new List<object>();
 
             // Act
+            // Forces the non-generice GetEnumerator() to be invokec.
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var obj in (IEnumerable)target)
             {
                 result.Add(obj);

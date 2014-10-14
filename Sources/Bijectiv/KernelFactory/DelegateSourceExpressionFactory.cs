@@ -35,8 +35,6 @@ namespace Bijectiv.KernelFactory
 
     using Bijectiv.Configuration;
 
-    using JetBrains.Annotations;
-
     /// <summary>
     /// A factory that produces an expression from a <see cref="DelegateSourceMemberShard"/> that invokes the delegate
     /// from the shard.
@@ -83,7 +81,7 @@ namespace Bijectiv.KernelFactory
                        : Expression.Call(
                            Expression.Constant(shard.Delegate.Target),
                            shard.Delegate.Method,
-                           Expression.Convert(parameters, shard.ParameterType));
+                           new Expression[] { Expression.Convert(parameters, shard.ParameterType) });
         }
     }
 }

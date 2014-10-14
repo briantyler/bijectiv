@@ -127,20 +127,21 @@ namespace Bijectiv.Kernel
                 var hint = new EnumerableInjectionHint(index++);
                 if (finder.TryFind(sourceElement, out targetElement))
                 {
-                    var merger =
-                        context.InjectionStore.Resolve<IMerge>(
-                            sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
-                            targetElement == null ? typeof(TTargetElement) : targetElement.GetType());
+                    var merger = context.InjectionStore.Resolve<IMerge>(
+                        typeof(TSourceElement).IsValueType || ReferenceEquals(sourceElement, null) 
+                            ? typeof(TSourceElement) 
+                            : sourceElement.GetType(),
+                        targetElement == null ? typeof(TTargetElement) : targetElement.GetType());
 
-                    var result = merger.Merge(sourceElement, targetElement, context, hint);
-                    target.Add((TTargetElement)result.Target);
+                    target.Add((TTargetElement)merger.Merge(sourceElement, targetElement, context, hint).Target);
                 }
                 else
                 {
-                    var transformer =
-                        context.InjectionStore.Resolve<ITransform>(
-                            sourceElement == null ? typeof(TSourceElement) : sourceElement.GetType(),
-                            typeof(TTargetElement));
+                    var transformer = context.InjectionStore.Resolve<ITransform>(
+                        typeof(TSourceElement).IsValueType || ReferenceEquals(sourceElement, null) 
+                            ? typeof(TSourceElement) 
+                            : sourceElement.GetType(),
+                        typeof(TTargetElement));
 
                     target.Add((TTargetElement)transformer.Transform(sourceElement, context, hint));
                 }

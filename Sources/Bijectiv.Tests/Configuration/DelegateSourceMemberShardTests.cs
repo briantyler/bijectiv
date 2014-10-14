@@ -58,6 +58,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, null, false).Naught();
 
             // Assert
