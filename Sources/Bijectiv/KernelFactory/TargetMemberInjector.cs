@@ -187,31 +187,30 @@ namespace Bijectiv.KernelFactory
 
             var mergeResult = Expression.Variable(typeof(IMergeResult));
 
-            var replaceTarget = ((Expression<Func<bool>>)(
+            var ifReplace = ((Expression<Func<bool>>)(
                 () => Placeholder.Of<IMergeResult>("mergeResult").Action == PostMergeAction.Replace)).Body;
-            replaceTarget = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(replaceTarget);
-
-            if (!member.CanWrite())
-            {
-                replaceTarget = Expression.Throw(
-                    Expression.Constant(
-                        new InvalidOperationException(
-                            string.Format(
-                                "Unable to merge into member '{0}'. The member is read-only, but a replace-merge is required. "
-                                + "Either make the member writeable, or if that is not possible, or desirable ignore the "
-                                + "member in the injection configuration.",
-                                member))));
-            }
+            ifReplace = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(ifReplace);
 
             var mergeTarget = ((Expression<Func<object>>)(() => Placeholder.Of<IMergeResult>("mergeResult").Target)).Body;
             mergeTarget = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(mergeTarget);
             var convertedMergeTarget = Expression.Convert(mergeTarget, member.GetReturnType());
 
+            var replace = member.CanWrite() 
+                ? (Expression)Expression.Assign(targetMember, convertedMergeTarget)
+                : Expression.Throw(
+                    Expression.Constant(
+                        new InvalidOperationException(
+                            string.Format(
+                                "Unable to merge into member '{0}'. The member is read-only, but a replace-merge is required. "
+                                + "Either make the member writeable, or if that is not possible, or desirable customize "
+                                + "the injection configuration accordingly.",
+                                member))));
+
             var block = Expression.Block(
                 new[] { memberSource, mergeResult },
                 Expression.Assign(memberSource, Expression.Convert(sourceExpression, typeof(object))),
                 Expression.Assign(mergeResult, merge),
-                Expression.IfThen(replaceTarget, Expression.Assign(targetMember, convertedMergeTarget)));
+                Expression.IfThen(ifReplace, replace));
 
             scaffold.Expressions.Add(block);
         }

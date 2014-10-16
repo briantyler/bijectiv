@@ -34,6 +34,7 @@ namespace Bijectiv.Tests.KernelFactory
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
@@ -197,7 +198,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var targetInstance = new TestClass1();
-            BaseTestClass1 sourceInstance = new DerivedTestClass1();
+            var sourceInstance = new DerivedTestClass1();
             var member = Reflect<TestClass1>.Property(_ => _.Id);
             const string TransformResult = "bijectiv";
 
@@ -206,7 +207,8 @@ namespace Bijectiv.Tests.KernelFactory
             var target = new TargetMemberInjector();
 
             // Act
-            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+            target.AddTransformExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -320,6 +322,258 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_SourceValue_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = 31 };
+            const int SourceInstance = 123;
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, SourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_SourceSealed_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = 31 };
+            const string SourceInstance = "bijectiv";
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, SourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_SourceDerived_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = 31 };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_TargetValue_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyInt = 31 };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyInt);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_TargetSealed_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertySealed = new SealedClass1() };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertySealed);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_TargetDerived_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = new DerivedTestClass1() };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_ReplaceActionNone_MergesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = new DerivedTestClass1() };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var mergeResult = new MergeResult(PostMergeAction.None, null);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_ReplaceActionReplaceWritableMember_ReplacesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = new DerivedTestClass1() };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var replacedMember = new BaseTestClass1();
+            var mergeResult = new MergeResult(PostMergeAction.Replace, replacedMember);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+            Assert.AreEqual(replacedMember, targetInstance.PropertyBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddMergeExpressionToScaffold_ReplaceActionReplaceWritableDerivedMember_ReplacesMember()
+        {
+            // Arrange
+            var targetInstance = new AutoInjectionTestClass1 { PropertyBase = new DerivedTestClass1() };
+            var sourceInstance = new DerivedTestClass1();
+            var member = Reflect<AutoInjectionTestClass1>.Property(_ => _.PropertyBase);
+            var replacedMember = new DerivedTestClass1();
+            var mergeResult = new MergeResult(PostMergeAction.Replace, replacedMember);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            repository.VerifyAll();
+            Assert.AreEqual(replacedMember, targetInstance.PropertyBase);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [InvalidOperationExceptionExpected]
+        public void AddMergeExpressionToScaffold_ReplaceActionReplaceReadonlyMember_Throws()
+        {
+            // Arrange
+            var targetInstance = new PropertyTestClass();
+            var sourceInstance = new DerivedTestClass1();
+            var member = PropertyTestClass.ReadonlyPropertyPi;
+            const int ReplacedMember = 897;
+            var mergeResult = new MergeResult(PostMergeAction.Replace, ReplacedMember);
+
+            MockRepository repository;
+            var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+        }
+
         private static InjectionScaffold CreateScaffoldForTransform<TSource>(
             TestClass1 targetInstance,
             TSource sourceInstance,
@@ -328,20 +582,71 @@ namespace Bijectiv.Tests.KernelFactory
         {
             var repository = new MockRepository(MockBehavior.Strict);
             var scaffoldMock = repository.Create<InjectionScaffold>();
-            scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(targetInstance));
+            scaffoldMock
+                .SetupGet(_ => _.Target)
+                .Returns(Expression.Constant(targetInstance));
 
             var injectionContextMock = repository.Create<IInjectionContext>();
-            scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(injectionContextMock.Object));
+            scaffoldMock
+                .SetupGet(_ => _.InjectionContext)
+                .Returns(Expression.Constant(injectionContextMock.Object));
 
             var injectionStoreMock = repository.Create<IInjectionStore>();
-            injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(injectionStoreMock.Object);
+            injectionContextMock
+                .SetupGet(_ => _.InjectionStore)
+                .Returns(injectionStoreMock.Object);
 
             var transformMock = repository.Create<ITransform>();
             var sourceType = ReferenceEquals(sourceInstance, null) ? typeof(TSource) : sourceInstance.GetType();
             var targetMemberType = member.PropertyType;
-            injectionStoreMock.Setup(_ => _.Resolve<ITransform>(sourceType, targetMemberType)).Returns(transformMock.Object);
+            injectionStoreMock
+                .Setup(_ => _.Resolve<ITransform>(sourceType, targetMemberType))
+                .Returns(transformMock.Object);
 
-            transformMock.Setup(_ => _.Transform(sourceInstance, injectionContextMock.Object, null)).Returns(transformResult);
+            transformMock
+                .Setup(_ => _.Transform(sourceInstance, injectionContextMock.Object, null))
+                .Returns(transformResult);
+
+            var expressions = new List<Expression>();
+            scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
+
+            return scaffoldMock.Object;
+        }
+
+        private static InjectionScaffold CreateScaffoldForMerge<TSource, TTarget>(
+            TTarget targetInstance,
+            TSource sourceInstance,
+            PropertyInfo member,
+            IMergeResult mergeResult,
+            out MockRepository repository)
+        {
+            repository = new MockRepository(MockBehavior.Strict);
+            var scaffoldMock = repository.Create<InjectionScaffold>();
+            scaffoldMock
+                .SetupGet(_ => _.Target)
+                .Returns(Expression.Constant(targetInstance));
+
+            var injectionContextMock = repository.Create<IInjectionContext>();
+            scaffoldMock
+                .SetupGet(_ => _.InjectionContext)
+                .Returns(Expression.Constant(injectionContextMock.Object));
+
+            var injectionStoreMock = repository.Create<IInjectionStore>();
+            injectionContextMock
+                .SetupGet(_ => _.InjectionStore)
+                .Returns(injectionStoreMock.Object);
+
+            var targetMember = member.GetValue(targetInstance);
+            var sourceType = ReferenceEquals(sourceInstance, null) ? typeof(TSource) : sourceInstance.GetType();
+            var targetMemberType = ReferenceEquals(targetMember, null) ? member.PropertyType : targetMember.GetType();
+            
+            var transformMock = repository.Create<IMerge>();
+            injectionStoreMock
+                .Setup(_ => _.Resolve<IMerge>(sourceType, targetMemberType)).Returns(transformMock.Object);
+
+            transformMock
+                .Setup(_ => _.Merge(sourceInstance, targetMember, injectionContextMock.Object, null))
+                .Returns(mergeResult);
 
             var expressions = new List<Expression>();
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);

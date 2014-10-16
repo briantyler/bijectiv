@@ -63,11 +63,12 @@ namespace Bijectiv.KernelFactory
             {
                 scaffold.ProcessedFragments.AddRange(inheritsFragments);
 
+                var fragment = inheritsFragments.First();
                 var baseDefintion = scaffold.InstanceRegistry.ResolveAll<InjectionDefinition>()
                     .Reverse()
                     .FirstOrDefault(candidate =>
-                        candidate.Source == inheritsFragments[0].SourceBase
-                        && candidate.Target == inheritsFragments[0].TargetBase);
+                        candidate.Source == fragment.SourceBase
+                        && candidate.Target == fragment.TargetBase);
 
                 if (baseDefintion == null)
                 {
