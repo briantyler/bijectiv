@@ -29,13 +29,15 @@
 
 namespace Bijectiv.Tests.KernelFactory
 {
-    using System.Linq;
+    using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Reflection;
 
     using Bijectiv.KernelFactory;
     using Bijectiv.TestUtilities;
     using Bijectiv.TestUtilities.TestTypes;
+    using Bijectiv.Utilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -110,17 +112,128 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var targetMock = new Mock<TargetMemberTransformInjector> { CallBase = true };
-            var member = typeof(HermitClass)
-                .GetMember("ReadOnlyId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Single();
+
+            var memberMock = new Mock<PropertyInfo>();
+            memberMock.SetupGet(_ => _.CanRead).Returns(true);
+            memberMock.SetupGet(_ => _.CanWrite).Returns(false);
+
             var scaffold = Stub.Create<InjectionScaffold>();
             var sourceExpression = Expression.Empty();
 
             // Act
-            targetMock.Object.AddTransformExpressionToScaffold(scaffold, member, sourceExpression);
+            targetMock.Object.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
 
             // Assert
-            targetMock.Verify(_ => _.AddMergeExpressionToScaffold(scaffold, member, sourceExpression));
+            targetMock.Verify(_ => _.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void AddTransformExpressionToScaffold_MemberIsHidden_Throws()
+        {
+            // Arrange
+            var target = new TargetMemberInjector();
+            var memberMock = new Mock<PropertyInfo>();
+            memberMock.SetupGet(_ => _.CanRead).Returns(false);
+            memberMock.SetupGet(_ => _.CanWrite).Returns(false);
+
+            // Act
+            target.AddTransformExpressionToScaffold(
+                Stub.Create<InjectionScaffold>(), memberMock.Object, Expression.Empty());
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddTransformExpressionToScaffold_SourceValue_TransformsMember()
+        {
+            // Arrange
+            var targetInstance = new TestClass1();
+            const int SourceInstance = 123;
+            var member = Reflect<TestClass1>.Property(_ => _.Id);
+            const string TransformResult = "bijectiv";
+
+            var scaffold = CreateScaffoldForTransform(targetInstance, SourceInstance, member, TransformResult);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            Assert.AreEqual(TransformResult, targetInstance.Id);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddTransformExpressionToScaffold_SourceSealed_TransformsMember()
+        {
+            // Arrange
+            var targetInstance = new TestClass1();
+            var sourceInstance = new SealedClass1();
+            var member = Reflect<TestClass1>.Property(_ => _.Id);
+            const string TransformResult = "bijectiv";
+
+            var scaffold = CreateScaffoldForTransform(targetInstance, sourceInstance, member, TransformResult);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(sourceInstance));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            Assert.AreEqual(TransformResult, targetInstance.Id);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddTransformExpressionToScaffold_SourceDerived_TransformsMember()
+        {
+            // Arrange
+            var targetInstance = new TestClass1();
+            BaseTestClass1 sourceInstance = new DerivedTestClass1();
+            var member = Reflect<TestClass1>.Property(_ => _.Id);
+            const string TransformResult = "bijectiv";
+
+            var scaffold = CreateScaffoldForTransform(targetInstance, sourceInstance, member, TransformResult);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            Assert.AreEqual(TransformResult, targetInstance.Id);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddTransformExpressionToScaffold_SourceNull_TransformsMember()
+        {
+            // Arrange
+            var targetInstance = new TestClass1();
+            var member = Reflect<TestClass1>.Property(_ => _.Id);
+            const string TransformResult = "bijectiv";
+
+            var scaffold = CreateScaffoldForTransform<TestClass2>(targetInstance, null, member, TransformResult);
+
+            var target = new TargetMemberInjector();
+
+            // Act
+            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(null, typeof(TestClass2)));
+
+            // Assert
+            Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
+
+            Assert.AreEqual(TransformResult, targetInstance.Id);
         }
 
         [TestMethod]
@@ -174,17 +287,66 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var targetMock = new Mock<TargetMemberMergeInjector> { CallBase = true };
-            var member = typeof(HermitClass)
-                .GetMember("WriteOnlyId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Single();
+
+            var memberMock = new Mock<PropertyInfo>();
+            memberMock.SetupGet(_ => _.CanRead).Returns(false);
+            memberMock.SetupGet(_ => _.CanWrite).Returns(true);
+
             var scaffold = Stub.Create<InjectionScaffold>();
             var sourceExpression = Expression.Empty();
 
             // Act
-            targetMock.Object.AddMergeExpressionToScaffold(scaffold, member, sourceExpression);
+            targetMock.Object.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
 
             // Assert
-            targetMock.Verify(_ => _.AddTransformExpressionToScaffold(scaffold, member, sourceExpression));
+            targetMock.Verify(_ => _.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentExceptionExpected]
+        public void AddMergeExpressionToScaffold_MemberIsHidden_Throws()
+        {
+            // Arrange
+            var target = new TargetMemberInjector();
+            var memberMock = new Mock<PropertyInfo>();
+            memberMock.SetupGet(_ => _.CanRead).Returns(false);
+            memberMock.SetupGet(_ => _.CanWrite).Returns(false);
+
+            // Act
+            target.AddMergeExpressionToScaffold(
+                Stub.Create<InjectionScaffold>(), memberMock.Object, Expression.Empty());
+
+            // Assert
+        }
+
+        private static InjectionScaffold CreateScaffoldForTransform<TSource>(
+            TestClass1 targetInstance,
+            TSource sourceInstance,
+            PropertyInfo member,
+            object transformResult)
+        {
+            var repository = new MockRepository(MockBehavior.Strict);
+            var scaffoldMock = repository.Create<InjectionScaffold>();
+            scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(targetInstance));
+
+            var injectionContextMock = repository.Create<IInjectionContext>();
+            scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(injectionContextMock.Object));
+
+            var injectionStoreMock = repository.Create<IInjectionStore>();
+            injectionContextMock.SetupGet(_ => _.InjectionStore).Returns(injectionStoreMock.Object);
+
+            var transformMock = repository.Create<ITransform>();
+            var sourceType = ReferenceEquals(sourceInstance, null) ? typeof(TSource) : sourceInstance.GetType();
+            var targetMemberType = member.PropertyType;
+            injectionStoreMock.Setup(_ => _.Resolve<ITransform>(sourceType, targetMemberType)).Returns(transformMock.Object);
+
+            transformMock.Setup(_ => _.Transform(sourceInstance, injectionContextMock.Object, null)).Returns(transformResult);
+
+            var expressions = new List<Expression>();
+            scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
+
+            return scaffoldMock.Object;
         }
 
         internal class TargetMemberTransformInjector : TargetMemberInjector

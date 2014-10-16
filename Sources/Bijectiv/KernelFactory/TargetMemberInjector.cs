@@ -75,6 +75,13 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("sourceExpression");
             }
 
+            if (!member.CanRead() && !member.CanWrite())
+            {
+                throw new ArgumentException(
+                    string.Format("Member '{0}' has no accessors. It must be ignored by the injection.", member),
+                    "member");
+            }
+
             if (!member.CanWrite())
             {
                 this.AddMergeExpressionToScaffold(scaffold, member, sourceExpression);
@@ -103,9 +110,9 @@ namespace Bijectiv.KernelFactory
                 "memberSourceType", CreateTypeExpression(memberSource, sourceExpression.Type)).Visit(transform);
 
             var accessExpression = member.GetAccessExpression(scaffold.Target);
-            transform = Expression.Assign(accessExpression, Expression.Convert(transform, targetMemberType));
+            var assignTransformToMember = Expression.Assign(accessExpression, Expression.Convert(transform, targetMemberType));
 
-            scaffold.Expressions.Add(Expression.Block(new[] { memberSource }, assignMemberSource, transform));
+            scaffold.Expressions.Add(Expression.Block(new[] { memberSource }, assignMemberSource, assignTransformToMember));
         }
 
         /// <summary>
@@ -139,6 +146,13 @@ namespace Bijectiv.KernelFactory
             if (sourceExpression == null)
             {
                 throw new ArgumentNullException("sourceExpression");
+            }
+
+            if (!member.CanWrite() && !member.CanRead())
+            {
+                throw new ArgumentException(
+                    string.Format("Member '{0}' has no accessors. It must be ignored by the injection.", member),
+                    "member");
             }
 
             if (!member.CanRead())
@@ -191,12 +205,13 @@ namespace Bijectiv.KernelFactory
 
             var mergeTarget = ((Expression<Func<object>>)(() => Placeholder.Of<IMergeResult>("mergeResult").Target)).Body;
             mergeTarget = new PlaceholderExpressionVisitor("mergeResult", mergeResult).Visit(mergeTarget);
+            var convertedMergeTarget = Expression.Convert(mergeTarget, member.GetReturnType());
 
             var block = Expression.Block(
                 new[] { memberSource, mergeResult },
                 Expression.Assign(memberSource, Expression.Convert(sourceExpression, typeof(object))),
                 Expression.Assign(mergeResult, merge),
-                Expression.IfThen(replaceTarget, Expression.Assign(targetMember, Expression.Convert(mergeTarget, member.GetReturnType()))));
+                Expression.IfThen(replaceTarget, Expression.Assign(targetMember, convertedMergeTarget)));
 
             scaffold.Expressions.Add(block);
         }
@@ -208,16 +223,19 @@ namespace Bijectiv.KernelFactory
         /// The expression.
         /// </param>
         /// <param name="fallback">
-        /// The most derived type that the result of <paramref name="expression"/> can be.
+        /// The most derived type that the any result of <paramref name="expression"/> can be.
         /// </param>
         /// <returns>
         /// An expression that returns the type of the result of <paramref name="expression"/>.
         /// </returns>
         private static Expression CreateTypeExpression(Expression expression, Type fallback)
         {
-            Expression<Func<object, Type>> x = 
-                o => fallback.IsValueType || fallback.IsSealed || o == null ? fallback : o.GetType();
+            if (fallback.IsValueType || fallback.IsSealed)
+            {
+                return Expression.Constant(fallback);
+            }
 
+            Expression<Func<object, Type>> x = o => o == null ? fallback : o.GetType();
             return new ParameterExpressionVisitor(
                 x.Parameters.Single(), Expression.Convert(expression, typeof(object))).Visit(x.Body);
         }
