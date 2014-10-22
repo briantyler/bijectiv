@@ -92,10 +92,10 @@ namespace Bijectiv.Tests.Utilities
             var constant = Expression.Constant(31);
             Expression<Func<int>> expression = () => Math.Sign(1);
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -110,10 +110,10 @@ namespace Bijectiv.Tests.Utilities
             var constant = Expression.Constant(31);
             Expression<Func<int>> expression = () => Math.Sign(Placeholder.Of<int>());
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -128,10 +128,10 @@ namespace Bijectiv.Tests.Utilities
             var constant = Expression.Constant(31);
             Expression<Func<int>> expression = () => Placeholder.Of<int>("parameter");
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -147,10 +147,10 @@ namespace Bijectiv.Tests.Utilities
             const string Parameter = "parameter";
             Expression<Func<int>> expression = () => Placeholder.Of<int>(Parameter);
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -166,10 +166,10 @@ namespace Bijectiv.Tests.Utilities
             const string Parameter = "x";
             Expression<Func<int>> expression = () => Placeholder.Of<int>(Parameter);
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -185,10 +185,10 @@ namespace Bijectiv.Tests.Utilities
             var parameterSource = new TestClass1 { Id = "parameter" };
             Expression<Func<int>> expression = () => Placeholder.Of<int>(parameterSource.Id);
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -204,10 +204,10 @@ namespace Bijectiv.Tests.Utilities
             var parameterSource = new TestClass1 { Id = "x" };
             Expression<Func<int>> expression = () => Placeholder.Of<int>(parameterSource.Id);
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();
@@ -269,10 +269,10 @@ namespace Bijectiv.Tests.Utilities
             Func<string> parameter = () => "parameter";
             Expression<Func<int>> expression = () => Placeholder.Of<int>(parameter());
 
-            var target = new PlaceholderExpressionVisitor("parameter", constant);
+            var testTarget = new PlaceholderExpressionVisitor("parameter", constant);
 
             // Act
-            expression = (Expression<Func<int>>)target.Visit(expression);
+            expression = (Expression<Func<int>>)testTarget.Visit(expression);
 
             // Assert
             var @delegate = expression.Compile();

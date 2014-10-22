@@ -85,10 +85,10 @@ namespace Bijectiv.Tests.KernelFactory
             var tasks = Stub.Create<IEnumerable<IInjectionTask>>();
 
             // Act
-            var target = new TransformFactory(tasks);
+            var testTarget = new TransformFactory(tasks);
 
             // Assert
-            Assert.AreEqual(tasks, target.Tasks);
+            Assert.AreEqual(tasks, testTarget.Tasks);
             // ReSharper restore PossibleMultipleEnumeration
         }
 
@@ -98,11 +98,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_DefinitionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
+            var testTarget = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<IInstanceRegistry>(), null);
+            testTarget.Create(Stub.Create<IInstanceRegistry>(), null);
 
             // Assert
         }
@@ -113,11 +113,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_InstanceRegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
+            var testTarget = new TransformFactory(Stub.Create<IEnumerable<IInjectionTask>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null, new InjectionDefinition(TestClass1.T, TestClass2.T));
+            testTarget.Create(null, new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             // Assert
         }
@@ -133,10 +133,10 @@ namespace Bijectiv.Tests.KernelFactory
                 .Callback((InjectionScaffold s) => s.Expressions.Add(Expression.Constant(new object())));
 
             var taskCollection = new List<IInjectionTask> { taskMock.Object };
-            var target = new TransformFactory(taskCollection);
+            var testTarget = new TransformFactory(taskCollection);
 
             // Act
-            var result = target.Create(
+            var result = testTarget.Create(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
@@ -194,10 +194,10 @@ namespace Bijectiv.Tests.KernelFactory
                 validateParametersTaskMock.Object, 
                 returnTaskMock.Object
             };
-            var target = new TransformFactory(taskCollection);
+            var testTarget = new TransformFactory(taskCollection);
 
             // Act
-            var injection = target.Create(
+            var injection = testTarget.Create(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 

@@ -70,10 +70,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(TriggeredBy.InjectionEnded, target.TriggeredBy);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, testTarget.TriggeredBy);
         }
 
         [TestMethod]
@@ -82,11 +82,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -125,14 +125,14 @@ namespace Bijectiv.Tests.KernelFactory
                     fragment4
                 });
 
-            var targetMock = repository.Create<CreateTriggersTask>(TriggeredBy.InjectionEnded);
-            targetMock.Setup(_ => _.ProcessFragment(triggerFragment2, scaffoldMock.Object));
-            targetMock.Setup(_ => _.ProcessFragment(triggerFragment4, scaffoldMock.Object));
+            var testTargetMock = repository.Create<CreateTriggersTask>(TriggeredBy.InjectionEnded);
+            testTargetMock.Setup(_ => _.ProcessFragment(triggerFragment2, scaffoldMock.Object));
+            testTargetMock.Setup(_ => _.ProcessFragment(triggerFragment4, scaffoldMock.Object));
             
-            var target = targetMock.Object;
+            var testTarget = testTargetMock.Object;
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -144,11 +144,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessFragment(null, Stub.Create<InjectionScaffold>());
+            testTarget.ProcessFragment(null, Stub.Create<InjectionScaffold>());
 
             // Assert
         }
@@ -161,11 +161,11 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var fragment = new InjectionTriggerFragment(
                 TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessFragment(fragment, null);
+            testTarget.ProcessFragment(fragment, null);
 
             // Assert
         }
@@ -176,7 +176,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var fragment = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             var scaffoldMock = new Mock<InjectionScaffold>();
             var parameter = Expression.Variable(typeof(IInjectionParameters<TestClass1, TestClass2>), "injectionParameters");
@@ -189,7 +189,7 @@ namespace Bijectiv.Tests.KernelFactory
             scaffoldMock.SetupGet(_ => _.ProcessedFragments).Returns(processedFragments);
 
             // Act
-            target.ProcessFragment(fragment, scaffoldMock.Object);
+            testTarget.ProcessFragment(fragment, scaffoldMock.Object);
 
             // Assert
             Assert.AreEqual(1, processedFragments.Count());
@@ -210,7 +210,7 @@ namespace Bijectiv.Tests.KernelFactory
                 }; 
 
             var fragment = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
-            var target = new CreateTriggersTask(TriggeredBy.InjectionEnded);
+            var testTarget = new CreateTriggersTask(TriggeredBy.InjectionEnded);
 
             var scaffoldMock = new Mock<InjectionScaffold>();
             var variable = Expression.Variable(typeof(IInjectionParameters<TestClass1, TestClass2>), "injectionParameters");
@@ -223,7 +223,7 @@ namespace Bijectiv.Tests.KernelFactory
             expressions.Add(Expression.Assign(variable, Expression.Constant(parameters)));
 
             // Act
-            target.ProcessFragment(fragment, scaffoldMock.Object);
+            testTarget.ProcessFragment(fragment, scaffoldMock.Object);
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(new[] { variable }, expressions)).Compile()();

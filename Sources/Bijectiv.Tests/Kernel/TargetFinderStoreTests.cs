@@ -64,10 +64,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new TargetFinderStore();
+            var testTarget = new TargetFinderStore();
 
             // Assert
-            Assert.IsFalse(target.Finders.Any());
+            Assert.IsFalse(testTarget.Finders.Any());
         }
 
         [TestMethod]
@@ -76,11 +76,11 @@ namespace Bijectiv.Tests.Kernel
         public void Register_RegistrationParameterIsNull_Throws()
         {
             // Arrange
-            var target = new TargetFinderStore();
+            var testTarget = new TargetFinderStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Register(null);
+            testTarget.Register(null);
 
             // Assert
         }
@@ -94,13 +94,13 @@ namespace Bijectiv.Tests.Kernel
                 TestClass1.T,
                 TestClass2.T,
                 () => Stub.Create<ITargetFinder>());
-            var target = new TargetFinderStore();
+            var testTarget = new TargetFinderStore();
 
             // Act
-            target.Register(registration);
+            testTarget.Register(registration);
 
             // Assert
-            Assert.IsTrue(target.Finders.ContainsKey(Tuple.Create(TestClass1.T, TestClass2.T)));
+            Assert.IsTrue(testTarget.Finders.ContainsKey(Tuple.Create(TestClass1.T, TestClass2.T)));
         }
 
         [TestMethod]
@@ -110,13 +110,13 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             Func<ITargetFinder> targetFinderFactory = () => Stub.Create<ITargetFinder>();
             var registration = new TargetFinderRegistration(TestClass1.T, TestClass2.T, targetFinderFactory);
-            var target = new TargetFinderStore();
+            var testTarget = new TargetFinderStore();
 
             // Act
-            target.Register(registration);
+            testTarget.Register(registration);
 
             // Assert
-            Assert.AreEqual(targetFinderFactory, target.Finders[Tuple.Create(TestClass1.T, TestClass2.T)]);
+            Assert.AreEqual(targetFinderFactory, testTarget.Finders[Tuple.Create(TestClass1.T, TestClass2.T)]);
         }
 
         [TestMethod]
@@ -129,14 +129,14 @@ namespace Bijectiv.Tests.Kernel
                 TestClass1.T,
                 TestClass2.T,
                 targetFinderFactory);
-            var target = new TargetFinderStore();
-            target.Finders.Add(Tuple.Create(TestClass1.T, TestClass2.T), () => Stub.Create<ITargetFinder>());
+            var testTarget = new TargetFinderStore();
+            testTarget.Finders.Add(Tuple.Create(TestClass1.T, TestClass2.T), () => Stub.Create<ITargetFinder>());
 
             // Act
-            target.Register(registration);
+            testTarget.Register(registration);
 
             // Assert
-            Assert.AreEqual(targetFinderFactory, target.Finders[Tuple.Create(TestClass1.T, TestClass2.T)]);
+            Assert.AreEqual(targetFinderFactory, testTarget.Finders[Tuple.Create(TestClass1.T, TestClass2.T)]);
         }
 
         [TestMethod]
@@ -145,11 +145,11 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var finder = Stub.Create<ITargetFinder>();
-            var target = new TargetFinderStore();
-            target.Finders.Add(Tuple.Create(TestClass1.T, TestClass2.T), () => finder);
+            var testTarget = new TargetFinderStore();
+            testTarget.Finders.Add(Tuple.Create(TestClass1.T, TestClass2.T), () => finder);
 
             // Act
-            var result = target.Resolve(TestClass1.T, TestClass2.T);
+            var result = testTarget.Resolve(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.AreEqual(finder, result);
@@ -160,10 +160,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_RegistrationDoesNotExist_ReturnsNullTargetFinder()
         {
             // Arrange
-            var target = new TargetFinderStore();
+            var testTarget = new TargetFinderStore();
 
             // Act
-            var result = target.Resolve(TestClass1.T, TestClass2.T);
+            var result = testTarget.Resolve(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NullTargetFinder));

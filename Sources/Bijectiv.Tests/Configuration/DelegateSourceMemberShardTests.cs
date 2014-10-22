@@ -150,10 +150,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
+            var testTarget = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
 
             // Assert
-            Assert.AreEqual(Delegate, target.Delegate);
+            Assert.AreEqual(Delegate, testTarget.Delegate);
         }
 
         [TestMethod]
@@ -163,10 +163,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
+            var testTarget = new DelegateSourceMemberShard(TestClass1.T, TestClass2.T, Member, Delegate, false);
 
             // Assert
-            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), target.ParameterType);
+            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), testTarget.ParameterType);
         }
     }
 }

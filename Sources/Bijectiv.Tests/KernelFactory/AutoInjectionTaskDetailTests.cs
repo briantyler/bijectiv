@@ -84,10 +84,10 @@ namespace Bijectiv.Tests.KernelFactory
             var injector = Stub.Create<ITargetMemberInjector>();
 
             // Act
-            var target = new AutoInjectionTaskDetail(injector, false);
+            var testTarget = new AutoInjectionTaskDetail(injector, false);
 
             // Assert
-            Assert.AreEqual(injector, target.Injector);
+            Assert.AreEqual(injector, testTarget.Injector);
         }
 
         [TestMethod]
@@ -97,10 +97,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new AutoInjectionTaskDetail(Stub.Create<ITargetMemberInjector>(), true);
+            var testTarget = new AutoInjectionTaskDetail(Stub.Create<ITargetMemberInjector>(), true);
 
             // Assert
-            Assert.IsTrue(target.IsMerge);
+            Assert.IsTrue(testTarget.IsMerge);
         }
 
         [TestMethod]
@@ -109,11 +109,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CreateSourceTargetPairs_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CreateSourceTargetPairs(null, new IAutoInjectionStrategy[0]).Naught();
+            testTarget.CreateSourceTargetPairs(null, new IAutoInjectionStrategy[0]).Naught();
 
             // Assert
         }
@@ -124,11 +124,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CreateSourceTargetPairs_StrategiesParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CreateSourceTargetPairs(Stub.Create<InjectionScaffold>(), null).Naught();
+            testTarget.CreateSourceTargetPairs(Stub.Create<InjectionScaffold>(), null).Naught();
 
             // Assert
         }
@@ -138,14 +138,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void CreateSourceTargetPairs_NoUnprocessedTargetMembers_ReturnsEmptyCollection()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             scaffoldMock
                 .SetupGet(_ => _.UnprocessedTargetMembers)
                 .Returns(Enumerable.Empty<MemberInfo>());
             
             // Act
-            var result = target
+            var result = testTarget
                 .CreateSourceTargetPairs(
                     scaffoldMock.Object,
                     new[] { Stub.Create<IAutoInjectionStrategy>() })
@@ -162,7 +162,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new[] { Stub.Create<MemberInfo>() });
@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(false);
 
             // Act
-            var result = target
+            var result = testTarget
                 .CreateSourceTargetPairs(
                     scaffoldMock.Object,
                     new[] { strategyMock.Object })
@@ -197,7 +197,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
@@ -216,7 +216,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(true);
 
             // Act
-            var result = target
+            var result = testTarget
                 .CreateSourceTargetPairs(
                     scaffoldMock.Object,
                     new[] { strategyMock.Object })
@@ -235,7 +235,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
@@ -254,7 +254,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(true);
 
             // Act
-            var result = target
+            var result = testTarget
                 .CreateSourceTargetPairs(
                     scaffoldMock.Object,
                     new[] { strategyMock.Object, strategyMock.Object })
@@ -271,7 +271,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
             var targetMember = Stub.Create<MemberInfo>();
@@ -292,7 +292,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(false);
 
             // Act
-            target.CreateSourceTargetPairs(
+            testTarget.CreateSourceTargetPairs(
                 scaffoldMock.Object,
                 new[] { strategyMock.Object, strategyMock.Object }).Naught();
 
@@ -306,7 +306,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Loose);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var scaffoldMock = repository.Create<InjectionScaffold>();
 
@@ -378,7 +378,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(false);
 
             // Act
-            var result = target.CreateSourceTargetPairs(
+            var result = testTarget.CreateSourceTargetPairs(
                 scaffoldMock.Object,
                 new[] { strategyMock1.Object, strategyMock2.Object }).ToArray();
 
@@ -395,11 +395,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessPair_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessPair(null, Tuple.Create(Stub.Create<MemberInfo>(), Stub.Create<MemberInfo>()));
+            testTarget.ProcessPair(null, Tuple.Create(Stub.Create<MemberInfo>(), Stub.Create<MemberInfo>()));
 
             // Assert
         }
@@ -410,11 +410,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessPair_PairParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessPair(Stub.Create<InjectionScaffold>(), null);
+            testTarget.ProcessPair(Stub.Create<InjectionScaffold>(), null);
 
             // Assert
         }
@@ -496,7 +496,7 @@ namespace Bijectiv.Tests.KernelFactory
             repository.Verify();
         }
 
-        private static AutoInjectionTaskDetail CreateTarget()
+        private static AutoInjectionTaskDetail CreateTestTarget()
         {
             return new Mock<AutoInjectionTaskDetail>(MockBehavior.Loose) { CallBase = true }.Object;
         }

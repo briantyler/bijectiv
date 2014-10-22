@@ -105,10 +105,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
-            Assert.AreEqual(typeof(TestClass1), target.Source);
+            Assert.AreEqual(typeof(TestClass1), testTarget.Source);
         }
 
         [TestMethod]
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
-            Assert.AreEqual(typeof(TestClass2), target.Target);
+            Assert.AreEqual(typeof(TestClass2), testTarget.Target);
         }
 
         [TestMethod]
@@ -131,10 +131,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Assert
-            Assert.AreEqual(Delegate, target.Delegate);
+            Assert.AreEqual(Delegate, testTarget.Delegate);
         }
 
         [TestMethod]
@@ -143,10 +143,10 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_InjectionContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), Delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), null, null);
+            testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), null, null);
 
             // Assert
         }
@@ -163,10 +163,10 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+            testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -186,10 +186,10 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+            testTarget.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -209,10 +209,10 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), targetInstance, Stub.Create<IInjectionContext>(), null);
+            testTarget.Merge(Stub.Create<object>(), targetInstance, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -232,10 +232,10 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), context, null);
+            testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), context, null);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -255,10 +255,10 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), hint);
+            testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), hint);
 
             // Assert
             Assert.IsTrue(called[0]);
@@ -278,14 +278,14 @@ namespace Bijectiv.Tests.Kernel
                 return Stub.Create<IMergeResult>();
             };
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+            testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);
-            Assert.AreEqual(injection, target);
+            Assert.AreEqual(injection, testTarget);
         }
 
         [TestMethod]
@@ -296,10 +296,10 @@ namespace Bijectiv.Tests.Kernel
             var expected = Stub.Create<IMergeResult>();
             DMerge @delegate = (s, t, c, h, i) => expected;
 
-            var target = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
+            var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            var result = target.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+            var result = testTarget.Merge(Stub.Create<object>(), Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.AreEqual(expected, result);

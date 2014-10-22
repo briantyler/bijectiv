@@ -79,10 +79,10 @@ namespace Bijectiv.Tests.KernelFactory
             var injectionFactory = Stub.Create<IInjectionFactory<IInjection>>();
 
             // Act
-            var target = new DelegateInjectionStoreFactory(injectionFactory);
+            var testTarget = new DelegateInjectionStoreFactory(injectionFactory);
 
             // Assert
-            Assert.AreEqual(injectionFactory, target.InjectionFactory);
+            Assert.AreEqual(injectionFactory, testTarget.InjectionFactory);
         }
 
         [TestMethod]
@@ -91,11 +91,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_RegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
+            var testTarget = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null);
+            testTarget.Create(null);
 
             // Assert
         }
@@ -105,11 +105,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ValidParameters_ReturnsCollectionInjectionStore()
         {
             // Arrange
-            var target = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
+            var testTarget = new DelegateInjectionStoreFactory(Stub.Create<IInjectionFactory<IInjection>>());
             var registry = new InstanceRegistry();
 
             // Act
-            var result = target.Create(registry);
+            var result = testTarget.Create(registry);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(CollectionInjectionStore));
@@ -138,10 +138,10 @@ namespace Bijectiv.Tests.KernelFactory
                 .Setup(_ => _.Create(registryMock.Object, It.Is<InjectionDefinition>(d => d == definition2)))
                 .Returns(injection2);
 
-            var target = new DelegateInjectionStoreFactory(factoryMock.Object);
+            var testTarget = new DelegateInjectionStoreFactory(factoryMock.Object);
 
             // Act
-            var result = (CollectionInjectionStore)target.Create(registryMock.Object);
+            var result = (CollectionInjectionStore)testTarget.Create(registryMock.Object);
 
             // Assert
             factoryMock.VerifyAll();

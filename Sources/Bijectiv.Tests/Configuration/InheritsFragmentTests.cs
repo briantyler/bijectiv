@@ -150,14 +150,14 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InheritsFragment(
+            var testTarget = new InheritsFragment(
                 typeof(DerivedTestClass1),
                 typeof(DerivedTestClass2),
                 typeof(BaseTestClass1),
                 typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(typeof(BaseTestClass1), target.SourceBase);
+            Assert.AreEqual(typeof(BaseTestClass1), testTarget.SourceBase);
         }
 
         [TestMethod]
@@ -167,14 +167,14 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InheritsFragment(
+            var testTarget = new InheritsFragment(
                 typeof(DerivedTestClass1),
                 typeof(DerivedTestClass2),
                 typeof(BaseTestClass1),
                 typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(typeof(BaseTestClass2), target.TargetBase);
+            Assert.AreEqual(typeof(BaseTestClass2), testTarget.TargetBase);
         }
 
         [TestMethod]
@@ -184,14 +184,14 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InheritsFragment(
+            var testTarget = new InheritsFragment(
                 typeof(DerivedTestClass1),
                 typeof(DerivedTestClass2),
                 typeof(BaseTestClass1),
                 typeof(BaseTestClass2));
 
             // Assert
-            Assert.IsTrue(target.Inherited);
+            Assert.IsTrue(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -201,14 +201,14 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InheritsFragment(
+            var testTarget = new InheritsFragment(
                 typeof(DerivedTestClass1),
                 typeof(DerivedTestClass2),
                 typeof(BaseTestClass1),
                 typeof(BaseTestClass2));
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.Inherits, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Inherits, testTarget.FragmentCategory);
         }
     }
 }

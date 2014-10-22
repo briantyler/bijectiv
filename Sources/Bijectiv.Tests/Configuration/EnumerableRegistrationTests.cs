@@ -244,10 +244,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
+            var testTarget = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
 
             // Assert
-            Assert.AreEqual(typeof(IEnumerable<>), target.InterfaceType);
+            Assert.AreEqual(typeof(IEnumerable<>), testTarget.InterfaceType);
         }
 
         [TestMethod]
@@ -257,10 +257,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
+            var testTarget = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<>));
 
             // Assert
-            Assert.AreEqual(typeof(Collection<>), target.ConcreteType);
+            Assert.AreEqual(typeof(Collection<>), testTarget.ConcreteType);
         }
 
         [TestMethod]
@@ -270,10 +270,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new EnumerableRegistration(typeof(IEnumerable<Placeholder>), typeof(Collection<>));
+            var testTarget = new EnumerableRegistration(typeof(IEnumerable<Placeholder>), typeof(Collection<>));
 
             // Assert
-            Assert.AreEqual(typeof(IEnumerable<>), target.InterfaceType);
+            Assert.AreEqual(typeof(IEnumerable<>), testTarget.InterfaceType);
         }
 
         [TestMethod]
@@ -283,10 +283,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<Placeholder>));
+            var testTarget = new EnumerableRegistration(typeof(IEnumerable<>), typeof(Collection<Placeholder>));
 
             // Assert
-            Assert.AreEqual(typeof(Collection<>), target.ConcreteType);
+            Assert.AreEqual(typeof(Collection<>), testTarget.ConcreteType);
         }
     }
 }

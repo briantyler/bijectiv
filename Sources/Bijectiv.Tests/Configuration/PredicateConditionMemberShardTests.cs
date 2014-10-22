@@ -153,10 +153,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
+            var testTarget = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
             
             // Assert
-            Assert.AreEqual(Predicate, target.Predicate);
+            Assert.AreEqual(Predicate, testTarget.Predicate);
         }
 
         [TestMethod]
@@ -166,10 +166,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
+            var testTarget = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
 
             // Assert
-            Assert.AreEqual(LegendaryShards.Condition, target.ShardCategory);
+            Assert.AreEqual(LegendaryShards.Condition, testTarget.ShardCategory);
         }
 
         [TestMethod]
@@ -179,12 +179,12 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
+            var testTarget = new PredicateConditionMemberShard(TestClass1.T, TestClass2.T, Member, Predicate);
 
             // Assert
             Assert.AreEqual(
                 typeof(IInjectionParameters<TestClass1, TestClass2>),
-                target.PredicateParameterType);
+                testTarget.PredicateParameterType);
         }
 
         [TestMethod]
@@ -196,13 +196,13 @@ namespace Bijectiv.Tests.Configuration
             Func<IInjectionParameters<BaseTestClass1, BaseTestClass2>, bool> predicate = p => true;
 
             // Act
-            var target = new PredicateConditionMemberShard(
+            var testTarget = new PredicateConditionMemberShard(
                 DerivedTestClass1.T, DerivedTestClass2.T, member, predicate);
 
             // Assert
             Assert.AreEqual(
                 typeof(IInjectionParameters<BaseTestClass1, BaseTestClass2>), 
-                target.PredicateParameterType);
+                testTarget.PredicateParameterType);
         }
     }
 }

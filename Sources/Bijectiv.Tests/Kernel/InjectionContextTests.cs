@@ -108,11 +108,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new InjectionContext(
+            var testTarget = new InjectionContext(
                 CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Assert
-            Assert.IsNotNull(target.TargetCache);
+            Assert.IsNotNull(testTarget.TargetCache);
         }
 
         [TestMethod]
@@ -123,10 +123,10 @@ namespace Bijectiv.Tests.Kernel
             var culture = CultureInfo.CreateSpecificCulture("en-GB");
 
             // Act
-            var target = new InjectionContext(culture, t => new object(), Stub.Create<IInjectionKernel>());
+            var testTarget = new InjectionContext(culture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Assert
-            Assert.AreEqual(culture, target.Culture);
+            Assert.AreEqual(culture, testTarget.Culture);
         }
 
         [TestMethod]
@@ -139,10 +139,10 @@ namespace Bijectiv.Tests.Kernel
             kernelMock.SetupGet(_ => _.Store).Returns(injectionStore);
 
             // Act
-            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
+            var testTarget = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
 
             // Assert
-            Assert.AreEqual(injectionStore, target.InjectionStore);
+            Assert.AreEqual(injectionStore, testTarget.InjectionStore);
         }
 
         [TestMethod]
@@ -155,10 +155,10 @@ namespace Bijectiv.Tests.Kernel
             kernelMock.SetupGet(_ => _.Registry).Returns(instanceRegistry);
 
             // Act
-            var target = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
+            var testTarget = new InjectionContext(CultureInfo.InvariantCulture, t => new object(), kernelMock.Object);
 
             // Assert
-            Assert.AreEqual(instanceRegistry, target.InstanceRegistry);
+            Assert.AreEqual(instanceRegistry, testTarget.InstanceRegistry);
         }
 
         [TestMethod]
@@ -168,11 +168,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new InjectionContext(
+            var testTarget = new InjectionContext(
                 CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Assert
-            Assert.IsNotNull(target.InjectionTrail);
+            Assert.IsNotNull(testTarget.InjectionTrail);
         }
 
         [TestMethod]
@@ -181,12 +181,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InjectionContext(
+            var testTarget = new InjectionContext(
                 CultureInfo.InvariantCulture, t => new object(), Stub.Create<IInjectionKernel>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve(null);
+            testTarget.Resolve(null);
 
             // Assert
         }
@@ -197,13 +197,13 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var expected = new object();
-            var target = new InjectionContext(
+            var testTarget = new InjectionContext(
                 CultureInfo.InvariantCulture, 
                 t => t == TestClass1.T ? expected : null,
                 Stub.Create<IInjectionKernel>());
 
             // Act
-            var result = target.Resolve(TestClass1.T);
+            var result = testTarget.Resolve(TestClass1.T);
 
             // Assert
             Assert.AreEqual(expected, result);

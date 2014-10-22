@@ -60,11 +60,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetLabel_ScopeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new LabelCache();
+            var testTarget = new LabelCache();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.GetLabel(null, Guid.Empty);
+            testTarget.GetLabel(null, Guid.Empty);
 
             // Assert
         }
@@ -74,10 +74,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetLabel_ValidParameters_LabelIsCreated()
         {
             // Arrange
-            var target = new LabelCache();
+            var testTarget = new LabelCache();
 
             // Act
-            var label = target.GetLabel(new object(), new Guid("7BD5F011-E7F4-4EF5-9D97-B5A2C0480F4B"));
+            var label = testTarget.GetLabel(new object(), new Guid("7BD5F011-E7F4-4EF5-9D97-B5A2C0480F4B"));
 
             // Assert
             Assert.IsNotNull(label);
@@ -88,14 +88,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetLabel_LabelWasGotForIdenticalScopeAndCategory_OriginalLabelIsReturned()
         {
             // Arrange
-            var target = new LabelCache();
+            var testTarget = new LabelCache();
             var scope = new object();
             var category = new Guid("7BD5F011-E7F4-4EF5-9D97-B5A2C0480F4B");
             
-            var expected = target.GetLabel(scope, category);
+            var expected = testTarget.GetLabel(scope, category);
 
             // Act
-            var label = target.GetLabel(scope, category);
+            var label = testTarget.GetLabel(scope, category);
 
             // Assert
             Assert.AreEqual(expected, label);

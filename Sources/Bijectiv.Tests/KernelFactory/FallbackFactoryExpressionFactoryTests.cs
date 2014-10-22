@@ -63,11 +63,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanCreateExpression_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CanCreateExpression(null);
+            testTarget.CanCreateExpression(null);
 
             // Assert
         }
@@ -77,7 +77,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanCreateExpression_ProcessedFragmentsContainsFactoryFragment_ReturnsFalse()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             var factoryFragment = Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.Factory);
@@ -86,7 +86,7 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.ProcessedFragments.Add(factoryFragment);
 
             // Act
-            var result = target.CanCreateExpression(scaffold);
+            var result = testTarget.CanCreateExpression(scaffold);
 
             // Assert
             Assert.IsFalse(result);
@@ -97,7 +97,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanCreateExpression_ProcessedFragmentsDoesNotContainFactoryFragment_ReturnsTrue()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             var factoryFragment = Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.Factory);
@@ -105,7 +105,7 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.CandidateFragments.Add(factoryFragment);
 
             // Act
-            var result = target.CanCreateExpression(scaffold);
+            var result = testTarget.CanCreateExpression(scaffold);
 
             // Assert
             Assert.IsTrue(result);
@@ -117,11 +117,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CreateExpression_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CreateExpression(null);
+            testTarget.CreateExpression(null);
 
             // Assert
         }
@@ -131,11 +131,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CreateExpression_ValidParameters_ReturnsNewExpression()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            var result = target.CreateExpression(scaffold);
+            var result = testTarget.CreateExpression(scaffold);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NewExpression));
@@ -143,7 +143,7 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.IsFalse(((NewExpression)result).Arguments.Any());
         }
 
-        private static FallbackFactoryExpressionFactory CreateTarget()
+        private static FallbackFactoryExpressionFactory CreateTestTarget()
         {
             return new FallbackFactoryExpressionFactory();
         }

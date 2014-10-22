@@ -77,12 +77,12 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
             // Act
-            target.Register<TestClass1, TestClass2>();
+            testTarget.Register<TestClass1, TestClass2>();
 
             // Assert
             registryMock.VerifyAll();
@@ -95,14 +95,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.Register<TestClass1, TestClass2>();
+            testTarget.Register<TestClass1, TestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -116,14 +116,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.Register<TestClass1, TestClass2>();
+            testTarget.Register<TestClass1, TestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -137,14 +137,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.Register<TestClass1, TestClass2>();
+            testTarget.Register<TestClass1, TestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -158,14 +158,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            var result = (InjectionDefinitionBuilder<TestClass1, TestClass2>)target.Register<TestClass1, TestClass2>();
+            var result = (InjectionDefinitionBuilder<TestClass1, TestClass2>)testTarget.Register<TestClass1, TestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -194,11 +194,11 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
             registryMock.Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             registryMock.VerifyAll();
@@ -211,14 +211,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -232,14 +232,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -253,14 +253,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var fragment = defintions.Single().Single();
@@ -274,14 +274,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var fragment = (InheritsFragment)defintions.Single().Single();
@@ -295,14 +295,14 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
                 .Callback((Type t, object o) => defintions.Add((InjectionDefinition)o));
 
             // Act
-            target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+            testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var fragment = (InheritsFragment)defintions.Single().Single();
@@ -316,7 +316,7 @@ namespace Bijectiv.Tests
             // Arrange
             var defintions = new List<InjectionDefinition>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Loose);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(InjectionDefinition), It.IsAny<InjectionDefinition>()))
@@ -324,7 +324,7 @@ namespace Bijectiv.Tests
 
             // Act
             var result = (InjectionDefinitionBuilder<DerivedTestClass1, DerivedTestClass2>)
-                target.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
+                testTarget.RegisterInherited<DerivedTestClass1, DerivedTestClass2, BaseTestClass1, BaseTestClass2>();
 
             // Assert
             var defintion = defintions.Single();
@@ -352,13 +352,13 @@ namespace Bijectiv.Tests
         {
             // Arrange
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock.Setup(_ => _.Register(
                 typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()));
 
             // Act
-            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+            testTarget.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
 
             // Assert
             registryMock.VerifyAll();
@@ -371,14 +371,14 @@ namespace Bijectiv.Tests
             // Arrange
             var registrations = new List<EnumerableRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()))
                 .Callback((Type t, object o) => registrations.Add((EnumerableRegistration)o));
 
             // Act
-            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+            testTarget.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
 
             // Assert
             var registration = registrations.Single();
@@ -392,14 +392,14 @@ namespace Bijectiv.Tests
             // Arrange
             var registrations = new List<EnumerableRegistration>();
             var registryMock = new Mock<IInstanceRegistry>(MockBehavior.Strict);
-            var target = new InjectionKernelBuilder(registryMock.Object);
+            var testTarget = new InjectionKernelBuilder(registryMock.Object);
 
             registryMock
                 .Setup(_ => _.Register(typeof(EnumerableRegistration), It.IsAny<EnumerableRegistration>()))
                 .Callback((Type t, object o) => registrations.Add((EnumerableRegistration)o));
 
             // Act
-            target.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
+            testTarget.RegisterEnumerable<IEnumerable<Placeholder>, Collection<Placeholder>>();
 
             // Assert
             var registration = registrations.Single();

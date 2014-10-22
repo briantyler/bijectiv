@@ -64,10 +64,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new CompositeInjectionStore();
+            var testTarget = new CompositeInjectionStore();
 
             // Assert
-            Assert.IsFalse(target.Any());
+            Assert.IsFalse(testTarget.Any());
         }
 
         [TestMethod]
@@ -80,10 +80,10 @@ namespace Bijectiv.Tests.Kernel
             var store3 = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new CompositeInjectionStore { store1, store2, store3 };
+            var testTarget = new CompositeInjectionStore { store1, store2, store3 };
 
             // Assert
-            Assert.AreEqual(3, target.Count());
+            Assert.AreEqual(3, testTarget.Count());
         }
 
         [TestMethod]
@@ -96,12 +96,12 @@ namespace Bijectiv.Tests.Kernel
             var store3 = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new CompositeInjectionStore { store1, store2, store3 };
+            var testTarget = new CompositeInjectionStore { store1, store2, store3 };
 
             // Assert
-            Assert.AreEqual(store1, target.ElementAt(0));
-            Assert.AreEqual(store2, target.ElementAt(1));
-            Assert.AreEqual(store3, target.ElementAt(2));
+            Assert.AreEqual(store1, testTarget.ElementAt(0));
+            Assert.AreEqual(store2, testTarget.ElementAt(1));
+            Assert.AreEqual(store3, testTarget.ElementAt(2));
         }
 
         [TestMethod]
@@ -110,10 +110,10 @@ namespace Bijectiv.Tests.Kernel
         public void Add_StoreParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CompositeInjectionStore();
+            var testTarget = new CompositeInjectionStore();
 
             // Act
-            target.Add(null);
+            testTarget.Add(null);
             
             // Assert
         }
@@ -127,15 +127,15 @@ namespace Bijectiv.Tests.Kernel
             var store2 = Stub.Create<IInjectionStore>();
             var store3 = Stub.Create<IInjectionStore>();
 
-            var target = new CompositeInjectionStore();
+            var testTarget = new CompositeInjectionStore();
 
             // Act
-            target.Add(store1);
-            target.Add(store2);
-            target.Add(store3);
+            testTarget.Add(store1);
+            testTarget.Add(store2);
+            testTarget.Add(store3);
             
             // Assert
-            Assert.AreEqual(3, target.Count());
+            Assert.AreEqual(3, testTarget.Count());
         }
 
         [TestMethod]
@@ -147,17 +147,17 @@ namespace Bijectiv.Tests.Kernel
             var store2 = Stub.Create<IInjectionStore>();
             var store3 = Stub.Create<IInjectionStore>();
 
-            var target = new CompositeInjectionStore();
+            var testTarget = new CompositeInjectionStore();
 
             // Act
-            target.Add(store1);
-            target.Add(store2);
-            target.Add(store3);
+            testTarget.Add(store1);
+            testTarget.Add(store2);
+            testTarget.Add(store3);
             
             // Assert
-            Assert.AreEqual(store1, target.ElementAt(0));
-            Assert.AreEqual(store2, target.ElementAt(1));
-            Assert.AreEqual(store3, target.ElementAt(2));
+            Assert.AreEqual(store1, testTarget.ElementAt(0));
+            Assert.AreEqual(store2, testTarget.ElementAt(1));
+            Assert.AreEqual(store3, testTarget.ElementAt(2));
         }
 
         [TestMethod]
@@ -170,13 +170,13 @@ namespace Bijectiv.Tests.Kernel
             var store3 = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new CompositeInjectionStore { store1, store2, store3 };
+            var testTarget = new CompositeInjectionStore { store1, store2, store3 };
 
             var index = 0;
-            foreach (var store in (IEnumerable)target)
+            foreach (var store in (IEnumerable)testTarget)
             {
                 // Assert
-                Assert.AreEqual(target.ElementAt(index++), store);
+                Assert.AreEqual(testTarget.ElementAt(index++), store);
             }
         }
 
@@ -185,10 +185,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_NoStores_ReturnsNull()
         {
             // Arrange
-            var target = new CompositeInjectionStore();
+            var testTarget = new CompositeInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(int), typeof(int));
+            var result = testTarget.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             Assert.IsNull(result);
@@ -205,10 +205,10 @@ namespace Bijectiv.Tests.Kernel
 
             storeMock.Setup(_ => _.Resolve<IInjection>(typeof(int), typeof(int))).Returns(expected);
 
-            var target = new CompositeInjectionStore { storeMock.Object };
+            var testTarget = new CompositeInjectionStore { storeMock.Object };
 
             // Act
-            var actual = target.Resolve<IInjection>(typeof(int), typeof(int));
+            var actual = testTarget.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();
@@ -225,10 +225,10 @@ namespace Bijectiv.Tests.Kernel
 
             storeMock.Setup(_ => _.Resolve<IInjection>(It.IsAny<Type>(), It.IsAny<Type>())).Returns(default(IInjection));
 
-            var target = new CompositeInjectionStore { storeMock.Object };
+            var testTarget = new CompositeInjectionStore { storeMock.Object };
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(int), typeof(int));
+            var result = testTarget.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();
@@ -257,10 +257,10 @@ namespace Bijectiv.Tests.Kernel
                 .Setup(_ => _.Resolve<IInjection>(typeof(int), typeof(int)))
                 .Returns(expected);
 
-            var target = new CompositeInjectionStore { storeMock1.Object, storeMock2.Object, storeMock3.Object };
+            var testTarget = new CompositeInjectionStore { storeMock1.Object, storeMock2.Object, storeMock3.Object };
 
             // Act
-            var actual = target.Resolve<IInjection>(typeof(int), typeof(int));
+            var actual = testTarget.Resolve<IInjection>(typeof(int), typeof(int));
 
             // Assert
             repository.VerifyAll();

@@ -94,10 +94,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new ConvertibleInjection(typeof(int));
+            var testTarget = new ConvertibleInjection(typeof(int));
 
             // Assert
-            Assert.AreEqual(typeof(IConvertible), target.Source);
+            Assert.AreEqual(typeof(IConvertible), testTarget.Source);
         }
 
         [TestMethod]
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new ConvertibleInjection(typeof(int));
+            var testTarget = new ConvertibleInjection(typeof(int));
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Target);
+            Assert.AreEqual(typeof(int), testTarget.Target);
         }
 
         [TestMethod]
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_SourceParameterIsNullTargetTypeIsNotClass_ReturnsDefault()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(bool));
+            var testTarget = new ConvertibleInjection(typeof(bool));
 
             // Act
-            var result = target.Transform(null, Stub.Create<IInjectionContext>(), null);
+            var result = testTarget.Transform(null, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.AreEqual(default(bool), result);
@@ -132,10 +132,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_SourceParameterIsNullTargetTypeIsClass_ReturnsDefault()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(string));
+            var testTarget = new ConvertibleInjection(typeof(string));
 
             // Act
-            var result = target.Transform(null, Stub.Create<IInjectionContext>(), null);
+            var result = testTarget.Transform(null, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.AreEqual(default(string), result);
@@ -147,10 +147,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(bool));
+            var testTarget = new ConvertibleInjection(typeof(bool));
 
             // Act
-            target.Transform(true, null, null);
+            testTarget.Transform(true, null, null);
 
             // Assert
         }
@@ -160,12 +160,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_ValidSourceParameter_ReturnsConvertedTarget()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(bool));
+            var testTarget = new ConvertibleInjection(typeof(bool));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Transform("TRUE", contextMock.Object, null);
+            var result = testTarget.Transform("TRUE", contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(true, result);
@@ -176,12 +176,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_ValidSourceParameter_ConvertsUsingInjectionContextCulture()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(DateTime));
+            var testTarget = new ConvertibleInjection(typeof(DateTime));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(new CultureInfo("en-US"));
 
             // Act
-            var result = target.Transform("04/06/2014", contextMock.Object, null);
+            var result = testTarget.Transform("04/06/2014", contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(new DateTime(2014, 04, 06), result);
@@ -193,12 +193,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_StringHexadecimalToInt_Throws()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(int));
+            var testTarget = new ConvertibleInjection(typeof(int));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            target.Transform("0xABC", contextMock.Object, null);
+            testTarget.Transform("0xABC", contextMock.Object, null);
 
             // Assert
         }
@@ -208,12 +208,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_StringScientificNotationToFloat_Converts()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(float));
+            var testTarget = new ConvertibleInjection(typeof(float));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Transform("2.3e4", contextMock.Object, null);
+            var result = testTarget.Transform("2.3e4", contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(2.3e4f, result);
@@ -224,12 +224,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_StringScientificNotationToDouble_Converts()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(double));
+            var testTarget = new ConvertibleInjection(typeof(double));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Transform("2.3e4", contextMock.Object, null);
+            var result = testTarget.Transform("2.3e4", contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(2.3e4, result);
@@ -240,12 +240,12 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_StringScientificNotationToDecimal_Converts()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(decimal));
+            var testTarget = new ConvertibleInjection(typeof(decimal));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Transform("2.3e4", contextMock.Object, null);
+            var result = testTarget.Transform("2.3e4", contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(2.3e4m, result);
@@ -256,12 +256,12 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_PostMergeActionIsReplace()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(bool));
+            var testTarget = new ConvertibleInjection(typeof(bool));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Merge("TRUE", false, contextMock.Object, null);
+            var result = testTarget.Merge("TRUE", false, contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -272,12 +272,12 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_TargetIsAssigned()
         {
             // Arrange
-            var target = new ConvertibleInjection(typeof(bool));
+            var testTarget = new ConvertibleInjection(typeof(bool));
             var contextMock = new Mock<IInjectionContext>(MockBehavior.Strict);
             contextMock.SetupGet(_ => _.Culture).Returns(CultureInfo.InvariantCulture);
 
             // Act
-            var result = target.Merge("TRUE", false, contextMock.Object, null);
+            var result = testTarget.Merge("TRUE", false, contextMock.Object, null);
 
             // Assert
             Assert.AreEqual(true, result.Target);

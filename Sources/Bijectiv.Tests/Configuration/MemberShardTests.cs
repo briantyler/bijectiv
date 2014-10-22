@@ -144,10 +144,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);          
+            var testTarget = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);          
 
             // Assert
-            Assert.AreEqual(TestClass1.T, target.Source);
+            Assert.AreEqual(TestClass1.T, testTarget.Source);
         }
 
         [TestMethod]
@@ -157,10 +157,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
+            var testTarget = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.AreEqual(TestClass2.T, target.Target);
+            Assert.AreEqual(TestClass2.T, testTarget.Target);
         }
 
         [TestMethod]
@@ -170,10 +170,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
+            var testTarget = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.AreEqual(Member, target.Member);
+            Assert.AreEqual(Member, testTarget.Member);
         }
     }
 }

@@ -66,10 +66,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(IEnumerable<>)));
         }
 
         [TestMethod]
@@ -79,10 +79,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.AreEqual(typeof(List<>), target.Registrations[typeof(IEnumerable<>)]);
+            Assert.AreEqual(typeof(List<>), testTarget.Registrations[typeof(IEnumerable<>)]);
         }
 
         [TestMethod]
@@ -92,10 +92,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(ICollection<>)));
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(ICollection<>)));
         }
 
         [TestMethod]
@@ -105,10 +105,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.AreEqual(typeof(List<>), target.Registrations[typeof(ICollection<>)]);
+            Assert.AreEqual(typeof(List<>), testTarget.Registrations[typeof(ICollection<>)]);
         }
 
         [TestMethod]
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IList<>)));
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(IList<>)));
         }
 
         [TestMethod]
@@ -131,10 +131,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.AreEqual(typeof(List<>), target.Registrations[typeof(IList<>)]);
+            Assert.AreEqual(typeof(List<>), testTarget.Registrations[typeof(IList<>)]);
         }
 
         [TestMethod]
@@ -144,10 +144,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(ISet<>)));
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(ISet<>)));
         }
 
         [TestMethod]
@@ -157,10 +157,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableFactory();
+            var testTarget = new EnumerableFactory();
 
             // Assert
-            Assert.AreEqual(typeof(HashSet<>), target.Registrations[typeof(ISet<>)]);
+            Assert.AreEqual(typeof(HashSet<>), testTarget.Registrations[typeof(ISet<>)]);
         }
 
         [TestMethod]
@@ -169,11 +169,11 @@ namespace Bijectiv.Tests.Kernel
         public void Register_RegistrationParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Register(null);
+            testTarget.Register(null);
 
             // Assert
         }
@@ -183,16 +183,16 @@ namespace Bijectiv.Tests.Kernel
         public void Register_RegistrationDoesNotExist_CreatesRegistration()
         {
             // Arrange
-            var target = CreateTarget();
-            target.Registrations.Clear();
+            var testTarget = CreateTestTarget();
+            testTarget.Registrations.Clear();
 
             // Act
-            target.Register(new EnumerableRegistration(
+            testTarget.Register(new EnumerableRegistration(
                 typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
-            Assert.AreEqual(typeof(Collection<>), target.Registrations[typeof(IEnumerable<>)]);
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(IEnumerable<>)));
+            Assert.AreEqual(typeof(Collection<>), testTarget.Registrations[typeof(IEnumerable<>)]);
         }
 
         [TestMethod]
@@ -200,17 +200,17 @@ namespace Bijectiv.Tests.Kernel
         public void Register_RegistrationExists_OverwritesRegistration()
         {
             // Arrange
-            var target = CreateTarget();
-            target.Registrations.Clear();
-            target.Registrations.Add(typeof(IEnumerable<>), typeof(List<Placeholder>));
+            var testTarget = CreateTestTarget();
+            testTarget.Registrations.Clear();
+            testTarget.Registrations.Add(typeof(IEnumerable<>), typeof(List<Placeholder>));
 
             // Act
-            target.Register(new EnumerableRegistration(
+            testTarget.Register(new EnumerableRegistration(
                typeof(IEnumerable<Placeholder>), typeof(Collection<Placeholder>)));
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(IEnumerable<>)));
-            Assert.AreEqual(typeof(Collection<>), target.Registrations[typeof(IEnumerable<>)]);
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(IEnumerable<>)));
+            Assert.AreEqual(typeof(Collection<>), testTarget.Registrations[typeof(IEnumerable<>)]);
         }
 
         [TestMethod]
@@ -219,11 +219,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_EnumerableParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve(null);
+            testTarget.Resolve(null);
 
             // Assert
         }
@@ -233,10 +233,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_EnumerableParameterIsClass_CreatesType()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve(typeof(List<TestClass1>));
+            var result = testTarget.Resolve(typeof(List<TestClass1>));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(List<TestClass1>));
@@ -248,10 +248,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_EnumerableParameterIsNonGeneric_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Resolve(typeof(IPlaceholderEnumerable));
+            testTarget.Resolve(typeof(IPlaceholderEnumerable));
 
             // Assert
         }
@@ -262,11 +262,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_EnumerableParameterIsNotRegistered_Throws()
         {
             // Arrange
-            var target = CreateTarget();
-            target.Registrations.Clear();
+            var testTarget = CreateTestTarget();
+            testTarget.Registrations.Clear();
 
             // Act
-            target.Resolve(typeof(IEnumerable<TestClass1>));
+            testTarget.Resolve(typeof(IEnumerable<TestClass1>));
 
             // Assert
         }
@@ -276,10 +276,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_EnumerableParameterIsRegistered_CreatesInstance()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve(typeof(IEnumerable<TestClass1>));
+            var result = testTarget.Resolve(typeof(IEnumerable<TestClass1>));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(IEnumerable<TestClass1>));
@@ -290,10 +290,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_NonGenericEnumerableParameter_CreatesInstanceOfEnumerableObject()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve(typeof(IEnumerable));
+            var result = testTarget.Resolve(typeof(IEnumerable));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(IEnumerable<object>));
@@ -304,10 +304,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_NonGenericCollectionParameter_CreatesInstanceOfCollectionObject()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve(typeof(ICollection));
+            var result = testTarget.Resolve(typeof(ICollection));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ICollection<object>));
@@ -318,16 +318,16 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_NonGenericListParameter_CreatesInstanceOfListObject()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve(typeof(IList));
+            var result = testTarget.Resolve(typeof(IList));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(IList<object>));
         }
 
-        private static EnumerableFactory CreateTarget()
+        private static EnumerableFactory CreateTestTarget()
         {
             return new EnumerableFactory();
         }

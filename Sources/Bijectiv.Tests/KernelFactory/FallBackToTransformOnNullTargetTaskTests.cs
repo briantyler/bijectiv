@@ -65,11 +65,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new FallbackToTransformOnNullTargetTask();
+            var testTarget = new FallbackToTransformOnNullTargetTask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -88,10 +88,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));
             scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(new object())));
 
-            var target = new FallbackToTransformOnNullTargetTask();
+            var testTarget = new FallbackToTransformOnNullTargetTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LegendaryLabels.End)));
@@ -125,10 +125,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));
             scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(null)));
 
-            var target = new FallbackToTransformOnNullTargetTask();
+            var testTarget = new FallbackToTransformOnNullTargetTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LegendaryLabels.End)));
@@ -168,10 +168,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));
             scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(null)));
 
-            var target = new FallbackToTransformOnNullTargetTask();
+            var testTarget = new FallbackToTransformOnNullTargetTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LegendaryLabels.End)));
@@ -211,10 +211,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));
             scaffold.Expressions.Add(Expression.Assign(scaffold.TargetAsObject, Expression.Constant(null)));
 
-            var target = new FallbackToTransformOnNullTargetTask();
+            var testTarget = new FallbackToTransformOnNullTargetTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             scaffold.Expressions.Add(Expression.Label(scaffold.GetLabel(null, LegendaryLabels.End)));

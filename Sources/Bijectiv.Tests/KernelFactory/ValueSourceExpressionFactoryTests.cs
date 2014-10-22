@@ -63,11 +63,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ValueSourceExpressionFactory();
+            var testTarget = new ValueSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null, Stub.Create<MemberFragment>(), Stub.Create<ValueSourceMemberShard>());
+            testTarget.Create(null, Stub.Create<MemberFragment>(), Stub.Create<ValueSourceMemberShard>());
 
             // Assert
         }
@@ -78,11 +78,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ValueSourceExpressionFactory();
+            var testTarget = new ValueSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<ValueSourceMemberShard>());
+            testTarget.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<ValueSourceMemberShard>());
 
             // Assert
         }
@@ -93,11 +93,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ValueSourceExpressionFactory();
+            var testTarget = new ValueSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
+            testTarget.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
         }
@@ -107,14 +107,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ValidParameters_ReturnsShardValueAsConstantExpression()
         {
             // Arrange
-            var target = new ValueSourceExpressionFactory();
+            var testTarget = new ValueSourceExpressionFactory();
 
             var mockShard = new Mock<ValueSourceMemberShard>(MockBehavior.Strict);
             var value = new object();
             mockShard.SetupGet(_ => _.Value).Returns(value);
 
             // Act
-            var result = target.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), mockShard.Object);
+            var result = testTarget.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), mockShard.Object);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ConstantExpression));

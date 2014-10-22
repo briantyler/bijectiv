@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.Kernel
             Func<object, object> sourceKeySelector = x => x;
 
             // Act
-            var target = new IdenticalKeyTargetFinder(sourceKeySelector, x => x, Stub.Create<IEqualityComparer<object>>());
+            var testTarget = new IdenticalKeyTargetFinder(sourceKeySelector, x => x, Stub.Create<IEqualityComparer<object>>());
 
             // Assert
-            Assert.AreEqual(sourceKeySelector, target.SourceKeySelector);
+            Assert.AreEqual(sourceKeySelector, testTarget.SourceKeySelector);
         }
 
         [TestMethod]
@@ -121,10 +121,10 @@ namespace Bijectiv.Tests.Kernel
             Func<object, object> targetKeySelector = x => x;
 
             // Act
-            var target = new IdenticalKeyTargetFinder(x => x, targetKeySelector, Stub.Create<IEqualityComparer<object>>());
+            var testTarget = new IdenticalKeyTargetFinder(x => x, targetKeySelector, Stub.Create<IEqualityComparer<object>>());
 
             // Assert
-            Assert.AreEqual(targetKeySelector, target.TargetKeySelector);
+            Assert.AreEqual(targetKeySelector, testTarget.TargetKeySelector);
         }
 
         [TestMethod]
@@ -135,10 +135,10 @@ namespace Bijectiv.Tests.Kernel
             var comparer = Stub.Create<IEqualityComparer<object>>();
 
             // Act
-            var target = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
+            var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
 
             // Assert
-            Assert.AreEqual(comparer, target.Comparer);
+            Assert.AreEqual(comparer, testTarget.Comparer);
         }
 
         [TestMethod]
@@ -149,10 +149,10 @@ namespace Bijectiv.Tests.Kernel
             var comparer = Stub.Create<IEqualityComparer<object>>();
 
             // Act
-            var target = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
+            var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, comparer);
 
             // Assert
-            Assert.AreEqual(comparer, ((dynamic)target.TargetCache).Comparer);
+            Assert.AreEqual(comparer, ((dynamic)testTarget.TargetCache).Comparer);
         }
 
         [TestMethod]
@@ -161,11 +161,11 @@ namespace Bijectiv.Tests.Kernel
         public void Initialize_TargetsParameterIsNull_Throws()
         {
             // Arrange
-            var target = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
+            var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Initialize(null, Stub.Create<IInjectionContext>());
+            testTarget.Initialize(null, Stub.Create<IInjectionContext>());
 
             // Assert
         }
@@ -192,15 +192,15 @@ namespace Bijectiv.Tests.Kernel
                     throw new ArgumentException("Unknown target", "t");
                 };
 
-            var target = new IdenticalKeyTargetFinder(x => x, targetKeySelector, EqualityComparer<object>.Default);
+            var testTarget = new IdenticalKeyTargetFinder(x => x, targetKeySelector, EqualityComparer<object>.Default);
 
             // Act
-            target.Initialize(targets, Stub.Create<IInjectionContext>());
+            testTarget.Initialize(targets, Stub.Create<IInjectionContext>());
 
             // Assert
-            Assert.AreEqual(2, target.TargetCache.Count());
-            Assert.AreEqual(targets[0], target.TargetCache[0]);
-            Assert.AreEqual(targets[2], target.TargetCache[2]);
+            Assert.AreEqual(2, testTarget.TargetCache.Count());
+            Assert.AreEqual(targets[0], testTarget.TargetCache[0]);
+            Assert.AreEqual(targets[2], testTarget.TargetCache[2]);
         }
 
         [TestMethod]
@@ -208,11 +208,11 @@ namespace Bijectiv.Tests.Kernel
         public void TryFind_SourceIsNull_ReturnsFalse()
         {
             // Arrange
-            var target = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
+            var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
             object targetInstance;
 
             // Act
-            var result = target.TryFind(null, out targetInstance);
+            var result = testTarget.TryFind(null, out targetInstance);
 
             // Assert
             Assert.IsFalse(result);
@@ -223,11 +223,11 @@ namespace Bijectiv.Tests.Kernel
         public void TryFind_SourceKeyIsNotPresent_ReturnsFalse()
         {
             // Arrange
-            var target = new IdenticalKeyTargetFinder(x => x, x => x, EqualityComparer<object>.Default);
+            var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, EqualityComparer<object>.Default);
             object targetInstance;
 
             // Act
-            var result = target.TryFind(new object(), out targetInstance);
+            var result = testTarget.TryFind(new object(), out targetInstance);
 
             // Assert
             Assert.IsFalse(result);
@@ -238,13 +238,13 @@ namespace Bijectiv.Tests.Kernel
         public void TryFind_SourceKeyIsPresent_ReturnsTrue()
         {
             // Arrange
-            var target = new IdenticalKeyTargetFinder(x => 1, x => x, EqualityComparer<object>.Default);
+            var testTarget = new IdenticalKeyTargetFinder(x => 1, x => x, EqualityComparer<object>.Default);
             var expected = new TestClass1();
-            target.TargetCache[1] = expected;
+            testTarget.TargetCache[1] = expected;
             object targetInstance;
 
             // Act
-            var result = target.TryFind(new object(), out targetInstance);
+            var result = testTarget.TryFind(new object(), out targetInstance);
 
             // Assert
             Assert.IsTrue(result);

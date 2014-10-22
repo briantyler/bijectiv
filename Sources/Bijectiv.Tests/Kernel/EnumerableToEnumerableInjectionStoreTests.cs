@@ -62,11 +62,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = new EnumerableToEnumerableInjectionStore();
+            var testTarget = new EnumerableToEnumerableInjectionStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(null, typeof(IEnumerable<TestClass1>));
+            testTarget.Resolve<IInjection>(null, typeof(IEnumerable<TestClass1>));
 
             // Assert
         }
@@ -77,11 +77,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = new EnumerableToEnumerableInjectionStore();
+            var testTarget = new EnumerableToEnumerableInjectionStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(typeof(IEnumerable), null);
+            testTarget.Resolve<IInjection>(typeof(IEnumerable), null);
 
             // Assert
         }
@@ -91,10 +91,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNotEnumerable_ReturnsNull()
         {
             // Arrange
-            var target = new EnumerableToEnumerableInjectionStore();
+            var testTarget = new EnumerableToEnumerableInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(TestClass1.T, typeof(IEnumerable));
+            var result = testTarget.Resolve<IInjection>(TestClass1.T, typeof(IEnumerable));
 
             // Assert
             Assert.IsNull(result);
@@ -105,10 +105,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNotEnumerable_ReturnsNull()
         {
             // Arrange
-            var target = new EnumerableToEnumerableInjectionStore();
+            var testTarget = new EnumerableToEnumerableInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(IEnumerable), TestClass1.T);
+            var result = testTarget.Resolve<IInjection>(typeof(IEnumerable), TestClass1.T);
 
             // Assert
             Assert.IsNull(result);
@@ -119,10 +119,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_ValidParameters_ReturnsEnumerableToEnumerableInjection()
         {
             // Arrange
-            var target = new EnumerableToEnumerableInjectionStore();
+            var testTarget = new EnumerableToEnumerableInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(IEnumerable), typeof(IEnumerable));
+            var result = testTarget.Resolve<IInjection>(typeof(IEnumerable), typeof(IEnumerable));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(EnumerableToEnumerableInjection));

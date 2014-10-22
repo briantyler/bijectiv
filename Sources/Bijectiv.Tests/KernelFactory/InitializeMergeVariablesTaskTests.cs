@@ -64,11 +64,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -78,11 +78,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_ExpectedNumberOfVariablesAddedToScaffold()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(2, scaffold.Variables.Count());
@@ -93,11 +93,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AddsSourceVariableToScaffoldVariablesProperty()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "source");
@@ -111,11 +111,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AssignsSourceVariableToScaffoldSourceProperty()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "source");
@@ -127,11 +127,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AddsTargetVariableToScaffoldVariablesProperty()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "target");
@@ -145,11 +145,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AssignsTargetVariableToScaffoldTargetProperty()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variable = scaffold.Variables.SingleOrDefault(candidate => candidate.Name == "target");
@@ -161,11 +161,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_ExpectedNumberOfExpressionsAddedToScaffold()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(2, scaffold.Expressions.Count());
@@ -176,12 +176,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AddedExpressionAssignsSourceAsObjectToSource()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
             object sourceInstance = new TestClass1();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var body = Expression.Block(
@@ -200,12 +200,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ValidParameters_AddedExpressionAssignsTargetAsObjectToTarget()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
             object targetInstance = new TestClass2();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var body = Expression.Block(
@@ -219,7 +219,7 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.AreEqual(targetInstance, result);
         }
 
-        private static InitializeMergeVariablesTask CreateTarget()
+        private static InitializeMergeVariablesTask CreateTestTarget()
         {
             return new InitializeMergeVariablesTask();
         }

@@ -67,10 +67,10 @@ namespace Bijectiv.Tests.KernelFactory
             var category = new Guid("9616527D-588F-4A94-B58B-B3692DC9190A");
 
             // Act
-            var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
+            var testTarget = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
 
             // Assert
-            Assert.AreEqual(category, target.Category);
+            Assert.AreEqual(category, testTarget.Category);
         }
 
         [TestMethod]
@@ -80,11 +80,11 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var category = new Guid("9616527D-588F-4A94-B58B-B3692DC9190A");
-            var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
+            var testTarget = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null, Stub.Create<MemberFragment>());
+            testTarget.Execute(null, Stub.Create<MemberFragment>());
 
             // Assert
         }
@@ -96,11 +96,11 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var category = new Guid("9616527D-588F-4A94-B58B-B3692DC9190A");
-            var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
+            var testTarget = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(category);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(Stub.Create<InjectionScaffold>(), null);
+            testTarget.Execute(Stub.Create<InjectionScaffold>(), null);
 
             // Assert
         }
@@ -250,10 +250,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanProcess_ValidParameters_ReturnsTrue()
         {
             // Arrange
-            var target = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(LegendaryShards.Condition);
+            var testTarget = Stub.Create<SingleInstanceShardCategorySubtask<MemberShard>>(LegendaryShards.Condition);
             
             // Act
-            var result = target.CanProcess(null);
+            var result = testTarget.CanProcess(null);
 
             // Assert
             Assert.IsTrue(result);

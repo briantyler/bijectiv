@@ -65,11 +65,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -82,10 +82,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold(new InstanceRegistry());
             scaffold.CandidateFragments.Add(Stub.Fragment<object, object>());
             
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.IsFalse(scaffold.CandidateFragments.Any());
@@ -99,10 +99,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold(new InstanceRegistry());
             scaffold.ProcessedFragments.Add(Stub.Fragment<object, object>());
 
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.IsFalse(scaffold.ProcessedFragments.Any());
@@ -121,10 +121,10 @@ namespace Bijectiv.Tests.KernelFactory
             };
 
             var scaffold = CreateScaffold(new InstanceRegistry(), fragments);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(3, scaffold.CandidateFragments.Count());
@@ -171,10 +171,10 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(new[] { baseDefinition1, baseDefinition2, notUsedDefinition });
 
             var scaffold = CreateScaffold(registryMock.Object, fragments);
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(7, scaffold.CandidateFragments.Count());
@@ -192,7 +192,7 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.IsTrue(scaffold.ProcessedFragments.Contains(baseDefinition2.ElementAt(1)));
         }
 
-        private static InitializeFragmentsTask CreateTarget()
+        private static InitializeFragmentsTask CreateTestTarget()
         {
             return new InitializeFragmentsTask();
         }

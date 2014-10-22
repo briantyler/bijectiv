@@ -84,10 +84,10 @@ namespace Bijectiv.Tests.KernelFactory
             var reflectionGateway = Stub.Create<IReflectionGateway>();
 
             // Act
-            var target = new InitializeMembersTask(reflectionGateway);
+            var testTarget = new InitializeMembersTask(reflectionGateway);
 
             // Assert
-            Assert.AreEqual(reflectionGateway, target.ReflectionGateway);
+            Assert.AreEqual(reflectionGateway, testTarget.ReflectionGateway);
         }
 
         [TestMethod]
@@ -96,11 +96,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InitializeMembersTask(Stub.Create<IReflectionGateway>());
+            var testTarget = new InitializeMembersTask(Stub.Create<IReflectionGateway>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -121,10 +121,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold();
             scaffold.ProcessedTargetMembers.Add(Reflect<TestClass1>.Property(_ => _.Id));
 
-            var target = new InitializeMembersTask(reflectionGatewayMock.Object);
+            var testTarget = new InitializeMembersTask(reflectionGatewayMock.Object);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.IsFalse(scaffold.ProcessedTargetMembers.Any());
@@ -152,10 +152,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold();
             scaffold.SourceMembers.Add(Stub.Create<MemberInfo>());
 
-            var target = new InitializeMembersTask(reflectionGatewayMock.Object);
+            var testTarget = new InitializeMembersTask(reflectionGatewayMock.Object);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             reflectionGatewayMock.Verify();
@@ -186,10 +186,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold();
             scaffold.TargetMembers.Add(Stub.Create<MemberInfo>());
 
-            var target = new InitializeMembersTask(reflectionGatewayMock.Object);
+            var testTarget = new InitializeMembersTask(reflectionGatewayMock.Object);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             reflectionGatewayMock.Verify();

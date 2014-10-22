@@ -101,11 +101,11 @@ namespace Bijectiv.Tests.Utilities
         public void GetFields_TypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.GetFields(null, ReflectionOptions.None);
+            testTarget.GetFields(null, ReflectionOptions.None);
 
             // Assert
         }
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetFields(ReflectionGateway.Instance)).Returns(new FieldInfo[0]);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            target.GetFields(typeMock.Object, ReflectionOptions.None);
+            testTarget.GetFields(typeMock.Object, ReflectionOptions.None);
 
             // Assert
             typeMock.VerifyAll();
@@ -135,10 +135,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetFields(It.IsAny<BindingFlags>())).Returns(Fields);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetFields(typeMock.Object, ReflectionOptions.None);
+            var result = testTarget.GetFields(typeMock.Object, ReflectionOptions.None);
 
             // Assert
             Fields.AssertSequenceEqual(result);
@@ -154,10 +154,10 @@ namespace Bijectiv.Tests.Utilities
                 .Setup(_ => _.GetFields(ReflectionGateway.NonPublicInstance))
                 .Returns(new FieldInfo[0]);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            target.GetFields(typeMock.Object, ReflectionOptions.IncludeNonPublic);
+            testTarget.GetFields(typeMock.Object, ReflectionOptions.IncludeNonPublic);
 
             // Assert
             typeMock.VerifyAll();
@@ -171,10 +171,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetFields(It.IsAny<BindingFlags>())).Returns(Fields);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetFields(typeMock.Object, ReflectionOptions.CanRead);
+            var result = testTarget.GetFields(typeMock.Object, ReflectionOptions.CanRead);
 
             // Assert
             Fields.AssertSequenceEqual(result);
@@ -188,10 +188,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetFields(It.IsAny<BindingFlags>())).Returns(Fields);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetFields(typeMock.Object, ReflectionOptions.CanWrite);
+            var result = testTarget.GetFields(typeMock.Object, ReflectionOptions.CanWrite);
 
             // Assert
             new[] { Fields[0] }.AssertSequenceEqual(result);
@@ -203,11 +203,11 @@ namespace Bijectiv.Tests.Utilities
         public void GetProperties_TypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.GetProperties(null, ReflectionOptions.None);
+            testTarget.GetProperties(null, ReflectionOptions.None);
 
             // Assert
         }
@@ -220,10 +220,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetProperties(ReflectionGateway.Instance)).Returns(new PropertyInfo[0]);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            target.GetProperties(typeMock.Object, ReflectionOptions.None);
+            testTarget.GetProperties(typeMock.Object, ReflectionOptions.None);
 
             // Assert
             typeMock.VerifyAll();
@@ -237,10 +237,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetProperties(ReflectionGateway.Instance)).Returns(Properties);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetProperties(typeMock.Object, ReflectionOptions.None);
+            var result = testTarget.GetProperties(typeMock.Object, ReflectionOptions.None);
 
             // Assert
             Properties.AssertSequenceEqual(result);
@@ -256,10 +256,10 @@ namespace Bijectiv.Tests.Utilities
                 .Setup(_ => _.GetProperties(ReflectionGateway.NonPublicInstance))
                 .Returns(new PropertyInfo[0]);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            target.GetProperties(typeMock.Object, ReflectionOptions.IncludeNonPublic);
+            testTarget.GetProperties(typeMock.Object, ReflectionOptions.IncludeNonPublic);
 
             // Assert
             typeMock.VerifyAll();
@@ -273,10 +273,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetProperties(It.IsAny<BindingFlags>())).Returns(Properties);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetProperties(typeMock.Object, ReflectionOptions.CanRead);
+            var result = testTarget.GetProperties(typeMock.Object, ReflectionOptions.CanRead);
 
             // Assert
             new[] { Properties[0], Properties[1] }.AssertSequenceEqual(result);
@@ -290,10 +290,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetProperties(It.IsAny<BindingFlags>())).Returns(Properties);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetProperties(typeMock.Object, ReflectionOptions.CanWrite);
+            var result = testTarget.GetProperties(typeMock.Object, ReflectionOptions.CanWrite);
 
             // Assert
             new[] { Properties[0], Properties[2] }.AssertSequenceEqual(result);
@@ -307,10 +307,10 @@ namespace Bijectiv.Tests.Utilities
             var typeMock = new Mock<Type>(MockBehavior.Strict);
             typeMock.Setup(_ => _.GetProperties(It.IsAny<BindingFlags>())).Returns(Properties);
 
-            var target = new ReflectionGateway();
+            var testTarget = new ReflectionGateway();
 
             // Act
-            var result = target.GetProperties(typeMock.Object, ReflectionOptions.CanRead | ReflectionOptions.CanWrite);
+            var result = testTarget.GetProperties(typeMock.Object, ReflectionOptions.CanRead | ReflectionOptions.CanWrite);
 
             // Assert
             new[] { Properties[0] }.AssertSequenceEqual(result);

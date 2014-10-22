@@ -61,10 +61,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             // Act
-            target.Resolve<IInjection>(null, typeof(int));
+            testTarget.Resolve<IInjection>(null, typeof(int));
 
             // Assert
         }
@@ -75,10 +75,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             // Act
-            target.Resolve<IInjection>(typeof(int), null);
+            testTarget.Resolve<IInjection>(typeof(int), null);
 
             // Assert
         }
@@ -88,12 +88,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNotConvertibleTarget_ReturnsNull()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
             
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 // Act
-                var result = target.Resolve<IInjection>(sourceType, typeof(object));
+                var result = testTarget.Resolve<IInjection>(sourceType, typeof(object));
 
                 // Assert
                 Assert.IsNull(result);
@@ -105,12 +105,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNotConvertibleSource_ReturnsNull()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
             {
                 // Act
-                var result = target.Resolve<IInjection>(typeof(object), targetType);
+                var result = testTarget.Resolve<IInjection>(typeof(object), targetType);
 
                 // Assert
                 Assert.IsNull(result);
@@ -122,14 +122,14 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_ValidParameters_ReturnsConvertibleInjection()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve<IInjection>(sourceType, targetType);
+                    var result = testTarget.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
                     Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
@@ -142,14 +142,14 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TransformTypeParameter_ReturnsConvertibleInjection()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve<ITransform>(sourceType, targetType);
+                    var result = testTarget.Resolve<ITransform>(sourceType, targetType);
 
                     // Assert
                     Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
@@ -162,14 +162,14 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_MergeTypeParameter_ReturnsConvertibleInjection()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve<IMerge>(sourceType, targetType);
+                    var result = testTarget.Resolve<IMerge>(sourceType, targetType);
 
                     // Assert
                     Assert.IsInstanceOfType(result, typeof(ConvertibleInjection));
@@ -182,14 +182,14 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_Iconvertible_IsAssignedToConvertibleInjectionSourceProperty()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve<IInjection>(sourceType, targetType);
+                    var result = testTarget.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
                     Assert.AreEqual(typeof(IConvertible), result.Source);
@@ -202,14 +202,14 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameter_IsAssignedToConvertibleInjectionSourceProperty()
         {
             // Arrange
-            var target = new ConvertibleInjectionStore();
+            var testTarget = new ConvertibleInjectionStore();
 
             foreach (var sourceType in TypeClasses.ConvertibleSourceTypes)
             {
                 foreach (var targetType in TypeClasses.ConvertibleTargetTypes)
                 {
                     // Act
-                    var result = target.Resolve<IInjection>(sourceType, targetType);
+                    var result = testTarget.Resolve<IInjection>(sourceType, targetType);
 
                     // Assert
                     Assert.AreEqual(targetType, result.Target);

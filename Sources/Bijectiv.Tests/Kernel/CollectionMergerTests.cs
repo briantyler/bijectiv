@@ -76,10 +76,10 @@ namespace Bijectiv.Tests.Kernel
                     targetInstance, 
                     context));
 
-            var target = targetMock.Object;
+            var testTarget = targetMock.Object;
 
             // Act
-            target.Merge(new ArrayList(sourceSequence), targetInstance, context);
+            testTarget.Merge(new ArrayList(sourceSequence), targetInstance, context);
 
             // Assert
             repository.VerifyAll();
@@ -97,10 +97,10 @@ namespace Bijectiv.Tests.Kernel
 
             targetMock.Setup(_ => _.Merge(It.IsAny<IEnumerable<object>>(), targetInstance, context));
 
-            var target = targetMock.Object;
+            var testTarget = targetMock.Object;
 
             // Act
-             target.Merge(null, targetInstance, context);
+             testTarget.Merge(null, targetInstance, context);
 
             // Assert
             repository.VerifyAll();
@@ -112,10 +112,10 @@ namespace Bijectiv.Tests.Kernel
         public void MergeGeneric_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Merge(
+            testTarget.Merge(
                 // ReSharper disable once AssignNullToNotNullAttribute
                 default(IEnumerable<TestClass1>), 
                 Stub.Create<ICollection<TestClass1>>(), 
@@ -130,10 +130,10 @@ namespace Bijectiv.Tests.Kernel
         public void MergeGeneric_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Merge(
+            testTarget.Merge(
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Stub.Create<IEnumerable<TestClass1>>(),
                 default(ICollection<TestClass1>),
@@ -148,10 +148,10 @@ namespace Bijectiv.Tests.Kernel
         public void MergeGeneric_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Merge(
+            testTarget.Merge(
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Stub.Create<IEnumerable<TestClass1>>(),
                 Stub.Create<ICollection<TestClass1>>(),
@@ -166,7 +166,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
@@ -181,7 +181,7 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            target.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -194,7 +194,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
@@ -209,7 +209,7 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            target.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -221,7 +221,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var finderMock = repository.Create<ITargetFinder>();
             var finderStoreMock = repository.Create<ITargetFinderStore>();
             var baseTransformMock = repository.Create<ITransform>();
@@ -291,7 +291,7 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            target.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -304,7 +304,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var finderMock = repository.Create<ITargetFinder>();
             var finderStoreMock = repository.Create<ITargetFinderStore>();
             var transformMock = repository.Create<ITransform>();
@@ -366,7 +366,7 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            target.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -379,7 +379,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var finderMock = repository.Create<ITargetFinder>();
             var finderStoreMock = repository.Create<ITargetFinderStore>();
             var baseMergeMock = repository.Create<IMerge>();
@@ -409,14 +409,14 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[0]));
 
             // Act
-            target.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
             
             // Assert
             repository.VerifyAll();
             targetExpected.AssertSequenceEqual(targetInstance);
         }
 
-        private static CollectionMerger CreateTarget()
+        private static CollectionMerger CreateTestTarget()
         {
             return new CollectionMerger();
         }

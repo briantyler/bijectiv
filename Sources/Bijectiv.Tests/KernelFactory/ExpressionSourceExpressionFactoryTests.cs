@@ -65,11 +65,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ExpressionSourceExpressionFactory();
+            var testTarget = new ExpressionSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null, Stub.Create<MemberFragment>(), Stub.Create<ExpressionSourceMemberShard>());
+            testTarget.Create(null, Stub.Create<MemberFragment>(), Stub.Create<ExpressionSourceMemberShard>());
 
             // Assert
         }
@@ -80,11 +80,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ExpressionSourceExpressionFactory();
+            var testTarget = new ExpressionSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<ExpressionSourceMemberShard>());
+            testTarget.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<ExpressionSourceMemberShard>());
 
             // Assert
         }
@@ -95,11 +95,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = new ExpressionSourceExpressionFactory();
+            var testTarget = new ExpressionSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
+            testTarget.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
         }
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.KernelFactory
             shardMock.SetupGet(_ => _.Expression).Returns(expression);
             shardMock.SetupGet(_ => _.ParameterType).Returns(typeof(DerivedTestClass1));
 
-            var target = new ExpressionSourceExpressionFactory();
+            var testTarget = new ExpressionSourceExpressionFactory();
 
             // Act
-            var result = target.Create(scaffoldMock.Object, Stub.Create<MemberFragment>(), shardMock.Object);
+            var result = testTarget.Create(scaffoldMock.Object, Stub.Create<MemberFragment>(), shardMock.Object);
 
             // Assert
             var actual = Expression.Lambda<Func<string>>(result).Compile()();

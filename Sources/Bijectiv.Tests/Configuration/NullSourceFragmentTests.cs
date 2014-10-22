@@ -91,10 +91,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.IsFalse(target.Inherited);
+            Assert.IsFalse(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -116,10 +116,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.NullSource, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.NullSource, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -129,10 +129,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(Factory, target.Factory);
+            Assert.AreEqual(Factory, testTarget.Factory);
         }
 
         [TestMethod]
@@ -142,10 +142,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new NullSourceFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<IInjectionContext, TestClass2>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<IInjectionContext, TestClass2>), testTarget.FactoryType);
         }
 
         [TestMethod]
@@ -155,10 +155,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NullSourceFragment(TestClass1.T, typeof(object), Factory);
+            var testTarget = new NullSourceFragment(TestClass1.T, typeof(object), Factory);
 
             // Assert
-            Assert.AreEqual(typeof(Func<IInjectionContext, object>), target.FactoryType);
+            Assert.AreEqual(typeof(Func<IInjectionContext, object>), testTarget.FactoryType);
         }
     }
 }

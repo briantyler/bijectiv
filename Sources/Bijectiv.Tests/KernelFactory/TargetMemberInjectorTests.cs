@@ -68,11 +68,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddTransformExpressionToScaffold_ScaffoldIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddTransformExpressionToScaffold(null, Stub.Create<MemberInfo>(), Expression.Empty());
+            testTarget.AddTransformExpressionToScaffold(null, Stub.Create<MemberInfo>(), Expression.Empty());
 
             // Assert
         }
@@ -83,11 +83,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddTransformExpressionToScaffold_MemberIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddTransformExpressionToScaffold(Stub.Create<InjectionScaffold>(), null, Expression.Empty());
+            testTarget.AddTransformExpressionToScaffold(Stub.Create<InjectionScaffold>(), null, Expression.Empty());
 
             // Assert
         }
@@ -98,11 +98,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddTransformExpressionToScaffold_ExpressionIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddTransformExpressionToScaffold(Stub.Create<InjectionScaffold>(), Stub.Create<MemberInfo>(), null);
+            testTarget.AddTransformExpressionToScaffold(Stub.Create<InjectionScaffold>(), Stub.Create<MemberInfo>(), null);
 
             // Assert
         }
@@ -134,13 +134,13 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddTransformExpressionToScaffold_MemberIsHidden_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
             var memberMock = new Mock<PropertyInfo>();
             memberMock.SetupGet(_ => _.CanRead).Returns(false);
             memberMock.SetupGet(_ => _.CanWrite).Returns(false);
 
             // Act
-            target.AddTransformExpressionToScaffold(
+            testTarget.AddTransformExpressionToScaffold(
                 Stub.Create<InjectionScaffold>(), memberMock.Object, Expression.Empty());
 
             // Assert
@@ -158,10 +158,10 @@ namespace Bijectiv.Tests.KernelFactory
 
             var scaffold = CreateScaffoldForTransform(targetInstance, SourceInstance, member, TransformResult);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+            testTarget.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -181,10 +181,10 @@ namespace Bijectiv.Tests.KernelFactory
 
             var scaffold = CreateScaffoldForTransform(targetInstance, sourceInstance, member, TransformResult);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(sourceInstance));
+            testTarget.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(sourceInstance));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -204,10 +204,10 @@ namespace Bijectiv.Tests.KernelFactory
 
             var scaffold = CreateScaffoldForTransform(targetInstance, sourceInstance, member, TransformResult);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddTransformExpressionToScaffold(
+            testTarget.AddTransformExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -227,10 +227,10 @@ namespace Bijectiv.Tests.KernelFactory
 
             var scaffold = CreateScaffoldForTransform<TestClass2>(targetInstance, null, member, TransformResult);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(null, typeof(TestClass2)));
+            testTarget.AddTransformExpressionToScaffold(scaffold, member, Expression.Constant(null, typeof(TestClass2)));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -244,11 +244,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddMergeExpressionToScaffold_ScaffoldIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddMergeExpressionToScaffold(null, Stub.Create<MemberInfo>(), Expression.Empty());
+            testTarget.AddMergeExpressionToScaffold(null, Stub.Create<MemberInfo>(), Expression.Empty());
 
             // Assert
         }
@@ -259,11 +259,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddMergeExpressionToScaffold_MemberIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddMergeExpressionToScaffold(Stub.Create<InjectionScaffold>(), null, Expression.Empty());
+            testTarget.AddMergeExpressionToScaffold(Stub.Create<InjectionScaffold>(), null, Expression.Empty());
 
             // Assert
         }
@@ -274,11 +274,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddMergeExpressionToScaffold_ExpressionIsNull_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AddMergeExpressionToScaffold(Stub.Create<InjectionScaffold>(), Stub.Create<MemberInfo>(), null);
+            testTarget.AddMergeExpressionToScaffold(Stub.Create<InjectionScaffold>(), Stub.Create<MemberInfo>(), null);
 
             // Assert
         }
@@ -310,13 +310,13 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddMergeExpressionToScaffold_MemberIsHidden_Throws()
         {
             // Arrange
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
             var memberMock = new Mock<PropertyInfo>();
             memberMock.SetupGet(_ => _.CanRead).Returns(false);
             memberMock.SetupGet(_ => _.CanWrite).Returns(false);
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 Stub.Create<InjectionScaffold>(), memberMock.Object, Expression.Empty());
 
             // Assert
@@ -335,10 +335,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, SourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+            testTarget.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -359,10 +359,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, SourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
+            testTarget.AddMergeExpressionToScaffold(scaffold, member, Expression.Constant(SourceInstance));
 
             // Assert
             Expression.Lambda<Action>(Expression.Block(scaffold.Expressions)).Compile()();
@@ -383,10 +383,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -408,10 +408,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -433,10 +433,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -458,10 +458,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -483,10 +483,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -509,10 +509,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -536,10 +536,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert
@@ -564,10 +564,10 @@ namespace Bijectiv.Tests.KernelFactory
             MockRepository repository;
             var scaffold = CreateScaffoldForMerge(targetInstance, sourceInstance, member, mergeResult, out repository);
 
-            var target = new TargetMemberInjector();
+            var testTarget = new TargetMemberInjector();
 
             // Act
-            target.AddMergeExpressionToScaffold(
+            testTarget.AddMergeExpressionToScaffold(
                 scaffold, member, Expression.Constant(sourceInstance, typeof(BaseTestClass1)));
 
             // Assert

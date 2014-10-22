@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionTrailItemTests.cs" company="Bijectiv">
+// <copyright file="InjectionResolutionStrategyTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,88 +23,77 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionTrailItemTests type.
+//   Defines the InjectionResolutionStrategyTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv.Tests
+namespace Bijectiv.Tests.Kernel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// This class tests the <see cref="InjectionTrailItem"/> class.
-    /// </summary>
+    using Moq;
+
     [TestClass]
-    public class InjectionTrailItemTests
+    public class InjectionResolutionStrategyTests
     {
         [TestMethod]
         [TestCategory("Unit")]
-        [ArgumentNullExceptionExpected]
-        public void CreateInstance_InjectionParameterIsNull_Throws()
+        public void CreateInstance_DefaultParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            new InjectionTrailItem(null, new object(), new object()).Naught();
+            new InjectionResolutionStrategy().Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_ValidParameters_InstanceCreated()
+        //[ArgumentNullExceptionExpected]
+        public void Choose_SourceParameterIsNull_Throws()
         {
             // Arrange
+            var testTarget = new InjectionResolutionStrategy();
 
             // Act
-            new InjectionTrailItem(Stub.Create<IInjection>(), new object(), new object()).Naught();
+
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_InjectionParameter_IsAssignedToInjectionProperty()
+        public void Choose_ExactMatch_Chooses()
         {
             // Arrange
-            var expected = Stub.Create<IInjection>();
+
 
             // Act
-            var testTarget = new InjectionTrailItem(expected, new object(), new object());
 
             // Assert
-            Assert.AreEqual(expected, testTarget.Injection);
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_SourceParameter_IsAssignedToSourceProperty()
+        private static IInjection I(Type source, Type target)
         {
-            // Arrange
-            var expected = new object();
-
-            // Act
-            var testTarget = new InjectionTrailItem(Stub.Create<IInjection>(), expected, new object());
-
-            // Assert
-            Assert.AreEqual(expected, testTarget.Source);
+            var injectionMock = new Mock<IInjection>(MockBehavior.Strict);
+            
+            injectionMock.SetupGet(_ => _.Source).Returns(source);
+            injectionMock.SetupGet(_ => _.Target).Returns(target);
+            
+            return injectionMock.Object;
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
+        private static IEnumerable<IInjection> Ix(params IInjection[] injections)
         {
-            // Arrange
-            var expected = new object();
-
-            // Act
-            var testTarget = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), expected);
-
-            // Assert
-            Assert.AreEqual(expected, testTarget.Target);
+            return injections;
         }
     }
 }

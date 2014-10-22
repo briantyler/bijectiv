@@ -75,11 +75,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new AutoInjectionFragment(
+            var testTarget = new AutoInjectionFragment(
                 TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>());
 
             // Assert
-            Assert.IsTrue(target.Inherited);
+            Assert.IsTrue(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -89,11 +89,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new AutoInjectionFragment(
+            var testTarget = new AutoInjectionFragment(
                 TestClass1.T, TestClass2.T, Stub.Create<IAutoInjectionStrategy>());
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.AutoInjection, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.AutoInjection, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -104,10 +104,10 @@ namespace Bijectiv.Tests.Configuration
             var strategy = Stub.Create<IAutoInjectionStrategy>();
 
             // Act
-            var target = new AutoInjectionFragment(TestClass1.T, TestClass2.T, strategy);
+            var testTarget = new AutoInjectionFragment(TestClass1.T, TestClass2.T, strategy);
 
             // Assert
-            Assert.AreEqual(strategy, target.Strategy);
+            Assert.AreEqual(strategy, testTarget.Strategy);
         }
     }
 }

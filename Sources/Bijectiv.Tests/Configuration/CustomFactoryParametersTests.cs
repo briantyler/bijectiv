@@ -88,10 +88,10 @@ namespace Bijectiv.Tests.Configuration
             var source = new TestClass1();
 
             // Act
-            var target = new CustomFactoryParameters<TestClass1>(source, Stub.Create<IInjectionContext>());
+            var testTarget = new CustomFactoryParameters<TestClass1>(source, Stub.Create<IInjectionContext>());
 
             // Assert
-            Assert.AreEqual(source, target.Source);
+            Assert.AreEqual(source, testTarget.Source);
         }
 
         [TestMethod]
@@ -102,10 +102,10 @@ namespace Bijectiv.Tests.Configuration
             var context = Stub.Create<IInjectionContext>();
 
             // Act
-            var target = new CustomFactoryParameters<TestClass1>(new TestClass1(), context);
+            var testTarget = new CustomFactoryParameters<TestClass1>(new TestClass1(), context);
 
             // Assert
-            Assert.AreEqual(context, target.Context);
+            Assert.AreEqual(context, testTarget.Context);
         }
     }
 }

@@ -73,10 +73,10 @@ namespace Bijectiv.Tests.Kernel
             var sourceInstance = new TestClass1();
 
             // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
 
             // Assert
-            Assert.AreEqual(sourceInstance, target.Source);
+            Assert.AreEqual(sourceInstance, testTarget.Source);
         }
 
         [TestMethod]
@@ -87,10 +87,10 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new TestClass2();
 
             // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
 
             // Assert
-            Assert.AreEqual(targetInstance, target.Target);
+            Assert.AreEqual(targetInstance, testTarget.Target);
         }
 
         [TestMethod]
@@ -101,10 +101,10 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
 
             // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(null, null, context, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, context, null);
 
             // Assert
-            Assert.AreEqual(context, target.Context);
+            Assert.AreEqual(context, testTarget.Context);
         }
 
         [TestMethod]
@@ -115,10 +115,10 @@ namespace Bijectiv.Tests.Kernel
             var hint = new object();
 
             // Act
-            var target = new InjectionParameters<TestClass1, TestClass2>(null, null, null, hint);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, null, hint);
 
             // Assert
-            Assert.AreEqual(hint, target.Hint);
+            Assert.AreEqual(hint, testTarget.Hint);
         }
     }
 }

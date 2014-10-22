@@ -65,10 +65,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Assert
-            Assert.IsFalse(target.Registrations.Any());
+            Assert.IsFalse(testTarget.Registrations.Any());
         }
 
         [TestMethod]
@@ -77,11 +77,11 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceTypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Register(null, new object());
+            testTarget.Register(null, new object());
 
             // Assert
         }
@@ -92,11 +92,11 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Register(typeof(object), null);
+            testTarget.Register(typeof(object), null);
 
             // Assert
         }
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsNotInstanceOfInstanceTypeParameter_Throws()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
-            target.Register(typeof(TestClass1), new object());
+            testTarget.Register(typeof(TestClass1), new object());
 
             // Assert
         }
@@ -120,14 +120,14 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsFirstInstanceOfType_CreatesRegistration()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
-            target.Register(typeof(TestClass1), new TestClass1());
+            testTarget.Register(typeof(TestClass1), new TestClass1());
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(TestClass1)));
-            Assert.AreEqual(1, target.Registrations[typeof(TestClass1)].Count());
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(TestClass1)));
+            Assert.AreEqual(1, testTarget.Registrations[typeof(TestClass1)].Count());
         }
 
         [TestMethod]
@@ -135,14 +135,14 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsFirstInstanceOfType_RegistersInstance()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
             var instance = new TestClass1();
 
             // Act
-            target.Register(typeof(TestClass1), instance);
+            testTarget.Register(typeof(TestClass1), instance);
 
             // Assert
-            Assert.AreEqual(instance, target.Registrations[typeof(TestClass1)].Last());
+            Assert.AreEqual(instance, testTarget.Registrations[typeof(TestClass1)].Last());
         }
 
         [TestMethod]
@@ -150,15 +150,15 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsNotFirstInstanceOfType_CreatesRegistration()
         {
             // Arrange
-            var target = new InstanceRegistry();
-            target.Register(typeof(TestClass1), new TestClass1());
+            var testTarget = new InstanceRegistry();
+            testTarget.Register(typeof(TestClass1), new TestClass1());
 
             // Act
-            target.Register(typeof(TestClass1), new TestClass1());
+            testTarget.Register(typeof(TestClass1), new TestClass1());
 
             // Assert
-            Assert.IsTrue(target.Registrations.ContainsKey(typeof(TestClass1)));
-            Assert.AreEqual(2, target.Registrations[typeof(TestClass1)].Count());
+            Assert.IsTrue(testTarget.Registrations.ContainsKey(typeof(TestClass1)));
+            Assert.AreEqual(2, testTarget.Registrations[typeof(TestClass1)].Count());
         }
 
         [TestMethod]
@@ -166,15 +166,15 @@ namespace Bijectiv.Tests.Configuration
         public void Register_InstanceParameterIsNotFirstInstanceOfType_RegistersInstance()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
             var instance = new TestClass1();
-            target.Register(typeof(TestClass1), new TestClass1());
+            testTarget.Register(typeof(TestClass1), new TestClass1());
 
             // Act
-            target.Register(typeof(TestClass1), instance);
+            testTarget.Register(typeof(TestClass1), instance);
 
             // Assert
-            Assert.AreEqual(instance, target.Registrations[typeof(TestClass1)].Last());
+            Assert.AreEqual(instance, testTarget.Registrations[typeof(TestClass1)].Last());
         }
 
         [TestMethod]
@@ -183,11 +183,11 @@ namespace Bijectiv.Tests.Configuration
         public void RegisterTuple_RegistrationParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Register(null);
+            testTarget.Register(null);
 
             // Assert
         }
@@ -215,10 +215,10 @@ namespace Bijectiv.Tests.Configuration
         public void ResolveAll_InstanceTypeParameterIsNotRegistered_ReturnsEmptyCollection()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
-            var result = target.ResolveAll<TestClass1>();
+            var result = testTarget.ResolveAll<TestClass1>();
 
             // Assert
             Assert.IsFalse(result.Any());
@@ -229,12 +229,12 @@ namespace Bijectiv.Tests.Configuration
         public void ResolveAll_InstanceTypeParameterIsRegistered_ReturnsInstances()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
             var registrations = new[] { new TestClass1(), new TestClass1(), new TestClass1() };
-            target.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
+            testTarget.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
 
             // Act
-            var result = target.ResolveAll<TestClass1>();
+            var result = testTarget.ResolveAll<TestClass1>();
 
             // Assert
             registrations.AssertSequenceEqual(result);
@@ -246,10 +246,10 @@ namespace Bijectiv.Tests.Configuration
         public void Resolve_InstanceTypeParameterIsNotRegistered_Throws()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
 
             // Act
-            target.Resolve<TestClass1>();
+            testTarget.Resolve<TestClass1>();
 
             // Assert
         }
@@ -259,12 +259,12 @@ namespace Bijectiv.Tests.Configuration
         public void Resolve_InstanceTypeParameterIsRegistered_ReturnsLastInstance()
         {
             // Arrange
-            var target = new InstanceRegistry();
+            var testTarget = new InstanceRegistry();
             var registrations = new[] { new TestClass1(), new TestClass1(), new TestClass1() };
-            target.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
+            testTarget.Registrations[typeof(TestClass1)] = registrations.Cast<object>().ToList();
 
             // Act
-            var result = target.Resolve<TestClass1>();
+            var result = testTarget.Resolve<TestClass1>();
 
             // Assert
             Assert.AreEqual(registrations.Last(), result);

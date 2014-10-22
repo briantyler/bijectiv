@@ -65,11 +65,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberConditionSubtask();
+            var testTarget = new MemberConditionSubtask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(null, Stub.Create<MemberFragment>(), Stub.Create<PredicateConditionMemberShard>());
+            testTarget.ProcessShard(null, Stub.Create<MemberFragment>(), Stub.Create<PredicateConditionMemberShard>());
 
             // Assert
         }
@@ -80,11 +80,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberConditionSubtask();
+            var testTarget = new MemberConditionSubtask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(Stub.Create<InjectionScaffold>(), null, Stub.Create<PredicateConditionMemberShard>());
+            testTarget.ProcessShard(Stub.Create<InjectionScaffold>(), null, Stub.Create<PredicateConditionMemberShard>());
 
             // Assert
         }
@@ -95,11 +95,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberConditionSubtask();
+            var testTarget = new MemberConditionSubtask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
+            testTarget.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
         }
@@ -127,10 +127,10 @@ namespace Bijectiv.Tests.KernelFactory
             var expressions = new List<Expression>();
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
 
-            var target = new MemberConditionSubtask();
+            var testTarget = new MemberConditionSubtask();
 
             // Act
-            target.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shardMock.Object);
+            testTarget.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shardMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -165,10 +165,10 @@ namespace Bijectiv.Tests.KernelFactory
             var expressions = new List<Expression>();
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
 
-            var target = new MemberConditionSubtask();
+            var testTarget = new MemberConditionSubtask();
 
             // Act
-            target.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shardMock.Object);
+            testTarget.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shardMock.Object);
 
             // Assert
             repository.VerifyAll();

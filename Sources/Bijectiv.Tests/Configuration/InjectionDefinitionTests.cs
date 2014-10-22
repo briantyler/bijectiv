@@ -64,10 +64,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionDefinition(TestClass1.T, TestClass1.T);
+            var testTarget = new InjectionDefinition(TestClass1.T, TestClass1.T);
 
             // Assert
-            Assert.IsFalse(target.Any());
+            Assert.IsFalse(testTarget.Any());
         }
 
         [TestMethod]
@@ -116,10 +116,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionDefinition(TestClass2.T, TestClass1.T);
+            var testTarget = new InjectionDefinition(TestClass2.T, TestClass1.T);
 
             // Assert
-            Assert.AreEqual(TestClass2.T, target.Source);
+            Assert.AreEqual(TestClass2.T, testTarget.Source);
         }
 
         [TestMethod]
@@ -129,10 +129,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionDefinition(TestClass1.T, TestClass2.T);
+            var testTarget = new InjectionDefinition(TestClass1.T, TestClass2.T);
 
             // Assert
-            Assert.AreEqual(TestClass2.T, target.Target);
+            Assert.AreEqual(TestClass2.T, testTarget.Target);
         }
 
         [TestMethod]
@@ -148,10 +148,10 @@ namespace Bijectiv.Tests.Configuration
             };
 
             // Act
-            var target = new InjectionDefinition(TestClass1.T, TestClass1.T, fragments);
+            var testTarget = new InjectionDefinition(TestClass1.T, TestClass1.T, fragments);
 
             // Assert
-            Assert.IsTrue(fragments.SequenceEqual(target));
+            Assert.IsTrue(fragments.SequenceEqual(testTarget));
         }
 
         [TestMethod]
@@ -167,13 +167,13 @@ namespace Bijectiv.Tests.Configuration
             };
 
             // Act
-            var target = new InjectionDefinition(TestClass1.T, TestClass2.T)
+            var testTarget = new InjectionDefinition(TestClass1.T, TestClass2.T)
             {
                 fragments[0], fragments[1], fragments[2]
             };
 
             // Assert
-            Assert.IsTrue(fragments.SequenceEqual(target));
+            Assert.IsTrue(fragments.SequenceEqual(testTarget));
         }
 
         [TestMethod]
@@ -182,10 +182,10 @@ namespace Bijectiv.Tests.Configuration
         public void Add_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Add(null);
+            testTarget.Add(null);
 
             // Assert
         }
@@ -195,14 +195,14 @@ namespace Bijectiv.Tests.Configuration
         public void Add_ValidFragment_IsAddedToCollection()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var fragment = Stub.Create<InjectionFragment>(TestClass1.T, TestClass1.T);
 
             // Act
-            target.Add(fragment);
+            testTarget.Add(fragment);
 
             // Assert
-            Assert.AreEqual(fragment, target.Single());
+            Assert.AreEqual(fragment, testTarget.Single());
         }
 
         [TestMethod]
@@ -211,11 +211,11 @@ namespace Bijectiv.Tests.Configuration
         public void Add_FragmentSourceMismatch_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var fragment = Stub.Create<InjectionFragment>(TestClass2.T, TestClass1.T);
 
             // Act
-            target.Add(fragment);
+            testTarget.Add(fragment);
 
             // Assert
         }
@@ -226,11 +226,11 @@ namespace Bijectiv.Tests.Configuration
         public void Add_FragmentTargetMismatch_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var fragment = Stub.Create<InjectionFragment>(TestClass1.T, TestClass2.T);
 
             // Act
-            target.Add(fragment);
+            testTarget.Add(fragment);
 
             // Assert
         }
@@ -240,19 +240,19 @@ namespace Bijectiv.Tests.Configuration
         public void Collection_ViewedAsNonGeneric_IsExposed()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var fragment = Stub.Create<InjectionFragment>(TestClass1.T, TestClass1.T);
-            target.Add(fragment);
+            testTarget.Add(fragment);
             
             // Act
-            foreach (var item in (IEnumerable)target)
+            foreach (var item in (IEnumerable)testTarget)
             {
                 // Assert
                 Assert.AreEqual(fragment, item);
             }
         }
 
-        private static InjectionDefinition CreateTarget()
+        private static InjectionDefinition CreateTestTarget()
         {
             return new InjectionDefinition(TestClass1.T, TestClass1.T);
         }

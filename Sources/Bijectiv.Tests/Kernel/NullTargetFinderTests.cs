@@ -59,10 +59,10 @@ namespace Bijectiv.Tests.Kernel
         public void Initialize_TargetsParameterIsNull_DoesNothing()
         {
             // Arrange
-            var target = new NullTargetFinder();
+            var testTarget = new NullTargetFinder();
 
             // Act
-            target.Initialize(null, Stub.Create<IInjectionContext>());
+            testTarget.Initialize(null, Stub.Create<IInjectionContext>());
 
             // Assert
         }
@@ -72,10 +72,10 @@ namespace Bijectiv.Tests.Kernel
         public void Initialize_ContextParameterIsNull_DoesNothing()
         {
             // Arrange
-            var target = new NullTargetFinder();
+            var testTarget = new NullTargetFinder();
 
             // Act
-            target.Initialize(Stub.Create<IEnumerable>(), null);
+            testTarget.Initialize(Stub.Create<IEnumerable>(), null);
 
             // Assert
         }
@@ -85,10 +85,10 @@ namespace Bijectiv.Tests.Kernel
         public void Initialize_ValidParameters_DoesNothing()
         {
             // Arrange
-            var target = new NullTargetFinder();
+            var testTarget = new NullTargetFinder();
 
             // Act
-            target.Initialize(Stub.Create<IEnumerable>(), Stub.Create<IInjectionContext>());
+            testTarget.Initialize(Stub.Create<IEnumerable>(), Stub.Create<IInjectionContext>());
 
             // Assert
         }
@@ -98,11 +98,11 @@ namespace Bijectiv.Tests.Kernel
         public void TryFind_SourceParameterIsNull_ReturnsFalse()
         {
             // Arrange
-            var target = new NullTargetFinder();
+            var testTarget = new NullTargetFinder();
 
             // Act
             object targetElement;
-            var result = target.TryFind(null, out targetElement);
+            var result = testTarget.TryFind(null, out targetElement);
 
             // Assert
             Assert.IsFalse(result);
@@ -113,11 +113,11 @@ namespace Bijectiv.Tests.Kernel
         public void TryFind_SourceParameterIsAnything_ReturnsFalse()
         {
             // Arrange
-            var target = new NullTargetFinder();
+            var testTarget = new NullTargetFinder();
 
             // Act
             object targetElement;
-            var result = target.TryFind(Stub.Create<object>(), out targetElement);
+            var result = testTarget.TryFind(Stub.Create<object>(), out targetElement);
 
             // Assert
             Assert.IsFalse(result);

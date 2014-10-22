@@ -59,6 +59,7 @@
     <Compile Include="Configuration\SourceMemberShard.cs" />
     <Compile Include="Configuration\ValueSourceMemberShard.cs" />
     <Compile Include="IInjectionContext.cs" />
+    <Compile Include="IInjectionResolutionStrategy.cs" />
     <Compile Include="IInjectionTrail.cs" />
     <Compile Include="IInjectionParameters.cs" />
     <Compile Include="IMemberFragmentBuilder.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Kernel\EnumerableToEnumerableInjection.cs" />
     <Compile Include="Kernel\ICollectionMerger.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinder.cs" />
+    <Compile Include="Kernel\InjectionResolutionStrategy.cs" />
     <Compile Include="Kernel\InjectionTrail.cs" />
     <Compile Include="Kernel\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />

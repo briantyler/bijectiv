@@ -59,11 +59,11 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_AnyParameters_ReturnsTrue()
         {
             // Arrange
-            var target = new NullAutoInjectionStrategy();
+            var testTarget = new NullAutoInjectionStrategy();
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(null, null, out sourceMember);
+            var result = testTarget.TryGetSourceForTarget(null, null, out sourceMember);
 
             // Assert
             Assert.IsTrue(result);
@@ -74,11 +74,11 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_AnyParameters_SetsSourceMemberToNull()
         {
             // Arrange
-            var target = new NullAutoInjectionStrategy();
+            var testTarget = new NullAutoInjectionStrategy();
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(null, null, out sourceMember);
+            testTarget.TryGetSourceForTarget(null, null, out sourceMember);
 
             // Assert
             Assert.IsNull(sourceMember);

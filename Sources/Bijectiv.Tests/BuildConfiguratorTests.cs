@@ -64,10 +64,10 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
-            var tasks = target.TransformTasks.Select(item => item()).ToArray();
+            var tasks = testTarget.TransformTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeTransformVariablesTask));
@@ -106,10 +106,10 @@ namespace Bijectiv.Tests
             // Arrange
             
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
-            var tasks = target.MemberTransformTasks.Select(item => item()).ToArray();
+            var tasks = testTarget.MemberTransformTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             //// TODO Validate factories
@@ -131,10 +131,10 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
-            var tasks = target.MergeTasks.Select(item => item()).ToArray();
+            var tasks = testTarget.MergeTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(InitializeFragmentsTask));
             Assert.IsInstanceOfType(tasks[index++], typeof(FallbackToTransformOnNullTargetTask));
@@ -159,10 +159,10 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
-            var tasks = target.MemberMergeTasks.Select(item => item()).ToArray();
+            var tasks = testTarget.MemberMergeTasks.Select(item => item()).ToArray();
             var index = 0;
             Assert.IsInstanceOfType(tasks[index++], typeof(MemberConditionSubtask));
             //// TODO Validate factories
@@ -184,11 +184,11 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
             var index = 0;
-            var factories = target.StoreFactories.Select(item => item()).ToArray();
+            var factories = testTarget.StoreFactories.Select(item => item()).ToArray();
 
             Assert.IsInstanceOfType(factories[index], typeof(InstanceInjectionStoreFactory));
             Assert.IsInstanceOfType(
@@ -225,11 +225,11 @@ namespace Bijectiv.Tests
             // Arrange
 
             // Act
-            var target = new BuildConfigurator();
+            var testTarget = new BuildConfigurator();
 
             // Assert
             var index = 0;
-            var factories = target.InstanceFactories.Select(item => item()).ToArray();
+            var factories = testTarget.InstanceFactories.Select(item => item()).ToArray();
 
             Assert.IsInstanceOfType(factories[index], typeof(RegisteringInstanceFactory<EnumerableRegistration>));
             Assert.AreEqual(

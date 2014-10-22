@@ -59,10 +59,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            target.Resolve<IInjection>(null, typeof(int));
+            testTarget.Resolve<IInjection>(null, typeof(int));
 
             // Assert
         }
@@ -73,10 +73,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            target.Resolve<IInjection>(typeof(int), null);
+            testTarget.Resolve<IInjection>(typeof(int), null);
 
             // Assert
         }
@@ -86,10 +86,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNotEqualToTargetParameter_ReturnsNull()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(int), typeof(uint));
+            var result = testTarget.Resolve<IInjection>(typeof(int), typeof(uint));
 
             // Assert
             Assert.IsNull(result);
@@ -100,10 +100,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNotPrimitive_ReturnsNull()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(object), typeof(object));
+            var result = testTarget.Resolve<IInjection>(typeof(object), typeof(object));
 
             // Assert
             Assert.IsNull(result);
@@ -114,12 +114,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsPrimitive_ReturnsPassthroughTransform()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = target.Resolve<IInjection>(type, type);
+                var result = testTarget.Resolve<IInjection>(type, type);
 
                 // Assert
                 Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
@@ -131,12 +131,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TransformTypeParameter_ReturnsPassthroughTransform()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = target.Resolve<ITransform>(type, type);
+                var result = testTarget.Resolve<ITransform>(type, type);
 
                 // Assert
                 Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
@@ -148,12 +148,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_MergeTypeParameter_ReturnsPassthroughTransform()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = target.Resolve<ITransform>(type, type);
+                var result = testTarget.Resolve<ITransform>(type, type);
 
                 // Assert
                 Assert.IsInstanceOfType(result, typeof(PassThroughInjection));
@@ -165,12 +165,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameter_IsAssignedToPassthoughSourceProperty()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassThroughInjection)target.Resolve<IInjection>(type, type);
+                var result = (PassThroughInjection)testTarget.Resolve<IInjection>(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Source);
@@ -182,12 +182,12 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameter_IsAssignedToPassthoughTargetProperty()
         {
             // Arrange
-            var target = new IdenticalPrimitiveInjectionStore();
+            var testTarget = new IdenticalPrimitiveInjectionStore();
 
             foreach (var type in TypeClasses.PrimitiveTypes)
             {
                 // Act
-                var result = (PassThroughInjection)target.Resolve<IInjection>(type, type);
+                var result = (PassThroughInjection)testTarget.Resolve<IInjection>(type, type);
 
                 // Assert
                 Assert.AreEqual(type, result.Target);

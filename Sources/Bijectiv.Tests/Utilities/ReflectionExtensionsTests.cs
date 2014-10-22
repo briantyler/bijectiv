@@ -432,10 +432,10 @@ namespace Bijectiv.Tests.Utilities
         public void GetBaseDefinition_ThisParameterIsEvent_Throws()
         {
             // Arrange
-            var target = typeof(EventTestClass).GetEvent("SomethingHappened");
+            var testTarget = typeof(EventTestClass).GetEvent("SomethingHappened");
 
             // Act
-            target.GetBaseDefinition();
+            testTarget.GetBaseDefinition();
 
             // Assert
         }
@@ -445,13 +445,13 @@ namespace Bijectiv.Tests.Utilities
         public void GetBaseDefinition_ThisParameterIsField_ReturnsThisParameter()
         {
             // Arrange
-            var target = Reflect<FieldTestClass>.Field(_ => _.Field);
+            var testTarget = Reflect<FieldTestClass>.Field(_ => _.Field);
 
             // Act
-            var result = target.GetBaseDefinition();
+            var result = testTarget.GetBaseDefinition();
 
             // Assert
-            Assert.AreEqual(target, result);
+            Assert.AreEqual(testTarget, result);
         }
 
         [TestMethod]
@@ -476,13 +476,13 @@ namespace Bijectiv.Tests.Utilities
         public void GetBaseDefinition_ThisParameterIsNonOverridingProperty_ReturnsThisParameter()
         {
             // Arrange
-            var target = typeof(MemberInfoHierarchy1).GetProperty("Id");
+            var testTarget = typeof(MemberInfoHierarchy1).GetProperty("Id");
 
             // Act
-            var result = target.GetBaseDefinition();
+            var result = testTarget.GetBaseDefinition();
 
             // Assert
-            Assert.AreEqual(target, result);
+            Assert.AreEqual(testTarget, result);
         }
 
         [TestMethod]
@@ -490,10 +490,10 @@ namespace Bijectiv.Tests.Utilities
         public void GetBaseDefinition_ThisParameterIsOverridingProperty_ReturnsBaseProperty()
         {
             // Arrange
-            var target = typeof(MemberInfoHierarchy4).GetProperty("Id");
+            var testTarget = typeof(MemberInfoHierarchy4).GetProperty("Id");
 
             // Act
-            var result = target.GetBaseDefinition();
+            var result = testTarget.GetBaseDefinition();
 
             // Assert
             Assert.AreEqual(typeof(MemberInfoHierarchy3).GetProperty("Id"), result);
@@ -519,10 +519,10 @@ namespace Bijectiv.Tests.Utilities
         public void IsOverride_ThisParameterIsEvent_Throws()
         {
             // Arrange
-            var target = typeof(EventTestClass).GetEvent("SomethingHappened");
+            var testTarget = typeof(EventTestClass).GetEvent("SomethingHappened");
 
             // Act
-            target.IsOverride();
+            testTarget.IsOverride();
 
             // Assert
         }
@@ -532,10 +532,10 @@ namespace Bijectiv.Tests.Utilities
         public void IsOverride_ThisParameterIsField_ReturnsFalse()
         {
             // Arrange
-            var target = Reflect<FieldTestClass>.Field(_ => _.Field);
+            var testTarget = Reflect<FieldTestClass>.Field(_ => _.Field);
 
             // Act
-            var result = target.IsOverride();
+            var result = testTarget.IsOverride();
 
             // Assert
             Assert.IsFalse(result);

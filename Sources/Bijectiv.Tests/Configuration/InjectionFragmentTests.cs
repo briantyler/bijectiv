@@ -101,10 +101,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = Stub.Create<InjectionFragment>(typeof(int), typeof(object));
+            var testTarget = Stub.Create<InjectionFragment>(typeof(int), typeof(object));
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Source);
+            Assert.AreEqual(typeof(int), testTarget.Source);
         }
 
         [TestMethod]
@@ -114,10 +114,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = Stub.Create<InjectionFragment>(typeof(object), typeof(int));
+            var testTarget = Stub.Create<InjectionFragment>(typeof(object), typeof(int));
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Target);
+            Assert.AreEqual(typeof(int), testTarget.Target);
         }
     }
 }

@@ -97,10 +97,10 @@ namespace Bijectiv.Tests.KernelFactory
             var factory = Stub.Create<ISourceExpressionFactory<SourceMemberShard>>();
 
             // Act
-            var target = new SourceMemberAssignSubtask<SourceMemberShard>(factory);
+            var testTarget = new SourceMemberAssignSubtask<SourceMemberShard>(factory);
 
             // Assert
-            Assert.AreEqual(factory, target.SourceExpressionFactory);
+            Assert.AreEqual(factory, testTarget.SourceExpressionFactory);
         }
 
         [TestMethod]
@@ -109,11 +109,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanProcess_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
+            var testTarget = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.CanProcess(null);
+            testTarget.CanProcess(null);
 
             // Assert
         }
@@ -123,12 +123,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanProcess_ShardParameterCanInject_ReturnsFalse()
         {
             // Arrange
-            var target = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
+            var testTarget = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
             var shardMock = new Mock<SourceMemberShard>(MockBehavior.Strict);
             shardMock.SetupGet(_ => _.Inject).Returns(true);
 
             // Act
-            var result = target.CanProcess(shardMock.Object);
+            var result = testTarget.CanProcess(shardMock.Object);
 
             // Assert
             Assert.IsFalse(result);
@@ -139,12 +139,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void CanProcess_ShardParameterCannotInject_ReturnsTrue()
         {
             // Arrange
-            var target = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
+            var testTarget = Stub.Create<SourceMemberAssignSubtask<SourceMemberShard>>();
             var shardMock = new Mock<SourceMemberShard>(MockBehavior.Strict);
             shardMock.SetupGet(_ => _.Inject).Returns(false);
 
             // Act
-            var result = target.CanProcess(shardMock.Object);
+            var result = testTarget.CanProcess(shardMock.Object);
 
             // Assert
             Assert.IsTrue(result);
@@ -156,12 +156,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new SourceMemberAssignSubtask<SourceMemberShard>(
+            var testTarget = new SourceMemberAssignSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(null, Stub.Create<MemberFragment>(), Stub.Create<SourceMemberShard>());
+            testTarget.ProcessShard(null, Stub.Create<MemberFragment>(), Stub.Create<SourceMemberShard>());
 
             // Assert
         }
@@ -172,12 +172,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new SourceMemberAssignSubtask<SourceMemberShard>(
+            var testTarget = new SourceMemberAssignSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(Stub.Create<InjectionScaffold>(), null, Stub.Create<SourceMemberShard>());
+            testTarget.ProcessShard(Stub.Create<InjectionScaffold>(), null, Stub.Create<SourceMemberShard>());
 
             // Assert
         }
@@ -188,12 +188,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessShard_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = new SourceMemberAssignSubtask<SourceMemberShard>(
+            var testTarget = new SourceMemberAssignSubtask<SourceMemberShard>(
                 Stub.Create<ISourceExpressionFactory<SourceMemberShard>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
+            testTarget.ProcessShard(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
         }
@@ -222,10 +222,10 @@ namespace Bijectiv.Tests.KernelFactory
 
             fragmentMock.SetupGet(_ => _.Member).Returns(Reflect<TestClass1>.FieldOrProperty(_ => _.Id));
 
-            var target = new SourceMemberAssignSubtask<SourceMemberShard>(factoryMock.Object);
+            var testTarget = new SourceMemberAssignSubtask<SourceMemberShard>(factoryMock.Object);
 
             // Act
-            target.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shard);
+            testTarget.ProcessShard(scaffoldMock.Object, fragmentMock.Object, shard);
 
             // Assert
             Expression.Lambda<Action>(expressions.Single()).Compile()();

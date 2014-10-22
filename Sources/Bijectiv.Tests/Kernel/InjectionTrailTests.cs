@@ -78,10 +78,10 @@ namespace Bijectiv.Tests.Kernel
             var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), new object());
             
             // Act
-            var target = new InjectionTrail { item };
+            var testTarget = new InjectionTrail { item };
 
             // Assert
-            Assert.IsTrue(target.Contains(item));
+            Assert.IsTrue(testTarget.Contains(item));
         }
 
         [TestMethod]
@@ -93,10 +93,10 @@ namespace Bijectiv.Tests.Kernel
             var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
 
             // Act
-            var target = new InjectionTrail { item };
+            var testTarget = new InjectionTrail { item };
 
             // Assert
-            Assert.IsTrue(target.Targets.Contains(targetInstance));
+            Assert.IsTrue(testTarget.Targets.Contains(targetInstance));
         }
 
         [TestMethod]
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.Kernel
             var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), null);
 
             // Act
-            var target = new InjectionTrail { item };
+            var testTarget = new InjectionTrail { item };
 
             // Assert
-            Assert.IsFalse(target.Targets.Any());
+            Assert.IsFalse(testTarget.Targets.Any());
         }
 
         [TestMethod]
@@ -119,10 +119,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), new object());
-            var target = new InjectionTrail();
+            var testTarget = new InjectionTrail();
 
             // Act
-            var result = target.Add(item);
+            var result = testTarget.Add(item);
 
             // Assert
             Assert.IsTrue(result);
@@ -136,13 +136,13 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new object();
             var item1 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
             var item2 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
-            var target = new InjectionTrail { item1 };
+            var testTarget = new InjectionTrail { item1 };
 
             // Act
-            var result = target.Add(item2);
+            var result = testTarget.Add(item2);
 
             // Assert
-            Assert.IsTrue(target.Contains(item2));
+            Assert.IsTrue(testTarget.Contains(item2));
             Assert.IsFalse(result);
         }
 
@@ -151,10 +151,10 @@ namespace Bijectiv.Tests.Kernel
         public void ContainsTarget_TargetParameterIsNotContainedInTrail_ReturnsFalse()
         {
             // Arrange
-            var target = new InjectionTrail();
+            var testTarget = new InjectionTrail();
 
             // Act
-            var result = target.ContainsTarget(new object());
+            var result = testTarget.ContainsTarget(new object());
 
             // Assert
             Assert.IsFalse(result);
@@ -167,10 +167,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var targetInstance = new object();
             var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
-            var target = new InjectionTrail { item };
+            var testTarget = new InjectionTrail { item };
 
             // Act
-            var result = target.ContainsTarget(targetInstance);
+            var result = testTarget.ContainsTarget(targetInstance);
 
             // Assert
             Assert.IsTrue(result);
@@ -187,14 +187,14 @@ namespace Bijectiv.Tests.Kernel
                 new InjectionTrailItem(Stub.Create<IInjection>(), new object(), new object()),
                 new InjectionTrailItem(Stub.Create<IInjection>(), new object(), new object())
             };
-            var target = new InjectionTrail();
-            items.ForEach(item => target.Add(item));
+            var testTarget = new InjectionTrail();
+            items.ForEach(item => testTarget.Add(item));
             var result = new List<object>();
 
             // Act
             // Forces the non-generice GetEnumerator() to be invokec.
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var obj in (IEnumerable)target)
+            foreach (var obj in (IEnumerable)testTarget)
             {
                 result.Add(obj);
             }

@@ -96,11 +96,11 @@ namespace Bijectiv.Tests.KernelFactory
             var instanceType = typeof(IRegisterTest);
 
             // Act
-            var target = new RegisteringInstanceFactory<RegistrationTest>(
+            var testTarget = new RegisteringInstanceFactory<RegistrationTest>(
                 instanceType, () => Stub.Create<IRegisterTest>());
 
             // Assert
-            Assert.AreEqual(instanceType, target.InstanceType);
+            Assert.AreEqual(instanceType, testTarget.InstanceType);
         }
 
         [TestMethod]
@@ -111,11 +111,11 @@ namespace Bijectiv.Tests.KernelFactory
             Func<object> instanceFactory = () => Stub.Create<IRegisterTest>();
 
             // Act
-            var target = new RegisteringInstanceFactory<RegistrationTest>(
+            var testTarget = new RegisteringInstanceFactory<RegistrationTest>(
                 typeof(IRegisterTest), instanceFactory);
 
             // Assert
-            Assert.AreEqual(instanceFactory, target.InstanceFactory);
+            Assert.AreEqual(instanceFactory, testTarget.InstanceFactory);
         }
 
         [TestMethod]
@@ -124,12 +124,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_RegistryParameterIsNull_Throws()
         {
             // Arrange
-            var target = new RegisteringInstanceFactory<RegistrationTest>(
+            var testTarget = new RegisteringInstanceFactory<RegistrationTest>(
                 typeof(IRegisterTest), () => Stub.Create<IRegisterTest>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null);
+            testTarget.Create(null);
 
             // Assert
         }
@@ -141,14 +141,14 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var instance = Stub.Create<IRegisterTest>();
-            var target = new RegisteringInstanceFactory<RegistrationTest>(typeof(IRegisterTest), () => instance);
+            var testTarget = new RegisteringInstanceFactory<RegistrationTest>(typeof(IRegisterTest), () => instance);
             var registryMock = repository.Create<IInstanceRegistry>();
             registryMock
                 .Setup(_ => _.ResolveAll<RegistrationTest>())
                 .Returns(Enumerable.Empty<RegistrationTest>());
 
             // Act
-            var result = target.Create(registryMock.Object);
+            var result = testTarget.Create(registryMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -163,7 +163,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var instanceMock = repository.Create<IRegisterTest>();
-            var target = new RegisteringInstanceFactory<RegistrationTest>(
+            var testTarget = new RegisteringInstanceFactory<RegistrationTest>(
                 typeof(IRegisterTest), () => instanceMock.Object);
 
             var registrations = new[] { new RegistrationTest(), new RegistrationTest(), new RegistrationTest() };
@@ -175,7 +175,7 @@ namespace Bijectiv.Tests.KernelFactory
             registrations.ForEach(item => instanceMock.Setup(_ => _.Register(item)));
 
             // Act
-            target.Create(registryMock.Object);
+            testTarget.Create(registryMock.Object);
 
             // Assert
             repository.VerifyAll();

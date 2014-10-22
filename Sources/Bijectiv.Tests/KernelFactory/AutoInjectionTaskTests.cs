@@ -83,10 +83,10 @@ namespace Bijectiv.Tests.KernelFactory
             var detail = Stub.Create<AutoInjectionTaskDetail>();
 
             // Act
-            var target = new AutoInjectionTask(detail);
+            var testTarget = new AutoInjectionTask(detail);
 
             // Assert
-            Assert.AreEqual(detail, target.Detail);
+            Assert.AreEqual(detail, testTarget.Detail);
         }
 
         [TestMethod]
@@ -96,11 +96,11 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var detail = Stub.Create<AutoInjectionTaskDetail>();
-            var target = new AutoInjectionTask(detail);
+            var testTarget = new AutoInjectionTask(detail);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -134,10 +134,10 @@ namespace Bijectiv.Tests.KernelFactory
                             strategies => injectionFragments.Select(item => item.Strategy).SequenceEqual(strategies))))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
-            var target = new AutoInjectionTask(detailMock.Object);
+            var testTarget = new AutoInjectionTask(detailMock.Object);
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -173,10 +173,10 @@ namespace Bijectiv.Tests.KernelFactory
                         It.IsAny<IEnumerable<IAutoInjectionStrategy>>()))
                 .Returns(new Tuple<MemberInfo, MemberInfo>[0]);
 
-            var target = new AutoInjectionTask(detailMock.Object);
+            var testTarget = new AutoInjectionTask(detailMock.Object);
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -216,10 +216,10 @@ namespace Bijectiv.Tests.KernelFactory
             detailMock.Setup(_ => _.ProcessPair(scaffoldMock.Object, pairs[1])).Callback(() => Assert.AreEqual(1, call[0]++));
             detailMock.Setup(_ => _.ProcessPair(scaffoldMock.Object, pairs[2])).Callback(() => Assert.AreEqual(2, call[0]++));
 
-            var target = new AutoInjectionTask(detailMock.Object);
+            var testTarget = new AutoInjectionTask(detailMock.Object);
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             repository.VerifyAll();

@@ -102,12 +102,12 @@ namespace Bijectiv.Tests.Configuration
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
 
             // Act
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 builder,
                 CreateFragment());
 
             // Assert
-            Assert.AreEqual(builder, target.Builder);
+            Assert.AreEqual(builder, testTarget.Builder);
         }
 
         [TestMethod]
@@ -118,12 +118,12 @@ namespace Bijectiv.Tests.Configuration
             var fragment = CreateFragment();
 
             // Act
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Assert
-            Assert.AreEqual(fragment, target.Fragment);
+            Assert.AreEqual(fragment, testTarget.Fragment);
         }
 
         [TestMethod]
@@ -133,13 +133,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                     Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                     fragment);
             
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Condition(null);
+            testTarget.Condition(null);
 
             // Assert
         }
@@ -150,12 +150,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                     Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                     fragment);
 
             // Act
-            target.Condition(p => true);
+            testTarget.Condition(p => true);
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(PredicateConditionMemberShard));
@@ -167,14 +167,14 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                     Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                     fragment);
 
             Func<IInjectionParameters<TestClass1, TestClass2>, bool> predicate = p => true;
 
             // Act
-            target.Condition(predicate);
+            testTarget.Condition(predicate);
 
             // Assert
             var shard = (PredicateConditionMemberShard)fragment.Single();
@@ -190,15 +190,15 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                     Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                     fragment);
 
             // Act
-            var result = target.Condition(p => true);
+            var result = testTarget.Condition(p => true);
 
             // Assert
-            Assert.AreEqual(target, result);
+            Assert.AreEqual(testTarget, result);
         }
 
         [TestMethod]
@@ -232,10 +232,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.Ignore();
+            var result = testTarget.Ignore();
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -247,13 +247,13 @@ namespace Bijectiv.Tests.Configuration
         public void InjectValue_ValueParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), 
                 CreateFragment());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.InjectValue(null);
+            testTarget.InjectValue(null);
 
             // Assert
         }
@@ -264,12 +264,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.InjectValue(new object());
+            testTarget.InjectValue(new object());
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(ValueSourceMemberShard));
@@ -281,14 +281,14 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             var value = new object();
 
             // Act
-            target.InjectValue(value);
+            testTarget.InjectValue(value);
 
             // Assert
             var shard = (ValueSourceMemberShard)fragment.Single();
@@ -305,10 +305,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.InjectValue(new object());
+            var result = testTarget.InjectValue(new object());
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -320,12 +320,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.AssignValue("bijectiv");
+            testTarget.AssignValue("bijectiv");
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(ValueSourceMemberShard));
@@ -337,12 +337,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.AssignValue("bijectiv");
+            testTarget.AssignValue("bijectiv");
 
             // Assert
             var shard = (ValueSourceMemberShard)fragment.Single();
@@ -360,10 +360,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.AssignValue("bijectiv");
+            var result = testTarget.AssignValue("bijectiv");
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -375,13 +375,13 @@ namespace Bijectiv.Tests.Configuration
         public void InjectSource_ExpressionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), 
                 CreateFragment());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.InjectSource<int>(null);
+            testTarget.InjectSource<int>(null);
 
             // Assert
         }
@@ -392,10 +392,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.InjectSource(s => s.Id);
+            var result = testTarget.InjectSource(s => s.Id);
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -407,12 +407,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(), 
                 fragment);
 
             // Act
-            target.InjectSource(s => s.Id);
+            testTarget.InjectSource(s => s.Id);
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(ExpressionSourceMemberShard));
@@ -424,13 +424,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
             Expression<Func<TestClass1, string>> expression = s => s.Id;
 
             // Act
-            target.InjectSource(expression);
+            testTarget.InjectSource(expression);
 
             // Assert
             var shard = (ExpressionSourceMemberShard)fragment.Single();
@@ -447,13 +447,13 @@ namespace Bijectiv.Tests.Configuration
         public void AssignSource_ExpressionParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 CreateFragment());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AssignSource(null);
+            testTarget.AssignSource(null);
 
             // Assert
         }
@@ -464,10 +464,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.AssignSource(s => s.Id);
+            var result = testTarget.AssignSource(s => s.Id);
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -479,12 +479,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.AssignSource(s => s.Id);
+            testTarget.AssignSource(s => s.Id);
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(ExpressionSourceMemberShard));
@@ -496,13 +496,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
             Expression<Func<TestClass1, string>> expression = s => s.Id;
 
             // Act
-            target.AssignSource(expression);
+            testTarget.AssignSource(expression);
 
             // Assert
             var shard = (ExpressionSourceMemberShard)fragment.Single();
@@ -519,13 +519,13 @@ namespace Bijectiv.Tests.Configuration
         public void InjectDelegate_DelegateParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 CreateFragment());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.InjectDelegate<int>(null);
+            testTarget.InjectDelegate<int>(null);
 
             // Assert
         }
@@ -536,10 +536,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.InjectDelegate(s => s.Source.Id);
+            var result = testTarget.InjectDelegate(s => s.Source.Id);
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -551,12 +551,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.InjectDelegate(p => p.Source.Id);
+            testTarget.InjectDelegate(p => p.Source.Id);
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(DelegateSourceMemberShard));
@@ -568,13 +568,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
             Func<IInjectionParameters<TestClass1, TestClass2>, string> @delegate = p => p.Source.Id;
 
             // Act
-            target.InjectDelegate(@delegate);
+            testTarget.InjectDelegate(@delegate);
 
             // Assert
             var shard = (DelegateSourceMemberShard)fragment.Single();
@@ -591,13 +591,13 @@ namespace Bijectiv.Tests.Configuration
         public void AssignDelegate_DelegateParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 CreateFragment());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.AssignDelegate(null);
+            testTarget.AssignDelegate(null);
 
             // Assert
         }
@@ -608,10 +608,10 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var builder = Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(builder, CreateFragment());
 
             // Act
-            var result = target.AssignDelegate(s => s.Source.Id);
+            var result = testTarget.AssignDelegate(s => s.Source.Id);
 
             // Assert
             Assert.AreEqual(builder, result);
@@ -623,12 +623,12 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
 
             // Act
-            target.AssignDelegate(p => p.Source.Id);
+            testTarget.AssignDelegate(p => p.Source.Id);
 
             // Assert
             Assert.IsInstanceOfType(fragment.Single(), typeof(DelegateSourceMemberShard));
@@ -640,13 +640,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var fragment = CreateFragment();
-            var target = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
+            var testTarget = new MemberFragmentBuilder<TestClass1, TestClass2, string>(
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 fragment);
             Func<IInjectionParameters<TestClass1, TestClass2>, string> @delegate = p => p.Source.Id;
 
             // Act
-            target.AssignDelegate(@delegate);
+            testTarget.AssignDelegate(@delegate);
 
             // Assert
             var shard = (DelegateSourceMemberShard)fragment.Single();

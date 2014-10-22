@@ -132,6 +132,7 @@
     <Compile Include="Kernel\DelegateMergeTests.cs" />
     <Compile Include="Kernel\EnumerableToArrayInjectionTests.cs" />
     <Compile Include="Kernel\EnumerableToEnumerableInjectionTests.cs" />
+    <Compile Include="Kernel\InjectionResolutionStrategyTests.cs" />
     <Compile Include="Kernel\InjectionTrailTests.cs" />
     <Compile Include="Kernel\NullTargetFinderTests.cs" />
     <Compile Include="Configuration\TargetFinderRegistrationTests.cs" />

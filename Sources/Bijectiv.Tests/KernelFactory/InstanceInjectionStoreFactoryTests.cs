@@ -74,10 +74,10 @@ namespace Bijectiv.Tests.KernelFactory
             var store = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new InstanceInjectionStoreFactory(store);
+            var testTarget = new InstanceInjectionStoreFactory(store);
 
             // Assert
-            Assert.AreEqual(store, target.Instance);
+            Assert.AreEqual(store, testTarget.Instance);
         }
 
         [TestMethod]
@@ -85,13 +85,13 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_AnyParameters_ReturnsInstance()
         {
             // Arrange
-            var target = new InstanceInjectionStoreFactory(Stub.Create<IInjectionStore>());
+            var testTarget = new InstanceInjectionStoreFactory(Stub.Create<IInjectionStore>());
 
             // Act
-            var result = target.Create(null);
+            var result = testTarget.Create(null);
 
             // Assert
-            Assert.AreEqual(target.Instance, result);
+            Assert.AreEqual(testTarget.Instance, result);
         }
     }
 }

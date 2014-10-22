@@ -78,10 +78,10 @@ namespace Bijectiv.Tests.Configuration
             var value = new object();
 
             // Act
-            var target = new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, value, true);
+            var testTarget = new ValueSourceMemberShard(TestClass1.T, TestClass2.T, Member, value, true);
 
             // Assert
-            Assert.AreEqual(value, target.Value);
+            Assert.AreEqual(value, testTarget.Value);
         }
 
         [TestMethod]

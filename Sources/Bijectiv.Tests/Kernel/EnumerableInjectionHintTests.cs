@@ -59,10 +59,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableInjectionHint(7);
+            var testTarget = new EnumerableInjectionHint(7);
 
             // Assert
-            Assert.AreEqual(7, target.Index);
+            Assert.AreEqual(7, testTarget.Index);
         }
     }
 }

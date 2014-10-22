@@ -104,10 +104,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new TargetFinderRegistration(TestClass1.T, TestClass2.T, () => Stub.Create<ITargetFinder>());
+            var testTarget = new TargetFinderRegistration(TestClass1.T, TestClass2.T, () => Stub.Create<ITargetFinder>());
 
             // Assert
-            Assert.AreEqual(TestClass1.T, target.SourceElement);
+            Assert.AreEqual(TestClass1.T, testTarget.SourceElement);
         }
 
         [TestMethod]
@@ -117,10 +117,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new TargetFinderRegistration(TestClass1.T, TestClass2.T, () => Stub.Create<ITargetFinder>());
+            var testTarget = new TargetFinderRegistration(TestClass1.T, TestClass2.T, () => Stub.Create<ITargetFinder>());
 
             // Assert
-            Assert.AreEqual(TestClass2.T, target.TargetElement);
+            Assert.AreEqual(TestClass2.T, testTarget.TargetElement);
         }
 
         [TestMethod]
@@ -131,10 +131,10 @@ namespace Bijectiv.Tests.Configuration
             Func<ITargetFinder> targetFinderFactory = () => Stub.Create<ITargetFinder>();
 
             // Act
-            var target = new TargetFinderRegistration(TestClass1.T, TestClass2.T, targetFinderFactory);
+            var testTarget = new TargetFinderRegistration(TestClass1.T, TestClass2.T, targetFinderFactory);
 
             // Assert
-            Assert.AreEqual(targetFinderFactory, target.TargetFinderFactory);
+            Assert.AreEqual(targetFinderFactory, testTarget.TargetFinderFactory);
         }
     }
 }

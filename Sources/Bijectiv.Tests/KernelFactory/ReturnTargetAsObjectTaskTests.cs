@@ -60,11 +60,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -78,17 +78,17 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold();
             scaffold.TargetAsObject = Expression.Constant(targetAsObject);
 
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = Expression.Lambda<Func<object>>(Expression.Block(scaffold.Expressions)).Compile();
             Assert.AreEqual(targetAsObject, @delegate());
         }
 
-        private static ReturnTargetAsObjectTask CreateTarget()
+        private static ReturnTargetAsObjectTask CreateTestTarget()
         {
             return new ReturnTargetAsObjectTask();
         }

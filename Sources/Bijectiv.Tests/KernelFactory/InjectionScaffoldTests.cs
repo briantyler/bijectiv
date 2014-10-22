@@ -156,14 +156,14 @@ namespace Bijectiv.Tests.KernelFactory
             var parameter = Stub.Create<IInstanceRegistry>();
 
             // Act
-            var target = new InjectionScaffold(
+            var testTarget = new InjectionScaffold(
                 parameter,
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)));
 
             // Assert
-            Assert.AreEqual(parameter, target.InstanceRegistry);
+            Assert.AreEqual(parameter, testTarget.InstanceRegistry);
         }
 
         [TestMethod]
@@ -174,14 +174,14 @@ namespace Bijectiv.Tests.KernelFactory
             var parameter = new InjectionDefinition(TestClass1.T, TestClass2.T);
 
             // Act
-            var target = new InjectionScaffold(
+            var testTarget = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 parameter,
                 Expression.Parameter(TestClass1.T),
                 Expression.Parameter(typeof(IInjectionContext)));
 
             // Assert
-            Assert.AreEqual(parameter, target.Definition);
+            Assert.AreEqual(parameter, testTarget.Definition);
         }
 
         [TestMethod]
@@ -192,14 +192,14 @@ namespace Bijectiv.Tests.KernelFactory
             var parameter = Expression.Parameter(TestClass1.T);
 
             // Act
-            var target = new InjectionScaffold(
+            var testTarget = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 parameter,
                 Expression.Parameter(typeof(IInjectionContext)));
 
             // Assert
-            Assert.AreEqual(parameter, target.SourceAsObject);
+            Assert.AreEqual(parameter, testTarget.SourceAsObject);
         }
 
         [TestMethod]
@@ -210,14 +210,14 @@ namespace Bijectiv.Tests.KernelFactory
             var parameter = Expression.Parameter(typeof(IInjectionContext));
 
             // Act
-            var target = new InjectionScaffold(
+            var testTarget = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T),
                 Expression.Parameter(TestClass1.T),
                 parameter);
 
             // Assert
-            Assert.AreEqual(parameter, target.InjectionContext);
+            Assert.AreEqual(parameter, testTarget.InjectionContext);
         }
 
         [TestMethod]
@@ -227,10 +227,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.CandidateFragments.Any());
+            Assert.IsFalse(testTarget.CandidateFragments.Any());
         }
 
         [TestMethod]
@@ -240,10 +240,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.ProcessedFragments.Any());
+            Assert.IsFalse(testTarget.ProcessedFragments.Any());
         }
 
         [TestMethod]
@@ -253,10 +253,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.UnprocessedFragments.Any());
+            Assert.IsFalse(testTarget.UnprocessedFragments.Any());
         }
 
         [TestMethod]
@@ -266,10 +266,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.Variables.Any());
+            Assert.IsFalse(testTarget.Variables.Any());
         }
 
         [TestMethod]
@@ -279,10 +279,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.Expressions.Any());
+            Assert.IsFalse(testTarget.Expressions.Any());
         }
 
         [TestMethod]
@@ -292,10 +292,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.SourceMembers.Any());
+            Assert.IsFalse(testTarget.SourceMembers.Any());
         }
 
         [TestMethod]
@@ -305,10 +305,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.TargetMembers.Any());
+            Assert.IsFalse(testTarget.TargetMembers.Any());
         }
 
         [TestMethod]
@@ -318,10 +318,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Assert
-            Assert.IsFalse(target.ProcessedTargetMembers.Any());
+            Assert.IsFalse(testTarget.ProcessedTargetMembers.Any());
         }
 
         [TestMethod]
@@ -329,16 +329,16 @@ namespace Bijectiv.Tests.KernelFactory
         public void UnprocessedFragmentsProperty_DefaultParameters_FiltersCandidateFragmentsByProcessedFragments()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var fragment1 = Stub.Create<InjectionFragment>(TestClass1.T, TestClass2.T);
             var fragment2 = Stub.Create<InjectionFragment>(TestClass1.T, TestClass2.T);
             var fragment3 = Stub.Create<InjectionFragment>(TestClass1.T, TestClass2.T);
 
-            target.CandidateFragments.AddRange(new[] { fragment1, fragment2, fragment3 });
-            target.ProcessedFragments.AddRange(new[] { fragment1, fragment3 });
+            testTarget.CandidateFragments.AddRange(new[] { fragment1, fragment2, fragment3 });
+            testTarget.ProcessedFragments.AddRange(new[] { fragment1, fragment3 });
 
             // Act
-            var result = target.UnprocessedFragments;
+            var result = testTarget.UnprocessedFragments;
 
             // Assert
             Assert.AreEqual(fragment2, result.Single());
@@ -349,7 +349,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void UnprocessedTargetMembers_DefaultParameters_FiltersTargetMembersByProcessedTargetMembers()
         {
             // Arrange
-            var target = new InjectionScaffold(
+            var testTarget = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, typeof(MemberInfoHierarchy6)),
                 Expression.Parameter(TestClass1.T),
@@ -359,11 +359,11 @@ namespace Bijectiv.Tests.KernelFactory
             var member2 = Reflect<MemberInfoHierarchy3>.Property(_ => _.Id);
             var member3 = Reflect<MemberInfoHierarchy6>.Property(_ => _.Id);
 
-            target.TargetMembers.AddRange(new[] { member1, member2, member3 });
-            target.ProcessedTargetMembers.AddRange(new[] { member1, member3 });
+            testTarget.TargetMembers.AddRange(new[] { member1, member2, member3 });
+            testTarget.ProcessedTargetMembers.AddRange(new[] { member1, member3 });
 
             // Act
-            var result = target.UnprocessedTargetMembers;
+            var result = testTarget.UnprocessedTargetMembers;
 
             // Assert
             Assert.AreEqual(member2, result.Single());
@@ -374,10 +374,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetOrAddLabel_LabelDoesNotExist_GetsLabel()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.GetLabel(null, LegendaryLabels.End);
+            var result = testTarget.GetLabel(null, LegendaryLabels.End);
 
             // Assert
             Assert.IsNotNull(result);
@@ -388,10 +388,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetOrAddLabel_LabelDoesNotExistWithScope_GetsLabel()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.GetLabel(new object(), LegendaryLabels.End);
+            var result = testTarget.GetLabel(new object(), LegendaryLabels.End);
 
             // Assert
             Assert.IsNotNull(result);
@@ -401,12 +401,12 @@ namespace Bijectiv.Tests.KernelFactory
         [TestCategory("Unit")]
         public void GetOrAddLabel_LabelExistsWithScope_GetsLabel()
         {
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var scope = new object();
-            var label = target.GetLabel(scope, LegendaryLabels.End);
+            var label = testTarget.GetLabel(scope, LegendaryLabels.End);
 
             // Act
-            var result = target.GetLabel(scope, LegendaryLabels.End);
+            var result = testTarget.GetLabel(scope, LegendaryLabels.End);
 
             // Assert
             Assert.AreEqual(label, result);
@@ -418,10 +418,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetVariable_NameParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.GetVariable(null, TestClass1.T);
+            testTarget.GetVariable(null, TestClass1.T);
 
             // Assert
         }
@@ -432,10 +432,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetVariable_TypeParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.GetVariable("bijectiv", null);
+            testTarget.GetVariable("bijectiv", null);
 
             // Assert
         }
@@ -445,10 +445,10 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetVariable_VariableDoesNotExist_VariableCreated()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.GetVariable("bijectiv", TestClass1.T);
+            var result = testTarget.GetVariable("bijectiv", TestClass1.T);
 
             // Assert
             Assert.AreEqual("bijectiv", result.Name);
@@ -460,12 +460,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetVariable_VariableExists_VariableReturned()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var parameter = Expression.Parameter(TestClass1.T, "bijectiv");
-            target.Variables.Add(parameter);
+            testTarget.Variables.Add(parameter);
 
             // Act
-            var result = target.GetVariable("bijectiv", TestClass1.T);
+            var result = testTarget.GetVariable("bijectiv", TestClass1.T);
 
             // Assert
             Assert.AreEqual(parameter, result);
@@ -477,17 +477,17 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetVariable_VariableExistsButWithDifferentType_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
             var parameter = Expression.Parameter(BaseTestClass1.T, "bijectiv");
-            target.Variables.Add(parameter);
+            testTarget.Variables.Add(parameter);
 
             // Act
-            target.GetVariable("bijectiv", DerivedTestClass1.T);
+            testTarget.GetVariable("bijectiv", DerivedTestClass1.T);
 
             // Assert
         }
 
-        private static InjectionScaffold CreateTarget()
+        private static InjectionScaffold CreateTestTarget()
         {
             return new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),

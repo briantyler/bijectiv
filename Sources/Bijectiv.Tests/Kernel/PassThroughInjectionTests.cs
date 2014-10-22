@@ -125,10 +125,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new PassThroughInjection(typeof(int), typeof(object));
+            var testTarget = new PassThroughInjection(typeof(int), typeof(object));
 
             // Assert
-            Assert.AreEqual(typeof(int), target.Source);
+            Assert.AreEqual(typeof(int), testTarget.Source);
         }
 
         [TestMethod]
@@ -138,10 +138,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new PassThroughInjection(typeof(int), typeof(object));
+            var testTarget = new PassThroughInjection(typeof(int), typeof(object));
 
             // Assert
-            Assert.AreEqual(typeof(object), target.Target);
+            Assert.AreEqual(typeof(object), testTarget.Target);
         }
 
         [TestMethod]
@@ -149,10 +149,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_SourceParameterIsNull_ReturnsNull()
         {
             // Arrange
-            var target = new PassThroughInjection(typeof(object), typeof(object));
+            var testTarget = new PassThroughInjection(typeof(object), typeof(object));
 
             // Act
-            var result = target.Transform(null, null, null);
+            var result = testTarget.Transform(null, null, null);
 
             // Assert
             Assert.IsNull(result);
@@ -163,10 +163,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_SourceParameterIsNotNull_ReturnsSourceParameter()
         {
             // Arrange
-            var target = new PassThroughInjection(typeof(int), typeof(int));
+            var testTarget = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Transform(7, null, null);
+            var result = testTarget.Transform(7, null, null);
 
             // Assert
             Assert.AreEqual(7, result);
@@ -177,10 +177,10 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_PostMergeActionIsReplace()
         {
             // Arrange
-            var target = new PassThroughInjection(typeof(int), typeof(int));
+            var testTarget = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Merge(7, 1, null, null);
+            var result = testTarget.Merge(7, 1, null, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -191,10 +191,10 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_TargetIsAssigned()
         {
             // Arrange
-            var target = new PassThroughInjection(typeof(int), typeof(int));
+            var testTarget = new PassThroughInjection(typeof(int), typeof(int));
 
             // Act
-            var result = target.Merge(7, 1, null, null);
+            var result = testTarget.Merge(7, 1, null, null);
 
             // Assert
             Assert.AreEqual(7, result.Target);

@@ -90,10 +90,10 @@ namespace Bijectiv.Tests.Utilities
             // Arrange
             Expression<Func<bool, int, int>> expression = (b, i) => b ? i : 2;
             var parameter = expression.Parameters[1];
-            var target = new ParameterExpressionVisitor(parameter, Expression.Constant(7));
+            var testTarget = new ParameterExpressionVisitor(parameter, Expression.Constant(7));
 
             // Act
-            var substituted = target.Visit(expression.Body);
+            var substituted = testTarget.Visit(expression.Body);
 
             // Assert
             var @delegate = Expression.Lambda<Func<bool, int>>(substituted, expression.Parameters[0]).Compile();

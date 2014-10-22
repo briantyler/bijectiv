@@ -88,10 +88,10 @@ namespace Bijectiv.Tests.Configuration
             var store = Stub.Create<IInjectionStore>();
 
             // Act
-            var target = new InjectionKernel(store, Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernel(store, Stub.Create<IInstanceRegistry>());
 
             // Assert
-            Assert.AreEqual(store, target.Store);
+            Assert.AreEqual(store, testTarget.Store);
         }
 
         [TestMethod]
@@ -102,10 +102,10 @@ namespace Bijectiv.Tests.Configuration
             var registry = Stub.Create<IInstanceRegistry>();
 
             // Act
-            var target = new InjectionKernel(Stub.Create<IInjectionStore>(), registry);
+            var testTarget = new InjectionKernel(Stub.Create<IInjectionStore>(), registry);
 
             // Assert
-            Assert.AreEqual(registry, target.Registry);
+            Assert.AreEqual(registry, testTarget.Registry);
         }
     }
 }

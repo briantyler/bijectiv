@@ -64,11 +64,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new AddToInjectionTrailTask();
+            var testTarget = new AddToInjectionTrailTask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.KernelFactory
             var label = Expression.Label();
             scaffoldMock.Setup(_ => _.GetLabel(null, LegendaryLabels.End)).Returns(label);
 
-            var target = new AddToInjectionTrailTask();
+            var testTarget = new AddToInjectionTrailTask();
             
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             expressions.Add(Expression.Label(label));
@@ -147,10 +147,10 @@ namespace Bijectiv.Tests.KernelFactory
             var label = Expression.Label();
             scaffoldMock.Setup(_ => _.GetLabel(null, LegendaryLabels.End)).Returns(label);
 
-            var target = new AddToInjectionTrailTask();
+            var testTarget = new AddToInjectionTrailTask();
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             var parameter = Expression.Parameter(typeof(bool[]));
@@ -196,10 +196,10 @@ namespace Bijectiv.Tests.KernelFactory
             var label = Expression.Label();
             scaffoldMock.Setup(_ => _.GetLabel(null, LegendaryLabels.End)).Returns(label);
 
-            var target = new AddToInjectionTrailTask();
+            var testTarget = new AddToInjectionTrailTask();
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             var parameter = Expression.Parameter(typeof(bool[]));

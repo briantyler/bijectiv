@@ -83,10 +83,10 @@ namespace Bijectiv.Tests.KernelFactory
             var subtasks = new List<IInjectionSubtask<MemberFragment>>();
 
             // Act
-            var target = new MemberInjectionTask(subtasks);
+            var testTarget = new MemberInjectionTask(subtasks);
 
             // Assert
-            Assert.AreEqual(subtasks, target.Subtasks);
+            Assert.AreEqual(subtasks, testTarget.Subtasks);
         }
 
         [TestMethod]
@@ -95,11 +95,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -135,10 +135,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffoldMock.SetupGet(_ => _.UnprocessedTargetMembers).Returns(new List<MemberInfo>());
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
 
             // Act
-            target.Execute(scaffoldMock.Object);
+            testTarget.Execute(scaffoldMock.Object);
 
             // Assert
             processedFragments.AssertSetEqual(expected);
@@ -208,12 +208,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
             
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessFragment(null, fragment);
+            testTarget.ProcessFragment(null, fragment);
 
             // Assert
         }
@@ -224,13 +224,13 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.ProcessFragment(scaffoldMock.Object, null);
+            testTarget.ProcessFragment(scaffoldMock.Object, null);
 
             // Assert
         }
@@ -241,7 +241,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             
             var processedMock = repository.Create<ISet<MemberShard>>();
             processedMock.Setup(_ => _.Clear());
@@ -254,7 +254,7 @@ namespace Bijectiv.Tests.KernelFactory
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(new HashSet<MemberInfo>());
 
             // Act
-            target.ProcessFragment(scaffoldMock.Object, fragmentMock.Object);
+            testTarget.ProcessFragment(scaffoldMock.Object, fragmentMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -265,14 +265,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void ProcessFragment_FragmentParameter_MemberPropertyIsProcessed()
         {
             // Arrange
-            var target = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
+            var testTarget = new MemberInjectionTask(new List<IInjectionSubtask<MemberFragment>>());
             var fragment = new MemberFragment(TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id));
             var scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             var processedMembers = new HashSet<MemberInfo>();
             scaffoldMock.SetupGet(_ => _.ProcessedTargetMembers).Returns(processedMembers);
 
             // Act
-            target.ProcessFragment(scaffoldMock.Object, fragment);
+            testTarget.ProcessFragment(scaffoldMock.Object, fragment);
 
             // Assert
             Assert.AreEqual(Reflect<TestClass2>.Property(_ => _.Id), processedMembers.Single());
@@ -300,10 +300,10 @@ namespace Bijectiv.Tests.KernelFactory
             subTask3Mock.InSequence(sequence).Setup(_ => _.Execute(scaffoldMock.Object, fragment));
 
             var subtasks = new[] { subTask1Mock.Object, subTask2Mock.Object, subTask3Mock.Object };
-            var target = new MemberInjectionTask(subtasks);
+            var testTarget = new MemberInjectionTask(subtasks);
 
             // Act
-            target.ProcessFragment(scaffoldMock.Object, fragment);
+            testTarget.ProcessFragment(scaffoldMock.Object, fragment);
 
             // Assert
             repository.VerifyAll();

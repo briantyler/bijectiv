@@ -65,10 +65,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore();
 
             // Assert
-            Assert.IsFalse(target.Any());
+            Assert.IsFalse(testTarget.Any());
         }
 
         [TestMethod]
@@ -78,11 +78,11 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var target = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Add(null);
+            testTarget.Add(null);
 
             // Assert
         }
@@ -96,10 +96,10 @@ namespace Bijectiv.Tests.Kernel
             var injection2 = Stub.Create<IInjection>();
             
             // Act
-            var target = new CollectionInjectionStore { injection1, injection2 };
+            var testTarget = new CollectionInjectionStore { injection1, injection2 };
 
             // Assert
-            new[] { injection1, injection2 }.AssertSequenceEqual(target);
+            new[] { injection1, injection2 }.AssertSequenceEqual(testTarget);
         }
 
         [TestMethod]
@@ -108,10 +108,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var injection1 = Stub.Create<IInjection>();
-            var target = new CollectionInjectionStore { injection1 };
+            var testTarget = new CollectionInjectionStore { injection1 };
 
             // Act
-            foreach (var item in (IEnumerable)target)
+            foreach (var item in (IEnumerable)testTarget)
             {
                 // Assert
                 Assert.AreEqual(injection1, item);
@@ -124,11 +124,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(null, TestClass2.T);
+            testTarget.Resolve<IInjection>(null, TestClass2.T);
 
             // Assert
         }
@@ -139,11 +139,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(TestClass1.T, null);
+            testTarget.Resolve<IInjection>(TestClass1.T, null);
 
             // Assert
         }
@@ -157,11 +157,11 @@ namespace Bijectiv.Tests.Kernel
             injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
             injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore { injectionMock.Object };
+            var testTarget = new CollectionInjectionStore { injectionMock.Object };
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve<IInjection>(TestClass1.T, TestClass2.T);
+            var result = testTarget.Resolve<IInjection>(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.AreEqual(injectionMock.Object, result);
@@ -180,7 +180,7 @@ namespace Bijectiv.Tests.Kernel
             transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
             transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore
+            var testTarget = new CollectionInjectionStore
             {
                 injectionMock.Object,
                 transformMock.Object
@@ -188,7 +188,7 @@ namespace Bijectiv.Tests.Kernel
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve<ITransform>(TestClass1.T, TestClass2.T);
+            var result = testTarget.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.AreEqual(transformMock.Object, result);
@@ -203,11 +203,11 @@ namespace Bijectiv.Tests.Kernel
             injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
             injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore { injectionMock.Object };
+            var testTarget = new CollectionInjectionStore { injectionMock.Object };
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve<IInjection>(TestClass2.T, TestClass1.T);
+            var result = testTarget.Resolve<IInjection>(TestClass2.T, TestClass1.T);
 
             // Assert
             Assert.IsNull(result);
@@ -226,7 +226,7 @@ namespace Bijectiv.Tests.Kernel
             transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
             transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
 
-            var target = new CollectionInjectionStore
+            var testTarget = new CollectionInjectionStore
             {
                 injectionMock.Object,
                 transformMock.Object
@@ -234,7 +234,7 @@ namespace Bijectiv.Tests.Kernel
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Resolve<ITransform>(TestClass1.T, TestClass2.T);
+            var result = testTarget.Resolve<ITransform>(TestClass1.T, TestClass2.T);
 
             // Assert
             Assert.IsNull(result);

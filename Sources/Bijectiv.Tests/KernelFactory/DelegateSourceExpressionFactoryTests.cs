@@ -67,11 +67,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateSourceExpressionFactory();
+            var testTarget = new DelegateSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(null, Stub.Create<MemberFragment>(), Stub.Create<DelegateSourceMemberShard>());
+            testTarget.Create(null, Stub.Create<MemberFragment>(), Stub.Create<DelegateSourceMemberShard>());
 
             // Assert
         }
@@ -82,11 +82,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateSourceExpressionFactory();
+            var testTarget = new DelegateSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<DelegateSourceMemberShard>());
+            testTarget.Create(Stub.Create<InjectionScaffold>(), null, Stub.Create<DelegateSourceMemberShard>());
 
             // Assert
         }
@@ -97,11 +97,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Create_ShardParameterIsNull_Throws()
         {
             // Arrange
-            var target = new DelegateSourceExpressionFactory();
+            var testTarget = new DelegateSourceExpressionFactory();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
+            testTarget.Create(Stub.Create<InjectionScaffold>(), Stub.Create<MemberFragment>(), null);
 
             // Assert
         }
@@ -125,10 +125,10 @@ namespace Bijectiv.Tests.KernelFactory
                 new Func<InjectionParameters<TestClass1, TestClass2>, string>(p => string.Format("ID:{0}", p.Source.Id)),
                 false);
 
-            var target = new DelegateSourceExpressionFactory();
+            var testTarget = new DelegateSourceExpressionFactory();
 
             // Act
-            var expression = target.Create(scaffoldMock.Object, fragment, shard);
+            var expression = testTarget.Create(scaffoldMock.Object, fragment, shard);
 
             // Assert
             var lambda = Expression
@@ -163,10 +163,10 @@ namespace Bijectiv.Tests.KernelFactory
                 new Func<InjectionParameters<TestClass1, TestClass2>, string>(helper.Execute),
                 false);
 
-            var target = new DelegateSourceExpressionFactory();
+            var testTarget = new DelegateSourceExpressionFactory();
 
             // Act
-            var expression = target.Create(scaffoldMock.Object, fragment, shard);
+            var expression = testTarget.Create(scaffoldMock.Object, fragment, shard);
 
             // Assert
             var lambda = Expression

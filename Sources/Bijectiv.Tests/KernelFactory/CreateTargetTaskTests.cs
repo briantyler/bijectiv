@@ -85,10 +85,10 @@ namespace Bijectiv.Tests.KernelFactory
             var expressionFactory = Stub.Create<ISelectiveExpressionFactory>();
 
             // Act
-            var target = new CreateTargetTask(expressionFactory);
+            var testTarget = new CreateTargetTask(expressionFactory);
 
             // Assert
-            Assert.AreEqual(expressionFactory, target.ExpressionFactory);
+            Assert.AreEqual(expressionFactory, testTarget.ExpressionFactory);
         }
 
         [TestMethod]
@@ -97,11 +97,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CreateTargetTask(Stub.Create<ISelectiveExpressionFactory>());
+            var testTarget = new CreateTargetTask(Stub.Create<ISelectiveExpressionFactory>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -117,10 +117,10 @@ namespace Bijectiv.Tests.KernelFactory
                 .Returns(false);
 
             var scaffold = CreateScaffold();
-            var target = new CreateTargetTask(expressionFactoryMock.Object);
+            var testTarget = new CreateTargetTask(expressionFactoryMock.Object);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             expressionFactoryMock.VerifyAll();
@@ -134,12 +134,12 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var expressionFactoryMock = new Mock<ISelectiveExpressionFactory>(MockBehavior.Strict);
             var scaffold = CreateScaffold();
-            var target = new CreateTargetTask(expressionFactoryMock.Object);
+            var testTarget = new CreateTargetTask(expressionFactoryMock.Object);
 
             SetupExecuteTest(expressionFactoryMock, scaffold);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             expressionFactoryMock.VerifyAll();
@@ -153,12 +153,12 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var expressionFactoryMock = new Mock<ISelectiveExpressionFactory>(MockBehavior.Strict);
             var scaffold = CreateScaffold();
-            var target = new CreateTargetTask(expressionFactoryMock.Object);
+            var testTarget = new CreateTargetTask(expressionFactoryMock.Object);
 
             SetupExecuteTest(expressionFactoryMock, scaffold);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variables = new[] { (ParameterExpression)scaffold.Target };
@@ -176,12 +176,12 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var expressionFactoryMock = new Mock<ISelectiveExpressionFactory>(MockBehavior.Strict);
             var scaffold = CreateScaffold();
-            var target = new CreateTargetTask(expressionFactoryMock.Object);
+            var testTarget = new CreateTargetTask(expressionFactoryMock.Object);
 
             SetupExecuteTest(expressionFactoryMock, scaffold);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var variables = new[]
@@ -203,7 +203,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var expressionFactoryMock = new Mock<ISelectiveExpressionFactory>(MockBehavior.Strict);
             var scaffold = CreateScaffold();
-            var target = new CreateTargetTask(expressionFactoryMock.Object);
+            var testTarget = new CreateTargetTask(expressionFactoryMock.Object);
 
             var factoryFragment = Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.Factory);
             scaffold.CandidateFragments.Add(factoryFragment);
@@ -212,7 +212,7 @@ namespace Bijectiv.Tests.KernelFactory
             SetupExecuteTest(expressionFactoryMock, scaffold);
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             expressionFactoryMock.VerifyAll();

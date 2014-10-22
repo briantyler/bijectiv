@@ -109,10 +109,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.IsTrue(target.Inherited);
+            Assert.IsTrue(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -122,10 +122,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.Member, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Member, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -135,10 +135,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.AreEqual(Member, target.Member);
+            Assert.AreEqual(Member, testTarget.Member);
         }
 
         [TestMethod]
@@ -148,10 +148,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.IsFalse(target.Any());
+            Assert.IsFalse(testTarget.Any());
         }
 
         [TestMethod]
@@ -161,10 +161,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.IsFalse(target.UnprocessedShards.Any());
+            Assert.IsFalse(testTarget.UnprocessedShards.Any());
         }
 
         [TestMethod]
@@ -174,10 +174,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Assert
-            Assert.IsFalse(target.ProcessedShards.Any());
+            Assert.IsFalse(testTarget.ProcessedShards.Any());
         }
 
         [TestMethod]
@@ -200,11 +200,11 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Add(null);
+            testTarget.Add(null);
 
             // Assert
         }
@@ -215,11 +215,11 @@ namespace Bijectiv.Tests.Configuration
         public void Add_ShardParameterSourcePropertyIsNotEqualToFragmentSourceProperty_Throws()
         {
             // Arrange
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
             var shard = Stub.Create<MemberShard>(DerivedTestClass1.T, TestClass2.T, Member);
 
             // Act
-            target.Add(shard);
+            testTarget.Add(shard);
 
             // Assert
         }
@@ -231,11 +231,11 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var member = Reflect<BaseTestClass1>.FieldOrProperty(_ => _.Id);
-            var target = new MemberFragment(TestClass1.T, BaseTestClass1.T, member);
+            var testTarget = new MemberFragment(TestClass1.T, BaseTestClass1.T, member);
             var shard = Stub.Create<MemberShard>(TestClass1.T, DerivedTestClass1.T, member);
 
             // Act
-            target.Add(shard);
+            testTarget.Add(shard);
 
             // Assert
         }
@@ -248,11 +248,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
             var member1 = Reflect<AutoInjectionTestClass1>.FieldOrProperty(_ => _.FieldInt);
             var member2 = Reflect<AutoInjectionTestClass1>.FieldOrProperty(_ => _.PropertyInt);
-            var target = new MemberFragment(TestClass1.T, AutoInjectionTestClass1.T, member1);
+            var testTarget = new MemberFragment(TestClass1.T, AutoInjectionTestClass1.T, member1);
             var shard = Stub.Create<MemberShard>(TestClass1.T, AutoInjectionTestClass1.T, member2);
 
             // Act
-            target.Add(shard);
+            testTarget.Add(shard);
 
             // Assert
         }
@@ -262,14 +262,14 @@ namespace Bijectiv.Tests.Configuration
         public void Add_ValidParameters_AddsShard()
         {
             // Arrange
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
             var shard = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
             // Act
-            target.Add(shard);
+            testTarget.Add(shard);
 
             // Assert
-            Assert.AreEqual(shard, target.Single());
+            Assert.AreEqual(shard, testTarget.Single());
         }
 
         [TestMethod]
@@ -277,7 +277,7 @@ namespace Bijectiv.Tests.Configuration
         public void Add_UnprocessedShards_ReturnsUnprocessedShardsInReverseOrder()
         {
             // Arrange
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
             var shard1 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard2 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard3 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
@@ -285,17 +285,17 @@ namespace Bijectiv.Tests.Configuration
             var shard5 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
             // Act
-            target.Add(shard1);
-            target.Add(shard2);
-            target.Add(shard3);
-            target.Add(shard4);
-            target.Add(shard5);
+            testTarget.Add(shard1);
+            testTarget.Add(shard2);
+            testTarget.Add(shard3);
+            testTarget.Add(shard4);
+            testTarget.Add(shard5);
 
-            target.ProcessedShards.Add(shard2);
-            target.ProcessedShards.Add(shard4);
+            testTarget.ProcessedShards.Add(shard2);
+            testTarget.ProcessedShards.Add(shard4);
 
             // Assert
-            new[] { shard5, shard3, shard1 }.AssertSequenceEqual(target.UnprocessedShards);
+            new[] { shard5, shard3, shard1 }.AssertSequenceEqual(testTarget.UnprocessedShards);
         }
 
         [TestMethod]
@@ -303,20 +303,20 @@ namespace Bijectiv.Tests.Configuration
         public void GetEnumerator_NonGeneric_ReturnsShards()
         {
             // Arrange
-            var target = new MemberFragment(TestClass1.T, TestClass2.T, Member);
+            var testTarget = new MemberFragment(TestClass1.T, TestClass2.T, Member);
             var shard1 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard2 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard3 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard4 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
             var shard5 = Stub.Create<MemberShard>(TestClass1.T, TestClass2.T, Member);
 
-            target.Add(shard1);
-            target.Add(shard2);
-            target.Add(shard3);
-            target.Add(shard4);
-            target.Add(shard5);
+            testTarget.Add(shard1);
+            testTarget.Add(shard2);
+            testTarget.Add(shard3);
+            testTarget.Add(shard4);
+            testTarget.Add(shard5);
 
-            var enumerable = (IEnumerable)target;
+            var enumerable = (IEnumerable)testTarget;
 
             // Act
             var items = new List<object>();
@@ -327,7 +327,7 @@ namespace Bijectiv.Tests.Configuration
             }
 
             // Assert
-            new[] { shard1, shard2, shard3, shard4, shard5 }.AssertSequenceEqual(target);
+            new[] { shard1, shard2, shard3, shard4, shard5 }.AssertSequenceEqual(testTarget);
         }
     }
 }

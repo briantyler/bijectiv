@@ -129,11 +129,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionTriggerFragment(
+            var testTarget = new InjectionTriggerFragment(
                 TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.Trigger, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Trigger, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -143,11 +143,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionTriggerFragment(
+            var testTarget = new InjectionTriggerFragment(
                 TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.IsTrue(target.Inherited);
+            Assert.IsTrue(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -158,10 +158,10 @@ namespace Bijectiv.Tests.Configuration
             var trigger = Trigger;
 
             // Act
-            var target = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
+            var testTarget = new InjectionTriggerFragment(TestClass1.T, TestClass2.T, trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(trigger, target.Trigger);
+            Assert.AreEqual(trigger, testTarget.Trigger);
         }
 
         [TestMethod]
@@ -171,11 +171,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionTriggerFragment(
+            var testTarget = new InjectionTriggerFragment(
                 TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(TriggeredBy.InjectionEnded, target.TriggeredBy);
+            Assert.AreEqual(TriggeredBy.InjectionEnded, testTarget.TriggeredBy);
         }
 
         [TestMethod]
@@ -185,11 +185,11 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new InjectionTriggerFragment(
+            var testTarget = new InjectionTriggerFragment(
                 TestClass1.T, TestClass2.T, Trigger, TriggeredBy.InjectionEnded);
 
             // Assert
-            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), target.ParameterType);
+            Assert.AreEqual(typeof(IInjectionParameters<TestClass1, TestClass2>), testTarget.ParameterType);
         }
     }
 }

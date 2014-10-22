@@ -81,10 +81,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new EquivalentMemberInfoCollection(TestClass1.T);
+            var testTarget = new EquivalentMemberInfoCollection(TestClass1.T);
 
             // Assert
-            Assert.AreEqual(0, target.Count);
+            Assert.AreEqual(0, testTarget.Count);
         }
 
         [TestMethod]
@@ -94,10 +94,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new EquivalentMemberInfoCollection(TestClass1.T);
+            var testTarget = new EquivalentMemberInfoCollection(TestClass1.T);
 
             // Assert
-            Assert.AreEqual(false, target.IsReadOnly);
+            Assert.AreEqual(false, testTarget.IsReadOnly);
         }
 
         [TestMethod]
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new EquivalentMemberInfoCollection(TestClass1.T);
+            var testTarget = new EquivalentMemberInfoCollection(TestClass1.T);
 
             // Assert
-            Assert.AreEqual(TestClass1.T, target.Limit);
+            Assert.AreEqual(TestClass1.T, testTarget.Limit);
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
 
             // Act
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy3));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy3));
 
             // Assert
             new[]
@@ -129,7 +129,7 @@ namespace Bijectiv.Tests.KernelFactory
                     typeof(MemberInfoHierarchy1), 
                     typeof(MemberInfoHierarchy2),
                     typeof(MemberInfoHierarchy3)
-                }.AssertSequenceEqual(target.Hierarchy);
+                }.AssertSequenceEqual(testTarget.Hierarchy);
         }
 
         [TestMethod]
@@ -139,11 +139,11 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Add(null);
+            testTarget.Add(null);
 
             // Assert
         }
@@ -154,11 +154,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Add_ItemParameterIsNotFieldOrProperty_Throws()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
             var member = Reflect<MemberInfoHierarchy6>.Method(_ => _.GetHashCode());
 
             // Act
-            target.Add(member);
+            testTarget.Add(member);
 
             // Assert
         }
@@ -168,14 +168,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void Add_ItemParameterIsAnyProperty_IsAdded()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
             var member = Reflect<PropertyTestClass>.FieldOrProperty(_ => _.Property);
 
             // Act
-            target.Add(member);
+            testTarget.Add(member);
 
             // Assert
-            Assert.AreEqual(1, target.Count(candidate => candidate == member));
+            Assert.AreEqual(1, testTarget.Count(candidate => candidate == member));
         }
 
         [TestMethod]
@@ -183,14 +183,14 @@ namespace Bijectiv.Tests.KernelFactory
         public void Add_ItemParameterIsAnyField_IsAdded()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
             var member = Reflect<FieldTestClass>.FieldOrProperty(_ => _.Field);
 
             // Act
-            target.Add(member);
+            testTarget.Add(member);
 
             // Assert
-            Assert.AreEqual(1, target.Count(candidate => candidate == member));
+            Assert.AreEqual(1, testTarget.Count(candidate => candidate == member));
         }
 
         [TestMethod]
@@ -199,12 +199,12 @@ namespace Bijectiv.Tests.KernelFactory
         public void Remove_ItemParameterIsAnything_Throws()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
             var member = Reflect<MemberInfoHierarchy6>.FieldOrProperty(_ => _.Id);
-            target.Add(member);
+            testTarget.Add(member);
 
             // Act
-            target.Remove(member);
+            testTarget.Remove(member);
 
             // Assert
         }
@@ -214,19 +214,19 @@ namespace Bijectiv.Tests.KernelFactory
         public void Clear_DefaultParameters_ClearsCollection()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 Reflect<MemberInfoHierarchy6>.FieldOrProperty(_ => _.Id)
             };
 
             // Sanity check
-            Assert.IsTrue(target.Any());
+            Assert.IsTrue(testTarget.Any());
 
             // Act
-            target.Clear();
+            testTarget.Clear();
 
             // Assert
-            Assert.IsFalse(target.Any());
+            Assert.IsFalse(testTarget.Any());
         }
 
         [TestMethod]
@@ -234,7 +234,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void GetEnumerator_WeaklyTyped_ReturnsEnumerator()
         {
             // Arrange
-            IEnumerable target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            IEnumerable testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 Reflect<MemberInfoHierarchy6>.FieldOrProperty(_ => _.Id)
             };
@@ -242,13 +242,13 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             var members = new List<MemberInfo>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var item in target)
+            foreach (var item in testTarget)
             {
                 members.Add((MemberInfo)item);
             }
 
             // Assert
-            members.AssertSetEqual(target.Cast<MemberInfo>());
+            members.AssertSetEqual(testTarget.Cast<MemberInfo>());
         }
 
         [TestMethod]
@@ -256,11 +256,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_ItemParameterIsNull_ReturnsFalse()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Contains(null);
+            var result = testTarget.Contains(null);
 
             // Assert
             Assert.IsFalse(result);
@@ -271,11 +271,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_ItemParameterIsNotFieldOrProperty_ReturnsFalse()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6));
             var member = Reflect<MemberInfoHierarchy6>.Method(_ => _.GetHashCode());
 
             // Act
-            var result = target.Contains(member);
+            var result = testTarget.Contains(member);
 
             // Assert
             Assert.IsFalse(result);
@@ -286,7 +286,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(1, false)
             };
@@ -294,7 +294,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
             
             // Assert
-            AssertClassProperties(target, 1);
+            AssertClassProperties(testTarget, 1);
         }
 
         [TestMethod]
@@ -302,7 +302,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(1, false)
             };
@@ -310,7 +310,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 1);
+            AssertInterfaceProperties(testTarget, 1);
         }
 
         [TestMethod]
@@ -318,7 +318,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(1, true)
             };
@@ -326,7 +326,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 1);
+            AssertClassProperties(testTarget, 1);
         }
 
         [TestMethod]
@@ -334,7 +334,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(1, true)
             };
@@ -342,7 +342,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 1);
+            AssertInterfaceProperties(testTarget, 1);
         }
 
         [TestMethod]
@@ -350,7 +350,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(2, false)
             };
@@ -358,7 +358,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 2);
+            AssertClassProperties(testTarget, 2);
         }
 
         [TestMethod]
@@ -366,7 +366,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(2, false)
             };
@@ -374,7 +374,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 2);
+            AssertInterfaceProperties(testTarget, 2);
         }
 
         [TestMethod]
@@ -382,7 +382,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(2, true)
             };
@@ -390,7 +390,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 2);
+            AssertClassProperties(testTarget, 2);
         }
 
         [TestMethod]
@@ -398,7 +398,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(2, true)
             };
@@ -406,7 +406,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 2);
+            AssertInterfaceProperties(testTarget, 2);
         }
 
         [TestMethod]
@@ -414,7 +414,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewVirtualInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(3, false)
             };
@@ -422,7 +422,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 3, 4);
+            AssertClassProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -430,7 +430,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewVirtualInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(3, false)
             };
@@ -438,7 +438,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 3, 4);
+            AssertInterfaceProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -446,7 +446,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewVirtualInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(3, true)
             };
@@ -454,7 +454,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 3, 4);
+            AssertClassProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -462,7 +462,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewVirtualInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(3, true)
             };
@@ -470,7 +470,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 3, 4);
+            AssertInterfaceProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -478,7 +478,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstOverrideInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(4, false)
             };
@@ -486,7 +486,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 3, 4);
+            AssertClassProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -494,7 +494,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstOverrideInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(4, false)
             };
@@ -502,7 +502,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 3, 4);
+            AssertInterfaceProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -510,7 +510,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstOverrideInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(4, true)
             };
@@ -518,7 +518,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 3, 4);
+            AssertClassProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -526,7 +526,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstOverrideInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(4, true)
             };
@@ -534,7 +534,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 3, 4);
+            AssertInterfaceProperties(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -542,7 +542,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedNewInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(5, false)
             };
@@ -550,7 +550,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 5, 6);
+            AssertClassProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -558,7 +558,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedNewInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(5, false)
             };
@@ -566,7 +566,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 5, 6);
+            AssertInterfaceProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -574,7 +574,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedNewInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(5, true)
             };
@@ -582,7 +582,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 5, 6);
+            AssertClassProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -590,7 +590,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedNewInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(5, true)
             };
@@ -598,7 +598,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 5, 6);
+            AssertInterfaceProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -606,7 +606,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedBlankInstanceClassProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(6, false)
             };
@@ -614,7 +614,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 5, 6);
+            AssertClassProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -622,7 +622,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedBlankInstanceClassProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(6, false)
             };
@@ -630,7 +630,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 5, 6);
+            AssertInterfaceProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -638,7 +638,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedBlankInstanceInterfaceProperty_ReturnsTrueForAppropriateClassMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(6, true)
             };
@@ -646,7 +646,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertClassProperties(target, 5, 6);
+            AssertClassProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -654,7 +654,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedBlankInstanceInterfaceProperty_ReturnsTrueForAppropriateInterfaceMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyProperty(6, true)
             };
@@ -662,7 +662,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertInterfaceProperties(target, 5, 6);
+            AssertInterfaceProperties(testTarget, 5, 6);
         }
 
         [TestMethod]
@@ -670,7 +670,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstInstanceClassField_ReturnsTrueForAppropriateMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyField(1)
             };
@@ -678,7 +678,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertFields(target, 1);
+            AssertFields(testTarget, 1);
         }
 
         [TestMethod]
@@ -686,7 +686,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddFirstNewInstanceClassField_ReturnsTrueForAppropriateMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyField(2)
             };
@@ -694,7 +694,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertFields(target, 2);
+            AssertFields(testTarget, 2);
         }
 
         [TestMethod]
@@ -702,7 +702,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedNewInstanceClassField_ReturnsTrueForAppropriateMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyField(3)
             };
@@ -710,7 +710,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertFields(target, 3, 4);
+            AssertFields(testTarget, 3, 4);
         }
 
         [TestMethod]
@@ -718,7 +718,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void Contains_AddRepeatedBlankInstanceClassField_ReturnsTrueForAppropriateMembers()
         {
             // Arrange
-            var target = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
+            var testTarget = new EquivalentMemberInfoCollection(typeof(MemberInfoHierarchy6))
             {
                 GetHierarchyField(4)
             };
@@ -726,7 +726,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Act
 
             // Assert
-            AssertFields(target, 3, 4);
+            AssertFields(testTarget, 3, 4);
         }
 
         private static MemberInfo GetHierarchyProperty(int index, bool isInterface)

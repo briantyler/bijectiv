@@ -63,11 +63,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -81,10 +81,10 @@ namespace Bijectiv.Tests.KernelFactory
             var scaffold = CreateScaffold();
             scaffold.TargetAsObject = Expression.Constant(targetAsObject);
 
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = Expression
@@ -107,11 +107,11 @@ namespace Bijectiv.Tests.KernelFactory
             var postMergeAction = Expression.Variable(typeof(PostMergeAction), "postMergeAction");
             scaffold.Variables.Add(postMergeAction);
 
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             scaffold.Expressions.Add(Expression.Assign(postMergeAction, Expression.Constant(PostMergeAction.Replace)));
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = Expression
@@ -123,7 +123,7 @@ namespace Bijectiv.Tests.KernelFactory
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
         }
 
-        private static ReturnMergeResultTask CreateTarget()
+        private static ReturnMergeResultTask CreateTestTarget()
         {
             return new ReturnMergeResultTask();
         }

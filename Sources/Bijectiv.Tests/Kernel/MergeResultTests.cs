@@ -59,10 +59,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new MergeResult(PostMergeAction.Replace, new object());
+            var testTarget = new MergeResult(PostMergeAction.Replace, new object());
 
             // Assert
-            Assert.AreEqual(PostMergeAction.Replace, target.Action);
+            Assert.AreEqual(PostMergeAction.Replace, testTarget.Action);
         }
 
         [TestMethod]
@@ -73,10 +73,10 @@ namespace Bijectiv.Tests.Kernel
             var targetInstance = new object();
 
             // Act
-            var target = new MergeResult(PostMergeAction.Replace, targetInstance);
+            var testTarget = new MergeResult(PostMergeAction.Replace, targetInstance);
 
             // Assert
-            Assert.AreEqual(targetInstance, target.Target);
+            Assert.AreEqual(targetInstance, testTarget.Target);
         }
 
         [TestMethod]
@@ -86,10 +86,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new MergeResult(PostMergeAction.Replace, null);
+            var testTarget = new MergeResult(PostMergeAction.Replace, null);
 
             // Assert
-            Assert.IsNull(target.Target);
+            Assert.IsNull(testTarget.Target);
         }
     }
 }

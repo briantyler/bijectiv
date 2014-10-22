@@ -81,11 +81,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -96,10 +96,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             this.scaffoldMock.VerifyAll();
@@ -111,10 +111,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
             
             // Assert
             Assert.IsNotNull(this.RetrieveParameters());
@@ -126,10 +126,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(this.sourceInstance, this.RetrieveParameters().Source);
@@ -141,10 +141,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(this.targetInstance, this.RetrieveParameters().Target);
@@ -156,10 +156,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(this.context, this.RetrieveParameters().Context);
@@ -171,10 +171,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = this.CreateScaffold();
-            var target = new InitializeInjectionParametersTask();
+            var testTarget = new InitializeInjectionParametersTask();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(this.hint, this.RetrieveParameters().Hint);

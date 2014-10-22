@@ -147,10 +147,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.IsFalse(target.Inherited);
+            Assert.IsFalse(testTarget.Inherited);
         }
 
         [TestMethod]
@@ -172,10 +172,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.Factory, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Factory, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -185,10 +185,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(Factory, target.Factory);
+            Assert.AreEqual(Factory, testTarget.Factory);
         }
 
         [TestMethod]
@@ -198,10 +198,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
+            var testTarget = new CustomFactoryFragment(TestClass1.T, TestClass2.T, Factory);
 
             // Assert
-            Assert.AreEqual(typeof(CustomFactoryParameters<TestClass1>), target.ParameterType);
+            Assert.AreEqual(typeof(CustomFactoryParameters<TestClass1>), testTarget.ParameterType);
         }
     }
 }

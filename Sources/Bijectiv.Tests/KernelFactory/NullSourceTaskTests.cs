@@ -66,11 +66,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new NullSourceTask();
+            var testTarget = new NullSourceTask();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null);
+            testTarget.Execute(null);
 
             // Assert
         }
@@ -84,10 +84,10 @@ namespace Bijectiv.Tests.KernelFactory
             scaffold.ProcessedFragments.Add(
                 Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.NullSource));
 
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.IsFalse(scaffold.Expressions.Any());
@@ -99,10 +99,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
             
             // Assert
             var @delegate = CreateDelegate(scaffold);
@@ -116,10 +116,10 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = CreateDelegate(scaffold);
@@ -133,7 +133,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var expected = new TestClass2();
             scaffold.CandidateFragments.Add(
@@ -143,7 +143,7 @@ namespace Bijectiv.Tests.KernelFactory
                     new Func<IInjectionContext, TestClass2>(c => expected)));
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = CreateDelegate(scaffold);
@@ -157,7 +157,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var unexpected = new TestClass2();
             scaffold.CandidateFragments.Add(
@@ -167,7 +167,7 @@ namespace Bijectiv.Tests.KernelFactory
                     new Func<IInjectionContext, TestClass2>(c => unexpected)));
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = CreateDelegate(scaffold);
@@ -181,7 +181,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var expected = new TestClass2();
             scaffold.CandidateFragments.Add(
@@ -196,7 +196,7 @@ namespace Bijectiv.Tests.KernelFactory
                     new Func<IInjectionContext, TestClass2>(c => { throw new Exception(); })));
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             var @delegate = CreateDelegate(scaffold);
@@ -210,7 +210,7 @@ namespace Bijectiv.Tests.KernelFactory
         {
             // Arrange
             var scaffold = CreateScaffold();
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             var expected = new TestClass2();
             scaffold.CandidateFragments.Add(
@@ -224,7 +224,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Stub.Fragment<TestClass1, TestClass2>(false, LegendaryFragments.NullSource));
 
             // Act
-            target.Execute(scaffold);
+            testTarget.Execute(scaffold);
 
             // Assert
             Assert.AreEqual(3, scaffold.ProcessedFragments.Count());
@@ -252,7 +252,7 @@ namespace Bijectiv.Tests.KernelFactory
                     (ParameterExpression)scaffold.SourceAsObject).Compile();
         }
 
-        private static NullSourceTask CreateTarget()
+        private static NullSourceTask CreateTestTarget()
         {
             return new NullSourceTask();
         }

@@ -63,7 +63,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new Mock<SourceMemberShard>(
+            var testTarget = new Mock<SourceMemberShard>(
                 TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id), true)
                 {
                     CallBase = true
@@ -71,7 +71,7 @@ namespace Bijectiv.Tests.Configuration
                 .Object;
 
             // Assert
-            Assert.IsTrue(target.Inject);
+            Assert.IsTrue(testTarget.Inject);
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new Mock<SourceMemberShard>(
+            var testTarget = new Mock<SourceMemberShard>(
                 TestClass1.T, TestClass2.T, Reflect<TestClass2>.Property(_ => _.Id), true)
                 {
                     CallBase = true
@@ -89,7 +89,7 @@ namespace Bijectiv.Tests.Configuration
                 .Object;
 
             // Assert
-            Assert.AreEqual(LegendaryShards.Source, target.ShardCategory);
+            Assert.AreEqual(LegendaryShards.Source, testTarget.ShardCategory);
         }
     }
 }

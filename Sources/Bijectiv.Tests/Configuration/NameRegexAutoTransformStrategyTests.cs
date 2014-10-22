@@ -105,10 +105,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
 
             // Assert
-            Assert.AreEqual("Pattern", target.PatternTemplate);
+            Assert.AreEqual("Pattern", testTarget.PatternTemplate);
         }
 
         [TestMethod]
@@ -118,10 +118,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.MatchTarget);
+            var testTarget = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.MatchTarget);
 
             // Assert
-            Assert.AreEqual(AutoInjectionOptions.MatchTarget, target.Options);
+            Assert.AreEqual(AutoInjectionOptions.MatchTarget, testTarget.Options);
         }
 
         [TestMethod]
@@ -130,12 +130,12 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_SourceMembersIsNull_Throws()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
             MemberInfo sourceMember;
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.TryGetSourceForTarget(null, Stub.Create<MemberInfo>(), out sourceMember);
+            testTarget.TryGetSourceForTarget(null, Stub.Create<MemberInfo>(), out sourceMember);
 
             // Assert
         }
@@ -146,12 +146,12 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_TargetMemberIsNull_Throws()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
             MemberInfo sourceMember;
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.TryGetSourceForTarget(Stub.Create<IEnumerable<MemberInfo>>(), null, out sourceMember);
+            testTarget.TryGetSourceForTarget(Stub.Create<IEnumerable<MemberInfo>>(), null, out sourceMember);
 
             // Assert
         }
@@ -161,11 +161,11 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_NoMatch_ReturnsFalse()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Pattern", AutoInjectionOptions.None);
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 new MemberInfo[0], CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
@@ -177,13 +177,13 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasMatch_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
@@ -195,13 +195,13 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasMatch_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.None);
+            var testTarget = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
+            testTarget.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -212,13 +212,13 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatch_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.MatchTarget);
+            var testTarget = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
@@ -230,13 +230,13 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatch_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.MatchTarget);
+            var testTarget = new NameRegexAutoInjectionStrategy("Target", AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Target"), out sourceMember);
+            testTarget.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -247,13 +247,13 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasNoMatchIgnoreCase_ReturnsFalse()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy("tARGET", AutoInjectionOptions.None);
-            var sourceMembers = new[] { CreateMemberInfo("target") };
+            var testTarget = new NameRegexAutoInjectionStrategy("tARGET", AutoInjectionOptions.None);
+            var sourceMembers = new[] { CreateMemberInfo("testTarget") };
 
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Ignored"), out sourceMember);
 
             // Assert
@@ -265,14 +265,14 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatchIgnoreCase_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 "tARGET", AutoInjectionOptions.IgnoreCase | AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("target"), out sourceMember);
 
             // Assert
@@ -284,14 +284,14 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatchIgnoreCase_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 "tARGET", AutoInjectionOptions.IgnoreCase | AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[] { CreateMemberInfo("Ignored") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("target"), out sourceMember);
+            testTarget.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("target"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[0], sourceMember);
@@ -302,14 +302,14 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasMatchMemberSubstitution_ReturnsTrue()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 NameRegexAutoInjectionStrategy.NameTemplateParameter, AutoInjectionOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
-            var result = target.TryGetSourceForTarget(
+            var result = testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
@@ -321,14 +321,14 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasMatchMemberSubstitution_ReturnsMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 NameRegexAutoInjectionStrategy.NameTemplateParameter, AutoInjectionOptions.None);
             var sourceMembers = new[] { CreateMemberInfo("Target") };
 
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
+            testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
@@ -340,7 +340,7 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_HasMatchMemberSubstitution_ReturnsFirstMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 "X" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "Y", AutoInjectionOptions.None);
             var sourceMembers = new[]
             {
@@ -354,7 +354,7 @@ namespace Bijectiv.Tests.Configuration
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
+            testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("Target"), out sourceMember);
 
             // Assert
@@ -366,7 +366,7 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatchMemberSubstitution_ReturnsFirstMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 "X" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "Y", AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[]
             {
@@ -380,7 +380,7 @@ namespace Bijectiv.Tests.Configuration
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(
+            testTarget.TryGetSourceForTarget(
                 sourceMembers, CreateMemberInfo("XTargetY"), out sourceMember);
 
             // Assert
@@ -392,7 +392,7 @@ namespace Bijectiv.Tests.Configuration
         public void TryGetSourceForTarget_MatchTargetHasMatchMemberSubstitutionIgnoreCase_ReturnsFirstMatch()
         {
             // Arrange
-            var target = new NameRegexAutoInjectionStrategy(
+            var testTarget = new NameRegexAutoInjectionStrategy(
                 "X" + NameRegexAutoInjectionStrategy.NameTemplateParameter + "Y", 
                 AutoInjectionOptions.IgnoreCase | AutoInjectionOptions.MatchTarget);
             var sourceMembers = new[]
@@ -406,7 +406,7 @@ namespace Bijectiv.Tests.Configuration
             MemberInfo sourceMember;
 
             // Act
-            target.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("xTargety"), out sourceMember);
+            testTarget.TryGetSourceForTarget(sourceMembers, CreateMemberInfo("xTargety"), out sourceMember);
 
             // Assert
             Assert.AreEqual(sourceMembers[3], sourceMember);

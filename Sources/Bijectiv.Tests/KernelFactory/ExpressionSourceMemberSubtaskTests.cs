@@ -164,10 +164,10 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
+            var testTarget = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
-            Assert.AreEqual(expression, target.Expression);
+            Assert.AreEqual(expression, testTarget.Expression);
         }
 
         [TestMethod]
@@ -180,10 +180,10 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(BaseTestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression, true);
+            var testTarget = new ExpressionSourceMemberShard(DerivedTestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
-            Assert.AreEqual(BaseTestClass1.T, target.ParameterType);
+            Assert.AreEqual(BaseTestClass1.T, testTarget.ParameterType);
         }
 
         [TestMethod]
@@ -196,10 +196,10 @@ namespace Bijectiv.Tests.KernelFactory
                 Expression.Parameter(TestClass1.T));
 
             // Act
-            var target = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
+            var testTarget = new ExpressionSourceMemberShard(TestClass1.T, TestClass2.T, Member, expression, true);
 
             // Assert
-            Assert.AreEqual(LegendaryShards.Source, target.ShardCategory);
+            Assert.AreEqual(LegendaryShards.Source, testTarget.ShardCategory);
         }
     }
 }

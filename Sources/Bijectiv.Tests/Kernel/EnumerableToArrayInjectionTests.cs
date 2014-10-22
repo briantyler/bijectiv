@@ -154,11 +154,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(
+            var testTarget = new EnumerableToArrayInjection(
                 typeof(Stack<int>), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
-            Assert.AreEqual(typeof(IEnumerable), target.Source);
+            Assert.AreEqual(typeof(IEnumerable), testTarget.Source);
         }
 
         [TestMethod]
@@ -168,11 +168,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(
+            var testTarget = new EnumerableToArrayInjection(
                 typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
-            Assert.AreEqual(typeof(TestClass1[]), target.Target);
+            Assert.AreEqual(typeof(TestClass1[]), testTarget.Target);
         }
 
         [TestMethod]
@@ -183,10 +183,10 @@ namespace Bijectiv.Tests.Kernel
             var merger = Stub.Create<ICollectionMerger>();
 
             // Act
-            var target = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]), merger);
+            var testTarget = new EnumerableToArrayInjection(typeof(IEnumerable), typeof(TestClass1[]), merger);
 
             // Assert
-            Assert.AreEqual(merger, target.Merger);
+            Assert.AreEqual(merger, testTarget.Merger);
         }
 
         [TestMethod]
@@ -196,11 +196,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(
+            var testTarget = new EnumerableToArrayInjection(
                 typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
-            Assert.AreEqual(typeof(TestClass1), target.TargetElement);
+            Assert.AreEqual(typeof(TestClass1), testTarget.TargetElement);
         }
 
         [TestMethod]
@@ -210,11 +210,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(
+            var testTarget = new EnumerableToArrayInjection(
                 typeof(IEnumerable), typeof(TestClass1[]), Stub.Create<ICollectionMerger>());
 
             // Assert
-            Assert.AreEqual(typeof(IEnumerable<TestClass1>), target.EnumerableTarget);
+            Assert.AreEqual(typeof(IEnumerable<TestClass1>), testTarget.EnumerableTarget);
         }
 
         [TestMethod]
@@ -224,10 +224,10 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            var target = new EnumerableToArrayInjection(
+            var testTarget = new EnumerableToArrayInjection(
                 typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>());
 
-            var result = target.ResultFactory(new List<int> { 1, 2, 3 });
+            var result = testTarget.ResultFactory(new List<int> { 1, 2, 3 });
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(int[]));
@@ -239,10 +239,10 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_SourceParameterIsNull_ReturnsNull()
         {
             // Arrange
-            var target = CreateTarget(typeof(int), Stub.Create<ICollectionMerger>());
+            var testTarget = CreateTestTarget(typeof(int), Stub.Create<ICollectionMerger>());
 
             // Act
-            var result = target.Transform(null, Stub.Create<IInjectionContext>(), null);
+            var result = testTarget.Transform(null, Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsNull(result);
@@ -254,11 +254,11 @@ namespace Bijectiv.Tests.Kernel
         public void Transform_ContextParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget(typeof(int), Stub.Create<ICollectionMerger>());
+            var testTarget = CreateTestTarget(typeof(int), Stub.Create<ICollectionMerger>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            var result = target.Transform(Enumerable.Empty<object>(), null, null);
+            var result = testTarget.Transform(Enumerable.Empty<object>(), null, null);
 
             // Assert
             Assert.IsNull(result);
@@ -271,7 +271,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var mergerMock = repository.Create<ICollectionMerger>();
-            var target = CreateTarget(typeof(int), mergerMock.Object);
+            var testTarget = CreateTestTarget(typeof(int), mergerMock.Object);
             
             var contextMock = repository.Create<IInjectionContext>();
             var registryMock = repository.Create<IInstanceRegistry>();
@@ -287,7 +287,7 @@ namespace Bijectiv.Tests.Kernel
             mergerMock.Setup(_ => _.Merge(source, targetEnumerable, contextMock.Object));
 
             // Act
-            var result = target.Transform(source, contextMock.Object, null);
+            var result = testTarget.Transform(source, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
@@ -301,7 +301,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var mergerMock = repository.Create<ICollectionMerger>();
-            var target = CreateTarget(typeof(int), mergerMock.Object);
+            var testTarget = CreateTestTarget(typeof(int), mergerMock.Object);
 
             var contextMock = repository.Create<IInjectionContext>();
             var registryMock = repository.Create<IInstanceRegistry>();
@@ -317,7 +317,7 @@ namespace Bijectiv.Tests.Kernel
             mergerMock.Setup(_ => _.Merge(source, targetEnumerable, contextMock.Object));
 
             // Act
-            var result = target.Transform(source, contextMock.Object, null);
+            var result = testTarget.Transform(source, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
@@ -329,7 +329,7 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_CallsTransform()
         {
             // Arrange
-            var targetMock = new Mock<EnumerableToArrayInjection>(
+            var testTargetMock = new Mock<EnumerableToArrayInjection>(
                 MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>())
                 { CallBase = false };
 
@@ -337,13 +337,13 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
+            testTargetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            targetMock.Object.Merge(source, new int[0], context, null);
+            testTargetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
-            targetMock.VerifyAll();
+            testTargetMock.VerifyAll();
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_PostMergeActionIsReplace()
         {
             // Arrange
-            var targetMock = new Mock<EnumerableToArrayInjection>(
+            var testTargetMock = new Mock<EnumerableToArrayInjection>(
                 MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>()) 
                 { CallBase = false };
 
@@ -359,10 +359,10 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
+            testTargetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            var result = targetMock.Object.Merge(source, new int[0], context, null);
+            var result = testTargetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
             Assert.AreEqual(PostMergeAction.Replace, result.Action);
@@ -373,7 +373,7 @@ namespace Bijectiv.Tests.Kernel
         public void Merge_ValidParameters_TargetIsTransformResult()
         {
             // Arrange
-            var targetMock = new Mock<EnumerableToArrayInjection>(
+            var testTargetMock = new Mock<EnumerableToArrayInjection>(
                 MockBehavior.Strict, typeof(IEnumerable), typeof(int[]), Stub.Create<ICollectionMerger>())
                 { CallBase = false };
 
@@ -381,16 +381,16 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
             var target = new int[0];
 
-            targetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
+            testTargetMock.Setup(_ => _.Transform(source, context, null)).Returns(target);
 
             // Act
-            var result = targetMock.Object.Merge(source, new int[0], context, null);
+            var result = testTargetMock.Object.Merge(source, new int[0], context, null);
 
             // Assert
             Assert.AreEqual(target, result.Target);
         }
 
-        private static EnumerableToArrayInjection CreateTarget(Type targetType, ICollectionMerger merger)
+        private static EnumerableToArrayInjection CreateTestTarget(Type targetType, ICollectionMerger merger)
         {
             return new EnumerableToArrayInjection(typeof(IEnumerable), targetType.MakeArrayType(), merger);
         }

@@ -81,10 +81,10 @@ namespace Bijectiv.Tests
             var registry = Stub.Create<IInstanceRegistry>();
             
             // Act
-            var target = new InjectionKernelBuilder(registry);
+            var testTarget = new InjectionKernelBuilder(registry);
 
             // Assert
-            Assert.AreEqual(registry, target.InstanceRegistry);
+            Assert.AreEqual(registry, testTarget.InstanceRegistry);
         }
 
         [TestMethod]
@@ -93,10 +93,10 @@ namespace Bijectiv.Tests
         public void Build_StoreFactoriesParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            target.Build(null, Enumerable.Empty<IInstanceFactory>());
+            testTarget.Build(null, Enumerable.Empty<IInstanceFactory>());
 
             // Assert
         }
@@ -107,10 +107,10 @@ namespace Bijectiv.Tests
         public void Build_InstanceFactoriesParameterIsNull_Throws()
         {
             // Arrange
-            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            target.Build(Enumerable.Empty<IInjectionStoreFactory>(), null);
+            testTarget.Build(Enumerable.Empty<IInjectionStoreFactory>(), null);
 
             // Assert
         }
@@ -120,10 +120,10 @@ namespace Bijectiv.Tests
         public void Build_ValidParameters_ReturnedInjectionKernelStoreIsCompositeInjectionStore()
         {
             // Arrange
-            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = target.Build(Enumerable.Empty<IInjectionStoreFactory>(), Enumerable.Empty<IInstanceFactory>());
+            var result = testTarget.Build(Enumerable.Empty<IInjectionStoreFactory>(), Enumerable.Empty<IInstanceFactory>());
 
             // Assert
             Assert.IsInstanceOfType(result.Store, typeof(CompositeInjectionStore));
@@ -144,10 +144,10 @@ namespace Bijectiv.Tests
             var store2 = Stub.Create<IInjectionStore>();
             factory2.Setup(_ => _.Create(It.IsAny<IInstanceRegistry>())).Returns(store2);
 
-            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = target.Build(
+            var result = testTarget.Build(
                 new[] { factory1.Object, factory2.Object }, 
                 Enumerable.Empty<IInstanceFactory>());
 
@@ -174,10 +174,10 @@ namespace Bijectiv.Tests
                 .Setup(_ => _.Create(It.IsAny<IInstanceRegistry>()))
                 .Returns(new Tuple<Type, object>(typeof(IEnumerableFactory), instance2));
 
-            var target = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
+            var testTarget = new InjectionKernelBuilder(Stub.Create<IInstanceRegistry>());
 
             // Act
-            var result = target.Build(
+            var result = testTarget.Build(
                 Enumerable.Empty<IInjectionStoreFactory>(),
                 new[] { factory1.Object, factory2.Object });
 

@@ -74,13 +74,13 @@ namespace Bijectiv.Tests.Utilities
         public void AddRange_ValidParameters_RangeIsAddedToCollection()
         {
             // Arrange
-            var target = new Collection<int> { 1, 2, 3 };
+            var testTarget = new Collection<int> { 1, 2, 3 };
 
             // Act
-            target.AddRange(new[] { 4, 5, 6 });
+            testTarget.AddRange(new[] { 4, 5, 6 });
 
             // Assert
-            Assert.IsTrue(new[] { 1, 2, 3, 4, 5, 6 }.SequenceEqual(target));
+            Assert.IsTrue(new[] { 1, 2, 3, 4, 5, 6 }.SequenceEqual(testTarget));
         }
     }
 }

@@ -68,10 +68,10 @@ namespace Bijectiv.Tests.KernelFactory
             var category = new Guid("AAA72466-8C99-4778-8787-F48730D57E69");
 
             // Act
-            var target = new CreateLabelSubtask(category);
+            var testTarget = new CreateLabelSubtask(category);
 
             // Assert
-            Assert.AreEqual(category, target.Category);
+            Assert.AreEqual(category, testTarget.Category);
         }
 
         [TestMethod]
@@ -80,11 +80,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_ScaffoldParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CreateLabelSubtask(Guid.Empty);
+            var testTarget = new CreateLabelSubtask(Guid.Empty);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(null, Stub.Create<InjectionFragment>());
+            testTarget.Execute(null, Stub.Create<InjectionFragment>());
 
             // Assert
         }
@@ -95,11 +95,11 @@ namespace Bijectiv.Tests.KernelFactory
         public void Execute_FragmentParameterIsNull_Throws()
         {
             // Arrange
-            var target = new CreateLabelSubtask(Guid.Empty);
+            var testTarget = new CreateLabelSubtask(Guid.Empty);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Execute(Stub.Create<InjectionScaffold>(), null);
+            testTarget.Execute(Stub.Create<InjectionScaffold>(), null);
 
             // Assert
         }
@@ -119,10 +119,10 @@ namespace Bijectiv.Tests.KernelFactory
             var labelTarget = Expression.Label();
             scaffoldMock.Setup(_ => _.GetLabel(fragment, category)).Returns(labelTarget);
 
-            var target = new CreateLabelSubtask(category);
+            var testTarget = new CreateLabelSubtask(category);
 
             // Act
-            target.Execute(scaffoldMock.Object, fragment);
+            testTarget.Execute(scaffoldMock.Object, fragment);
 
             // Assert
             var label = (LabelExpression)expressions.Single();

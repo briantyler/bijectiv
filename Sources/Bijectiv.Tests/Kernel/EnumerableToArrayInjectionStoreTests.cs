@@ -62,11 +62,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(null, typeof(TestClass1[]));
+            testTarget.Resolve<IInjection>(null, typeof(TestClass1[]));
 
             // Assert
         }
@@ -77,11 +77,11 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            target.Resolve<IInjection>(typeof(IEnumerable), null);
+            testTarget.Resolve<IInjection>(typeof(IEnumerable), null);
 
             // Assert
         }
@@ -91,10 +91,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNotEnumerable_ReturnsNull()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<IInjection>(TestClass1.T, typeof(TestClass1[]));
+            var result = testTarget.Resolve<IInjection>(TestClass1.T, typeof(TestClass1[]));
 
             // Assert
             Assert.IsNull(result);
@@ -105,10 +105,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNotArray_ReturnsNull()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(IEnumerable), typeof(List<TestClass1>));
+            var result = testTarget.Resolve<IInjection>(typeof(IEnumerable), typeof(List<TestClass1>));
 
             // Assert
             Assert.IsNull(result);
@@ -119,10 +119,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsMultiDimensionalArray_ReturnsNull()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(IEnumerable), typeof(TestClass1[,]));
+            var result = testTarget.Resolve<IInjection>(typeof(IEnumerable), typeof(TestClass1[,]));
 
             // Assert
             Assert.IsNull(result);
@@ -133,10 +133,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_ValidParameters_ReturnsInjection()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<IInjection>(typeof(IEnumerable), typeof(TestClass1[]));
+            var result = testTarget.Resolve<IInjection>(typeof(IEnumerable), typeof(TestClass1[]));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(EnumerableToArrayInjection));
@@ -147,10 +147,10 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_ValidParameters_ReturnsTransform()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<ITransform>(typeof(IEnumerable), typeof(TestClass1[]));
+            var result = testTarget.Resolve<ITransform>(typeof(IEnumerable), typeof(TestClass1[]));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(EnumerableToArrayInjection));
@@ -161,16 +161,16 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_ValidParameters_ReturnsMerge()
         {
             // Arrange
-            var target = CreateTarget();
+            var testTarget = CreateTestTarget();
 
             // Act
-            var result = target.Resolve<IMerge>(typeof(IEnumerable), typeof(TestClass1[]));
+            var result = testTarget.Resolve<IMerge>(typeof(IEnumerable), typeof(TestClass1[]));
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(EnumerableToArrayInjection));
         }
 
-        private static EnumerableToArrayInjectionStore CreateTarget()
+        private static EnumerableToArrayInjectionStore CreateTestTarget()
         {
             return new EnumerableToArrayInjectionStore();
         }

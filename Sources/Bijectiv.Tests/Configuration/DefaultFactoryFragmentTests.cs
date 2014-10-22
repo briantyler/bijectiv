@@ -59,10 +59,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new DefaultFactoryFragment(typeof(object), typeof(object));
+            var testTarget = new DefaultFactoryFragment(typeof(object), typeof(object));
 
             // Assert
-            Assert.AreEqual(LegendaryFragments.Factory, target.FragmentCategory);
+            Assert.AreEqual(LegendaryFragments.Factory, testTarget.FragmentCategory);
         }
 
         [TestMethod]
@@ -72,10 +72,10 @@ namespace Bijectiv.Tests.Configuration
             // Arrange
 
             // Act
-            var target = new DefaultFactoryFragment(typeof(object), typeof(object));
+            var testTarget = new DefaultFactoryFragment(typeof(object), typeof(object));
 
             // Assert
-            Assert.IsFalse(target.Inherited);
+            Assert.IsFalse(testTarget.Inherited);
         }
     }
 }
