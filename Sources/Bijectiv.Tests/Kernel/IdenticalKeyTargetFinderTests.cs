@@ -209,10 +209,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, Stub.Create<IEqualityComparer<object>>());
-            object targetInstance;
+            object target;
 
             // Act
-            var result = testTarget.TryFind(null, out targetInstance);
+            var result = testTarget.TryFind(null, out target);
 
             // Assert
             Assert.IsFalse(result);
@@ -224,10 +224,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var testTarget = new IdenticalKeyTargetFinder(x => x, x => x, EqualityComparer<object>.Default);
-            object targetInstance;
+            object target;
 
             // Act
-            var result = testTarget.TryFind(new object(), out targetInstance);
+            var result = testTarget.TryFind(new object(), out target);
 
             // Assert
             Assert.IsFalse(result);
@@ -241,14 +241,14 @@ namespace Bijectiv.Tests.Kernel
             var testTarget = new IdenticalKeyTargetFinder(x => 1, x => x, EqualityComparer<object>.Default);
             var expected = new TestClass1();
             testTarget.TargetCache[1] = expected;
-            object targetInstance;
+            object target;
 
             // Act
-            var result = testTarget.TryFind(new object(), out targetInstance);
+            var result = testTarget.TryFind(new object(), out target);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(expected, targetInstance);
+            Assert.AreEqual(expected, target);
         }
     }
 }

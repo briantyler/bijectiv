@@ -214,8 +214,8 @@ namespace Bijectiv.Tests.KernelFactory
                 .Setup(_ => _.Create(scaffoldMock.Object, fragmentMock.Object, shard))
                 .Returns(Expression.Constant("123"));
 
-            var targetInstance = new TestClass1();
-            scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(targetInstance));
+            var target = new TestClass1();
+            scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(target));
 
             var expressions = new List<Expression>();
             scaffoldMock.SetupGet(_ => _.Expressions).Returns(expressions);
@@ -230,7 +230,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Assert
             Expression.Lambda<Action>(expressions.Single()).Compile()();
 
-            Assert.AreEqual("123", targetInstance.Id);
+            Assert.AreEqual("123", target.Id);
         }
     }
 }

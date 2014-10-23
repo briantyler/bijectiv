@@ -107,14 +107,14 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(TestClass1.T, TestClass2.T)).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(null, contextMock.Object, null)).Returns(targetInstance);
+            transformMock.Setup(_ => _.Transform(null, contextMock.Object, null)).Returns(target);
 
             var scaffold = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
@@ -139,7 +139,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Compile()();
 
             repository.VerifyAll();
-            Assert.AreEqual(targetInstance, result);
+            Assert.AreEqual(target, result);
         }
 
         [TestMethod]
@@ -150,14 +150,14 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var sourceInstance = new DerivedTestClass1();
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(DerivedTestClass1.T, TestClass2.T)).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(targetInstance);
+            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(target);
 
             var scaffold = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
@@ -182,7 +182,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Compile()();
 
             repository.VerifyAll();
-            Assert.AreEqual(targetInstance, result);
+            Assert.AreEqual(target, result);
         }
 
         [TestMethod]
@@ -193,14 +193,14 @@ namespace Bijectiv.Tests.KernelFactory
             var repository = new MockRepository(MockBehavior.Strict);
 
             var sourceInstance = new DerivedTestClass1();
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
             var contextMock = repository.Create<IInjectionContext>();
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(DerivedTestClass1.T, TestClass2.T)).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(targetInstance);
+            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(target);
 
             var scaffold = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),

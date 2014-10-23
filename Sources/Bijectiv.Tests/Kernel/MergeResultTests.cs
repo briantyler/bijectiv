@@ -70,13 +70,13 @@ namespace Bijectiv.Tests.Kernel
         public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
         {
             // Arrange
-            var targetInstance = new object();
+            var target = new object();
 
             // Act
-            var testTarget = new MergeResult(PostMergeAction.Replace, targetInstance);
+            var testTarget = new MergeResult(PostMergeAction.Replace, target);
 
             // Assert
-            Assert.AreEqual(targetInstance, testTarget.Target);
+            Assert.AreEqual(target, testTarget.Target);
         }
 
         [TestMethod]

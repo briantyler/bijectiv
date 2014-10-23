@@ -84,13 +84,13 @@ namespace Bijectiv.Tests.Kernel
         public void CreateInstance_TargetParameter_IsAssignedToTargetProperty()
         {
             // Arrange
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, targetInstance, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, target, null, null);
 
             // Assert
-            Assert.AreEqual(targetInstance, testTarget.Target);
+            Assert.AreEqual(target, testTarget.Target);
         }
 
         [TestMethod]

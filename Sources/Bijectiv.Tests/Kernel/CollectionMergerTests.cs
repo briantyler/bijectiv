@@ -66,20 +66,20 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
             var targetMock = repository.Create<CollectionMerger>();
-            var targetInstance = Stub.Create<ICollection<TestClass1>>();
+            var target = Stub.Create<ICollection<TestClass1>>();
             var context = Stub.Create<IInjectionContext>();
             var sourceSequence = new object[] { 1, 2, 3 };
 
             targetMock
                 .Setup(_ => _.Merge(
                     It.Is<IEnumerable<object>>(p => sourceSequence.SequenceEqual(p)), 
-                    targetInstance, 
+                    target, 
                     context));
 
             var testTarget = targetMock.Object;
 
             // Act
-            testTarget.Merge(new ArrayList(sourceSequence), targetInstance, context);
+            testTarget.Merge(new ArrayList(sourceSequence), target, context);
 
             // Assert
             repository.VerifyAll();
@@ -92,15 +92,15 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
             var targetMock = repository.Create<CollectionMerger>();
-            var targetInstance = Stub.Create<ICollection<TestClass1>>();
+            var target = Stub.Create<ICollection<TestClass1>>();
             var context = Stub.Create<IInjectionContext>();
 
-            targetMock.Setup(_ => _.Merge(It.IsAny<IEnumerable<object>>(), targetInstance, context));
+            targetMock.Setup(_ => _.Merge(It.IsAny<IEnumerable<object>>(), target, context));
 
             var testTarget = targetMock.Object;
 
             // Act
-             testTarget.Merge(null, targetInstance, context);
+             testTarget.Merge(null, target, context);
 
             // Assert
             repository.VerifyAll();
@@ -178,14 +178,14 @@ namespace Bijectiv.Tests.Kernel
             transformMock.Setup(_ => _.Transform(3, contextMock.Object, It.IsAny<object>())).Returns(6);
 
             var sourceInstance = new[] { 1, 2, 3 };
-            var targetInstance = new List<int> { 12, 59, 99, 21 };
+            var target = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
-            new[] { 2, 4, 6 }.AssertSequenceEqual(targetInstance);
+            new[] { 2, 4, 6 }.AssertSequenceEqual(target);
         }
 
         [TestMethod]
@@ -206,10 +206,10 @@ namespace Bijectiv.Tests.Kernel
             transformMock.Setup(_ => _.Transform(3, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 2))).Returns(6);
 
             var sourceInstance = new[] { 1, 2, 3 };
-            var targetInstance = new List<int> { 12, 59, 99, 21 };
+            var target = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -262,9 +262,9 @@ namespace Bijectiv.Tests.Kernel
                 new BaseTestClass2(), new DerivedTestClass2() 
             };
 
-            var targetInstance = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
+            var target = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
 
-            finderMock.Setup(_ => _.Initialize(targetInstance, contextMock.Object));
+            finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
             object dummy;
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out dummy)).Returns(false);
@@ -291,11 +291,11 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
-            targetExpected.AssertSequenceEqual(targetInstance);
+            targetExpected.AssertSequenceEqual(target);
         }
 
         [TestMethod]
@@ -337,9 +337,9 @@ namespace Bijectiv.Tests.Kernel
                 new TestClass2(), new TestClass2()
             };
 
-            var targetInstance = new List<TestClass2> { new TestClass2(), new TestClass2() };
+            var target = new List<TestClass2> { new TestClass2(), new TestClass2() };
 
-            finderMock.Setup(_ => _.Initialize(targetInstance, contextMock.Object));
+            finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
             object dummy;
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out dummy)).Returns(false);
@@ -366,11 +366,11 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
-            targetExpected.AssertSequenceEqual(targetInstance);
+            targetExpected.AssertSequenceEqual(target);
         }
 
         [TestMethod]
@@ -399,9 +399,9 @@ namespace Bijectiv.Tests.Kernel
             var sourceInstance = new BaseTestClass1[] { null };
             var targetExpected = new object[] { null };
 
-            var targetInstance = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
+            var target = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
 
-            finderMock.Setup(_ => _.Initialize(targetInstance, contextMock.Object));
+            finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
             finderMock.Setup(_ => _.TryFind(sourceInstance[0], out targetExpected[0])).Returns(true);
             baseMergeMock
@@ -409,11 +409,11 @@ namespace Bijectiv.Tests.Kernel
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[0]));
 
             // Act
-            testTarget.Merge(sourceInstance, targetInstance, contextMock.Object);
+            testTarget.Merge(sourceInstance, target, contextMock.Object);
             
             // Assert
             repository.VerifyAll();
-            targetExpected.AssertSequenceEqual(targetInstance);
+            targetExpected.AssertSequenceEqual(target);
         }
 
         private static CollectionMerger CreateTestTarget()

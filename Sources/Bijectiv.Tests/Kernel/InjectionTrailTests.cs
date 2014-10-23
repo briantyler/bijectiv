@@ -89,14 +89,14 @@ namespace Bijectiv.Tests.Kernel
         public void Add_ItemParameterTarget_IsAddedToTargets()
         {
             // Arrange
-            var targetInstance = new object();
-            var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
+            var target = new object();
+            var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), target);
 
             // Act
             var testTarget = new InjectionTrail { item };
 
             // Assert
-            Assert.IsTrue(testTarget.Targets.Contains(targetInstance));
+            Assert.IsTrue(testTarget.Targets.Contains(target));
         }
 
         [TestMethod]
@@ -133,9 +133,9 @@ namespace Bijectiv.Tests.Kernel
         public void Add_ItemParameterTargetIsInTargets_ReturnsFalse()
         {
             // Arrange
-            var targetInstance = new object();
-            var item1 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
-            var item2 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
+            var target = new object();
+            var item1 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), target);
+            var item2 = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), target);
             var testTarget = new InjectionTrail { item1 };
 
             // Act
@@ -165,12 +165,12 @@ namespace Bijectiv.Tests.Kernel
         public void ContainsTarget_TargetParameterIsContainedInTrail_ReturnsTrue()
         {
             // Arrange
-            var targetInstance = new object();
-            var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), targetInstance);
+            var target = new object();
+            var item = new InjectionTrailItem(Stub.Create<IInjection>(), new object(), target);
             var testTarget = new InjectionTrail { item };
 
             // Act
-            var result = testTarget.ContainsTarget(targetInstance);
+            var result = testTarget.ContainsTarget(target);
 
             // Assert
             Assert.IsTrue(result);

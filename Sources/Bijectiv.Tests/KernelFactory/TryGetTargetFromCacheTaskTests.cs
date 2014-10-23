@@ -107,13 +107,13 @@ namespace Bijectiv.Tests.KernelFactory
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
 
             var sourceInstance = new TestClass1();
-            object targetInstance = new TestClass2();
+            object target = new TestClass2();
 
             cacheMock
-                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance))
+                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out target))
                 .Returns(true);
 
-            Assert.AreEqual(targetInstance, @delegate(contextMock.Object, sourceInstance));
+            Assert.AreEqual(target, @delegate(contextMock.Object, sourceInstance));
             repository.VerifyAll();
         }
 
@@ -150,13 +150,13 @@ namespace Bijectiv.Tests.KernelFactory
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
 
             var sourceInstance = new TestClass1();
-            object targetInstance = new TestClass2();
+            object target = new TestClass2();
 
             cacheMock
-                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance))
+                .Setup(_ => _.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out target))
                 .Returns(false);
 
-            Assert.AreNotEqual(targetInstance, @delegate(contextMock.Object, sourceInstance));
+            Assert.AreNotEqual(target, @delegate(contextMock.Object, sourceInstance));
             repository.VerifyAll();
         }
 

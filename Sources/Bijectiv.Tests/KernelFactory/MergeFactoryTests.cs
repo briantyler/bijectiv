@@ -155,13 +155,13 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = new TestClass1();
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
             var injectionContext = Stub.Create<IInjectionContext>();
             var mergeResult = Stub.Create<IMergeResult>();
 
             Expression<Action<IInjectionContext>> validateContext = o => Assert.AreEqual(injectionContext, o);
             Expression<Action<object>> validateSource = o => Assert.AreEqual(sourceInstance, o);
-            Expression<Action<object>> validateTarget = o => Assert.AreEqual(targetInstance, o);
+            Expression<Action<object>> validateTarget = o => Assert.AreEqual(target, o);
 
             var validateParametersTaskMock = repository.Create<IInjectionTask>();
             validateParametersTaskMock
@@ -209,7 +209,7 @@ namespace Bijectiv.Tests.KernelFactory
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(TestClass1.T, TestClass2.T));
 
-            var result = injection.Merge(sourceInstance, targetInstance, injectionContext, null);
+            var result = injection.Merge(sourceInstance, target, injectionContext, null);
 
             // Assert
             repository.VerifyAll();

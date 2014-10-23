@@ -202,7 +202,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
-            object targetInstance = new TestClass2();
+            object target = new TestClass2();
 
             // Act
             testTarget.Execute(scaffold);
@@ -214,9 +214,9 @@ namespace Bijectiv.Tests.KernelFactory
             var result = Expression.Lambda<Func<object, TestClass2>>(
                     body,
                     (ParameterExpression)scaffold.TargetAsObject)
-                .Compile()(targetInstance);
+                .Compile()(target);
 
-            Assert.AreEqual(targetInstance, result);
+            Assert.AreEqual(target, result);
         }
 
         private static InitializeMergeVariablesTask CreateTestTarget()

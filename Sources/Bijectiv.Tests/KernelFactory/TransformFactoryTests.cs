@@ -153,7 +153,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
             var sourceInstance = new TestClass1();
-            var targetInstance = new TestClass2();
+            var target = new TestClass2();
             var injectionContext = Stub.Create<IInjectionContext>();
 
             Expression<Action<IInjectionContext>> validateContext = o => Assert.AreEqual(injectionContext, o);
@@ -183,7 +183,7 @@ namespace Bijectiv.Tests.KernelFactory
                     (InjectionScaffold s) =>
                     {
                         var variable = Expression.Variable(typeof(TestClass2));
-                        var assign = Expression.Assign(variable, Expression.Constant(targetInstance));
+                        var assign = Expression.Assign(variable, Expression.Constant(target));
                         s.Variables.Add(variable);
                         s.Expressions.Add(assign);
                         s.Expressions.Add(variable);
@@ -205,7 +205,7 @@ namespace Bijectiv.Tests.KernelFactory
 
             // Assert
             repository.VerifyAll();
-            Assert.AreEqual(targetInstance, result);
+            Assert.AreEqual(target, result);
         }
     }
 }

@@ -132,15 +132,15 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var testTarget = new TargetCache();
             var sourceInstance = new object();
-            var targetInstance = new object();
+            var target = new object();
             object outputTargetInstance;
 
             // Act
-            testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance);
+            testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance, target);
 
             // Assert
             Assert.IsTrue(testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out outputTargetInstance));
-            Assert.AreEqual(targetInstance, outputTargetInstance);
+            Assert.AreEqual(target, outputTargetInstance);
         }
 
         [TestMethod]
@@ -212,10 +212,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var testTarget = new TargetCache();
-            object targetInstance;
+            object target;
 
             // Act
-            testTarget.TryGet(null, null, null, out targetInstance);
+            testTarget.TryGet(null, null, null, out target);
 
             // Assert
         }
@@ -226,10 +226,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var testTarget = new TargetCache();
-            object targetInstance;
+            object target;
 
             // Act
-            var result = testTarget.TryGet(null, null, null, out targetInstance);
+            var result = testTarget.TryGet(null, null, null, out target);
 
             // Assert
             Assert.IsFalse(result);
@@ -242,11 +242,11 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
             var testTarget = new TargetCache();
             var sourceInstance = new object();
-            object targetInstance;
+            object target;
 
             // Act
             testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance, new object());
-            var result = testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance);
+            var result = testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out target);
 
             // Assert
             Assert.IsTrue(result);
@@ -260,14 +260,14 @@ namespace Bijectiv.Tests.Kernel
             var testTarget = new TargetCache();
             var sourceInstance = new object();
             var expectedTargetInstance = new object();
-            object targetInstance;
+            object target;
 
             // Act
             testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance, expectedTargetInstance);
-            testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out targetInstance);
+            testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance, out target);
 
             // Assert
-            Assert.AreEqual(expectedTargetInstance, targetInstance);
+            Assert.AreEqual(expectedTargetInstance, target);
         }
 
         [TestMethod]
@@ -283,11 +283,11 @@ namespace Bijectiv.Tests.Kernel
             testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance1, new object());
             testTarget.Add(TestClass1.T, TestClass2.T, sourceInstance2, new object());
 
-            object targetInstance;
+            object target;
 
             // Assert
-            Assert.IsTrue(testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance1, out targetInstance));
-            Assert.IsTrue(testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance2, out targetInstance));
+            Assert.IsTrue(testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance1, out target));
+            Assert.IsTrue(testTarget.TryGet(TestClass1.T, TestClass2.T, sourceInstance2, out target));
         }
     }
 }

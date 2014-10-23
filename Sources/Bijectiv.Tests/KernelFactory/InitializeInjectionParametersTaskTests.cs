@@ -51,7 +51,7 @@ namespace Bijectiv.Tests.KernelFactory
     {
         private readonly TestClass1 sourceInstance = new TestClass1();
 
-        private readonly TestClass2 targetInstance = new TestClass2();
+        private readonly TestClass2 target = new TestClass2();
 
         private readonly IInjectionContext context = Stub.Create<IInjectionContext>();
 
@@ -147,7 +147,7 @@ namespace Bijectiv.Tests.KernelFactory
             testTarget.Execute(scaffold);
 
             // Assert
-            Assert.AreEqual(this.targetInstance, this.RetrieveParameters().Target);
+            Assert.AreEqual(this.target, this.RetrieveParameters().Target);
         }
 
         [TestMethod]
@@ -186,7 +186,7 @@ namespace Bijectiv.Tests.KernelFactory
             this.scaffoldMock.SetupGet(_ => _.Definition).Returns(new InjectionDefinition(TestClass1.T, TestClass2.T));
 
             this.scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(this.sourceInstance));
-            this.scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(this.targetInstance));
+            this.scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(this.target));
             this.scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(this.context));
             this.scaffoldMock.SetupGet(_ => _.Hint).Returns(Expression.Constant(this.hint));
 

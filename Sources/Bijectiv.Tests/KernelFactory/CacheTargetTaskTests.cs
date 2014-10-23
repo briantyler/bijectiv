@@ -103,10 +103,10 @@ namespace Bijectiv.Tests.KernelFactory
             contextMock.SetupGet(_ => _.TargetCache).Returns(cacheMock.Object);
 
             var sourceInstance = new TestClass1();
-            var targetInstance = new TestClass2();
-            cacheMock.Setup(_ => _.Add(TestClass1.T, TestClass2.T, sourceInstance, targetInstance));
+            var target = new TestClass2();
+            cacheMock.Setup(_ => _.Add(TestClass1.T, TestClass2.T, sourceInstance, target));
             
-            @delegate(contextMock.Object, sourceInstance, targetInstance);
+            @delegate(contextMock.Object, sourceInstance, target);
             repository.VerifyAll();
         }
 

@@ -88,8 +88,8 @@ namespace Bijectiv.Tests.KernelFactory
             var sourceInstance = new object();
             scaffoldMock.SetupGet(_ => _.SourceAsObject).Returns(Expression.Constant(sourceInstance));
             
-            var targetInstance = new object();
-            scaffoldMock.SetupGet(_ => _.TargetAsObject).Returns(Expression.Constant(targetInstance));
+            var target = new object();
+            scaffoldMock.SetupGet(_ => _.TargetAsObject).Returns(Expression.Constant(target));
 
             var contextMock = repository.Create<IInjectionContext>();
             scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(contextMock.Object));
@@ -98,7 +98,7 @@ namespace Bijectiv.Tests.KernelFactory
             contextMock.SetupGet(_ => _.InjectionTrail).Returns(trailMock.Object);
             trailMock
                 .Setup(_ => _.Add(It.Is<InjectionTrailItem>(
-                    x => x.Injection == injection && x.Source == sourceInstance && x.Target == targetInstance)))
+                    x => x.Injection == injection && x.Source == sourceInstance && x.Target == target)))
                 .Returns(true);
 
             var expressions = new List<Expression>();
