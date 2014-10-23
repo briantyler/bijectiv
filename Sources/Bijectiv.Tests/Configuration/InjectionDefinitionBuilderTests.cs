@@ -985,7 +985,7 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+            var testTargetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
                 MockBehavior.Loose,
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
@@ -993,7 +993,7 @@ namespace Bijectiv.Tests.Configuration
             Action<IInjectionParameters<TestClass1, TestClass2>> trigger = p => p.Naught();
 
             // Act
-            targetMock.Object.OnInjectionEnded(trigger);
+            testTargetMock.Object.OnInjectionEnded(trigger);
             
             // Assert
             var fragment = (InjectionTriggerFragment)definition.Single();
@@ -1042,13 +1042,13 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+            var testTargetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
                 MockBehavior.Loose,
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
 
             Action<IInjectionParameters<TestClass1, TestClass2>> indexedAction = null;
-            targetMock
+            testTargetMock
                 .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionParameters<TestClass1, TestClass2>>>()))
                 .Callback((Action<IInjectionParameters<TestClass1, TestClass2>> a) => indexedAction = a);
 
@@ -1056,7 +1056,7 @@ namespace Bijectiv.Tests.Configuration
             object called = false;
 
             // Act
-            targetMock.Object.OnCollectionItem((i, p) =>
+            testTargetMock.Object.OnCollectionItem((i, p) =>
                 {
                     index = i;
                     called = true;
@@ -1076,20 +1076,20 @@ namespace Bijectiv.Tests.Configuration
         {
             // Arrange
             var definition = new InjectionDefinition(TestClass1.T, TestClass2.T);
-            var targetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
+            var testTargetMock = new Mock<InjectionDefinitionBuilder<TestClass1, TestClass2>>(
                 MockBehavior.Loose,
                 definition,
                 Stub.Create<IInstanceRegistry>()) { CallBase = true };
 
             Action<IInjectionParameters<TestClass1, TestClass2>> indexedAction = null;
-            targetMock
+            testTargetMock
                 .Setup(_ => _.OnInjectionEnded(It.IsAny<Action<IInjectionParameters<TestClass1, TestClass2>>>()))
                 .Callback((Action<IInjectionParameters<TestClass1, TestClass2>> a) => indexedAction = a);
 
             object called = false;
 
             // Act
-            targetMock.Object.OnCollectionItem((i, p) =>
+            testTargetMock.Object.OnCollectionItem((i, p) =>
             {
                 called = true;
             });

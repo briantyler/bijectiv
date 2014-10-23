@@ -197,17 +197,17 @@ namespace Bijectiv.Tests.Configuration
         public void RegisterTuple_ValidParameters_DelegatesToNonTuple()
         {
             // Arrange
-            var targetMock = new Mock<InstanceRegistry>(MockBehavior.Strict) { CallBase = false };
+            var testTargetMock = new Mock<InstanceRegistry>(MockBehavior.Strict) { CallBase = false };
             var instanceType = typeof(TestClass1);
             var instance = new TestClass1();
 
-            targetMock.Setup(_ => _.Register(instanceType, instance));
+            testTargetMock.Setup(_ => _.Register(instanceType, instance));
 
             // Act
-            targetMock.Object.Register(Tuple.Create<Type, object>(instanceType, instance));
+            testTargetMock.Object.Register(Tuple.Create<Type, object>(instanceType, instance));
 
             // Assert
-            targetMock.VerifyAll();
+            testTargetMock.VerifyAll();
         }
 
         [TestMethod]

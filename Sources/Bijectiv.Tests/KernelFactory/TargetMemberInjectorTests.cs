@@ -112,7 +112,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddTransformExpressionToScaffold_MemberIsReadOnly_Merges()
         {
             // Arrange
-            var targetMock = new Mock<TargetMemberTransformInjector> { CallBase = true };
+            var testTargetMock = new Mock<TargetMemberTransformInjector> { CallBase = true };
 
             var memberMock = new Mock<PropertyInfo>();
             memberMock.SetupGet(_ => _.CanRead).Returns(true);
@@ -122,10 +122,10 @@ namespace Bijectiv.Tests.KernelFactory
             var sourceExpression = Expression.Empty();
 
             // Act
-            targetMock.Object.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
+            testTargetMock.Object.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
 
             // Assert
-            targetMock.Verify(_ => _.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
+            testTargetMock.Verify(_ => _.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
         }
 
         [TestMethod]
@@ -288,7 +288,7 @@ namespace Bijectiv.Tests.KernelFactory
         public void AddMergeExpressionToScaffold_MemberIsReadOnly_Merges()
         {
             // Arrange
-            var targetMock = new Mock<TargetMemberMergeInjector> { CallBase = true };
+            var testTargetMock = new Mock<TargetMemberMergeInjector> { CallBase = true };
 
             var memberMock = new Mock<PropertyInfo>();
             memberMock.SetupGet(_ => _.CanRead).Returns(false);
@@ -298,10 +298,10 @@ namespace Bijectiv.Tests.KernelFactory
             var sourceExpression = Expression.Empty();
 
             // Act
-            targetMock.Object.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
+            testTargetMock.Object.AddMergeExpressionToScaffold(scaffold, memberMock.Object, sourceExpression);
 
             // Assert
-            targetMock.Verify(_ => _.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
+            testTargetMock.Verify(_ => _.AddTransformExpressionToScaffold(scaffold, memberMock.Object, sourceExpression));
         }
 
         [TestMethod]

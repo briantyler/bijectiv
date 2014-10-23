@@ -206,19 +206,19 @@ namespace Bijectiv.Tests.Configuration
         public void Ignore_DefaultParameters_CallsCondition()
         {
             // Arrange
-            var targetMock = new Mock<MemberFragmentBuilder<TestClass1, TestClass2, string>>(
+            var testTargetMock = new Mock<MemberFragmentBuilder<TestClass1, TestClass2, string>>(
                 MockBehavior.Loose,
                 Stub.Create<IInjectionDefinitionBuilder<TestClass1, TestClass2>>(),
                 CreateFragment()) { CallBase = true };
 
             Func<IInjectionParameters<TestClass1, TestClass2>, bool> predicate = null;
 
-            targetMock
+            testTargetMock
                 .Setup(_ => _.Condition(It.IsAny<Func<IInjectionParameters<TestClass1, TestClass2>, bool>>()))
                 .Callback((Func<IInjectionParameters<TestClass1, TestClass2>, bool> f) => predicate = f);
 
             // Act
-            targetMock.Object.Ignore();
+            testTargetMock.Object.Ignore();
 
             // Assert
             Assert.IsNotNull(predicate);

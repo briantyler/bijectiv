@@ -128,13 +128,13 @@ namespace Bijectiv.Tests.KernelFactory
             fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
             fragmentMock.SetupGet(_ => _.ProcessedShards).Returns(processed);
 
-            var targetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
+            var testTargetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
                 MockBehavior.Loose,
                 LegendaryShards.Condition);
-            targetMock.Setup(_ => _.CanProcess(It.IsAny<PredicateConditionMemberShard>())).Returns(true);
+            testTargetMock.Setup(_ => _.CanProcess(It.IsAny<PredicateConditionMemberShard>())).Returns(true);
 
             // Act
-            targetMock.Object.Execute(Stub.Create<InjectionScaffold>(), fragmentMock.Object);
+            testTargetMock.Object.Execute(Stub.Create<InjectionScaffold>(), fragmentMock.Object);
 
             // Assert
             new[] { unprocessed[1], unprocessed[3], unprocessed[5] }.AssertSetEqual(processed);
@@ -162,16 +162,16 @@ namespace Bijectiv.Tests.KernelFactory
             fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
             fragmentMock.SetupGet(_ => _.ProcessedShards).Returns(processed);
 
-            var targetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
+            var testTargetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
                 MockBehavior.Loose,
                 LegendaryShards.Condition);
 
             var scaffold = Stub.Create<InjectionScaffold>();
-            targetMock.Setup(_ => _.CanProcess(shard)).Returns(true);
-            targetMock.Setup(_ => _.ProcessShard(scaffold, fragmentMock.Object, shard));
+            testTargetMock.Setup(_ => _.CanProcess(shard)).Returns(true);
+            testTargetMock.Setup(_ => _.ProcessShard(scaffold, fragmentMock.Object, shard));
 
             // Act
-            targetMock.Object.Execute(scaffold, fragmentMock.Object);
+            testTargetMock.Object.Execute(scaffold, fragmentMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -198,14 +198,14 @@ namespace Bijectiv.Tests.KernelFactory
             };
             fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
 
-            var targetMock = repository.Create<SingleInstanceShardCategorySubtask<PredicateConditionMemberShard>>(
+            var testTargetMock = repository.Create<SingleInstanceShardCategorySubtask<PredicateConditionMemberShard>>(
                 MockBehavior.Strict,
                 LegendaryShards.Condition);
 
             var scaffold = Stub.Create<InjectionScaffold>();
 
             // Act
-            targetMock.Object.Execute(scaffold, fragmentMock.Object);
+            testTargetMock.Object.Execute(scaffold, fragmentMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -231,15 +231,15 @@ namespace Bijectiv.Tests.KernelFactory
             };
             fragmentMock.SetupGet(_ => _.UnprocessedShards).Returns(unprocessed);
 
-            var targetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
+            var testTargetMock = repository.Create<SingleInstanceShardCategorySubtask<MemberShard>>(
                 MockBehavior.Strict,
                 LegendaryShards.Condition);
 
             var scaffold = Stub.Create<InjectionScaffold>();
-            targetMock.Setup(_ => _.CanProcess(shard)).Returns(false);
+            testTargetMock.Setup(_ => _.CanProcess(shard)).Returns(false);
 
             // Act
-            targetMock.Object.Execute(scaffold, fragmentMock.Object);
+            testTargetMock.Object.Execute(scaffold, fragmentMock.Object);
 
             // Assert
             repository.VerifyAll();

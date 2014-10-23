@@ -459,15 +459,15 @@ namespace Bijectiv.Tests.Utilities
         public void GetBaseDefinition_ThisParameterIsMethod_ReturnsMethodGetBaseDefinition()
         {
             // Arrange
-            var targetMock = new Mock<MethodInfo>(MockBehavior.Strict);
+            var testTargetMock = new Mock<MethodInfo>(MockBehavior.Strict);
             var baseMethod = Stub.Create<MethodInfo>();
-            targetMock.Setup(_ => _.GetBaseDefinition()).Returns(baseMethod);
+            testTargetMock.Setup(_ => _.GetBaseDefinition()).Returns(baseMethod);
 
             // Act
-            var result = ReflectionExtensions.GetBaseDefinition(targetMock.Object);
+            var result = ReflectionExtensions.GetBaseDefinition(testTargetMock.Object);
 
             // Assert
-            targetMock.VerifyAll();
+            testTargetMock.VerifyAll();
             Assert.AreEqual(baseMethod, result);
         }
 
@@ -546,11 +546,11 @@ namespace Bijectiv.Tests.Utilities
         public void IsOverride_ThisParameterIsMethod_IsVirtualAndNotNewSlotReturnsTrue()
         {
             // Arrange
-            var targetMock = new Mock<MethodInfo>(MockBehavior.Strict);
-            targetMock.SetupGet(_ => _.Attributes).Returns(MethodAttributes.Virtual);
+            var testTargetMock = new Mock<MethodInfo>(MockBehavior.Strict);
+            testTargetMock.SetupGet(_ => _.Attributes).Returns(MethodAttributes.Virtual);
 
             // Act
-            var result = targetMock.Object.IsOverride();
+            var result = testTargetMock.Object.IsOverride();
 
             // Assert
             Assert.IsTrue(result);
@@ -561,11 +561,11 @@ namespace Bijectiv.Tests.Utilities
         public void IsOverride_ThisParameterIsMethod_IsVirtualAndNewSlotReturnsFalse()
         {
             // Arrange
-            var targetMock = new Mock<MethodInfo>(MockBehavior.Strict);
-            targetMock.SetupGet(_ => _.Attributes).Returns(MethodAttributes.Virtual & MethodAttributes.NewSlot);
+            var testTargetMock = new Mock<MethodInfo>(MockBehavior.Strict);
+            testTargetMock.SetupGet(_ => _.Attributes).Returns(MethodAttributes.Virtual & MethodAttributes.NewSlot);
 
             // Act
-            var result = targetMock.Object.IsOverride();
+            var result = testTargetMock.Object.IsOverride();
 
             // Assert
             Assert.IsFalse(result);
@@ -576,11 +576,11 @@ namespace Bijectiv.Tests.Utilities
         public void IsOverride_ThisParameterIsMethod_IsNothingReturnsFalse()
         {
             // Arrange
-            var targetMock = new Mock<MethodInfo>(MockBehavior.Strict);
-            targetMock.SetupGet(_ => _.Attributes).Returns(0);
+            var testTargetMock = new Mock<MethodInfo>(MockBehavior.Strict);
+            testTargetMock.SetupGet(_ => _.Attributes).Returns(0);
 
             // Act
-            var result = targetMock.Object.IsOverride();
+            var result = testTargetMock.Object.IsOverride();
 
             // Assert
             Assert.IsFalse(result);
@@ -595,11 +595,11 @@ namespace Bijectiv.Tests.Utilities
             var methodMock = repository.Create<MethodInfo>(MockBehavior.Strict);
             methodMock.SetupGet(_ => _.Attributes).Returns(0);
 
-            var targetMock = repository.Create<PropertyInfo>(MockBehavior.Strict);
-            targetMock.Setup(_ => _.GetAccessors(true)).Returns(new[] { methodMock.Object });
+            var testTargetMock = repository.Create<PropertyInfo>(MockBehavior.Strict);
+            testTargetMock.Setup(_ => _.GetAccessors(true)).Returns(new[] { methodMock.Object });
 
             // Act
-            var result = targetMock.Object.IsOverride();
+            var result = testTargetMock.Object.IsOverride();
 
             // Assert
             repository.VerifyAll();

@@ -65,18 +65,18 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var targetMock = repository.Create<CollectionMerger>();
+            var testTargetMock = repository.Create<CollectionMerger>();
             var target = Stub.Create<ICollection<TestClass1>>();
             var context = Stub.Create<IInjectionContext>();
             var sourceSequence = new object[] { 1, 2, 3 };
 
-            targetMock
+            testTargetMock
                 .Setup(_ => _.Merge(
                     It.Is<IEnumerable<object>>(p => sourceSequence.SequenceEqual(p)), 
                     target, 
                     context));
 
-            var testTarget = targetMock.Object;
+            var testTarget = testTargetMock.Object;
 
             // Act
             testTarget.Merge(new ArrayList(sourceSequence), target, context);
@@ -91,13 +91,13 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict) { CallBase = false };
-            var targetMock = repository.Create<CollectionMerger>();
+            var testTargetMock = repository.Create<CollectionMerger>();
             var target = Stub.Create<ICollection<TestClass1>>();
             var context = Stub.Create<IInjectionContext>();
 
-            targetMock.Setup(_ => _.Merge(It.IsAny<IEnumerable<object>>(), target, context));
+            testTargetMock.Setup(_ => _.Merge(It.IsAny<IEnumerable<object>>(), target, context));
 
-            var testTarget = targetMock.Object;
+            var testTarget = testTargetMock.Object;
 
             // Act
              testTarget.Merge(null, target, context);

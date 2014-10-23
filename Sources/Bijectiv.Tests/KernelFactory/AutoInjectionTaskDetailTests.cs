@@ -434,11 +434,11 @@ namespace Bijectiv.Tests.KernelFactory
             var injectorMock = repository.Create<ITargetMemberInjector>();
             injectorMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, scaffold.Source));
 
-            var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
+            var testTargetMock = repository.Create<AutoInjectionTaskDetail>();
+            testTargetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
 
             // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
+            testTargetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
 
             // Assert
             Assert.AreEqual(1, scaffold.ProcessedTargetMembers.Count());
@@ -460,11 +460,11 @@ namespace Bijectiv.Tests.KernelFactory
             var injectorMock = repository.Create<ITargetMemberInjector>();
             injectorMock.Setup(_ => _.AddTransformExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
 
-            var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
+            var testTargetMock = repository.Create<AutoInjectionTaskDetail>();
+            testTargetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
 
             // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
+            testTargetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
 
             // Assert
             repository.Verify();
@@ -485,12 +485,12 @@ namespace Bijectiv.Tests.KernelFactory
             var injectorMock = repository.Create<ITargetMemberInjector>();
             injectorMock.Setup(_ => _.AddMergeExpressionToScaffold(scaffold, targetMember, It.IsAny<Expression>())).Verifiable();
 
-            var targetMock = repository.Create<AutoInjectionTaskDetail>();
-            targetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
-            targetMock.SetupGet(_ => _.IsMerge).Returns(true);
+            var testTargetMock = repository.Create<AutoInjectionTaskDetail>();
+            testTargetMock.SetupGet(_ => _.Injector).Returns(injectorMock.Object);
+            testTargetMock.SetupGet(_ => _.IsMerge).Returns(true);
 
             // Act
-            targetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
+            testTargetMock.Object.ProcessPair(scaffold, Tuple.Create<MemberInfo, MemberInfo>(Reflect<TestClass1>.Property(_ => _.Id), targetMember));
 
             // Assert
             repository.Verify();

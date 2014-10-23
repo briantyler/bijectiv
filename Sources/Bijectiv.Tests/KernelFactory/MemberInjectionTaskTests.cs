@@ -174,11 +174,11 @@ namespace Bijectiv.Tests.KernelFactory
 
             var proessedFragments = new List<MemberFragment>();
 
-            var targetMock = new Mock<MemberInjectionTask>(
+            var testTargetMock = new Mock<MemberInjectionTask>(
                 MockBehavior.Strict,
                 new List<IInjectionSubtask<MemberFragment>>());
 
-            targetMock
+            testTargetMock
                 .Setup(_ => _.ProcessFragment(scaffoldMock.Object, It.IsAny<MemberFragment>()))
                 .Callback(
                     (InjectionScaffold s, MemberFragment f) =>
@@ -188,10 +188,10 @@ namespace Bijectiv.Tests.KernelFactory
                         });
 
             // Act
-            targetMock.Object.Execute(scaffoldMock.Object);
+            testTargetMock.Object.Execute(scaffoldMock.Object);
 
             // Assert
-            targetMock.VerifyAll();
+            testTargetMock.VerifyAll();
 
             new[]
                 {
