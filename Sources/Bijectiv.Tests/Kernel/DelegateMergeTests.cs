@@ -178,10 +178,10 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var called = new[] { false };
-            var sourceInstance = Stub.Create<object>();
+            var source = Stub.Create<object>();
             DMerge @delegate = (s, t, c, h, i) =>
             {
-                Assert.AreEqual(sourceInstance, s);
+                Assert.AreEqual(source, s);
                 called[0] = true;
                 return Stub.Create<IMergeResult>();
             };
@@ -189,7 +189,7 @@ namespace Bijectiv.Tests.Kernel
             var testTarget = new DelegateMerge(typeof(TestClass1), typeof(TestClass2), @delegate);
 
             // Act
-            testTarget.Merge(sourceInstance, Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
+            testTarget.Merge(source, Stub.Create<object>(), Stub.Create<IInjectionContext>(), null);
 
             // Assert
             Assert.IsTrue(called[0]);

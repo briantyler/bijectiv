@@ -178,7 +178,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var testTarget = CreateTestTarget();
             var scaffold = CreateScaffold();
-            object sourceInstance = new TestClass1();
+            object source = new TestClass1();
 
             // Act
             testTarget.Execute(scaffold);
@@ -190,9 +190,9 @@ namespace Bijectiv.Tests.KernelFactory
             var result = Expression.Lambda<Func<object, TestClass1>>(
                     body,
                     (ParameterExpression)scaffold.SourceAsObject)
-                .Compile()(sourceInstance);
+                .Compile()(source);
 
-            Assert.AreEqual(sourceInstance, result);
+            Assert.AreEqual(source, result);
         }
 
         [TestMethod]

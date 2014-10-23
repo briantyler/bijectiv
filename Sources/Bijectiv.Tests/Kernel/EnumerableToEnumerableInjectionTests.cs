@@ -188,7 +188,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var sourceInstance = Stub.Create<IEnumerable>();
+            var source = Stub.Create<IEnumerable>();
             var target = new HashSet<TestClass1>();
             var contextMock = repository.Create<IInjectionContext>();
             var expectedResult = new HashSet<TestClass1>();
@@ -208,11 +208,11 @@ namespace Bijectiv.Tests.Kernel
             testTargetMock.CallBase = false;
 
             testTargetMock
-                .Setup(_ => _.Merge(sourceInstance, target, contextMock.Object, null))
+                .Setup(_ => _.Merge(source, target, contextMock.Object, null))
                 .Returns(new MergeResult(PostMergeAction.None, expectedResult));
 
             // Act
-            var result = testTargetMock.Object.Transform(sourceInstance, contextMock.Object, null);
+            var result = testTargetMock.Object.Transform(source, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();
@@ -240,17 +240,17 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var sourceInstance = Stub.Create<IEnumerable>();
+            var source = Stub.Create<IEnumerable>();
             var target = new HashSet<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock.Setup(_ => _.Merge(sourceInstance, target, context));
+            mergerMock.Setup(_ => _.Merge(source, target, context));
 
             var testTarget = CreateTestTarget(mergerMock.Object);
 
             // Act
-            var result = testTarget.Merge(sourceInstance, target, context, null);
+            var result = testTarget.Merge(source, target, context, null);
             
             // Assert
             repository.VerifyAll();
@@ -264,17 +264,17 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var sourceInstance = Stub.Create<IEnumerable<object>>();
+            var source = Stub.Create<IEnumerable<object>>();
             var target = new HashSet<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock.Setup(_ => _.Merge(sourceInstance, target, context));
+            mergerMock.Setup(_ => _.Merge(source, target, context));
 
             var testTarget = CreateTestTarget(mergerMock.Object);
 
             // Act
-            var result = testTarget.Merge(sourceInstance, target, context, null);
+            var result = testTarget.Merge(source, target, context, null);
 
             // Assert
             repository.VerifyAll();
@@ -288,17 +288,17 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var sourceInstance = Stub.Create<IEnumerable<object>>();
+            var source = Stub.Create<IEnumerable<object>>();
             var target = new List<TestClass1>();
             var context = Stub.Create<IInjectionContext>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock.Setup(_ => _.Merge(sourceInstance, target, context));
+            mergerMock.Setup(_ => _.Merge(source, target, context));
 
             var testTarget = CreateTestTarget(mergerMock.Object);
 
             // Act
-            var result = testTarget.Merge(sourceInstance, target, context, null);
+            var result = testTarget.Merge(source, target, context, null);
 
             // Assert
             repository.VerifyAll();
@@ -312,12 +312,12 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
-            var sourceInstance = Stub.Create<IEnumerable<object>>();
+            var source = Stub.Create<IEnumerable<object>>();
             var target = new List<TestClass1>();
             var contextMock = repository.Create<IInjectionContext>();
 
             var mergerMock = repository.Create<ICollectionMerger>();
-            mergerMock.Setup(_ => _.Merge(sourceInstance, target, contextMock.Object));
+            mergerMock.Setup(_ => _.Merge(source, target, contextMock.Object));
 
             var factoryMock = repository.Create<IEnumerableFactory>();
             factoryMock.Setup(_ => _.Resolve(It.IsAny<Type>())).Returns(target);
@@ -329,7 +329,7 @@ namespace Bijectiv.Tests.Kernel
             var testTarget = CreateTestTarget(mergerMock.Object);
 
             // Act
-            var result = testTarget.Merge(sourceInstance, null, contextMock.Object, null);
+            var result = testTarget.Merge(source, null, contextMock.Object, null);
 
             // Assert
             repository.VerifyAll();

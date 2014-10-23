@@ -70,13 +70,13 @@ namespace Bijectiv.Tests.Kernel
         public void CreateInstance_SourceParameter_IsAssignedToSourceProperty()
         {
             // Arrange
-            var sourceInstance = new TestClass1();
+            var source = new TestClass1();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(sourceInstance, null, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(source, null, null, null);
 
             // Assert
-            Assert.AreEqual(sourceInstance, testTarget.Source);
+            Assert.AreEqual(source, testTarget.Source);
         }
 
         [TestMethod]

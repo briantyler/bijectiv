@@ -149,7 +149,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new DerivedTestClass1();
+            var source = new DerivedTestClass1();
             var target = new TestClass2();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
@@ -157,12 +157,12 @@ namespace Bijectiv.Tests.KernelFactory
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(DerivedTestClass1.T, TestClass2.T)).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(target);
+            transformMock.Setup(_ => _.Transform(source, contextMock.Object, null)).Returns(target);
 
             var scaffold = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(BaseTestClass1.T, TestClass2.T),
-                Expression.Constant(sourceInstance, typeof(object)),
+                Expression.Constant(source, typeof(object)),
                 Expression.Constant(contextMock.Object));
 
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));
@@ -192,7 +192,7 @@ namespace Bijectiv.Tests.KernelFactory
             // Arrange
             var repository = new MockRepository(MockBehavior.Strict);
 
-            var sourceInstance = new DerivedTestClass1();
+            var source = new DerivedTestClass1();
             var target = new TestClass2();
             var transformMock = repository.Create<ITransform>();
             var storeMock = repository.Create<IInjectionStore>();
@@ -200,12 +200,12 @@ namespace Bijectiv.Tests.KernelFactory
 
             contextMock.SetupGet(_ => _.InjectionStore).Returns(storeMock.Object);
             storeMock.Setup(_ => _.Resolve<ITransform>(DerivedTestClass1.T, TestClass2.T)).Returns(transformMock.Object);
-            transformMock.Setup(_ => _.Transform(sourceInstance, contextMock.Object, null)).Returns(target);
+            transformMock.Setup(_ => _.Transform(source, contextMock.Object, null)).Returns(target);
 
             var scaffold = new InjectionScaffold(
                 Stub.Create<IInstanceRegistry>(),
                 new InjectionDefinition(BaseTestClass1.T, TestClass2.T),
-                Expression.Constant(sourceInstance, typeof(object)),
+                Expression.Constant(source, typeof(object)),
                 Expression.Constant(contextMock.Object));
 
             scaffold.TargetAsObject = scaffold.GetVariable("targetAsObject", typeof(object));

@@ -177,11 +177,11 @@ namespace Bijectiv.Tests.Kernel
             transformMock.Setup(_ => _.Transform(2, contextMock.Object, It.IsAny<object>())).Returns(4);
             transformMock.Setup(_ => _.Transform(3, contextMock.Object, It.IsAny<object>())).Returns(6);
 
-            var sourceInstance = new[] { 1, 2, 3 };
+            var source = new[] { 1, 2, 3 };
             var target = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            testTarget.Merge(sourceInstance, target, contextMock.Object);
+            testTarget.Merge(source, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -205,11 +205,11 @@ namespace Bijectiv.Tests.Kernel
             transformMock.Setup(_ => _.Transform(2, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1))).Returns(4);
             transformMock.Setup(_ => _.Transform(3, contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 2))).Returns(6);
 
-            var sourceInstance = new[] { 1, 2, 3 };
+            var source = new[] { 1, 2, 3 };
             var target = new List<int> { 12, 59, 99, 21 };
 
             // Act
-            testTarget.Merge(sourceInstance, target, contextMock.Object);
+            testTarget.Merge(source, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -250,7 +250,7 @@ namespace Bijectiv.Tests.Kernel
             contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
             finderStoreMock.Setup(_ => _.Resolve(BaseTestClass1.T, BaseTestClass2.T)).Returns(finderMock.Object);
 
-            var sourceInstance = new[]
+            var source = new[]
             {
                 new BaseTestClass1(), new DerivedTestClass1(), null, 
                 new BaseTestClass1(), new DerivedTestClass1()
@@ -267,31 +267,31 @@ namespace Bijectiv.Tests.Kernel
             finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
             object dummy;
-            finderMock.Setup(_ => _.TryFind(sourceInstance[0], out dummy)).Returns(false);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[1], out dummy)).Returns(false);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[2], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[0], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[1], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[2], out dummy)).Returns(false);
 
             baseTransformMock
-                .Setup(_ => _.Transform(sourceInstance[0], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Transform(source[0], contextMock.Object, It.IsAny<object>()))
                 .Returns(targetExpected[0]);
             derivedTransformMock
-                .Setup(_ => _.Transform(sourceInstance[1], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Transform(source[1], contextMock.Object, It.IsAny<object>()))
                 .Returns(targetExpected[1]);
             baseTransformMock
-                .Setup(_ => _.Transform(sourceInstance[2], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Transform(source[2], contextMock.Object, It.IsAny<object>()))
                 .Returns(targetExpected[2]);
 
-            finderMock.Setup(_ => _.TryFind(sourceInstance[3], out targetExpected[3])).Returns(true);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[4], out targetExpected[4])).Returns(true);
+            finderMock.Setup(_ => _.TryFind(source[3], out targetExpected[3])).Returns(true);
+            finderMock.Setup(_ => _.TryFind(source[4], out targetExpected[4])).Returns(true);
             baseMergeMock
-                .Setup(_ => _.Merge(sourceInstance[3], targetExpected[3], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Merge(source[3], targetExpected[3], contextMock.Object, It.IsAny<object>()))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[3]));
             derivedMergeMock
-                .Setup(_ => _.Merge(sourceInstance[4], targetExpected[4], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Merge(source[4], targetExpected[4], contextMock.Object, It.IsAny<object>()))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            testTarget.Merge(sourceInstance, target, contextMock.Object);
+            testTarget.Merge(source, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -325,7 +325,7 @@ namespace Bijectiv.Tests.Kernel
             contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
             finderStoreMock.Setup(_ => _.Resolve(TestClass1.T, TestClass2.T)).Returns(finderMock.Object);
 
-            var sourceInstance = new[]
+            var source = new[]
             {
                 new TestClass1(), null, new TestClass1(),
                 new TestClass1(), new TestClass1()
@@ -342,31 +342,31 @@ namespace Bijectiv.Tests.Kernel
             finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
             object dummy;
-            finderMock.Setup(_ => _.TryFind(sourceInstance[0], out dummy)).Returns(false);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[1], out dummy)).Returns(false);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[2], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[0], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[1], out dummy)).Returns(false);
+            finderMock.Setup(_ => _.TryFind(source[2], out dummy)).Returns(false);
 
             transformMock
-                .Setup(_ => _.Transform(sourceInstance[0], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0)))
+                .Setup(_ => _.Transform(source[0], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 0)))
                 .Returns(targetExpected[0]);
             transformMock
-                .Setup(_ => _.Transform(sourceInstance[1], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1)))
+                .Setup(_ => _.Transform(source[1], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 1)))
                 .Returns(targetExpected[1]);
             transformMock
-                .Setup(_ => _.Transform(sourceInstance[2], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 2)))
+                .Setup(_ => _.Transform(source[2], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 2)))
                 .Returns(targetExpected[2]);
 
-            finderMock.Setup(_ => _.TryFind(sourceInstance[3], out targetExpected[3])).Returns(true);
-            finderMock.Setup(_ => _.TryFind(sourceInstance[4], out targetExpected[4])).Returns(true);
+            finderMock.Setup(_ => _.TryFind(source[3], out targetExpected[3])).Returns(true);
+            finderMock.Setup(_ => _.TryFind(source[4], out targetExpected[4])).Returns(true);
             mergeMock
-                .Setup(_ => _.Merge(sourceInstance[3], targetExpected[3], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3)))
+                .Setup(_ => _.Merge(source[3], targetExpected[3], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 3)))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[3]));
             mergeMock
-                .Setup(_ => _.Merge(sourceInstance[4], targetExpected[4], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 4)))
+                .Setup(_ => _.Merge(source[4], targetExpected[4], contextMock.Object, It.Is<EnumerableInjectionHint>(h => h.Index == 4)))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[4]));
 
             // Act
-            testTarget.Merge(sourceInstance, target, contextMock.Object);
+            testTarget.Merge(source, target, contextMock.Object);
 
             // Assert
             repository.VerifyAll();
@@ -396,20 +396,20 @@ namespace Bijectiv.Tests.Kernel
             contextMock.SetupGet(_ => _.InstanceRegistry).Returns(registryMock.Object);
             finderStoreMock.Setup(_ => _.Resolve(BaseTestClass1.T, BaseTestClass2.T)).Returns(finderMock.Object);
 
-            var sourceInstance = new BaseTestClass1[] { null };
+            var source = new BaseTestClass1[] { null };
             var targetExpected = new object[] { null };
 
             var target = new List<BaseTestClass2> { new BaseTestClass2(), new DerivedTestClass2() };
 
             finderMock.Setup(_ => _.Initialize(target, contextMock.Object));
 
-            finderMock.Setup(_ => _.TryFind(sourceInstance[0], out targetExpected[0])).Returns(true);
+            finderMock.Setup(_ => _.TryFind(source[0], out targetExpected[0])).Returns(true);
             baseMergeMock
-                .Setup(_ => _.Merge(sourceInstance[0], targetExpected[0], contextMock.Object, It.IsAny<object>()))
+                .Setup(_ => _.Merge(source[0], targetExpected[0], contextMock.Object, It.IsAny<object>()))
                 .Returns(new MergeResult(PostMergeAction.None, targetExpected[0]));
 
             // Act
-            testTarget.Merge(sourceInstance, target, contextMock.Object);
+            testTarget.Merge(source, target, contextMock.Object);
             
             // Assert
             repository.VerifyAll();
