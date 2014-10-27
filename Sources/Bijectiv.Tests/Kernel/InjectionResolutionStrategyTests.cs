@@ -29,12 +29,11 @@
 
 namespace Bijectiv.Tests.Kernel
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
+    using Bijectiv.TestUtilities.TestTypes;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -57,36 +56,345 @@ namespace Bijectiv.Tests.Kernel
 
         [TestMethod]
         [TestCategory("Unit")]
-        //[ArgumentNullExceptionExpected]
+        [ArgumentNullExceptionExpected]
         public void Choose_SourceParameterIsNull_Throws()
         {
             // Arrange
             var testTarget = new InjectionResolutionStrategy();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            testTarget.Choose(null, TestClass1.T, new IInjection[0]);
+            
+            // Assert
+        }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Choose_TargetParameterIsNull_Throws()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            testTarget.Choose(TestClass1.T, null, new IInjection[0]);
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Choose_ExactMatch_Chooses()
+        [ArgumentNullExceptionExpected]
+        public void Choose_CandidatesParameterIsNull_Throws()
         {
             // Arrange
-
+            var testTarget = new InjectionResolutionStrategy();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            testTarget.Choose<IInjection>(TestClass1.T, TestClass2.T, null);
 
             // Assert
         }
 
-        private static IInjection I(Type source, Type target)
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesIsEmpty_ChoosesNull()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsSingleExactMatch_ChoosesExact()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, TestClass2>();
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix(injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsSingleSubMatch_ChoosesSub()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<object, TestClass2>();
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix(injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsSingleSuperMatch_ChoosesSuper()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, DerivedTestClass1>();
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, BaseTestClass1.T, Ix(injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMultipleExactMatches_ChoosesLast()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, TestClass2>();
+
+            // Act
+            var result = testTarget.Choose(
+                TestClass1.T,
+                TestClass2.T,
+                Ix(I<TestClass1, TestClass2>(), I<TestClass1, TestClass2>(), injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMultipleSubMatches_ChoosesLast()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<object, TestClass2>();
+
+            // Act
+            var result = testTarget.Choose(
+                TestClass1.T,
+                TestClass2.T,
+                Ix(I<object, TestClass2>(), I<object, TestClass2>(), injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMultipleSuperMatches_ChoosesLast()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, DerivedTestClass1>();
+
+            // Act
+            var result = testTarget.Choose(
+                TestClass1.T,
+                BaseTestClass1.T,
+                Ix(I<TestClass1, DerivedTestClass1>(), I<TestClass1, DerivedTestClass1>(), injection));
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMatches_ChoosesMostDerivedSourceLimitedBySourceType()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<MemberInfoHierarchy2, TestClass1>();
+            var candidates = Ix(
+                I<object, TestClass1>(),
+                I<MemberInfoHierarchy1, TestClass1>(),
+                I<MemberInfoHierarchy3, TestClass1>(),
+                injection,
+                I<object, TestClass1>(),
+                I<MemberInfoHierarchy1, TestClass1>(),
+                I<MemberInfoHierarchy3, TestClass1>());
+
+            // Act
+            var result = testTarget.Choose(typeof(MemberInfoHierarchy2), TestClass1.T, candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMatches_ChoosesMostDerivedTargetUnlimitedByTargetType()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, MemberInfoHierarchy3>();
+            var candidates = Ix(
+                I<TestClass1, object>(),
+                I<TestClass1, MemberInfoHierarchy1>(),
+                I<TestClass1, MemberInfoHierarchy2>(),
+                injection,
+                I<TestClass1, object>(),
+                I<TestClass1, MemberInfoHierarchy1>(),
+                I<TestClass1, MemberInfoHierarchy2>());
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, typeof(object), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMultipleTargetHierarchyMatches_ChoosesMostDerivedInLastRegisteredHierarchy()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<TestClass1, DerivedTestClass1>();
+            var candidates = Ix(
+                I<TestClass1, object>(),
+                I<TestClass1, MemberInfoHierarchy1>(),
+                I<TestClass1, MemberInfoHierarchy2>(),
+                injection,
+                I<TestClass1, object>(),
+                I<TestClass1, BaseTestClass1>());
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, typeof(object), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsMatches_ChoosesSourceTypeFirstThenTarget()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<DerivedTestClass1, MemberInfoHierarchy3>();
+            var candidates = Ix(
+                I<DerivedTestClass1, object>(),
+                I<DerivedTestClass1, MemberInfoHierarchy1>(),
+                I<DerivedTestClass1, MemberInfoHierarchy2>(),
+                I<BaseTestClass1, object>(),
+                I<BaseTestClass1, MemberInfoHierarchy1>(),
+                I<BaseTestClass1, MemberInfoHierarchy2>(),
+                I<BaseTestClass1, MemberInfoHierarchy3>(),
+                injection,
+                I<DerivedTestClass1, object>(),
+                I<DerivedTestClass1, MemberInfoHierarchy1>(),
+                I<DerivedTestClass1, MemberInfoHierarchy2>(),
+                I<BaseTestClass1, object>(),
+                I<BaseTestClass1, MemberInfoHierarchy1>(),
+                I<BaseTestClass1, MemberInfoHierarchy2>(),
+                I<BaseTestClass1, MemberInfoHierarchy3>());
+
+            // Act
+            var result = testTarget.Choose(DerivedTestClass1.T, typeof(MemberInfoHierarchy2), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsNoMatch_ChoosesNull()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var candidates = Ix(I<TestClass1, TestClass2>(), I<TestClass1, object>(), I<object, TestClass2>());
+
+            // Act
+            var result = testTarget.Choose(TestClass2.T, TestClass1.T, candidates);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsInterfaceMatchForConcrete_ChoosesNull()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var candidates = Ix(I<IMemberInfoHierarchy1, IMemberInfoHierarchy2>());
+
+            // Act
+            var result = testTarget.Choose(typeof(MemberInfoHierarchy1), typeof(MemberInfoHierarchy2), candidates);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsInterfaceMatchForInterface_ChoosesInterface()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<IMemberInfoHierarchy1, IMemberInfoHierarchy2>();
+            var candidates = Ix(injection);
+
+            // Act
+            var result = testTarget.Choose(typeof(IMemberInfoHierarchy1), typeof(IMemberInfoHierarchy2), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsInterfaceMatchForInterfaceSource_ChoosesInterface()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<MemberInfoHierarchy1, IMemberInfoHierarchy1>();
+            var candidates = Ix(injection);
+
+            // Act
+            var result = testTarget.Choose(typeof(MemberInfoHierarchy2), typeof(IMemberInfoHierarchy1), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_CandidatesContainsInterfaceMatchForInterfaceTarget_ChoosesInterface()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = I<IMemberInfoHierarchy1, MemberInfoHierarchy2>();
+            var candidates = Ix(injection);
+
+            // Act
+            var result = testTarget.Choose(typeof(IMemberInfoHierarchy1), typeof(MemberInfoHierarchy1), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result);
+        }
+
+        private static IInjection I<TSource, TTarget>()
         {
             var injectionMock = new Mock<IInjection>(MockBehavior.Strict);
             
-            injectionMock.SetupGet(_ => _.Source).Returns(source);
-            injectionMock.SetupGet(_ => _.Target).Returns(target);
+            injectionMock.SetupGet(_ => _.Source).Returns(typeof(TSource));
+            injectionMock.SetupGet(_ => _.Target).Returns(typeof(TTarget));
             
             return injectionMock.Object;
         }

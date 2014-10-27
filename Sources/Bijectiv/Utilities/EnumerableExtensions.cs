@@ -30,6 +30,7 @@
 namespace Bijectiv.Utilities
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -101,6 +102,68 @@ namespace Bijectiv.Utilities
             {
                 action(item);
             }
+        }
+
+        public static IEnumerable<IGrouping<TKey, TSource>> Collect<TSource, TKey>(
+            [NotNull] this IEnumerable<TSource> source,
+            [NotNull] Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> comparer = null)
+        {        
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException("keySelector");
+            }
+
+            comparer = comparer ?? EqualityComparer<TKey>.Default;
+            var enumerable = source as IList<TSource> ?? source.ToArray();
+            return enumerable.Select(
+                    item =>
+                    new Grouping<TKey, TSource>(
+                        keySelector(item),
+                        enumerable.Where(candidate => comparer.Equals(keySelector(item), keySelector(candidate)))));
+        }
+
+        public static bool Equivalent<TSource, TKey>(
+            [NotNull] this IEnumerable<TSource> source,
+            [NotNull] Func<TSource, TKey> keySelector,
+            IEqualityComparer<TKey> comparer = null)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("collection");
+            }
+
+            comparer = comparer ?? EqualityComparer<TKey>.Default;
+            var collection = source as IList<TSource> ?? source.ToArray();
+            return collection.All(element => collection.All(candidate => comparer.Equals(keySelector(element), keySelector(candidate))));
+        }
+
+        private class Grouping<TKey, TSource> : IGrouping<TKey, TSource>
+        {
+            private readonly IEnumerable<TSource> collection;
+
+            public Grouping(TKey key, IEnumerable<TSource> collection)
+            {
+                this.collection = collection;
+                this.Key = key;
+            }
+
+            public IEnumerator<TSource> GetEnumerator()
+            {
+                return this.collection.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+
+            public TKey Key { get; private set; }
         }
     }
 }
