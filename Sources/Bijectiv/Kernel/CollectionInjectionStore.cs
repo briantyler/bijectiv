@@ -42,10 +42,50 @@ namespace Bijectiv.Kernel
     /// </summary>
     public class CollectionInjectionStore : IInjectionStore, IEnumerable<IInjection>
     {
-        /// <summary> TODO this needs to be a more appropriate data type.
+        /// <summary>
         /// The injections.
         /// </summary>
-        private readonly List<IInjection> injections = new List<IInjection>();
+        private readonly IList<IInjection> injections = new List<IInjection>();
+
+        /// <summary>
+        /// The injection resolution strategy.
+        /// </summary>
+        private readonly IInjectionResolutionStrategy strategy;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CollectionInjectionStore"/> class.
+        /// </summary>
+        /// <param name="strategy">
+        /// The injection resolution strategy.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public CollectionInjectionStore([NotNull] IInjectionResolutionStrategy strategy)
+        {
+            if (strategy == null)
+            {
+                throw new ArgumentNullException("strategy");
+            }
+
+            this.strategy = strategy;
+        }
+
+        /// <summary>
+        /// Gets the injections.
+        /// </summary>
+        public IList<IInjection> Injections
+        {
+            get { return this.injections; }
+        }
+
+        /// <summary>
+        /// Gets the injection resolution strategy.
+        /// </summary>
+        public IInjectionResolutionStrategy Strategy
+        {
+            get { return this.strategy; }
+        }
 
         /// <summary>
         /// Adds a new <see cref="IInjection"/> to the store.
@@ -63,7 +103,7 @@ namespace Bijectiv.Kernel
                 throw new ArgumentNullException("injection");
             }
 
-            this.injections.Add(injection);
+            this.Injections.Add(injection);
         }
 
         /// <summary>
@@ -74,7 +114,7 @@ namespace Bijectiv.Kernel
         /// </returns>
         public IEnumerator<IInjection> GetEnumerator()
         {
-            return this.injections.GetEnumerator();
+            return this.Injections.GetEnumerator();
         }
 
         /// <summary>
@@ -85,7 +125,7 @@ namespace Bijectiv.Kernel
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable)this.injections).GetEnumerator();
+            return ((IEnumerable)this.Injections).GetEnumerator();
         }
 
         /// <summary>
@@ -120,8 +160,7 @@ namespace Bijectiv.Kernel
                 throw new ArgumentNullException("target");
             }
 
-            return this.injections.OfType<TInjection>().FirstOrDefault(
-                candidate => candidate.Source == source && candidate.Target == target);
+            return this.Strategy.Choose(source, target, this.Injections.OfType<TInjection>());
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Bijectiv.KernelFactory
                 throw new ArgumentNullException("registry");
             }
 
-            var store = new CollectionInjectionStore();
+            var store = new CollectionInjectionStore(new InheritanceInjectionResolutionStrategy());
 
             registry
                 .ResolveAll<InjectionDefinition>()

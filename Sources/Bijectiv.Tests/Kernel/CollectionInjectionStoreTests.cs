@@ -48,27 +48,55 @@ namespace Bijectiv.Tests.Kernel
     {
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_InstanceCreated()
+        [ArgumentNullExceptionExpected]
+        public void CreateInstance_StrategyParameterIsNull_Throws()
         {
             // Arrange
 
             // Act
-            new CollectionInjectionStore().Naught();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new CollectionInjectionStore(null).Naught();
 
             // Assert
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateInstance_DefaultParameters_StoreIsEmpty()
+        public void CreateInstance_ValidParameters_InstanceCreated()
         {
             // Arrange
 
             // Act
-            var testTarget = new CollectionInjectionStore();
+            new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>()).Naught();
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_ValidParameters_StoreIsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>());
 
             // Assert
             Assert.IsFalse(testTarget.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_StrategyParameter_IsAssignedToStrategyProperty()
+        {
+            // Arrange
+            var strategy = Stub.Create<IInjectionResolutionStrategy>();
+
+            // Act
+            var testTarget = new CollectionInjectionStore(strategy);
+
+            // Assert
+            Assert.AreEqual(strategy, testTarget.Strategy);
         }
 
         [TestMethod]
@@ -78,7 +106,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var testTarget = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -96,7 +124,10 @@ namespace Bijectiv.Tests.Kernel
             var injection2 = Stub.Create<IInjection>();
             
             // Act
-            var testTarget = new CollectionInjectionStore { injection1, injection2 };
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>())
+            {
+                injection1, injection2
+            };
 
             // Assert
             new[] { injection1, injection2 }.AssertSequenceEqual(testTarget);
@@ -108,7 +139,7 @@ namespace Bijectiv.Tests.Kernel
         {
             // Arrange
             var injection1 = Stub.Create<IInjection>();
-            var testTarget = new CollectionInjectionStore { injection1 };
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>()) { injection1 };
 
             // Act
             foreach (var item in (IEnumerable)testTarget)
@@ -124,7 +155,7 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var testTarget = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -139,7 +170,7 @@ namespace Bijectiv.Tests.Kernel
         public void Resolve_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var testTarget = new CollectionInjectionStore();
+            var testTarget = new CollectionInjectionStore(Stub.Create<IInjectionResolutionStrategy>());
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -150,94 +181,22 @@ namespace Bijectiv.Tests.Kernel
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Resolve_StoreContainsMatchingInjection_ReturnsInjection()
+        public void Resolve_ValidParameters_DelegatesResolutionToStrategy()
         {
             // Arrange
-            var injectionMock = new Mock<IInjection>();
-            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
+            var injection = Stub.Create<IInjection>();
+            var strategyMock = new Mock<IInjectionResolutionStrategy>(MockBehavior.Strict);
 
-            var testTarget = new CollectionInjectionStore { injectionMock.Object };
+            var testTarget = new CollectionInjectionStore(strategyMock.Object);
+
+            strategyMock.Setup(_ => _.Choose(TestClass1.T, TestClass2.T, testTarget.Injections)).Returns(injection);
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
             var result = testTarget.Resolve<IInjection>(TestClass1.T, TestClass2.T);
 
             // Assert
-            Assert.AreEqual(injectionMock.Object, result);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Resolve_StoreContainsMatchingTransform_ReturnsTransfrom()
-        {
-            // Arrange
-            var injectionMock = new Mock<IInjection>();
-            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
-
-            var transformMock = new Mock<ITransform>();
-            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
-
-            var testTarget = new CollectionInjectionStore
-            {
-                injectionMock.Object,
-                transformMock.Object
-            };
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var result = testTarget.Resolve<ITransform>(TestClass1.T, TestClass2.T);
-
-            // Assert
-            Assert.AreEqual(transformMock.Object, result);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Resolve_StoreDoesNotContainMatchingInjection_ReturnsNull()
-        {
-            // Arrange
-            var injectionMock = new Mock<IInjection>();
-            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
-
-            var testTarget = new CollectionInjectionStore { injectionMock.Object };
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var result = testTarget.Resolve<IInjection>(TestClass2.T, TestClass1.T);
-
-            // Assert
-            Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Resolve_StoreDoesNotContainsMatchingTransform_ReturnsTransfrom()
-        {
-            // Arrange
-            var injectionMock = new Mock<IInjection>();
-            injectionMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            injectionMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
-
-            var transformMock = new Mock<IMerge>();
-            transformMock.SetupGet(_ => _.Source).Returns(TestClass1.T);
-            transformMock.SetupGet(_ => _.Target).Returns(TestClass2.T);
-
-            var testTarget = new CollectionInjectionStore
-            {
-                injectionMock.Object,
-                transformMock.Object
-            };
-
-            // Act
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var result = testTarget.Resolve<ITransform>(TestClass1.T, TestClass2.T);
-
-            // Assert
-            Assert.IsNull(result);
+            Assert.AreEqual(injection, result);
         }
     }
 }

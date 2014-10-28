@@ -41,7 +41,9 @@ namespace Bijectiv.TestUtilities.TestTypes
         /// <summary>
         /// The something happened.
         /// </summary>
+#pragma warning disable 0067
         [UsedImplicitly]
         public event EventHandler SomethingHappened;
+#pragma warning restore 0067
     }
 }
