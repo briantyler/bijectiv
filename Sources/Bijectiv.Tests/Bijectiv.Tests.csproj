@@ -111,6 +111,7 @@
     <Compile Include="KernelFactory\TransformFactoryTests.cs" />
     <Compile Include="KernelFactory\TryGetTargetFromCacheTaskTests.cs" />
     <Compile Include="Kernel\EnumerableInjectionHintTests.cs" />
+    <Compile Include="Kernel\ExactInjectionResolutionStrategyTests.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinderTests.cs" />
     <Compile Include="Kernel\InjectionParametersTests.cs" />
     <Compile Include="Configuration\ActivateFragmentTests.cs" />
