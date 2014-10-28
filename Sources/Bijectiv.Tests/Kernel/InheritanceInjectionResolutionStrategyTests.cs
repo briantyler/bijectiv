@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionResolutionStrategyTests.cs" company="Bijectiv">
+// <copyright file="InheritanceInjectionResolutionStrategyTests.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionResolutionStrategyTests type.
+//   Defines the InheritanceInjectionResolutionStrategyTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -40,8 +40,11 @@ namespace Bijectiv.Tests.Kernel
 
     using Moq;
 
+    /// <summary>
+    /// This class tests the <see cref="InheritanceInjectionResolutionStrategy"/> class.
+    /// </summary>
     [TestClass]
-    public class InjectionResolutionStrategyTests
+    public class InheritanceInjectionResolutionStrategyTests
     {
         [TestMethod]
         [TestCategory("Unit")]
@@ -50,7 +53,7 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            new InjectionResolutionStrategy().Naught();
+            new InheritanceInjectionResolutionStrategy().Naught();
 
             // Assert
         }
@@ -61,7 +64,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_SourceParameterIsNull_Throws()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -76,7 +79,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_TargetParameterIsNull_Throws()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -91,7 +94,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesParameterIsNull_Throws()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
@@ -105,7 +108,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesIsEmpty_ChoosesNull()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
 
             // Act
             var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix());
@@ -119,7 +122,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsSingleExactMatch_ChoosesExact()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, TestClass2>();
 
             // Act
@@ -134,7 +137,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsSingleSubMatch_ChoosesSub()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<object, TestClass2>();
 
             // Act
@@ -149,7 +152,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsSingleSuperMatch_ChoosesSuper()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, DerivedTestClass1>();
 
             // Act
@@ -164,7 +167,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMultipleExactMatches_ChoosesLast()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, TestClass2>();
 
             // Act
@@ -182,7 +185,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMultipleSubMatches_ChoosesLast()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<object, TestClass2>();
 
             // Act
@@ -200,7 +203,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMultipleSuperMatches_ChoosesLast()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, DerivedTestClass1>();
 
             // Act
@@ -218,7 +221,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMatches_ChoosesMostDerivedSourceLimitedBySourceType()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<MemberInfoHierarchy2, TestClass1>();
             var candidates = Ix(
                 I<object, TestClass1>(),
@@ -241,7 +244,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMatches_ChoosesMostDerivedTargetUnlimitedByTargetType()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, MemberInfoHierarchy3>();
             var candidates = Ix(
                 I<TestClass1, object>(),
@@ -264,7 +267,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_WhenMergeCandidatesContainsMatches_ChoosesMostDerivedTargetLimitedByTargetType()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = M<TestClass1, MemberInfoHierarchy2>();
             var candidates = Mx(
                 M<TestClass1, object>(),
@@ -287,7 +290,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMultipleTargetHierarchyMatches_ChoosesMostDerivedInLastRegisteredHierarchy()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<TestClass1, DerivedTestClass1>();
             var candidates = Ix(
                 I<TestClass1, object>(),
@@ -309,7 +312,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsMatches_ChoosesSourceTypeFirstThenTarget()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<DerivedTestClass1, MemberInfoHierarchy3>();
             var candidates = Ix(
                 I<DerivedTestClass1, object>(),
@@ -340,7 +343,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsNoMatch_ChoosesNull()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var candidates = Ix(I<TestClass1, TestClass2>(), I<TestClass1, object>(), I<object, TestClass2>());
 
             // Act
@@ -355,7 +358,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsInterfaceMatchForConcrete_ChoosesNull()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var candidates = Ix(I<IMemberInfoHierarchy1, IMemberInfoHierarchy2>());
 
             // Act
@@ -370,7 +373,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsInterfaceMatchForInterface_ChoosesInterface()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<IMemberInfoHierarchy1, IMemberInfoHierarchy2>();
             var candidates = Ix(injection);
 
@@ -386,7 +389,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsInterfaceMatchForInterfaceSource_ChoosesInterface()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<MemberInfoHierarchy1, IMemberInfoHierarchy1>();
             var candidates = Ix(injection);
 
@@ -402,7 +405,7 @@ namespace Bijectiv.Tests.Kernel
         public void Choose_CandidatesContainsInterfaceMatchForInterfaceTarget_ChoosesInterface()
         {
             // Arrange
-            var testTarget = new InjectionResolutionStrategy();
+            var testTarget = new InheritanceInjectionResolutionStrategy();
             var injection = I<IMemberInfoHierarchy1, MemberInfoHierarchy2>();
             var candidates = Ix(injection);
 

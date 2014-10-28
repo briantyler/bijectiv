@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InjectionResolutionStrategy.cs" company="Bijectiv">
+// <copyright file="InheritanceInjectionResolutionStrategy.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,7 +23,7 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the InjectionResolutionStrategy type.
+//   Defines the InheritanceInjectionResolutionStrategy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -38,9 +38,10 @@ namespace Bijectiv.Kernel
     using JetBrains.Annotations;
 
     /// <summary>
-    /// The default injection resolution strategy.
+    /// An injection resolution strategy that chooses an injection that is closest in the source and target type
+    /// inheritance hierarchy.
     /// </summary>
-    public class InjectionResolutionStrategy : IInjectionResolutionStrategy
+    public class InheritanceInjectionResolutionStrategy : IInjectionResolutionStrategy
     {
         /// <summary>
         /// Chooses a <typeparamref name="TInjection"/> from a collection of candidates.

@@ -121,7 +121,7 @@
     <Compile Include="Kernel\EnumerableToEnumerableInjection.cs" />
     <Compile Include="Kernel\ICollectionMerger.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinder.cs" />
-    <Compile Include="Kernel\InjectionResolutionStrategy.cs" />
+    <Compile Include="Kernel\InheritanceInjectionResolutionStrategy.cs" />
     <Compile Include="Kernel\InjectionTrail.cs" />
     <Compile Include="Kernel\NullTargetFinder.cs" />
     <Compile Include="ITargetCache.cs" />
