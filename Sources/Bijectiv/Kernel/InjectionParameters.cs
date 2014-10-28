@@ -41,6 +41,11 @@ namespace Bijectiv.Kernel
     public class InjectionParameters<TSource, TTarget> : IInjectionParameters<TSource, TTarget>
     {
         /// <summary>
+        /// The injection that is currently being executed.
+        /// </summary>
+        private readonly IInjection injection;
+
+        /// <summary>
         /// The source type.
         /// </summary>
         private readonly TSource source;
@@ -63,6 +68,9 @@ namespace Bijectiv.Kernel
         /// <summary>
         /// Initialises a new instance of the <see cref="InjectionParameters{TSource,TTarget}"/> class.
         /// </summary>
+        /// <param name="injection">
+        /// The injection that is currently being executed.
+        /// </param>
         /// <param name="source">
         /// The source instance.
         /// </param>
@@ -75,8 +83,14 @@ namespace Bijectiv.Kernel
         /// <param name="hint">
         /// The hint that was passed to the <see cref="IInjection"/>.
         /// </param>
-        public InjectionParameters(TSource source, TTarget target, IInjectionContext context, object hint)
+        public InjectionParameters(
+            IInjection injection,
+            TSource source, 
+            TTarget target, 
+            IInjectionContext context,
+            object hint)
         {
+            this.injection = injection;
             this.source = source;
             this.target = target;
             this.context = context;
@@ -91,19 +105,11 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Gets the context in which the operation occurs.
+        /// Gets the injection that is currently being executed.
         /// </summary>
-        public IInjectionContext Context
+        public IInjection Injection
         {
-            get { return this.context; }
-        }
-
-        /// <summary>
-        /// Gets the hint that was passed to the <see cref="IInjection"/>.
-        /// </summary>
-        public object Hint
-        {
-            get { return this.hint; }
+            get { return this.injection; }
         }
 
         /// <summary>
@@ -120,6 +126,22 @@ namespace Bijectiv.Kernel
         public TTarget Target
         {
             get { return this.target; }
+        }
+
+        /// <summary>
+        /// Gets the context in which the operation occurs.
+        /// </summary>
+        public IInjectionContext Context
+        {
+            get { return this.context; }
+        }
+
+        /// <summary>
+        /// Gets the hint that was passed to the <see cref="IInjection"/>.
+        /// </summary>
+        public object Hint
+        {
+            get { return this.hint; }
         }
     }
 }

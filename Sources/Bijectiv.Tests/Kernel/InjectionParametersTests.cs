@@ -60,9 +60,23 @@ namespace Bijectiv.Tests.Kernel
             // Arrange
 
             // Act
-            new InjectionParameters<TestClass1, TestClass2>(null, null, null, null).Naught();
+            new InjectionParameters<TestClass1, TestClass2>(null, null, null, null, null).Naught();
 
             // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void CreateInstance_InjectionParameter_IsAssignedToInjectionProperty()
+        {
+            // Arrange
+            var injection = Stub.Create<IInjection>();
+
+            // Act
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(injection, null, null, null, null);
+
+            // Assert
+            Assert.AreEqual(injection, testTarget.Injection);
         }
 
         [TestMethod]
@@ -73,7 +87,7 @@ namespace Bijectiv.Tests.Kernel
             var source = new TestClass1();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(source, null, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, source, null, null, null);
 
             // Assert
             Assert.AreEqual(source, testTarget.Source);
@@ -87,7 +101,7 @@ namespace Bijectiv.Tests.Kernel
             var target = new TestClass2();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, target, null, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, target, null, null);
 
             // Assert
             Assert.AreEqual(target, testTarget.Target);
@@ -101,7 +115,7 @@ namespace Bijectiv.Tests.Kernel
             var context = Stub.Create<IInjectionContext>();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, context, null);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, null, context, null);
 
             // Assert
             Assert.AreEqual(context, testTarget.Context);
@@ -115,7 +129,7 @@ namespace Bijectiv.Tests.Kernel
             var hint = new object();
 
             // Act
-            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, null, hint);
+            var testTarget = new InjectionParameters<TestClass1, TestClass2>(null, null, null, null, hint);
 
             // Assert
             Assert.AreEqual(hint, testTarget.Hint);

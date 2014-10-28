@@ -61,6 +61,7 @@ namespace Bijectiv.KernelFactory
 
             var createParameters = Expression.New(
                 parametersType.GetConstructors().Single(),
+                scaffold.Injection,
                 scaffold.Source,
                 scaffold.Target,
                 scaffold.InjectionContext,

@@ -136,6 +136,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Compile();
 
             var result = lambda(new InjectionParameters<TestClass1, TestClass2>(
+                Stub.Create<IInjection>(),
                 new TestClass1 { Id = "7" },
                 new TestClass2(),
                 Stub.Create<IInjectionContext>(),
@@ -174,6 +175,7 @@ namespace Bijectiv.Tests.KernelFactory
                 .Compile();
 
             var result = lambda(new InjectionParameters<TestClass1, TestClass2>(
+                Stub.Create<IInjection>(),
                 new TestClass1 { Id = "7" },
                 new TestClass2(),
                 Stub.Create<IInjectionContext>(),

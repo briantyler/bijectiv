@@ -41,6 +41,11 @@ namespace Bijectiv
     public interface IInjectionParameters<out TSource, out TTarget>
     {
         /// <summary>
+        /// Gets the injection that is currently being executed.
+        /// </summary>
+        IInjection Injection { get; }
+
+        /// <summary>
         /// Gets the source.
         /// </summary>
         TSource Source { get; }

@@ -1063,7 +1063,7 @@ namespace Bijectiv.Tests.Configuration
                 });
             indexedAction(
                 new InjectionParameters<TestClass1, TestClass2>(
-                    null, null, null, new EnumerableInjectionHint(5)));
+                    null, null, null, null, new EnumerableInjectionHint(5)));
 
             // Assert
             Assert.AreEqual(5, index);

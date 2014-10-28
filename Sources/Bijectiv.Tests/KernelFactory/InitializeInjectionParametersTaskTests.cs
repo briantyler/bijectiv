@@ -49,6 +49,8 @@ namespace Bijectiv.Tests.KernelFactory
     [TestClass]
     public class InitializeInjectionParametersTaskTests
     {
+        private readonly IInjection injection = Stub.Create<IInjection>();
+
         private readonly TestClass1 source = new TestClass1();
 
         private readonly TestClass2 target = new TestClass2();
@@ -122,6 +124,21 @@ namespace Bijectiv.Tests.KernelFactory
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Execute_ValidParameters_AssignsParametersInjection()
+        {
+            // Arrange
+            var scaffold = this.CreateScaffold();
+            var testTarget = new InitializeInjectionParametersTask();
+
+            // Act
+            testTarget.Execute(scaffold);
+
+            // Assert
+            Assert.AreEqual(this.injection, this.RetrieveParameters().Injection);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Execute_ValidParameters_AssignsParametersSource()
         {
             // Arrange
@@ -185,6 +202,7 @@ namespace Bijectiv.Tests.KernelFactory
             this.scaffoldMock = new Mock<InjectionScaffold>(MockBehavior.Strict);
             this.scaffoldMock.SetupGet(_ => _.Definition).Returns(new InjectionDefinition(TestClass1.T, TestClass2.T));
 
+            this.scaffoldMock.SetupGet(_ => _.Injection).Returns(Expression.Constant(this.injection));
             this.scaffoldMock.SetupGet(_ => _.Source).Returns(Expression.Constant(this.source));
             this.scaffoldMock.SetupGet(_ => _.Target).Returns(Expression.Constant(this.target));
             this.scaffoldMock.SetupGet(_ => _.InjectionContext).Returns(Expression.Constant(this.context));
