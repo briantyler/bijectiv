@@ -30,6 +30,7 @@
 namespace Bijectiv.Tests.Kernel
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Bijectiv.Kernel;
     using Bijectiv.TestUtilities;
@@ -110,7 +111,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix());
 
             // Assert
-            Assert.IsNull(result);
+            Assert.IsNull(result, Print(result));
         }
 
         [TestMethod]
@@ -125,7 +126,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix(injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -140,7 +141,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, TestClass2.T, Ix(injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -155,7 +156,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, BaseTestClass1.T, Ix(injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -173,7 +174,7 @@ namespace Bijectiv.Tests.Kernel
                 Ix(I<TestClass1, TestClass2>(), I<TestClass1, TestClass2>(), injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -191,7 +192,7 @@ namespace Bijectiv.Tests.Kernel
                 Ix(I<object, TestClass2>(), I<object, TestClass2>(), injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -209,7 +210,7 @@ namespace Bijectiv.Tests.Kernel
                 Ix(I<TestClass1, DerivedTestClass1>(), I<TestClass1, DerivedTestClass1>(), injection));
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -232,7 +233,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(typeof(MemberInfoHierarchy2), TestClass1.T, candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -255,7 +256,30 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, typeof(object), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Choose_WhenMergeCandidatesContainsMatches_ChoosesMostDerivedTargetLimitedByTargetType()
+        {
+            // Arrange
+            var testTarget = new InjectionResolutionStrategy();
+            var injection = M<TestClass1, MemberInfoHierarchy2>();
+            var candidates = Mx(
+                M<TestClass1, object>(),
+                M<TestClass1, MemberInfoHierarchy1>(),
+                M<TestClass1, MemberInfoHierarchy3>(),
+                injection,
+                M<TestClass1, object>(),
+                M<TestClass1, MemberInfoHierarchy1>(),
+                M<TestClass1, MemberInfoHierarchy3>());
+
+            // Act
+            var result = testTarget.Choose(TestClass1.T, typeof(MemberInfoHierarchy2), candidates);
+
+            // Assert
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -277,7 +301,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass1.T, typeof(object), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -308,7 +332,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(DerivedTestClass1.T, typeof(MemberInfoHierarchy2), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -323,7 +347,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(TestClass2.T, TestClass1.T, candidates);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.IsNull(result, Print(result));
         }
 
         [TestMethod]
@@ -338,7 +362,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(typeof(MemberInfoHierarchy1), typeof(MemberInfoHierarchy2), candidates);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.IsNull(result, Print(result));
         }
 
         [TestMethod]
@@ -354,7 +378,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(typeof(IMemberInfoHierarchy1), typeof(IMemberInfoHierarchy2), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -370,7 +394,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(typeof(MemberInfoHierarchy2), typeof(IMemberInfoHierarchy1), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         [TestMethod]
@@ -386,7 +410,7 @@ namespace Bijectiv.Tests.Kernel
             var result = testTarget.Choose(typeof(IMemberInfoHierarchy1), typeof(MemberInfoHierarchy1), candidates);
 
             // Assert
-            Assert.AreEqual(injection, result);
+            Assert.AreEqual(injection, result, Print(injection, result));
         }
 
         private static IInjection I<TSource, TTarget>()
@@ -402,6 +426,30 @@ namespace Bijectiv.Tests.Kernel
         private static IEnumerable<IInjection> Ix(params IInjection[] injections)
         {
             return injections;
+        }
+
+        private static IMerge M<TSource, TTarget>()
+        {
+            var injectionMock = new Mock<IMerge>(MockBehavior.Strict);
+
+            injectionMock.SetupGet(_ => _.Source).Returns(typeof(TSource));
+            injectionMock.SetupGet(_ => _.Target).Returns(typeof(TTarget));
+
+            return injectionMock.Object;
+        }
+
+        private static IEnumerable<IMerge> Mx(params IMerge[] injections)
+        {
+            return injections;
+        }
+
+        private static string Print(params IInjection[] injections)
+        {
+            return string.Join(
+                ", ", 
+                injections
+                    .Where(candidate => candidate != null)
+                    .Select(item => string.Format("{0} --> {1}", item.Source, item.Target)));
         }
     }
 }

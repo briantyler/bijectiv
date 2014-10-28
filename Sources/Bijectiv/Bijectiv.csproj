@@ -138,6 +138,7 @@
     <Compile Include="Configuration\EnumerableRegistration.cs" />
     <Compile Include="Kernel\EnumerableFactory.cs" />
     <Compile Include="InjectionTrailItem.cs" />
+    <Compile Include="Utilities\ExcludeFromCodeCoverageAttribute.cs" />
     <Compile Include="Utilities\IEnumerableFactory.cs" />
     <Compile Include="Utilities\IReflectionGateway.cs" />
     <Compile Include="Utilities\JetBrains.Annotations.cs">

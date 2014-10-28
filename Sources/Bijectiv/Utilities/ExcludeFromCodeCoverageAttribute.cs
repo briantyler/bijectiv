@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInjectionResolutionStrategy.cs" company="Bijectiv">
+// <copyright file="ExcludeFromCodeCoverageAttribute.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,46 +23,23 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the IInjectionResolutionStrategy type.
+//   Defines the ExcludeFromCodeCoverageAttribute type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.Utilities
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-
-    using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an injection resolution strategy.
+    /// Specifies that the attributed code should be excluded from code coverage information.
     /// </summary>
-    public interface IInjectionResolutionStrategy
+    [AttributeUsageAttribute(
+        AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Constructor | AttributeTargets.Method 
+        | AttributeTargets.Property | AttributeTargets.Event, 
+        Inherited = false,
+        AllowMultiple = false)]
+    public sealed class ExcludeFromCodeCoverageAttribute : Attribute
     {
-        /// <summary>
-        /// Chooses a <typeparamref name="TInjection"/> from a collection of candidates.
-        /// </summary>
-        /// <param name="source">
-        /// The source type.
-        /// </param>
-        /// <param name="target">
-        /// The target type.
-        /// </param>
-        /// <param name="candidates">
-        /// The candidate injections.
-        /// </param>
-        /// <typeparam name="TInjection">
-        /// The type of the injection to choose.
-        /// </typeparam>
-        /// <returns>
-        /// The chosen <typeparamref name="TInjection"/>. Returns <see langword="null"/> if there is no suitable candidate.
-        /// </returns>
-        [Pure]
-        TInjection Choose<TInjection>(
-            [NotNull] Type source,
-            [NotNull] Type target,
-            [NotNull] IEnumerable<TInjection> candidates) 
-            where TInjection : IInjection;
     }
 }

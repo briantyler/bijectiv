@@ -32,12 +32,8 @@ namespace Bijectiv.Tests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Dynamic;
     using System.Globalization;
     using System.Linq;
-    using System.Linq.Expressions;
-    using System.Reflection;
 
     using Bijectiv.Kernel;
     using Bijectiv.KernelFactory;
@@ -775,20 +771,6 @@ namespace Bijectiv.Tests
             Assert.AreEqual(source.PropertySealed, result.PropertySealed);
         }
 
-        [TestMethod]
-        [TestCategory("Spike")]
-        public void Behaviour_Variant_Expectation()
-        {
-            // Arrange
-            dynamic foo = new Foo();
-
-            foo(typeof(int), typeof(string));
-
-            // Act
-
-            // Assert
-        }
-
         private static InjectionContext CreateContext(IInjectionKernel kernel)
         {
             return new InjectionContext(
@@ -796,34 +778,5 @@ namespace Bijectiv.Tests
                 type => { throw new Exception(); },
                 kernel);
         }
-
-        private class Foo : DynamicObject
-        {
-            public override bool TryInvoke(InvokeBinder binder, object[] args, out object result)
-            {
-                var cacheGeneric = 
-                    typeof(InvokeBinder).GetMethod("CacheTarget", BindingFlags.NonPublic | BindingFlags.Instance);
-
-
-                cacheGeneric
-                    .MakeGenericMethod(typeof(Action<DerivedTestClass1, BaseTestClass2>))
-                    .Invoke(binder, new object[] { new Action<DerivedTestClass1, BaseTestClass2>((i, s) => i.Naught()) });
-
-                cacheGeneric
-                    .MakeGenericMethod(typeof(Action<BaseTestClass1, BaseTestClass2>))
-                    .Invoke(binder, new object[] { new Action<BaseTestClass1, BaseTestClass2>((i, s) => i.Naught()) });
-
-                var bound = binder.Bind(
-                    new object[] { new DerivedTestClass1(), new DerivedTestClass2() },
-                    new ReadOnlyCollection<ParameterExpression>(
-                        new[] { Expression.Parameter(typeof(DerivedTestClass1)), Expression.Parameter(typeof(DerivedTestClass2)) }),
-                    Expression.Label(typeof(void)));
-
-                result = null;
-                return true;
-            }
-        }
-
-        
     }
 }

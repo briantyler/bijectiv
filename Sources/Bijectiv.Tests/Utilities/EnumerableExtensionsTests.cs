@@ -30,6 +30,7 @@
 #pragma warning disable 1720
 namespace Bijectiv.Tests.Utilities
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -125,6 +126,207 @@ namespace Bijectiv.Tests.Utilities
 
             // Assert
             Enumerable.Range(0, 3).AssertSequenceEqual(output);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Collect_SourceParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            EnumerableExtensions.Collect(null, (int x) => x);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Collect_KeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new object[0].Collect<object, int>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Collect_ComparerParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new object[0].Collect(x => x, null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Collect_NoComparerParameter_CollectsWithDefaultComparer()
+        {
+            // Arrange
+            var source = new[] { 1, 2, 1 };
+
+            // Act
+            var result = source.Collect(candidate => candidate).ToArray();
+
+            // Assert
+            Assert.AreEqual(source.Length, result.Length);
+            Assert.AreEqual(source.Count(candidate => candidate == 1), result.Count(candidate => candidate.Key == 1));
+            Assert.AreEqual(source.Count(candidate => candidate == 2), result.Count(candidate => candidate.Key == 2));
+            result
+                .Where(candidate => candidate.Key == 1)
+                .ForEach(item => item.AssertSequenceEqual(source.Where(candidate => candidate == 1)));
+            result
+                .Where(candidate => candidate.Key == 2)
+                .ForEach(item => item.AssertSequenceEqual(source.Where(candidate => candidate == 2)));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Collect_ComparerParameterSupplied_CollectsWithComparer()
+        {
+            // Arrange
+            var source = new[] { 1, 2, 1 };
+
+            // Act
+            var result = source.Collect(candidate => candidate, new SocialistComparer()).ToArray();
+
+            // Assert
+            Assert.AreEqual(source.Length, result.Length);
+            Assert.AreEqual(source.Count(candidate => candidate == 1), result.Count(candidate => candidate.Key == 1));
+            Assert.AreEqual(source.Count(candidate => candidate == 2), result.Count(candidate => candidate.Key == 2));
+            result.ForEach(item => item.AssertSequenceEqual(source));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Equivalent_SourceParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            EnumerableExtensions.Equivalent(null, (int x) => x);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Equivalent_KeySelectorParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new object[0].Equivalent<object, int>(null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Equivalent_ComparerParameterParameterIsNull_Throws()
+        {
+            // Arrange
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            new object[0].Equivalent(x => x, null);
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Equivalent_NoComparerParameter_DeterminesEquivalenceWithDefaultComparerPositive()
+        {
+            // Arrange
+
+            // Act
+            var result = new[] { 1, 1, 1 }.Equivalent(x => x);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Equivalent_NoComparerParameter_DeterminesEquivalenceWithDefaultComparerFalse()
+        {
+            // Arrange
+
+            // Act
+            var result = new[] { 1, 2, 1 }.Equivalent(x => x);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Equivalent_ComparerParameterSupplied_DeterminesEquivalenceWithComparerPositive()
+        {
+            // Arrange
+
+            // Act
+            var result = new[] { 1, 2, 1 }.Equivalent(x => x, new SocialistComparer());
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Equivalent_ComparerParameterSupplied_DeterminesEquivalenceWithComparerFalse()
+        {
+            // Arrange
+
+            // Act
+            var result = new[] { 1, 1, 1 }.Equivalent(x => x, new EgotistComparer());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        private class SocialistComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int x, int y)
+            {
+                return true;
+            }
+
+            public int GetHashCode(int obj)
+            {
+                return 0;
+            }
+        }
+
+        private class EgotistComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int x, int y)
+            {
+                return false;
+            }
+
+            public int GetHashCode(int obj)
+            {
+                return new Random().Next();
+            }
         }
     }
 }

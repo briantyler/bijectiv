@@ -43,6 +43,12 @@
               </Exclude>
             </Functions>
             
+            <Attributes>
+              <Exclude>
+                <Attribute>^Bijectiv\.Utilities\.ExcludeFromCodeCoverageAttribute$</Attribute>
+              </Exclude>
+            </Attributes>
+            
             <UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
             <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
             <CollectFromChildProcesses>True</CollectFromChildProcesses>

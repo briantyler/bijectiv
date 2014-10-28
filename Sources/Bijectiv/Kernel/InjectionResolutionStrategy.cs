@@ -35,13 +35,15 @@ namespace Bijectiv.Kernel
 
     using Bijectiv.Utilities;
 
+    using JetBrains.Annotations;
+
     /// <summary>
     /// The default injection resolution strategy.
     /// </summary>
     public class InjectionResolutionStrategy : IInjectionResolutionStrategy
     {
         /// <summary>
-        /// Chooses a <see cref="TInjection"/> from a collection of candidates.
+        /// Chooses a <typeparamref name="TInjection"/> from a collection of candidates.
         /// </summary>
         /// <param name="source">
         /// The source type.
@@ -56,7 +58,7 @@ namespace Bijectiv.Kernel
         /// The type of the injection to choose.
         /// </typeparam>
         /// <returns>
-        /// The chosen <see cref="TInjection"/>. Returns <see langword="null"/> if there is no suitable candidate.
+        /// The chosen <typeparamref name="TInjection"/>. Returns <see langword="null"/> if there is no suitable candidate.
         /// </returns>
         public TInjection Choose<TInjection>(Type source, Type target, IEnumerable<TInjection> candidates) 
             where TInjection : IInjection
@@ -80,7 +82,7 @@ namespace Bijectiv.Kernel
                 .Select((item, index) => new { index, item })
                 .Where(candidate => source == candidate.item.Source || source.IsSubclassOf(candidate.item.Source))
                 .GroupBy(item => item.item.Source)
-                .OrderByDescending(grouping => grouping.Key, new HierarchicalTypeComparer())
+                .OrderByDescending(grouping => grouping.Key, InheritanceComparer.Instance)
                 .FirstOrDefault();
 
             if (sourceCandidates == null)
@@ -89,25 +91,75 @@ namespace Bijectiv.Kernel
             }
 
             var targetCandidates = sourceCandidates
-                .Where(candidate => target == candidate.item.Target || candidate.item.Target.IsSubclassOf(target))
-                .Collect(item => item.item.Target, new HierarchicalTypeEqualityComparer())
-                .Where(candidate => candidate.Equivalent(item => item.item.Target, new HierarchicalTypeEqualityComparer()))
+                .Where(candidate => 
+                    (!(candidate.item is IMerge)
+                    && (target == candidate.item.Target || candidate.item.Target.IsSubclassOf(target)))
+                    ||
+                    (candidate.item is IMerge
+                    && (target == candidate.item.Target || target.IsSubclassOf(candidate.item.Target))))
+                .Collect(item => item.item.Target, InheritanceComparer.Instance)
+                .Where(candidate => candidate.Equivalent(item => item.item.Target, InheritanceComparer.Instance))
                 .OrderByDescending(grouping => grouping.Max(item => item.index))
                 .FirstOrDefault();
 
             return targetCandidates == null
                 ? default(TInjection)
                 : targetCandidates
-                    .OrderByDescending(item => item.item.Target, new HierarchicalTypeComparer())
+                    .OrderByDescending(item => item.item.Target, InheritanceComparer.Instance)
                     .ThenByDescending(item => item.index)
                     .First()
                     .item;
         }
 
-        private class HierarchicalTypeComparer : IComparer<Type>
+        /// <summary>
+        /// Represents <see cref="Type"/> comparison operation that uses type inheritance for comparison rules.
+        /// <see cref="Type"/>.
+        /// </summary>
+        [ExcludeFromCodeCoverage]
+        private class InheritanceComparer : IComparer<Type>, IEqualityComparer<Type>
         {
-            public int Compare(Type x, Type y)
+            /// <summary>
+            /// The instance.
+            /// </summary>
+            public static readonly InheritanceComparer Instance = new InheritanceComparer();
+
+            /// <summary>
+            /// Prevents a default instance of the <see cref="InheritanceComparer"/> class from being created.
+            /// </summary>
+            private InheritanceComparer()
             {
+            }
+
+            /// <summary>
+            /// Compares two <see cref="Type"/> instances and returns a value indicating how one is derived from
+            /// the other.
+            /// </summary>
+            /// <param name="x">
+            /// The first <see cref="Type"/> to compare.
+            /// </param>
+            /// <param name="y">
+            /// The second <see cref="Type"/> to compare.
+            /// </param>
+            /// <returns>
+            /// A signed integer that is: negative when <paramref name="x"/> is a base class of <paramref name="y"/>;
+            /// positive when <paramref name="y"/> is a base class of <paramref name="x"/> and; zero when the types
+            /// are identical.
+            /// </returns>
+            /// <exception cref="InvalidOperationException">
+            /// Thrown when <paramref name="x"/> and <paramref name="y"/> are in separate inheritance hierarchies.
+            /// </exception>
+            public int Compare([NotNull] Type x, [NotNull] Type y)
+            {
+                if (x == null)
+                {
+                    throw new ArgumentNullException("x");
+                }
+
+                if (y == null)
+                {
+                    throw new ArgumentNullException("y");
+                }
+
                 if (x == y)
                 {
                     return 0;
@@ -126,18 +178,47 @@ namespace Bijectiv.Kernel
                 throw new InvalidOperationException(
                     string.Format("Types x='{0}' and y='{1}' are not comparable.", x, y));
             }
-        }
 
-        private class HierarchicalTypeEqualityComparer : IEqualityComparer<Type>
-        {
-            public bool Equals(Type x, Type y)
+            /// <summary>
+            /// Determines whether the specified <see cref="Type"/> instances are equal up to inheritance.
+            /// </summary>
+            /// <param name="x">
+            /// The first <see cref="Type"/> to compare.
+            /// </param>
+            /// <param name="y">
+            /// The second <see cref="Type"/> to compare.
+            /// </param>
+            /// <returns>
+            /// A value indicating whether the specified <see cref="Type"/> instances are equal up to inheritance.
+            /// </returns>
+            public bool Equals([NotNull] Type x, [NotNull] Type y)
             {
+                if (x == null)
+                {
+                    throw new ArgumentNullException("x");
+                }
+
+                if (y == null)
+                {
+                    throw new ArgumentNullException("y");
+                }
+
                 return x == y || x.IsSubclassOf(y) || y.IsSubclassOf(x);
             }
 
+            /// <summary>
+            /// Returns a hash code for the specified <see cref="Type"/>.
+            /// </summary>
+            /// <param name="obj">
+            /// The <see cref="Type"/> for which the hash code is to be returned.
+            /// </param>
+            /// <returns>
+            /// A hash code for the specified <see cref="Type"/>.
+            /// </returns>
             public int GetHashCode(Type obj)
             {
-                return obj.GetHashCode();
+                // Since everything is equivalent to object then there can be only one hash code.
+                return typeof(object).GetHashCode();
             }
         }
     }

@@ -104,11 +104,66 @@ namespace Bijectiv.Utilities
             }
         }
 
+        /// <summary>
+        /// Collects the group of equivalent elements for each element in <paramref name="source"/>; where equivalence
+        /// is determined by the equivalence of the element keys.
+        /// </summary>
+        /// <param name="source">
+        /// The source collection.
+        /// </param>
+        /// <param name="keySelector">
+        /// A delegate that selects the key.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source element type.
+        /// </typeparam>
+        /// <typeparam name="TKey">
+        /// The key type.
+        /// </typeparam>
+        /// <returns>
+        /// A collection consisting of a group of equivalent elements for each element in <paramref name="source"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public static IEnumerable<IGrouping<TKey, TSource>> Collect<TSource, TKey>(
+            [NotNull] this IEnumerable<TSource> source,
+            [NotNull] Func<TSource, TKey> keySelector)
+        {
+            return source.Collect(keySelector, EqualityComparer<TKey>.Default);
+        }
+
+        /// <summary>
+        /// Collects the group of equivalent elements for each element in <paramref name="source"/>; where equivalence
+        /// is determined by the <paramref name="comparer"/> action on the element keys.
+        /// </summary>
+        /// <param name="source">
+        /// The source collection.
+        /// </param>
+        /// <param name="keySelector">
+        /// A delegate that selects the key.
+        /// </param>
+        /// <param name="comparer">
+        /// The comparer that determines equivalence.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source element type.
+        /// </typeparam>
+        /// <typeparam name="TKey">
+        /// The key type.
+        /// </typeparam>
+        /// <returns>
+        /// A collection consisting of a group of equivalent elements for each element in <paramref name="source"/>; 
+        /// where equivalence is determined by the <paramref name="comparer"/> action on the element keys.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
         public static IEnumerable<IGrouping<TKey, TSource>> Collect<TSource, TKey>(
             [NotNull] this IEnumerable<TSource> source,
             [NotNull] Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> comparer = null)
-        {        
+            [NotNull] IEqualityComparer<TKey> comparer)
+        {
             if (source == null)
             {
                 throw new ArgumentNullException("source");
@@ -119,7 +174,11 @@ namespace Bijectiv.Utilities
                 throw new ArgumentNullException("keySelector");
             }
 
-            comparer = comparer ?? EqualityComparer<TKey>.Default;
+            if (comparer == null)
+            {
+                throw new ArgumentNullException("comparer");
+            }
+
             var enumerable = source as IList<TSource> ?? source.ToArray();
             return enumerable.Select(
                     item =>
@@ -128,42 +187,141 @@ namespace Bijectiv.Utilities
                         enumerable.Where(candidate => comparer.Equals(keySelector(item), keySelector(candidate)))));
         }
 
+        /// <summary>
+        /// Determines whether all the keys in <paramref name="source"/> are equivalent.
+        /// </summary>
+        /// <param name="source">
+        /// The source collection.
+        /// </param>
+        /// <param name="keySelector">
+        /// A delegate that selects the key.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source element type.
+        /// </typeparam>
+        /// <typeparam name="TKey">
+        /// The key type.
+        /// </typeparam>
+        /// <returns>
+        /// A value indicating equivalence of the keys in <paramref name="source"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when any parameter is null.
+        /// </exception>
+        public static bool Equivalent<TSource, TKey>(
+            [NotNull] this IEnumerable<TSource> source,
+            [NotNull] Func<TSource, TKey> keySelector)
+        {
+            return source.Equivalent(keySelector, EqualityComparer<TKey>.Default);
+        }
+
+        /// <summary>
+        /// Determines whether all the keys in <paramref name="source"/> are equivalent with respect to the action of
+        /// <paramref name="comparer"/>.
+        /// </summary>
+        /// <param name="source">
+        /// The source collection.
+        /// </param>
+        /// <param name="keySelector">
+        /// A delegate that selects the key.
+        /// </param>
+        /// <param name="comparer">
+        /// The comparer that determines equivalence.
+        /// </param>
+        /// <typeparam name="TSource">
+        /// The source element type.
+        /// </typeparam>
+        /// <typeparam name="TKey">
+        /// The key type.
+        /// </typeparam>
+        /// <returns>
+        /// A value indicating equivalence of the keys in <paramref name="source"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when Any parameter is null.
+        /// </exception>
         public static bool Equivalent<TSource, TKey>(
             [NotNull] this IEnumerable<TSource> source,
             [NotNull] Func<TSource, TKey> keySelector,
-            IEqualityComparer<TKey> comparer = null)
+            [NotNull] IEqualityComparer<TKey> comparer)
         {
             if (source == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException("source");
             }
 
-            comparer = comparer ?? EqualityComparer<TKey>.Default;
-            var collection = source as IList<TSource> ?? source.ToArray();
-            return collection.All(element => collection.All(candidate => comparer.Equals(keySelector(element), keySelector(candidate))));
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException("keySelector");
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException("comparer");
+            }
+
+            var collection = source.Select(keySelector).ToArray();
+            return collection.All(element => collection.All(candidate => comparer.Equals(element, candidate)));
         }
 
+        /// <summary>
+        /// A collection of objects that have a common key.
+        /// </summary>
+        /// <typeparam name="TKey">
+        /// The type of the key of the <see cref="Grouping{TKey,TElement}" />.
+        /// </typeparam>
+        /// <typeparam name="TSource">
+        /// The type of the values in the <see cref="Grouping{TKey,TElement}" />.
+        /// </typeparam>
+        [ExcludeFromCodeCoverage]
         private class Grouping<TKey, TSource> : IGrouping<TKey, TSource>
         {
+            /// <summary>
+            /// The underlying collection.
+            /// </summary>
             private readonly IEnumerable<TSource> collection;
 
+            /// <summary>
+            /// Initialises a new instance of the <see cref="Grouping{TKey,TSource}"/> class.
+            /// </summary>
+            /// <param name="key">
+            /// The key.
+            /// </param>
+            /// <param name="collection">
+            /// The collection.
+            /// </param>
             public Grouping(TKey key, IEnumerable<TSource> collection)
             {
                 this.collection = collection;
                 this.Key = key;
             }
 
+            /// <summary>
+            /// Gets the key of the <see cref="Grouping{TKey,TSource}"/> element.
+            /// </summary>
+            public TKey Key { get; private set; }
+
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.
+            /// </returns>
             public IEnumerator<TSource> GetEnumerator()
             {
                 return this.collection.GetEnumerator();
             }
 
+            /// <summary>
+            /// Returns an enumerator that iterates through the collection.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="IEnumerator"/> that can be used to iterate through the collection.
+            /// </returns>
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return this.GetEnumerator();
             }
-
-            public TKey Key { get; private set; }
         }
     }
 }
