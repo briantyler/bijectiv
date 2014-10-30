@@ -87,6 +87,8 @@
     <Compile Include="Kernel\DTransform.cs" />
     <Compile Include="Kernel\EnumerableInjectionHint.cs" />
     <Compile Include="Kernel\ExactInjectionResolutionStrategy.cs" />
+    <Compile Include="Kernel\IInjectionCache.cs" />
+    <Compile Include="Kernel\ConcurrentInjectionCache.cs" />
     <Compile Include="Kernel\InjectionParameters.cs" />
     <Compile Include="Configuration\ActivateFragment.cs" />
     <Compile Include="Configuration\CustomFactoryFragment.cs" />

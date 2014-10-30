@@ -110,6 +110,7 @@
     <Compile Include="KernelFactory\SingleInstanceShardCategorySubtaskTests.cs" />
     <Compile Include="KernelFactory\TransformFactoryTests.cs" />
     <Compile Include="KernelFactory\TryGetTargetFromCacheTaskTests.cs" />
+    <Compile Include="Kernel\ConcurrentInjectionCacheTests.cs" />
     <Compile Include="Kernel\EnumerableInjectionHintTests.cs" />
     <Compile Include="Kernel\ExactInjectionResolutionStrategyTests.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinderTests.cs" />
