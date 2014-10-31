@@ -34,7 +34,7 @@ namespace Bijectiv.Kernel
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents an injection cache.
+    /// Represents a cache of <see cref="IInjection"/> instances keyed by source, target and injection types.
     /// </summary>
     public interface IInjectionCache
     {

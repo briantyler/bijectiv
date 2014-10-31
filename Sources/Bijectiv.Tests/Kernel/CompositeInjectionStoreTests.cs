@@ -27,8 +27,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// ReSharper disable AssignNullToNotNullAttribute
-// ReSharper disable UseObjectOrCollectionInitializer
 namespace Bijectiv.Tests.Kernel
 {
     using System;
@@ -110,9 +108,11 @@ namespace Bijectiv.Tests.Kernel
         public void Add_StoreParameterIsNull_Throws()
         {
             // Arrange
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var testTarget = new CompositeInjectionStore();
 
             // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
             testTarget.Add(null);
             
             // Assert
@@ -127,6 +127,7 @@ namespace Bijectiv.Tests.Kernel
             var store2 = Stub.Create<IInjectionStore>();
             var store3 = Stub.Create<IInjectionStore>();
 
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var testTarget = new CompositeInjectionStore();
 
             // Act
@@ -147,6 +148,7 @@ namespace Bijectiv.Tests.Kernel
             var store2 = Stub.Create<IInjectionStore>();
             var store3 = Stub.Create<IInjectionStore>();
 
+            // ReSharper disable once UseObjectOrCollectionInitializer
             var testTarget = new CompositeInjectionStore();
 
             // Act
@@ -178,6 +180,36 @@ namespace Bijectiv.Tests.Kernel
                 // Assert
                 Assert.AreEqual(testTarget.ElementAt(index++), store);
             }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Resolve_SourceParameterIsNull_Throws()
+        {
+            // Arrange
+            var testTarget = new CompositeInjectionStore();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            testTarget.Resolve<IInjection>(null, typeof(int));
+
+            // Assert
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        [ArgumentNullExceptionExpected]
+        public void Resolve_TargetParameterIsNull_Throws()
+        {
+            // Arrange
+            var testTarget = new CompositeInjectionStore();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            testTarget.Resolve<IInjection>(typeof(int), null);
+
+            // Assert
         }
 
         [TestMethod]

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositeInjectionStore.cs" company="Bijectiv">
+// <copyright file="CachingInjectionStore.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,68 +23,74 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the CompositeInjectionStore type.
+//   Defines the CachingInjectionStore type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Bijectiv.Kernel
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     using JetBrains.Annotations;
 
     /// <summary>
-    /// A store that resolves <see cref="IInjection"/> from other <see cref="IInjectionStore"/>s.
+    /// A store that resolves <see cref="IInjection"/> from an other <see cref="IInjectionStore"/>s and caches the
+    /// result.
     /// </summary>
-    public class CompositeInjectionStore : IInjectionStore, IEnumerable<IInjectionStore>
+    public class CachingInjectionStore : IInjectionStore
     {
         /// <summary>
-        /// The stores from which this store is composed.
+        /// The underlying store from which injections are cached.
         /// </summary>
-        private readonly List<IInjectionStore> stores = new List<IInjectionStore>();
+        private readonly IInjectionStore underlyingStore;
 
         /// <summary>
-        /// TAdds a new store to the composite store.
+        /// The injection cache.
         /// </summary>
-        /// <param name="store">
-        /// The store.
+        private readonly IInjectionCache cache;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CachingInjectionStore"/> class.
+        /// </summary>
+        /// <param name="underlyingStore">
+        /// The underlying store from which injections are cached.
+        /// </param>
+        /// <param name="cache">
+        /// The injection cache.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown when any parameter is null.
         /// </exception>
-        public void Add([NotNull] IInjectionStore store)
+        public CachingInjectionStore([NotNull] IInjectionStore underlyingStore, [NotNull] IInjectionCache cache)
         {
-            if (store == null)
+            if (underlyingStore == null)
             {
-                throw new ArgumentNullException("store");
+                throw new ArgumentNullException("underlyingStore");
             }
 
-            this.stores.Add(store);
+            if (cache == null)
+            {
+                throw new ArgumentNullException("cache");
+            }
+
+            this.underlyingStore = underlyingStore;
+            this.cache = cache;
         }
 
         /// <summary>
-        /// Returns a strongly typed enumerator that iterates through a collection.
+        /// Gets the The underlying store from which injections are cached.
         /// </summary>
-        /// <returns>
-        /// An <see cref="IEnumerator{T}"/> object that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<IInjectionStore> GetEnumerator()
+        public IInjectionStore UnderlyingStore
         {
-            return this.stores.GetEnumerator();
+            get { return this.underlyingStore; }
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through a collection.
+        /// Gets the injection cache.
         /// </summary>
-        /// <returns>
-        /// An <see cref="IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        public IInjectionCache Cache
         {
-            return this.GetEnumerator();
+            get { return this.cache; }
         }
 
         /// <summary>
@@ -116,10 +122,7 @@ namespace Bijectiv.Kernel
                 throw new ArgumentNullException("target");
             }
 
-            // The result of this method should be cached, so performance is not critical.
-            return this.stores
-                .Select(t => t.Resolve<TInjection>(source, target))
-                .FirstOrDefault(transform => transform != null);
+            return this.Cache.GetOrAdd<TInjection>(source, target, this.UnderlyingStore);
         }
     }
 }
