@@ -113,13 +113,15 @@ namespace Bijectiv
                 throw new ArgumentNullException("instanceFactories");
             }
 
-            var store = new CompositeInjectionStore();
-            storeFactories.ForEach(factory => store.Add(factory.Create(this.InstanceRegistry)));
+            var compositeStore = new CompositeInjectionStore();
+            storeFactories.ForEach(factory => compositeStore.Add(factory.Create(this.InstanceRegistry)));
+
+            var cachingStore = new CachingInjectionStore(compositeStore, new ConcurrentInjectionCache());
 
             var registry = new InstanceRegistry();
             instanceFactories.ForEach(factory => registry.Register(factory.Create(this.InstanceRegistry)));
 
-            return new InjectionKernel(store, registry);
+            return new InjectionKernel(cachingStore, registry);
         }
     }
 }

@@ -126,7 +126,7 @@ namespace Bijectiv.Tests
             var result = testTarget.Build(Enumerable.Empty<IInjectionStoreFactory>(), Enumerable.Empty<IInstanceFactory>());
 
             // Assert
-            Assert.IsInstanceOfType(result.Store, typeof(CompositeInjectionStore));
+            Assert.IsInstanceOfType(result.Store, typeof(CachingInjectionStore));
         }
 
         [TestMethod]
@@ -152,7 +152,8 @@ namespace Bijectiv.Tests
                 Enumerable.Empty<IInstanceFactory>());
 
             // Assert
-            new[] { store1, store2 }.AssertSequenceEqual((CompositeInjectionStore)result.Store);
+            new[] { store1, store2 }.AssertSequenceEqual(
+                (CompositeInjectionStore)((CachingInjectionStore)result.Store).UnderlyingStore);
         }
 
         [TestMethod]
