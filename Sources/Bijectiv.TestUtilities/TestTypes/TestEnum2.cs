@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITransform.cs" company="Bijectiv">
+// <copyright file="TestEnum2.cs" company="Bijectiv">
 //   The MIT License (MIT)
 //   
 //   Copyright (c) 2014 Brian Tyler
@@ -23,34 +23,25 @@
 //   THE SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the ITransform type.
+//   Defines the TestEnum2 type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Bijectiv
+namespace Bijectiv.TestUtilities.TestTypes
 {
     /// <summary>
-    /// Represents a <see cref="IInjection"/> that transforms a source instance into a new target instance.
+    /// The test enumeration 2.
     /// </summary>
-    public interface ITransform : IInjection
+    public enum TestEnum2
     {
         /// <summary>
-        /// Transforms <paramref name="source"/> into an instance of type <see cref="IInjection.Target"/>;  
-        /// using the transformation rules defined for <see cref="IInjection.Source"/> --&gt; 
-        /// <see cref="IInjection.Target"/>.
+        /// An enumeration value.
         /// </summary>
-        /// <param name="source">
-        /// The source object.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the injection will take place.
-        /// </param>
-        /// <param name="hint">
-        /// A hint that can be used to pass additional information to the injection.
-        /// </param>
-        /// <returns>
-        /// The newly created target instance.
-        /// </returns>
-        object Transform(object source, IInjectionContext context, object hint); 
+        Value1 = 5,
+
+        /// <summary>
+        /// An other enumeration value.
+        /// </summary>
+        Value3 = 7,
     }
 }

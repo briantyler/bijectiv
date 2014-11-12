@@ -34,5 +34,14 @@ namespace Bijectiv.TestUtilities.TestTypes
     /// </summary>
     public enum TestEnum1
     {
+        /// <summary>
+        /// An enumeration value.
+        /// </summary>
+        Value1 = 7,
+
+        /// <summary>
+        /// Another enumeration value.
+        /// </summary>
+        Value2 = 14,
     }
 }

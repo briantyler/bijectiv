@@ -113,6 +113,7 @@
     <Compile Include="Kernel\CachingInjectionStoreTests.cs" />
     <Compile Include="Kernel\ConcurrentInjectionCacheTests.cs" />
     <Compile Include="Kernel\EnumerableInjectionHintTests.cs" />
+    <Compile Include="Kernel\EnumInjectionTests.cs" />
     <Compile Include="Kernel\ExactInjectionResolutionStrategyTests.cs" />
     <Compile Include="Kernel\IdenticalKeyTargetFinderTests.cs" />
     <Compile Include="Kernel\InjectionParametersTests.cs" />

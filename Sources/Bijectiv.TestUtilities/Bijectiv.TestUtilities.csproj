@@ -97,6 +97,7 @@
     <Compile Include="TestTypes\TestClass1.cs" />
     <Compile Include="TestTypes\TestClass2.cs" />
     <Compile Include="TestTypes\TestEnum1.cs" />
+    <Compile Include="TestTypes\TestEnum2.cs" />
     <Compile Include="TypeClasses.cs" />
   </ItemGroup>
   <ItemGroup>

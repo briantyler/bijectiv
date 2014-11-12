@@ -73,5 +73,17 @@ namespace Bijectiv.TestUtilities
             typeof(float), typeof(double), typeof(decimal),
             typeof(DateTime), typeof(string), typeof(TestEnum1)
         };
+
+        /// <summary>
+        /// Types that are canonically convertible to an arbitrary <see cref="Enum"/> type.
+        /// </summary>
+        public static readonly Type[] EnumConvertibleTypes =
+        {
+            typeof(sbyte), typeof(short), typeof(int), typeof(long),
+            typeof(byte), typeof(ushort), typeof(uint), typeof(ulong),
+            typeof(sbyte?), typeof(short?), typeof(int?), typeof(long?),
+            typeof(byte?), typeof(ushort?), typeof(uint?), typeof(ulong?),
+            typeof(string)
+        };
     }
 }

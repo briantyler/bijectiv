@@ -131,6 +131,7 @@
     <Compile Include="ITargetCache.cs" />
     <Compile Include="ITargetFinder.cs" />
     <Compile Include="Configuration\MemberFragmentBuilder.cs" />
+    <Compile Include="Kernel\EnumInjection.cs" />
     <Compile Include="PostMergeAction.cs" />
     <Compile Include="Kernel\EnumerableToArrayInjectionStore.cs" />
     <Compile Include="ITargetFinderStore.cs" />

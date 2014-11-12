@@ -37,7 +37,7 @@ namespace Bijectiv.Kernel
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents a transform from an instance of type <see cref="IConvertible"/> to one of the primitive types.
+    /// Represents an <see cref="IInjection"/> from an instance of type <see cref="IConvertible"/> a primitive type.
     /// </summary>
     public class ConvertibleInjection : ITransform, IMerge
     {
@@ -67,7 +67,7 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Gets the source type supported by the transform.
+        /// Gets the source type supported by the injection.
         /// </summary>
         public Type Source 
         { 
@@ -75,7 +75,7 @@ namespace Bijectiv.Kernel
         }
 
         /// <summary>
-        /// Gets the target type created by the transform.
+        /// Gets the target type created by the injection.
         /// </summary>
         public Type Target { get; private set; }
 
