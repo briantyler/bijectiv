@@ -243,12 +243,12 @@ namespace Bijectiv.Kernel
                     return null;
                 }
 
-                throw new ArgumentNullException(
-                    string.Format(
-                        "Attempted to map null onto value type '{0}'. To avoid this exception register null as an "
-                        + "explicit injection map",
-                        this.Target),
-                        "source");
+                var message = string.Format(
+                    "Attempted to map null onto value type '{0}'. To avoid this exception register null as an "
+                    + "explicit injection map",
+                    this.Target);
+
+                throw new ArgumentNullException("source", message);
             }
 
             if (this.underlyingSource.IsEnum && this.underlyingTarget.IsEnum)
@@ -305,7 +305,7 @@ namespace Bijectiv.Kernel
         /// Nothing; method not implemented.
         /// </returns>
         [ExcludeFromCodeCoverage]
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             throw new NotSupportedException("Use the Map property to access the registered source --> target maps.");
         }
